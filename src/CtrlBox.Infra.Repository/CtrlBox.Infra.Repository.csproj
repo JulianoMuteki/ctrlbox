@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
     <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CtrlBox.Domain\CtrlBox.Domain.csproj" />
+    <ProjectReference Include="..\CtrlBox.Infra.Context\CtrlBox.Infra.Context.csproj" />
   </ItemGroup>
 
 </Project>

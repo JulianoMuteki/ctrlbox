@@ -5,7 +5,9 @@ namespace CtrlBox.Domain.Common
     public abstract class EntityBase
     {
         public Guid Id { get; protected set; }
-
+        public DateTime CreationDate { get; protected set; }
+        public DateTime DateModified { get; protected set; }
+        
         public override bool Equals(object obj)
         {
             var compareTo = obj as EntityBase;

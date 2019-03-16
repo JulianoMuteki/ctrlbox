@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CtrlBox.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,9 @@ namespace CtrlBox.Infra.Context
 {
     public class CtrlBoxContext : DbContext
     {
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<CustomerProductValue> CustomersProductsValues { get; set; }
 
         public CtrlBoxContext()
         {
@@ -21,6 +25,7 @@ namespace CtrlBox.Infra.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

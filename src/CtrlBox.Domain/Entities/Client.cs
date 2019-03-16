@@ -11,5 +11,11 @@ namespace CtrlBox.Domain.Entities
         public int QuantityBoxes { get; set; }
         public float BalanceDue { get; set; }
 
+        public ICollection<CustomerProductValue> CustomersProductsValues { get; set; }
+
+        public Client()
+        {
+            this.CustomersProductsValues = new HashSet<CustomerProductValue>();
+        }
     }
 }

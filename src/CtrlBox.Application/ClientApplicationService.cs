@@ -1,6 +1,10 @@
-﻿using System;
+﻿using CtrlBox.Domain.Entities;
+using CtrlBox.Domain.Interfaces.Application;
+using CtrlBox.Domain.Interfaces.Base;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CtrlBox.Application
 {

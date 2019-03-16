@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Application\" />
-    <Folder Include="Interfaces\Repository\" />
   </ItemGroup>
 
 </Project>

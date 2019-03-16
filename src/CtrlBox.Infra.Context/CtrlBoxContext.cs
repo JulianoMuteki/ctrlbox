@@ -33,6 +33,5 @@ namespace CtrlBox.Infra.Context
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

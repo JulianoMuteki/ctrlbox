@@ -8,6 +8,8 @@ namespace CtrlBox.Infra.Context.Mapping
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {
+            builder.ToTable("Clients");
+
             builder.HasKey(e => e.Id).HasName("Client_ID");
 
             builder.Property(e => e.Name)

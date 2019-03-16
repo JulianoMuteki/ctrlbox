@@ -1,9 +1,6 @@
 ﻿using CtrlBox.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
@@ -11,6 +8,8 @@ namespace CtrlBox.Infra.Context.Mapping
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
+            builder.ToTable("Products");
+
             builder.HasKey(e => e.Id).HasName("Product_ID");
 
             builder.Property(e => e.Name)

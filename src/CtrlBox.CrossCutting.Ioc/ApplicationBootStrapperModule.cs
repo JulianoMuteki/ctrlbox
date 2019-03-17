@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CtrlBox.Application;
+using CtrlBox.Domain.Interfaces.Application;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CtrlBox.CrossCutting.Ioc
 {
@@ -7,7 +9,7 @@ namespace CtrlBox.CrossCutting.Ioc
         public static void RegisterServices(IServiceCollection services)
         {
 
-          //  services.AddScoped<IClientApplicationService, ClientApplicationService>();
+            services.AddScoped<IClientApplicationService, ClientApplicationService>();
         }
     }
 }

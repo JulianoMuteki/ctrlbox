@@ -11,4 +11,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\CtrlBox.Application\CtrlBox.Application.csproj" />
+    <ProjectReference Include="..\CtrlBox.CrossCutting.Ioc\CtrlBox.CrossCutting.Ioc.csproj" />
+    <ProjectReference Include="..\CtrlBox.Infra.Context\CtrlBox.Infra.Context.csproj" />
+  </ItemGroup>
+
 </Project>

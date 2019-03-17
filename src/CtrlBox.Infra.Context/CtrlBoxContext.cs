@@ -1,4 +1,5 @@
 ﻿using CtrlBox.Domain.Entities;
+using CtrlBox.Infra.Context.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,9 @@ namespace CtrlBox.Infra.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ClientMap());
+            modelBuilder.ApplyConfiguration(new ProductMap());
+            modelBuilder.ApplyConfiguration(new ClientProductMap());
 
             base.OnModelCreating(modelBuilder);
         }

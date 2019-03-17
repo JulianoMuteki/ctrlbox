@@ -9,11 +9,10 @@ namespace CtrlBox.Domain.Entities
     {
         public Guid ClientID { get; set; }
         public Guid ProductID { get; set; }
-        public float Price { get; set; }
-
         public Product Product { get; set; }
-
         public Client Client { get; set; }
+
+        public float Price { get; set; }
 
         protected override bool EqualsCore(CustomerProductValue other)
         {

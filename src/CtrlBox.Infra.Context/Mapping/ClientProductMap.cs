@@ -12,7 +12,7 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.HasKey(t => new { t.ClientID, t.ProductID });
 
-            builder.Property(e => e.Product)
+            builder.Property(e => e.Price)
                 .IsRequired();
 
             builder.HasOne(tk => tk.Client)

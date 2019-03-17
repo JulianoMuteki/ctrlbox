@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CtrlBox.Application\CtrlBox.Application.csproj" />
     <ProjectReference Include="..\CtrlBox.CrossCutting.Ioc\CtrlBox.CrossCutting.Ioc.csproj" />
+    <ProjectReference Include="..\CtrlBox.Domain\CtrlBox.Domain.csproj" />
     <ProjectReference Include="..\CtrlBox.Infra.Context\CtrlBox.Infra.Context.csproj" />
   </ItemGroup>
 

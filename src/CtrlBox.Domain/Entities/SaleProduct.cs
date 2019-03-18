@@ -11,6 +11,12 @@ namespace CtrlBox.Domain.Entities
         public decimal SaleValue { get; set; }
         public int ExchangeQuantity { get; set; }
 
+        public Guid SaleID { get; set; }
+        public Guid ProductID { get; set; }
+
+        public virtual Product Product { get; set; }
+        public virtual Sale Sale { get; set; }
+
         protected override bool EqualsCore(SaleProduct other)
         {
             throw new NotImplementedException();

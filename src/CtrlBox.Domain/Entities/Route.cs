@@ -11,5 +11,13 @@ namespace CtrlBox.Domain.Entities
         public int KmDistance { get; set; }
         public string Truck { get; set; }
 
+        public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
+
+        public Route()
+        {
+            this.Deliveries = new HashSet<Delivery>();
+            this.Clients = new HashSet<Client>();
+        }
     }
 }

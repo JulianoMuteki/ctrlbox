@@ -10,6 +10,9 @@ namespace CtrlBox.Domain.Entities
         public Guid SaleID { get; set; }
         public int Number { get; set; }
         public float Value { get; set; }
-        public DateTime DtExpire { get; set; }
+        public DateTime? DtExpire { get; set; }
+
+        public Sale Sale { get; set; }
+
     }
 }

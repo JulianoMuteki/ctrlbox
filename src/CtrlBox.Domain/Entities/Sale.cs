@@ -14,5 +14,16 @@ namespace CtrlBox.Domain.Entities
         public decimal ForwardValue { get; set; }
         public int TotalReturnedBoxes { get; set; }
 
+        public virtual Client   Client { get; set; }
+        public virtual Delivery Delivery { get; set; }
+
+        public ICollection<Check> Checks { get; set; }
+        public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
+
+        public Sale()
+        {
+            this.Checks = new HashSet<Check>();
+            this.DeliveriesProducts = new HashSet<DeliveryProduct>();
+        }
     }
 }

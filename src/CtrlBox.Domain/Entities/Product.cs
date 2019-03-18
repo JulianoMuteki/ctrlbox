@@ -12,9 +12,15 @@ namespace CtrlBox.Domain.Entities
         public float Weight { get; set; }
 
         public ICollection<CustomerProductValue> CustomersProductsValues { get; set; }
+        public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
+        public ICollection<StockProduct> StocksProducts { get; set; }
+        public ICollection<SaleProduct> SalesProducts { get; set; }
 
         public Product()
         {
+            this.DeliveriesProducts = new HashSet<DeliveryProduct>();
+            this.StocksProducts = new HashSet<StockProduct>();
+            this.SalesProducts = new HashSet<SaleProduct>();
             this.CustomersProductsValues = new HashSet<CustomerProductValue>();
         }
     }

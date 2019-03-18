@@ -24,7 +24,7 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.DtExpire);
                 
-            builder.Property(e => e.Sale)
+            builder.Property(e => e.Value)
                 .IsRequired();
 
         }

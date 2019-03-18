@@ -13,6 +13,17 @@ namespace CtrlBox.Infra.Context
         public DbSet<Client> Clients { get; set; }
         public DbSet<CustomerProductValue> CustomersProductsValues { get; set; }
 
+        public DbSet<Check> Checks { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<DeliveryProduct> DeliveriesProducts { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<StockProduct> StocksProducts { get; set; }
+        public DbSet<Route> Routes { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+        public DbSet<SaleProduct> SalesProducts { get; set; }
+
+
         public CtrlBoxContext()
         {
 

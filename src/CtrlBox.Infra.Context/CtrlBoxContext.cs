@@ -50,6 +50,11 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new DeliveryMap());
             modelBuilder.ApplyConfiguration(new DeliveryProductMap());
             modelBuilder.ApplyConfiguration(new StockMap());
+            modelBuilder.ApplyConfiguration(new RouteClientMap());
+            modelBuilder.ApplyConfiguration(new SaleProductMap());
+            modelBuilder.ApplyConfiguration(new RouteMap());
+            modelBuilder.ApplyConfiguration(new SaleMap());
+            modelBuilder.ApplyConfiguration(new StockProductMap());
 
             base.OnModelCreating(modelBuilder);
         }

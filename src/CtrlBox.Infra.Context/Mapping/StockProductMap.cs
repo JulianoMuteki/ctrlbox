@@ -5,11 +5,24 @@ using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class StockProductMap : IEntityTypeConfiguration<Product>
+    public class StockProductMap : IEntityTypeConfiguration<StockProduct>
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        public void Configure(EntityTypeBuilder<StockProduct> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("StocksProducts");
+
+            builder.HasKey(t => new { t.ProductID, t.StockID });
+
+            builder.Property(e => e.Amount)
+                .IsRequired();
+
+            builder.HasOne(tk => tk.Stock)
+                .WithMany(t => t.StocksProducts)
+                .HasForeignKey(tk => tk.StockID);
+
+            builder.HasOne(tk => tk.Product)
+                .WithMany(k => k.StocksProducts)
+                .HasForeignKey(tk => tk.ProductID);
         }
     }
 }

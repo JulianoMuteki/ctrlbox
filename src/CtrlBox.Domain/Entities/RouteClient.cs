@@ -10,6 +10,9 @@ namespace CtrlBox.Domain.Entities
         public Guid RouteID { get; set; }
         public Guid ClientID { get; set; }
 
+        public Route Route { get; set; }
+        public Client Client { get; set; }
+
 
         protected override bool EqualsCore(RouteClient other)
         {

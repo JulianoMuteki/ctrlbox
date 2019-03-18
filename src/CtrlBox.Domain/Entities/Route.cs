@@ -12,12 +12,12 @@ namespace CtrlBox.Domain.Entities
         public string Truck { get; set; }
 
         public virtual ICollection<Delivery> Deliveries { get; set; }
-        public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<RouteClient> RoutesClients { get; set; }
 
         public Route()
         {
             this.Deliveries = new HashSet<Delivery>();
-            this.Clients = new HashSet<Client>();
+            this.RoutesClients = new HashSet<RouteClient>();
         }
     }
 }

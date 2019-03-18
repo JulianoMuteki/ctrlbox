@@ -10,7 +10,7 @@ namespace CtrlBox.Infra.Context.Mapping
         {
             builder.ToTable("Clients");
 
-            builder.HasKey(e => e.Id).HasName("Client_ID");
+            builder.HasKey(e => e.Id).HasName("ClientID");
 
             builder.Property(e => e.Name)
                 .IsRequired()
@@ -26,6 +26,7 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired();
 
             builder.Property(e => e.BalanceDue)
+                 .HasColumnType("float")
                 .IsRequired();
 
         }

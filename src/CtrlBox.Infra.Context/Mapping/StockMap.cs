@@ -11,7 +11,7 @@ namespace CtrlBox.Infra.Context.Mapping
         {
             builder.ToTable("Stocks");
 
-            builder.HasKey(e => e.Id).HasName("Stock_ID");
+            builder.HasKey(e => e.Id).HasName("StockID");
 
             builder.Property(e => e.CreationDate)
                 .IsRequired();

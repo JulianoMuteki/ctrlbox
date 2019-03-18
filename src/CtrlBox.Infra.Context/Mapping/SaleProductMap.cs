@@ -14,6 +14,7 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.HasKey(t => new { t.ProductID, t.SaleID });
 
             builder.Property(e => e.SaleValue)
+                 .HasColumnType("decimal(5,2)")
                 .IsRequired();
 
             builder.Property(e => e.Amount)

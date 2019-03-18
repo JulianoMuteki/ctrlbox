@@ -11,7 +11,7 @@ namespace CtrlBox.Infra.Context.Mapping
         {
             builder.ToTable("Sales");
 
-            builder.HasKey(e => e.Id).HasName("Sale_ID");
+            builder.HasKey(e => e.Id).HasName("SaleID");
 
             builder.Property(e => e.CreationDate)
                 .IsRequired();
@@ -20,9 +20,11 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired();
 
             builder.Property(e => e.ForwardValue)
+                 .HasColumnType("decimal(5,2)")
                 .IsRequired();
 
             builder.Property(e => e.ReceivedValue)
+                 .HasColumnType("decimal(5,2)")
                 .IsRequired();
 
             builder.Property(e => e.TotalReturnedBoxes)

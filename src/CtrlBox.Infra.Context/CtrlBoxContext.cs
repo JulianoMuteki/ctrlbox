@@ -1,9 +1,6 @@
 ﻿using CtrlBox.Domain.Entities;
 using CtrlBox.Infra.Context.Mapping;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Infra.Context
 {

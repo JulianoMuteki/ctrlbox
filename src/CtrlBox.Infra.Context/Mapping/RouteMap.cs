@@ -10,7 +10,7 @@ namespace CtrlBox.Infra.Context.Mapping
         {
             builder.ToTable("Routes");
 
-            builder.HasKey(e => e.Id).HasName("Route_ID");
+            builder.HasKey(e => e.Id).HasName("RouteID");
 
             builder.Property(e => e.Name)
                 .IsRequired()

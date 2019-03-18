@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Compile Remove="Migrations\20190317092307_InitialCreate.cs" />
+    <Compile Remove="Migrations\20190318194429_InitialCreate.cs" />
+    <Compile Remove="Migrations\20190318210510_InitialCreate.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,10 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CtrlBox.Domain\CtrlBox.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

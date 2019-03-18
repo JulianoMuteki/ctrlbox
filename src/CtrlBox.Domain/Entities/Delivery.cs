@@ -11,7 +11,7 @@ namespace CtrlBox.Domain.Entities
 
         public bool IsFinalized { get; set; }
         public DateTime DtStart { get; set; }
-        public DateTime DtEnd { get; set; }
+        public DateTime? DtEnd { get; set; }
         public string CreatedBy { get; set; }
         public string FinalizedBy { get; set; }
 

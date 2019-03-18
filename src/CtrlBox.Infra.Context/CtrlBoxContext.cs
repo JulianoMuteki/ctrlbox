@@ -23,7 +23,6 @@ namespace CtrlBox.Infra.Context
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleProduct> SalesProducts { get; set; }
 
-
         public CtrlBoxContext()
         {
 
@@ -45,6 +44,12 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new ClientMap());
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new ClientProductMap());
+
+            modelBuilder.ApplyConfiguration(new CheckMap());
+            modelBuilder.ApplyConfiguration(new ExpenseMap());
+            modelBuilder.ApplyConfiguration(new DeliveryMap());
+            modelBuilder.ApplyConfiguration(new DeliveryProductMap());
+            modelBuilder.ApplyConfiguration(new StockMap());
 
             base.OnModelCreating(modelBuilder);
         }

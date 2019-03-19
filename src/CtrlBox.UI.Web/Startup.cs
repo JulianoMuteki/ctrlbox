@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CtrlBox.CrossCutting.Ioc;
+﻿using CtrlBox.CrossCutting.Ioc;
 using CtrlBox.Infra.Context;
+using CtrlBox.UI.Web.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +32,7 @@ namespace CtrlBox.UI.Web
 
             services.AddDbContext<CtrlBoxContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapperSetup();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             RegisterServices(services);

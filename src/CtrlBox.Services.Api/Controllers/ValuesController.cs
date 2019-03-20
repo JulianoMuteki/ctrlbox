@@ -11,6 +11,10 @@ namespace CtrlBox.Services.Api.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
+        /// <summary>
+        /// The list all details 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
@@ -18,6 +22,11 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         // GET api/values/5
+        /// <summary>
+        /// This will provider details for specific ID which is being passed
+        /// </summary>
+        /// <param name="id">Mandatory</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {

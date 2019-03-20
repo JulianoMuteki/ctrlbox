@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CtrlBox.Services.Api</name>
+    </assembly>
+    <members>
+        <member name="M:CtrlBox.Services.Api.Controllers.ValuesController.Get">
+            <summary>
+            The list all details 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ValuesController.Get(System.Int32)">
+            <summary>
+            This will provider details for specific ID which is being passed
+            </summary>
+            <param name="id">Mandatory</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

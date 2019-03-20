@@ -19,7 +19,7 @@ namespace CtrlBox.Application
 
         public async Task<IEnumerable<Product>> GetAllClient()
         {
-            return await _unitOfWork.Repository<Product>().GetAll().AsQueryable().ToListAsync();
+            return await _unitOfWork.Repository<Product>().GetAllAsync();
 
         }
 

@@ -1,0 +1,705 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button"></button>
+            <h3>portlet Settings</h3>
+        </div>
+        <div class="modal-body">
+            <p>Here will be a configuration form</p>
+        </div>
+    </div>
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN STYLE CUSTOMIZER -->
+                <div class="color-panel hidden-phone">
+                    <div class="color-mode-icons icon-color"></div>
+                    <div class="color-mode-icons icon-color-close"></div>
+                    <div class="color-mode">
+                        <p>THEME COLOR</p>
+                        <ul class="inline">
+                            <li class="color-black current color-default" data-style="default"></li>
+                            <li class="color-blue" data-style="blue"></li>
+                            <li class="color-brown" data-style="brown"></li>
+                            <li class="color-purple" data-style="purple"></li>
+                            <li class="color-grey" data-style="grey"></li>
+                            <li class="color-white color-light" data-style="light"></li>
+                        </ul>
+                        <label>
+                            <span>Layout</span>
+                            <select class="layout-option m-wrap small">
+                                <option value="fluid" selected>Fluid</option>
+                                <option value="boxed">Boxed</option>
+                            </select>
+                        </label>
+                        <label>
+                            <span>Header</span>
+                            <select class="header-option m-wrap small">
+                                <option value="fixed" selected>Fixed</option>
+                                <option value="default">Default</option>
+                            </select>
+                        </label>
+                        <label>
+                            <span>Sidebar</span>
+                            <select class="sidebar-option m-wrap small">
+                                <option value="fixed">Fixed</option>
+                                <option value="default" selected>Default</option>
+                            </select>
+                        </label>
+                        <label>
+                            <span>Footer</span>
+                            <select class="footer-option m-wrap small">
+                                <option value="fixed">Fixed</option>
+                                <option value="default" selected>Default</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <!-- END BEGIN STYLE CUSTOMIZER -->
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <h3 class="page-title">
+                    Blank Page <small>blank page</small>
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Layouts</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li><a href="#">Blank Page</a></li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                Blank page content goes here
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+
+
+@*<script type="text/javascript">
+    function handleAjaxError(xhr, textStatus, error) {
+
+        $('#example').dataTable({
+            "bDestroy": true,
+            "bProcessing": false
+        });
+
+        if (textStatus === 'timeout') {
+            alert('The server took too long to send the data.');
+        }
+        else {
+            var obj = $.parseJSON(xhr.responseText);
+            alert(obj.Message);
+            alert("É necessário atualizar a página");
+        }
+
+        return false;
+    }
+
+    Number.prototype.formatMoney = function (places, symbol, thousand, decimal) {
+        places = !isNaN(places = Math.abs(places)) ? places : 2;
+        symbol = symbol !== undefined ? symbol : "R$ ";
+        thousand = thousand || ".";
+        decimal = decimal || ",";
+        var number = this,
+            negative = number < 0 ? "-" : "",
+            i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+            j = (j = i.length) > 3 ? j % 3 : 0;
+        return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+    };
+
+
+    jQuery(document).ready(function () {
+        var tbCheque = $('#tbCheques').DataTable({
+
+            "bPaginate": false,
+            "bAutoWidth": false,
+            bFilter: false, bInfo: false,
+
+            "aoColumns": [
+                               {
+                                   "mData": "NumeroCheque",
+                                   data : null,
+                                   "bSortable": false
+                               },
+                                {
+                                    "mData": "Valor",
+                                    "bSortable": false
+                                },
+                                {
+                                    "mData": "Data",
+                                    "bSortable": false
+                                },
+ {
+     "mData": "Status",
+     "bSortable": false
+ }]
+
+
+        });
+        var rowID = 0;
+        //Salva linha de cheque
+        $("#target").submit(function (event) {
+            var tb = $('#tbCheques').DataTable();
+            var rowADD = {
+               // "DT_RowId": rowID + 1,
+                "NumeroCheque": $("#numeroCheque").val(),
+                "Valor": $("#mask_currency").val().replace(/_/g, "").replace("R$ ", ""),
+                "Data":  $("#dtCheque").val(),
+                "Status": "<span class=\"label label-success\">Approved</span>"
+            };
+
+            tb.row.add(rowADD).draw();
+        });
+
+        //Seleciona uma linha de cheque para excluir
+        $('#tbCheques tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                tbCheque.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+        //Exclui linha de cheque
+        $('#deleteRow').click(function () {
+            tbCheque.row('.selected').remove().draw(false);
+        });
+
+        var sum = 0;
+
+        //Calcula os valores para os produtos
+        $('#tbVenda tbody').on('blur', 'td.calc', function () {
+
+            var valor = $(this).closest('tr').children().eq(3);
+            var valorProduto = parseFloat($(valor).html().replace(/[^0-9\,]+/g, "").replace(",", "."));
+            var qtde = $(this).find('.qtdeVenda').val();
+            var totalRow = valorProduto * qtde;
+            var tb = $('#tbVenda').dataTable();
+
+            var rowIndex = tb.fnGetPosition($(this).closest('tr')[0]);
+            tb.fnUpdate(totalRow.formatMoney(), rowIndex, 4);
+
+            $("#tbVenda tbody .somaTotal").each(function () {
+                var valor = $(this).html();
+                sum += parseFloat(valor.replace(/[^0-9\,]+/g, "").replace(",", "."));
+            });
+            $('#somaVenda').html(sum.formatMoney());
+
+            return false;
+        });
+
+        $('#calcular').click(function () {
+            var valorRecebido = parseFloat($("#mask_currencyX").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
+            var saldoAnterior = parseInt($("#tbTotal #saldoAnterior").text().replace(",", "."));
+            var ct = valorRecebido - sum;
+
+            $("#totalVenda").text(sum.formatMoney());
+            $("#recebido").text(valorRecebido.formatMoney())
+            $("#total").text((saldoAnterior + ct).formatMoney());
+        });
+
+
+        @{ var clienteID = ViewData["clienteID"];
+           var linhaID = ViewData["linhaID"];
+           }
+
+        var url = '@Url.Content("~/Home/AjaxHandlerCadastrarVenda")?clienteID=' + '@clienteID' + '&linhaID=' + '@linhaID';
+
+        var oTable = $('#tbVenda').dataTable({
+            bJQueryUI: true,
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": url,
+            "bProcessing": true,
+            "bAutoWidth": false,
+            "bDestroy": true,
+            "aoColumns": [
+                                {
+                                    "mData": "NomeProduto",
+                                    "bSortable": false
+                                },
+                                {
+                                    data: null,
+                                    //  sClass: "checkboxCell",
+                                    "sType": "html",
+                                    "bSortable": false,
+                                    sClass: "calc",
+                                    render: function (data, type, row) {
+                                        if (type === 'display') {
+                                            return '<input type="text" placeholder="0" class="m-wrap small qtdeVenda">';
+                                        }
+                                        return data;
+                                    }
+                                },
+                                {
+                                    data: null,
+
+                                    "sType": "html",
+                                    "bSortable": false,
+                                    render: function (data, type, row) {
+                                        if (type === 'display') {
+                                            return '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
+                                        }
+                                        return data;
+                                    }
+                                },
+                                {
+                                    "mData": "ValorProduto"
+
+                                },
+                                {
+                                    "mData": "Total",
+                                    sClass: "somaTotal",
+                                }
+
+            ],
+
+            "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                oSettings.jqXHR = $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": function (json) {
+                        if (!json.NotAuthorized) {
+                            var obj = $.parseJSON(JSON.stringify(json));
+                            $('#saldoAnterior').text(obj.SaldoAnterior);
+                            $('#caixasEmDebito').text(obj.CaixasEmDebito);
+
+                            if (obj.CaixasEmDebito >= 0) {
+                                $('#statusSaldoCaixa').addClass("alert-success");
+                            } else {
+                                $('#statusSaldoCaixa').addClass("alert-error");
+                            }
+                        }
+                        fnCallback(json);
+                    },
+                    "error": handleAjaxError
+                });
+            }
+            //"footerCallback": function ( row, data, start, end, display ) {
+            //    var api = this.api(), data;
+
+            //    // Remove the formatting to get integer data for summation
+            //    //var intVal = function ( i ) {
+            //    //    return typeof i === 'string' ?
+            //    //        i.replace(/[\$,]/g, '')*1 :
+            //    //        typeof i === 'number' ?
+            //    //        i : 0;
+            //    //};
+
+            //    //// Total over all pages
+            //    //total = api
+            //    //    .column(4)
+            //    //    .data()
+            //    //    .reduce(function (a, b) {
+            //    //        alert(a + '_' + b);
+            //    //        return 1 + 1;
+            //    //    } );
+
+            //    //// Total over this page
+            //    pageTotal = api
+            //        .column( 4, { page: 'current'} )
+            //        .data()
+            //        .reduce(function (a, b) {
+            //           // priceValA = parseFloat(a.replace(/[^0-9\,]+/g, "").replace(",", "."));
+            //            //alert(a.replace(/[^0-9\,]+/g, "").replace(",", "."));
+            //           // priceValB = parseFloat(b.replace(/[^0-9\,]+/g, "").replace(",", "."));
+            //            return  '0'//priceValA + priceValB;
+            //        }, 0 );
+
+            //    //alert(pageTotal);
+            //    // Update footer
+            //    $( api.column( 4 ).footer() ).html(
+            //       'teste'
+            //    );
+            //}
+
+
+        });
+
+
+        $("#btnSubmit").click(function () {
+
+            var oTable = $('#tbVenda').dataTable();
+            var tbVenda = [];
+            $.each(oTable.fnGetNodes(), function (index, value) {
+                var row = oTable.fnGetData(value);
+                var qtdeVenda = $(value).find('input.qtdeVenda').val();
+                var qtdeRetorno = $(value).find('input.qtdeRetorno').val();
+
+                row.QtdeVenda = qtdeVenda;
+                row.QtdeRetorno = qtdeRetorno;
+                row.ValorProduto = row.ValorProduto.replace(/[^0-9\,]+/g, "").replace(",", ".");
+                row.Total = row.Total.replace(/[^0-9\,]+/g, "").replace(",", ".");
+                tbVenda.push(row);
+            });
+            var myJsonString = JSON.stringify(tbVenda);
+
+
+            var valorRecebido = parseFloat($("#mask_currencyX").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
+            var valorPrazo = parseFloat($("#mask_currencyY").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
+            var retornoCaixaVazia = $("#retornoCaixaVazia").val();
+
+
+            var oTableCheque = $('#tbCheques').dataTable();
+            var tbCheques = [];
+            $.each(oTableCheque.fnGetNodes(), function (index, value) {
+                var row = oTableCheque.fnGetData(value);
+                
+               row.Valor = row.Valor.replace(/[^0-9\,]+/g, "").replace(",", ".");
+               delete row.Status;
+
+                tbCheques.push(row);
+            });
+            var myJsonStringCheques = JSON.stringify(tbCheques);
+
+           
+
+            $.ajax({
+                url: '@Url.Content("~/Home/SubmitData")',
+                type: 'POST',
+                dataType: 'json',
+                // contentType: "application/json",
+                data: { tbVenda: myJsonString, valorRecebido: valorRecebido, valorPrazo: valorPrazo, retornoCaixaVazia: retornoCaixaVazia, tbCheques: myJsonStringCheques },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        // carregarTabela();
+                    }
+                },
+                "error": handleAjaxError
+            });
+            event.preventDefault();
+
+            return true;
+        });
+
+    });
+</script>
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+
+        <div class="modal-body">
+            <!-- BEGIN FORM-->
+            <form id="target" action="#" class="horizontal-form">
+                <h3 class="form-section">Cadastro de cheque</h3>
+                <div class="row-fluid">
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label class="control-label" for="numeroCheque">Número do cheque</label>
+                            <div class="controls">
+                                <input type="text" id="numeroCheque" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                    <!--/span-->
+                </div>
+                <!--/row-->
+                <div class="row-fluid">
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label class="control-label">Valor</label>
+                            <div class="controls">
+                                <input class="span6 m-wrap" id="mask_currency" type="text" />
+                                <span class="help-inline">Ex.: R$ 9.999.999,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/row-->
+                <!--/row-->
+                <div class="row-fluid">
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label class="control-label">Data do cheque</label>
+                            <div class="controls">
+                                <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                                    <input id="dtCheque" class="m-wrap m-ctrl-medium date-picker" readonly size="16" type="text" value="" /><span class="add-on"><i class="icon-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/row-->
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn">Close</button>
+                    <button type="submit" class="btn blue">Save changes</button>
+                </div>
+            </form>
+            <!-- END FORM-->
+        </div>
+
+    </div>
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <h3 class="page-title">
+                    Form Layouts
+                    <small>form layouts and more</small>
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Form Stuff</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Form Layouts</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet box blue tabbable">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-reorder"></i>
+                            <span class="hidden-480">Registrar venda</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="tabbable active tab-content">
+
+                            <table id="tbVenda" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Produtos</th>
+                                        <th>Qtde</th>
+                                        <th>Troca</th>
+                                        <th class="hidden-480">Valor</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Nanica</td>
+                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
+                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prata</td>
+                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
+                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Maçã</td>
+                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
+                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4" style="text-align:right">Total:</th>
+                                        <th id="somaVenda"></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END SAMPLE FORM PORTLET-->
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6">
+                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                <div class="portlet box red">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-cogs"></i>valores recebidos</div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <div class="control-group">
+                            <label class="control-label">Valor recebido</label>
+                            <div class="controls">
+                                <input class="span6 m-wrap" id="mask_currencyX" type="text">
+
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Valor a prazo</label>
+                            <div class="controls">
+                                <input class="span6 m-wrap" id="mask_currencyY" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END SAMPLE TABLE PORTLET-->
+            </div>
+            <div class="span6">
+                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                <div class="portlet box red">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-cogs"></i>Cheques</div>
+                        <div class="tools">
+
+
+                            <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                            <a id="deleteRow" class="icon-remove"></a>
+
+                        </div>
+                        <div class="caption"><i class="icon-cogs"></i>Table</div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <table id="tbCheques" class="table table-hover">
+                            <thead>
+                                <tr>
+
+                                    <th>Número do cheque</th>
+                                    <th>Valor</th>
+                                    <th>Data</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END SAMPLE TABLE PORTLET-->
+            </div>
+        </div>
+
+        <button id="calcular" class="btn white">Calcular <i class="glyphicons-icon calculator"></i></button>
+
+
+        <div class="row-fluid">
+            <div class="span12">
+
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet tabbable">
+
+                    <div class="portlet-body form">
+                        <div class="tabbable active tab-content">
+
+                            <table id="tbTotal" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+
+                                        <th>Saldo Anterior</th>
+                                        <th>Total venda</th>
+                                        <th>Recebido</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+
+                                        <td id="saldoAnterior">-300,00</td>
+                                        <td id="totalVenda"></td>
+                                        <td id="recebido" class="hidden-480"></td>
+                                        <td id="total"><span class="label label-success"></span></td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END SAMPLE FORM PORTLET-->
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6">
+
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet tabbable">
+
+                    <div class="portlet-body form">
+                        <div class="tabbable active tab-content">
+
+                            <div class="control-group form-horizontal">
+                                <label class="control-label">Retorno caixa vazia</label>
+                                <div class="controls">
+                                    <input type="text" id="retornoCaixaVazia" placeholder="0" class="m-wrap small">
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END SAMPLE FORM PORTLET-->
+            </div>
+            <div class="span6">
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet tabbable">
+                    <div class="portlet-body form">
+                        <div class="tabbable active tab-content">
+                            <!-- BEGIN SAMPLE FORM PORTLET-->
+                            <div class="portlet">
+                                <div id="statusSaldoCaixa" class="alert">
+                                    Cliente devendo: <strong id="caixasEmDebito"></strong> caixas vazias
+                                </div>
+                            </div>
+                            <!-- END SAMPLE FORM PORTLET-->
+                        </div>
+                    </div>
+                </div>
+                <!-- END SAMPLE FORM PORTLET-->
+            </div>
+        </div>
+        <input id="btnSubmit" typy="button" class="btn red" value="Submit">
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>*@
+

@@ -4,6 +4,17 @@
         <name>CtrlBox.Services.Api</name>
     </assembly>
     <members>
+        <member name="T:CtrlBox.Services.Api.Controllers.ProductController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.#ctor(CtrlBox.Domain.Interfaces.Application.IProductApplicationService)">
+            <summary>
+            
+            </summary>
+            <param name="productApplicationService"></param>
+        </member>
         <member name="T:CtrlBox.Services.Api.Controllers.ValuesController">
             <summary>
             

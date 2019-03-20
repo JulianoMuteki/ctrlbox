@@ -1,0 +1,247 @@
+﻿@model CDE.UI.Portal.Models.LinhaVM
+@{
+    ViewBag.Title = "AssociarClientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    @{
+                var linhaID = ViewData["linhaID"];
+            }
+    function handleAjaxError(xhr, textStatus, error) {
+
+        $('#example').dataTable({
+            "bDestroy": true,
+            "bProcessing": false
+        });
+
+        if (textStatus === 'timeout') {
+            alert('The server took too long to send the data.');
+        }
+        else {
+            var obj = $.parseJSON(xhr.responseText);
+            alert(obj.Message);
+            alert("É necessário atualizar a página");
+        }
+
+        return false;
+    }
+
+    function carregarTabela(id, url) {
+
+        var oTable = $(id).dataTable({
+            bJQueryUI: false,
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": url,
+            "bPaginate": false,
+            "bAutoWidth": false,
+            bFilter: false, bInfo: false,
+            "bDestroy": true,
+            "aoColumns": [
+                            {
+                                "mData": "Nome"
+                            },
+                            {
+                                "mData": "Telefone"
+                            },
+                            {
+                                "mData": "Contato"
+                            },
+                            {
+                                data: null,
+                                "sType": "html",
+                                "bSortable": false,
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return '<input type="checkbox" name="ckb" value="' + data.DT_RowId + '">';
+                                    }
+                                    return data;
+                                }
+                            }
+            ],
+            "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                oSettings.jqXHR = $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": function (json) {
+                        if (!json.NotAuthorized) {
+                            //  var obj = $.parseJSON(JSON.stringify(json));
+                        }
+                        fnCallback(json);
+                    },
+                    "error": handleAjaxError
+                });
+            }
+        });
+
+        return oTable;
+    }
+
+    function carregarTabelas(linhaID) {
+
+        var urlClientesDisponiveis = '@Url.Content("~/Home/AjaxHandlerClientesDisponiveis")';
+        carregarTabela('#tbAdicionar', urlClientesDisponiveis);
+
+        var urlClientesNaoDisponiveis = '@Url.Content("~/Home/AjaxHandlerClientesNaoDisponiveis")?linhaID=' + '@linhaID';
+        carregarTabela('#tbRemover', urlClientesNaoDisponiveis);
+    }
+
+
+
+    jQuery(document).ready(function () {
+
+
+
+        carregarTabelas('@linhaID');
+
+        $('#btnSubmitAdicionar').click(function () {
+
+            var oTableAdicionar = $('#tbAdicionar').dataTable();
+            var sData = $('input', oTableAdicionar.fnGetNodes()).serialize();
+
+            $.ajax({
+                url: '@Url.Content("~/Home/SubmitAdicionarClientes")',
+                type: 'POST',
+                dataType: 'json',
+                data: { linhaID: '@linhaID', clientesIDs: sData },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        carregarTabelas('@linhaID');
+                    }
+                }
+            });
+
+            return false;
+
+        });
+
+        $('#btnSubmitRemover').click(function () {
+            var oTableRemover = $('#tbRemover').dataTable();
+            var sData = $('input', oTableRemover.fnGetNodes()).serialize();
+            $.ajax({
+                url: '@Url.Content("~/Home/SubmitRemoverClientes")',
+                type: 'POST',
+                dataType: 'json',
+                data: { linhaID: '@linhaID', clientesIDs: sData },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        carregarTabelas('@linhaID');
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <h3 class="page-title">
+                    <small>   Vinclular clientes a linha:</small>@Model.Nome
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Data Tables</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li><a href="#">Basic Tables</a></li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+
+            <div class="span6">
+                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                <div class="portlet box green">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-cogs"></i>Clientes disponíveis</div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <form id="form">
+                            <table id="tbAdicionar" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+
+                                        <th class="hidden-480">Telefone</th>
+                                        <th>Contato</th>
+                                        <th>Vender</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </form>
+                        <a href="#" id="btnSubmitAdicionar" class="btn green"><i class="icon-plus"></i>Adicionar</a>
+
+                    </div>
+                </div>
+                <!-- END SAMPLE TABLE PORTLET-->
+
+            </div>
+            <div class="span6">
+                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                <div class="portlet box red">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-cogs"></i>Clientes desta linha</div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <form id="form">
+                            <table id="tbRemover" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+
+                                        <th class="hidden-480">Telefone</th>
+                                        <th>Contato</th>
+                                        <th>Vender</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </form>
+                        @if (!Model.ExisteEntregaAberta)
+                        {
+                            <a href="#" id="btnSubmitRemover" class="btn red"><i class="icon-trash"></i>Remover</a>
+                        }
+                        else
+                        {
+                            <div class="alert">
+                               
+                                <strong>Warning!</strong> Existe uma entrega em aberto.
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- END SAMPLE TABLE PORTLET-->
+
+            </div>
+
+        </div>
+
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>

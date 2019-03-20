@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Entregas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript">
+
+
+
+    jQuery(document).ready(function () {
+
+
+        var url = '@Url.Content("~/Home/AjaxHandlerEntregas")';
+
+        var oTable = $('#tbClientes').dataTable({
+            bJQueryUI: false,
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": url,
+            "bProcessing": true,
+            "bAutoWidth": false,
+            "bDestroy": true,
+            "aoColumns": [
+                                 {
+                                     data: null,
+                                     //  sClass: "checkboxCell",
+                                     "sType": "html",
+                                     "bSortable": false,
+                                     sClass: "calc",
+                                     render: function (data, type, row) {
+                                         if (type === 'display') {
+                                             var url = '@Url.Action("ExecutarEntrega", "Home")?entregaID=' + data.DT_RowId + '&linhaID=' + data.LinhaID;
+
+                                             return '<a href="'+ url + '" class="glyphicons no-js search"><i></i></a>';
+                                         }
+                                         return data;
+                                     }
+                                 },
+                                {
+                                    "mData": "Linha"
+
+                                },
+
+                                {
+                                    "mData": "CriadoPor"
+
+                                },
+                                {
+                                    "mData": "FinalizadoPor"
+
+                                },
+                                 {
+                                     "mData": "DataCriação"
+
+                                 },
+                                  {
+                                      "mData": "DataFinalização"
+
+                                  },
+                                   {
+                                       "mData": "Finalizado"
+
+                                   }
+
+            ]
+
+        });
+
+
+
+
+
+
+
+    });
+</script>
+
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button"></button>
+            <h3>portlet Settings</h3>
+        </div>
+        <div class="modal-body">
+            <p>Here will be a configuration form</p>
+        </div>
+    </div>
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <h3 class="page-title">
+                    Entregas <small>somente uma por linha</small>
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Data Tables</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li><a href="#">Managed Tables</a></li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                <div class="portlet box light-grey">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-globe"></i>Managed Table</div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <div class="table-toolbar">
+                            <div class="btn-group">
+                                @*<button id="sample_editable_1_new" class="btn green">
+                                        Add New <i class="icon-plus"></i>
+                                    </button>*@
+
+                                @Html.ActionLink("CadastrarEntrega", "CadastrarEntrega", "Home", new { @class = "btn green" })
+                            </div>
+
+                        </div>
+                        <table class="table table-striped table-bordered table-hover" id="tbClientes">
+                            <thead>
+                                <tr>
+                                    <th>Visualizar</th>
+                                    <th>Linha</th>
+                                    <th>CriadoPor</th>
+                                    <th>FinalizadoPor</th>
+                                    <th>DataCriação</th>
+                                    <th>DataFinalização</th>
+                                    <th>Finalizado</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+

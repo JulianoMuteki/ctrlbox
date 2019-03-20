@@ -13,21 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{61C98616-25A8-45A8-9743-052D527C245B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.Domain", "src\CtrlBox.Domain\CtrlBox.Domain.csproj", "{BF1BD03C-288F-4EF4-BC2A-EE90773C12B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Domain", "src\CtrlBox.Domain\CtrlBox.Domain.csproj", "{BF1BD03C-288F-4EF4-BC2A-EE90773C12B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - CrossCutting", "4.1 - CrossCutting", "{C4E4C9A3-DC13-41BF-B99D-80C015A8EB4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - Data", "4.2 - Data", "{A0BA3CA4-D0B4-495E-83D7-0C7BE986F450}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.CrossCutting.Ioc", "src\CtrlBox.CrossCutting.Ioc\CtrlBox.CrossCutting.Ioc.csproj", "{C562D96A-788A-4D64-B332-9D30B3B7369E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting.Ioc", "src\CtrlBox.CrossCutting.Ioc\CtrlBox.CrossCutting.Ioc.csproj", "{C562D96A-788A-4D64-B332-9D30B3B7369E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.Infra.Context", "src\CtrlBox.Infra.Context\CtrlBox.Infra.Context.csproj", "{31F54329-D98F-4A88-8AF0-B1EA4A9CADD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Infra.Context", "src\CtrlBox.Infra.Context\CtrlBox.Infra.Context.csproj", "{31F54329-D98F-4A88-8AF0-B1EA4A9CADD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.Infra.Repository", "src\CtrlBox.Infra.Repository\CtrlBox.Infra.Repository.csproj", "{ECFC6F75-384A-4A1D-B42F-E5D2CD1D6FA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Infra.Repository", "src\CtrlBox.Infra.Repository\CtrlBox.Infra.Repository.csproj", "{ECFC6F75-384A-4A1D-B42F-E5D2CD1D6FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.Application", "src\CtrlBox.Application\CtrlBox.Application.csproj", "{F8C3838E-E8F3-4D65-8536-DFCF3084BBA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Application", "src\CtrlBox.Application\CtrlBox.Application.csproj", "{F8C3838E-E8F3-4D65-8536-DFCF3084BBA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.UI.Web", "src\CtrlBox.UI.Web\CtrlBox.UI.Web.csproj", "{E758EB99-E8E3-4F33-AF95-C5C57127484F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.UI.Web", "src\CtrlBox.UI.Web\CtrlBox.UI.Web.csproj", "{E758EB99-E8E3-4F33-AF95-C5C57127484F}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "CtrlBox.UI.VuejsApp", "src\CtrlBox.UI.VuejsApp\CtrlBox.UI.VuejsApp.njsproj", "{FC6E4A56-1015-44FD-B2A0-9E0E2EF3E7D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{E758EB99-E8E3-4F33-AF95-C5C57127484F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E758EB99-E8E3-4F33-AF95-C5C57127484F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E758EB99-E8E3-4F33-AF95-C5C57127484F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC6E4A56-1015-44FD-B2A0-9E0E2EF3E7D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC6E4A56-1015-44FD-B2A0-9E0E2EF3E7D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC6E4A56-1015-44FD-B2A0-9E0E2EF3E7D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC6E4A56-1015-44FD-B2A0-9E0E2EF3E7D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{ECFC6F75-384A-4A1D-B42F-E5D2CD1D6FA2} = {A0BA3CA4-D0B4-495E-83D7-0C7BE986F450}
 		{F8C3838E-E8F3-4D65-8536-DFCF3084BBA9} = {5B480AE6-3293-4831-86FC-3134BC612C5C}
 		{E758EB99-E8E3-4F33-AF95-C5C57127484F} = {E4265AE8-C489-4795-9595-22D806BCD227}
+		{FC6E4A56-1015-44FD-B2A0-9E0E2EF3E7D4} = {E4265AE8-C489-4795-9595-22D806BCD227}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {596B5757-71F3-4F30-92FA-D05D56830A44}

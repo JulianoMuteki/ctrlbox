@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CtrlBox.Services.Api.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase

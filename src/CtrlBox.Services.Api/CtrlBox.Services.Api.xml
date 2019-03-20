@@ -4,6 +4,11 @@
         <name>CtrlBox.Services.Api</name>
     </assembly>
     <members>
+        <member name="T:CtrlBox.Services.Api.Controllers.ValuesController">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:CtrlBox.Services.Api.Controllers.ValuesController.Get">
             <summary>
             The list all details 

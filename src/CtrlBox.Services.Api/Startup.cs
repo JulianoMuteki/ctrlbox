@@ -34,7 +34,9 @@ namespace CtrlBox.Services.Api
             });
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

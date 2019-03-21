@@ -177,8 +177,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\DeliveryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\RouteController.cs" />
+    <Compile Include="Controllers\SaleController.cs" />
     <Compile Include="EndPoints\ProductApi.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -193,6 +198,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LinhaVM.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PrecoProdutos_ClientesVM.cs" />
     <Compile Include="Models\ProdutoPrecoVM.cs" />
     <Compile Include="Models\ProdutoVM.cs" />
     <Compile Include="Models\ValorPorProdutoVM.cs" />
@@ -1862,10 +1868,15 @@
     <Content Include="Views\Home\ValorPorProduto.cshtml" />
     <Content Include="Views\Home\VendasRealizadas.cshtml" />
     <Content Include="Views\Home\Vender.cshtml" />
+    <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\assets\plugins\jquery-file-upload\server\php\files\thumbnail\" />
+    <Folder Include="Views\Delivery\" />
+    <Folder Include="Views\Route\" />
+    <Folder Include="Views\Sale\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

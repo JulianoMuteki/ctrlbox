@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CDE.UI.Portal.Models
-{
+namespace CtrlBox.UI.WebMvc.Models
+{ 
     public class ClienteVM
     {
     public string DT_RowId { get; set; }

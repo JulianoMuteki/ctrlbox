@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
@@ -18,8 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CtrlBox.Application\CtrlBox.Application.csproj" />
+    <ProjectReference Include="..\CtrlBox.CrossCutting.Ioc\CtrlBox.CrossCutting.Ioc.csproj" />
     <ProjectReference Include="..\CtrlBox.Domain\CtrlBox.Domain.csproj" />
-    <ProjectReference Include="..\CtrlBox.UI.Web\CtrlBox.UI.Web.csproj" />
   </ItemGroup>
 
 </Project>

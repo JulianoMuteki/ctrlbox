@@ -1,7 +1,17 @@
-﻿@{
+﻿@model IEnumerable<CtrlBox.UI.WebMvc.Models.ProdutoVM>
+
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h2>ListaProdutos</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
 
 <div class="page-content">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -88,7 +98,57 @@
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
             <div class="span12">
-                Blank page content goes here
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                <div class="portlet box light-grey">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-globe"></i>Managed Table</div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <div class="table-toolbar">
+                            <div class="btn-group">
+
+
+                                @Html.ActionLink("Cadastrar", "CadastrarProduto", "Home", new { @class = "btn green" })
+                            </div>
+
+                        </div>
+
+
+
+                        <table class="table table-bordered table-hover" id="tbLinhas">
+                            <thead>
+                                <tr>
+
+                                    <th>Nome</th>
+                                    <th>Peso</th>
+                                    <th>Descrição</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Nome)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Qtde)
+                                        </td>
+                                        <td>
+                                            Descrição
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END EXAMPLE TABLE PORTLET-->
             </div>
         </div>
         <!-- END PAGE CONTENT-->

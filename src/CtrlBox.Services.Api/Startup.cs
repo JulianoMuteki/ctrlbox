@@ -1,6 +1,6 @@
 ﻿using CtrlBox.CrossCutting.Ioc;
 using CtrlBox.Infra.Context;
-using CtrlBox.UI.Web.Mappers;
+using CtrlBox.Services.Api.AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

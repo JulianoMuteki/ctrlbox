@@ -1,8 +1,9 @@
-﻿using CDE.UI.Portal.Models;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using CtrlBox.UI.WebMvc.Models;
 
 namespace CtrlBox.UI.WebMvc.EndPoints
 {
@@ -29,18 +30,30 @@ namespace CtrlBox.UI.WebMvc.EndPoints
         }
 
 
-       public async Task<ProdutoVM> GetProdutoVMAsync(string path)
+       public async Task<ICollection<ProdutoVM>> GetProdutoVMAsync(string path)
         {
-            ProdutoVM ProdutoVM = null;
+            ICollection<ProdutoVM> ProdutoVM = null;
             HttpResponseMessage response = await client.GetAsync(_urlEndPoint + path);
             if (response.IsSuccessStatusCode)
             {
-                ProdutoVM = await response.Content.ReadAsAsync<ProdutoVM>();
+                return await response.Content.ReadAsAsync<ICollection<ProdutoVM>>();
             }
 
-            ShowProdutoVM(ProdutoVM);
             return ProdutoVM;
         }
+
+        public ICollection<ProdutoVM> GetProdutoVM(string path)
+        {
+            ICollection<ProdutoVM> ProdutoVM = null;
+            HttpResponseMessage response = client.GetAsync(_urlEndPoint + path).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Content.ReadAsAsync<ICollection<ProdutoVM>>().Result;
+            }
+
+            return ProdutoVM;
+        }
+
 
 
     }

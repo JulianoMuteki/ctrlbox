@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class ClientProductMap : IEntityTypeConfiguration<CustomerProductValue>
+    public class ClientProductMap : IEntityTypeConfiguration<ClientProductValue>
     {
-        public void Configure(EntityTypeBuilder<CustomerProductValue> builder)
+        public void Configure(EntityTypeBuilder<ClientProductValue> builder)
         {
             builder.ToTable("ClientsProducts");
 

@@ -11,7 +11,7 @@ namespace CtrlBox.Domain.Entities
         public int QuantityBoxes { get; set; }
         public float BalanceDue { get; set; }
 
-        public ICollection<CustomerProductValue> CustomersProductsValues { get; set; }
+        public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<Sale> Sales { get; set; }
         public virtual ICollection<RouteClient> RoutesClients { get; set; }
 
@@ -19,7 +19,7 @@ namespace CtrlBox.Domain.Entities
         {
             this.RoutesClients = new HashSet<RouteClient>();
             this.Sales = new HashSet<Sale>();         
-            this.CustomersProductsValues = new HashSet<CustomerProductValue>();
+            this.CustomersProductsValues = new HashSet<ClientProductValue>();
         }
     }
 }

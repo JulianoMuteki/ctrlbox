@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CtrlBox.Application\CtrlBox.Application.csproj" />
     <ProjectReference Include="..\CtrlBox.Domain\CtrlBox.Domain.csproj" />
+    <ProjectReference Include="..\CtrlBox.UI.Web\CtrlBox.UI.Web.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,16 +13,17 @@ namespace CtrlBox.Services.Api.Controllers
     /// <summary>
     /// 
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/Product")]
     [ApiController]
     public class ProductController : Controller
     {
         private readonly IProductApplicationService _productApplicationService;
         private readonly IMapper _mapper;
         /// <summary>
-        /// Contructor with ProductApplicationService
+        /// 
         /// </summary>
         /// <param name="productApplicationService"></param>
+        /// <param name="mapper"></param>
         public ProductController(IProductApplicationService productApplicationService, IMapper mapper)
         {
             _productApplicationService = productApplicationService;
@@ -33,15 +34,15 @@ namespace CtrlBox.Services.Api.Controllers
         [HttpGet]
         public IEnumerable<ProductVM> GetProdutsItems()
         {
-            var prod = _productApplicationService.GetAllClient();
+            var prod = _productApplicationService.GetAll();
 
             IList<ProductVM> productVMs = _mapper.Map<List<ProductVM>>(prod);
             return productVMs;
         }
 
         // GET: api/Product/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}", Name = "GetProdutsItems")]
+        public string GetProdutsItems(int id)
         {
             return "value";
         }

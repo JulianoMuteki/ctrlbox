@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class CustomerProductValue : ValueObject<CustomerProductValue>
+    public class ClientProductValue : ValueObject<ClientProductValue>
     {
         public Guid ClientID { get; set; }
         public Guid ProductID { get; set; }
@@ -14,7 +14,7 @@ namespace CtrlBox.Domain.Entities
 
         public float Price { get; set; }
 
-        protected override bool EqualsCore(CustomerProductValue other)
+        protected override bool EqualsCore(ClientProductValue other)
         {
             throw new NotImplementedException();
         }

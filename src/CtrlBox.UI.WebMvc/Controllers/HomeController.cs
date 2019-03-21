@@ -19,7 +19,7 @@ namespace CtrlBox.UI.WebMvc.Controllers
         public ActionResult Index()
         {
            
-            var product = _api.GetProdutoVMAsync("api/Values");
+            var product = _api.GetProdutoVMAsync("api/Product");
 
             return View();
         }

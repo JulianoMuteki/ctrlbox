@@ -8,7 +8,7 @@ namespace CtrlBox.Infra.Context
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }
-        public DbSet<CustomerProductValue> CustomersProductsValues { get; set; }
+        public DbSet<ClientProductValue> CustomersProductsValues { get; set; }
 
         public DbSet<Check> Checks { get; set; }
         public DbSet<Expense> Expenses { get; set; }

@@ -11,7 +11,7 @@ namespace CtrlBox.Domain.Entities
         public string Description { get; set; }
         public float Weight { get; set; }
 
-        public ICollection<CustomerProductValue> CustomersProductsValues { get; set; }
+        public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
         public ICollection<StockProduct> StocksProducts { get; set; }
         public ICollection<SaleProduct> SalesProducts { get; set; }
@@ -21,7 +21,7 @@ namespace CtrlBox.Domain.Entities
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
             this.StocksProducts = new HashSet<StockProduct>();
             this.SalesProducts = new HashSet<SaleProduct>();
-            this.CustomersProductsValues = new HashSet<CustomerProductValue>();
+            this.CustomersProductsValues = new HashSet<ClientProductValue>();
         }
     }
 }

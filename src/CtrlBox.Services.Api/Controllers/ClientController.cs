@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CtrlBox.Services.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Client")]
     [ApiController]
     public class ClientController : ControllerBase
     {

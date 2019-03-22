@@ -5,10 +5,10 @@ using System.Web;
 
 namespace CtrlBox.UI.WebMvc.Models
 {
-    public class ProdutoVM
+    public class ProdutoVM: ViewModelBase
     {
-        public string Nome { get; set; }
-        public string DT_RowId { get; set; }
-        public int Qtde { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public float Weight { get; set; }
     }
 }

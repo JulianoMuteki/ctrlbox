@@ -25,8 +25,8 @@ namespace CtrlBox.UI.WebMvc.EndPoints
 
        public void ShowProdutoVM(ProdutoVM ProdutoVM)
         {
-            Console.WriteLine($"Name: {ProdutoVM.Nome}\tDT_ROWID: " +
-                $"{ProdutoVM.DT_RowId}\tQTDE: {ProdutoVM.Qtde}");
+            //Console.WriteLine($"Name: {ProdutoVM.Nome}\tDT_ROWID: " +
+            //    $"{ProdutoVM.DT_RowId}\tQTDE: {ProdutoVM.Qtde}");
         }
 
 
@@ -55,6 +55,15 @@ namespace CtrlBox.UI.WebMvc.EndPoints
         }
 
 
+        public Uri CreateProduct(ProdutoVM product)
+        {
+            HttpResponseMessage response = client.PostAsJsonAsync(
+                "api/Product", product).Result;
+            response.EnsureSuccessStatusCode();
+
+            // return URI of the created resource.
+            return response.Headers.Location;
+        }
 
     }
 }

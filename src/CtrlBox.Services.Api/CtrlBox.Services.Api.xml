@@ -4,6 +4,17 @@
         <name>CtrlBox.Services.Api</name>
     </assembly>
     <members>
+        <member name="T:CtrlBox.Services.Api.AutoMapper.AutoMapperSetup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CtrlBox.Services.Api.AutoMapper.AutoMapperSetup.AddAutoMapperSetup(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+        </member>
         <member name="T:CtrlBox.Services.Api.Controllers.ProductController">
             <summary>
             
@@ -15,6 +26,13 @@
             </summary>
             <param name="productApplicationService"></param>
             <param name="mapper"></param>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Post(CtrlBox.Application.ViewModels.ProductVM)">
+            <summary>
+            
+            </summary>
+            <param name="productVM"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

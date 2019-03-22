@@ -18,6 +18,9 @@ namespace CtrlBox.Domain.Entities
 
         public Product()
         {
+            this.Id = Guid.NewGuid();
+            this.DateModified = DateTime.Now;
+            this.CreationDate = DateTime.Now;
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
             this.StocksProducts = new HashSet<StockProduct>();
             this.SalesProducts = new HashSet<SaleProduct>();

@@ -202,6 +202,7 @@
     <Compile Include="Models\ProdutoPrecoVM.cs" />
     <Compile Include="Models\ProdutoVM.cs" />
     <Compile Include="Models\ValorPorProdutoVM.cs" />
+    <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1870,6 +1871,7 @@
     <Content Include="Views\Home\Vender.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -130,22 +130,18 @@ namespace CtrlBox.UI.WebMvc.Controllers
 
         }
 
-        public ActionResult CadastrarProduto()
+        public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult CadastrarProduto(ValorPorProdutoVM produto)
+        public ActionResult Create(ProdutoVM produto)
         {
-            //ModelCodeFirst context = new ModelCodeFirst();
+            var uri = _api.CreateProduct(produto);
 
-            //produto.ProdutoID = Guid.NewGuid();
-            //context.Produtos.Add(produto);
-
-            //context.SaveChanges();
-
-            return View("Product/Index");
+            var products = _api.GetProdutoVM("api/Product");
+            return View("Index", products);
         }
 
 

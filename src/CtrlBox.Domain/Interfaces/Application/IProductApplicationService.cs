@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IProductApplicationService
+    public interface IProductApplicationService: IApplicationServiceBase<Product>
     {
-        Task<IEnumerable<Product>> GetAllClient();
-        ICollection<Product> GetAll();
+
 
     }
 }

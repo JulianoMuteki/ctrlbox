@@ -6,6 +6,7 @@ using AutoMapper;
 using CtrlBox.Application.ViewModels;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CtrlBox.Services.Api.Controllers
@@ -48,9 +49,42 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         // POST: api/Product
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productVM"></param>
+        /// <returns></returns>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Post(ProductVM productVM)
         {
+            //https://www.codeproject.com/Articles/1259484/CRUD-Operation-in-ASP-NET-Core-Web-API-with-Entity
+
+            //if (ModelState.IsValid)
+            if (true)
+            {
+                try
+                {
+                    var product = _mapper.Map<Product>(productVM);
+                    var prod = _productApplicationService.Add(product);
+
+                    if (prod.Id != Guid.Empty)
+                    {
+                        return Ok(prod);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception)
+                {
+
+                    return BadRequest();
+                }
+
+            }
         }
 
         // PUT: api/Product/5

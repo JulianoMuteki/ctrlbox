@@ -6,6 +6,54 @@
 }
 
 
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var url = '@Url.Content("~/Product/AjaxHandlerGet")';
+
+        var oTable = $('#tbProduct').dataTable({
+            bJQueryUI: false,
+            "sPaginationType": "full_numbers",
+            "sAjaxSource": url,
+            "bProcessing": true,
+            "bAutoWidth": false,
+            "bDestroy": true,
+            "aoColumns": [
+                            {
+                                "mData": "Name"
+                            },
+                            {
+                                "mData": "Weight"
+                            },
+                            {
+                                "mData": "Description"
+                            },
+                            {
+                                data: null,
+                                "sType": "html",
+                                "bSortable": false,
+                                sClass: "calc",
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        var url = '@Url.Action("Edit", "Product")?clienteID=' + data.DT_RowId;
+                                        return '<a href="' + url + '"><i class="icon-random"></i> Editar</a>';
+                                    }
+                                    return data;
+                                }
+                            },
+                            {
+                                data: null,
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+
+                                        return '<a class="excluir" id="' + data.DT_RowId + '" href="#"><i class="icon-trash"></i> Delete</a>';
+                                    }
+                                    return data;
+                                }
+                            }
+            ]
+        });
+    });
+</script>
 
 
 <div class="page-content">
@@ -69,26 +117,11 @@
                                     <th>Nome</th>
                                     <th>Peso</th>
                                     <th>Descrição</th>
-
+                                    <th>Associar</th>
+                                    <th>Excluir</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Weight)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Description)
-                                        </td>
-
-                                    </tr>
-                                }
 
                             </tbody>
                         </table>

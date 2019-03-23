@@ -1,5 +1,5 @@
 ﻿var TableProduct = function () {
-   
+
     return {
 
         //main function to initiate the module
@@ -18,14 +18,16 @@
             function editRow(oTable, nRow) {
                 var aData = oTable.fnGetData(nRow);
                 var jqTds = $('>td', nRow);
-                jqTds[0].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[0] + '">';
-                jqTds[1].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[1] + '">';
-                jqTds[2].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[2] + '">';
+                jqTds[0].innerHTML = '<input type="text" class="m-wrap small" value="' + aData.Name + '">';
+                jqTds[1].innerHTML = '<input type="text" class="m-wrap small" value="' + aData.Weight + '">';
+                jqTds[2].innerHTML = '<input type="text" class="m-wrap small" value="' + aData.Description + '">';
                 jqTds[3].innerHTML = '<a class="edit" href="">Save</a>';
                 jqTds[4].innerHTML = '<a class="cancel" href="">Cancel</a>';
             }
 
             function saveRow(oTable, nRow) {
+                var aData = oTable.fnGetData(nRow);
+                console.log(aData.DT_RowId);
                 var jqInputs = $('input', nRow);
                 oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
                 oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
@@ -44,7 +46,7 @@
                 oTable.fnDraw();
             }
 
-            var oTable = $('#tb_Product').dataTable({
+            var oTable = $('#sample_editable_1').dataTable({
                 "sAjaxSource": url,
                 "bProcessing": true,
                 "bDestroy": true,
@@ -62,10 +64,8 @@
                         "mData": null,
                         "sType": "html",
                         "mRender": function (data, type, row) {
-                            var editUrl = $("#editUrl").val();
                             if (type === 'display') {
-                                var url = editUrl + '?clienteID=' + row.DT_RowId;
-                                return '<a href="' + url + '"><i class="icon-edit"></i> Edit</a>';
+                                return '<a class="edit" href="javascript:;"><i class="icon-edit"></i> Edit</a>';
                             }
                             return data;
                         }
@@ -76,7 +76,7 @@
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
 
-                                return '<a class="excluir" id="' + row.DT_RowId + '" href="#"><i class="icon-trash"></i> Delete</a>';
+                                return '<a class="delete" href="javascript:;"><i class="icon-trash"></i> Delete</a>';
                             }
                             return data;
                         }
@@ -99,34 +99,31 @@
                 },
                 "aoColumnDefs": [{
                     'bSortable': false,
-                    "defaultContent": "-",
-                    "targets": "_all",
                     'aTargets': [0]
                 }
                 ]
             });
 
-       
-
-            jQuery('#tb_Product_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
-            jQuery('#tb_Product_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
-            jQuery('#tb_Product_wrapper .dataTables_length select').select2({
+            jQuery('#sample_editable_1_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
+            jQuery('#sample_editable_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            jQuery('#sample_editable_1_wrapper .dataTables_length select').select2({
                 showSearchInput: false //hide search box with special css class
             }); // initialize select2 dropdown
 
             var nEditing = null;
 
-            $('#tb_Product_new').click(function (e) {
+            $('#sample_editable_1_new').click(function (e) {
                 e.preventDefault();
-                var aiNew = oTable.fnAddData(['', '', '', '',
+                var aiNew = oTable.fnAddData(['', '', '',
                     '<a class="edit" href="">Edit</a>', '<a class="cancel" data-mode="new" href="">Cancel</a>'
                 ]);
+                console.log(aiNew[0]);
                 var nRow = oTable.fnGetNodes(aiNew[0]);
                 editRow(oTable, nRow);
                 nEditing = nRow;
             });
 
-            $('#tb_Product a.delete').live('click', function (e) {
+            $('#sample_editable_1 a.delete').live('click', function (e) {
                 e.preventDefault();
 
                 if (confirm("Are you sure to delete this row ?") == false) {
@@ -138,7 +135,7 @@
                 alert("Deleted! Do not forget to do some ajax to sync with backend :)");
             });
 
-            $('#tb_Product a.cancel').live('click', function (e) {
+            $('#sample_editable_1 a.cancel').live('click', function (e) {
                 e.preventDefault();
                 if ($(this).attr("data-mode") == "new") {
                     var nRow = $(this).parents('tr')[0];
@@ -149,13 +146,14 @@
                 }
             });
 
-            $('#tb_Product a.edit').live('click', function (e) {
+            $('#sample_editable_1 a.edit').live('click', function (e) {
                 e.preventDefault();
 
                 /* Get the row as a parent of the link that was clicked on */
                 var nRow = $(this).parents('tr')[0];
 
                 if (nEditing !== null && nEditing != nRow) {
+                    console.log("nrow " + nRow)
                     /* Currently editing - but not this row - restore the old before continuing to edit mode */
                     restoreRow(oTable, nEditing);
                     editRow(oTable, nRow);

@@ -16,6 +16,7 @@ var TableEditable = function () {
             }
 
             function editRow(oTable, nRow) {
+                console.log(nRow);
                 var aData = oTable.fnGetData(nRow);
                 var jqTds = $('>td', nRow);
                 jqTds[0].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[0] + '">';

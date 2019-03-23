@@ -18,10 +18,9 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="CDE" />
     <meta content="" name="Juliano Cesar Pestili" />
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="~/Content/assets/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" />
 
-    <link href="~/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="~/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/assets/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/assets/css/style-metro.css" rel="stylesheet" type="text/css" />
@@ -29,16 +28,22 @@
     <link href="~/Content/assets/css/style-responsive.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/assets/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
     <link href="~/Content/assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/assets/plugins/glyphicons/css/glyphicons.css" rel="stylesheet">
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/select2/select2_metro.css" />
+    <link rel="stylesheet" href="~/Content/assets/plugins/data-tables/DT_bootstrap.css" />
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link rel="shortcut icon" href="favicon.ico" />
 
-    <link href="~/Content/assets/plugins/DataTable/css/jquery.dataTables.css" rel="stylesheet" />
-    <link href="~/Content/assets/plugins/DataTable/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
-
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+    <!-- BEGIN CORE PLUGINS -->
     <script src="~/Content/assets/plugins/jquery-1.10.1.min.js" type="text/javascript"></script>
     <script src="~/Content/assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
     <script src="~/Content/assets/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
     <script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/assets/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
     <script src="~/Content/assets/plugins/excanvas.min.js"></script>
     <script src="~/Content/assets/plugins/respond.min.js"></script>
@@ -49,40 +54,16 @@
     <script src="~/Content/assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script type="text/javascript" src="~/Content/assets/plugins/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/chosen-bootstrap/chosen/chosen.jquery.min.js"></script>
     <script type="text/javascript" src="~/Content/assets/plugins/select2/select2.min.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-toggle-buttons/static/js/jquery.toggle.buttons.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-daterangepicker/date.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-    <script type="text/javascript" src="~/Content/assets/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>
-    <script src="~/Content/assets/plugins/DataTable/js/jquery.dataTables.min.js"></script>
-
-    <!-- END CORE PLUGINS -->
+    <script type="text/javascript" src="~/Content/assets/plugins/data-tables/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/Content/assets/plugins/data-tables/DT_bootstrap.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="~/Content/assets/scripts/app.js"></script>
-    <script src="~/Content/assets/scripts/form-components.js"></script>
-
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <link rel="shortcut icon" href="favicon.ico" />
-
-
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 <body class="page-header-fixed">
-
-    @*@Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)*@
-
-
     <!-- BEGIN HEADER -->
     <div class="header navbar navbar-inverse navbar-fixed-top">
         <!-- BEGIN TOP NAVIGATION BAR -->
@@ -239,9 +220,6 @@
         </div>
     </div>
     <!-- END FOOTER -->
-    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-    <!-- BEGIN CORE PLUGINS -->
-
 
 
     <script>

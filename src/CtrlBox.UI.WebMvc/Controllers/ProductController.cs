@@ -19,9 +19,20 @@ namespace CtrlBox.UI.WebMvc.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            var products = _api.GetT();
-            return View(products);
+            return View();
         }
+
+        [HttpGet]
+        public ActionResult AjaxHandlerGet()
+        {
+            var products = _api.GetT();
+            return Json(new
+            {
+                aaData = products,
+                success = true
+            },JsonRequestBehavior.AllowGet);
+        }
+        
 
 
         public ActionResult ValorPorProduto(string clienteID)

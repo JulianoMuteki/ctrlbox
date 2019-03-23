@@ -10,16 +10,16 @@ namespace CtrlBox.UI.WebMvc.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ProdutoVMApi _api = null;
+        private readonly WebApiClient<ProdutoVM> _api = null;
 
         public ProductController()
         {
-            _api = new ProdutoVMApi("http://localhost:53929/");
+             _api = new WebApiClient<ProdutoVM>("http://localhost:53929", "Product");
         }
         // GET: Product
         public ActionResult Index()
         {
-            var products = _api.GetProdutoVM("api/Product");
+            var products = _api.GetT();
             return View(products);
         }
 
@@ -36,7 +36,7 @@ namespace CtrlBox.UI.WebMvc.Controllers
             {
                 IList<ValorPorProdutoVM> valoresProdutos = new List<ValorPorProdutoVM>();
 
-                var products = _api.GetProdutoVMAsync("api/Product");
+              //  var products = _api.GetProdutoVMAsync("api/Product");
 
 
                 //foreach (var item in products.Result)
@@ -138,9 +138,9 @@ namespace CtrlBox.UI.WebMvc.Controllers
         [HttpPost]
         public ActionResult Create(ProdutoVM produto)
         {
-            var uri = _api.CreateProduct(produto);
+            var uri = _api.Create(produto);
 
-            var products = _api.GetProdutoVM("api/Product");
+            var products = _api.GetT();
             return View("Index", products);
         }
 

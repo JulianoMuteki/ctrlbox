@@ -9,18 +9,12 @@ namespace CtrlBox.UI.WebMvc.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ProdutoVMApi _api = null;
-
         public HomeController()
         {
-            _api = new ProdutoVMApi("http://localhost:64195/");
 
         }
         public ActionResult Index()
         {
-           
-            var product = _api.GetProdutoVMAsync("api/Product");
-
             return View();
         }
     }

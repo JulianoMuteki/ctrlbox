@@ -35,22 +35,12 @@ namespace CtrlBox.Infra.Repository.Common
             return await _context.Set<T>().ToListAsync();
         }
 
-        public T GetById(int id)
+        public T GetById(Guid id)
         {
             return _context.Set<T>().Find(id);
         }
 
-        public async Task<T> GetByIdAsync(int id)
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
-
-        public T GetByUniqueId(string id)
-        {
-            return _context.Set<T>().Find(id);
-        }
-
-        public async Task<T> GetByUniqueIdAsync(string id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
@@ -178,7 +168,7 @@ namespace CtrlBox.Infra.Repository.Common
         public bool Exist(Expression<Func<T, bool>> predicate)
         {
             var exist = _context.Set<T>().Where(predicate);
-            return exist.Any() ? true : false;
+            return exist.Any();
         }
     }
 }

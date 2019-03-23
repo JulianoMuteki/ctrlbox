@@ -32,6 +32,10 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         // GET: api/Product
+        /// <summary>
+        /// Get Produts
+        /// </summary>
+        /// <returns>IList<ProductVM></returns>
         [HttpGet]
         public IEnumerable<ProductVM> GetProdutsItems()
         {
@@ -42,25 +46,31 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         // GET: api/Product/5
+        /// <summary>
+        /// Get Produt
+        /// </summary>
+        /// <param name="id">Guid</param>
+        /// <returns>ProductVM</returns>
         [HttpGet("{id}", Name = "GetProdutsItems")]
-        public string GetProdutsItems(int id)
+        public ProductVM GetProdutsItems(Guid id)
         {
-            return "value";
+            var prod = _productApplicationService.GetById(id);
+
+            ProductVM productVM = _mapper.Map<ProductVM>(prod);
+            return productVM;
         }
 
         // POST: api/Product
         /// <summary>
-        /// 
+        /// Create Product
         /// </summary>
-        /// <param name="productVM"></param>
-        /// <returns></returns>
+        /// <param name="productVM">ProductVM</param>
+        /// <returns>IActionResult</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post(ProductVM productVM)
         {
-            //https://www.codeproject.com/Articles/1259484/CRUD-Operation-in-ASP-NET-Core-Web-API-with-Entity
-
             //if (ModelState.IsValid)
             if (true)
             {
@@ -83,20 +93,57 @@ namespace CtrlBox.Services.Api.Controllers
 
                     return BadRequest();
                 }
-
             }
         }
 
         // PUT: api/Product/5
+        /// <summary>
+        /// Update Product
+        /// </summary>
+        /// <param name="productVM">ProductVM</param>
+        /// <returns>IActionResult</returns>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(ProductVM productVM)
         {
+            try
+            {
+                var product = _mapper.Map<Product>(productVM);
+                var prod = _productApplicationService.Update(product);
+
+                if (prod.Id != Guid.Empty)
+                {
+                    return Ok(prod);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
         }
 
         // DELETE: api/ApiWithActions/5
+        /// <summary>
+        /// Delete Product
+        /// </summary>
+        /// <param name="id">Guid</param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(Guid id)
         {
+            try
+            {
+                _productApplicationService.Delete(id);
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
         }
     }
 }

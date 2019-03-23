@@ -27,12 +27,33 @@
             <param name="productApplicationService"></param>
             <param name="mapper"></param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:CtrlBox.Services.Api.Controllers.ProductController.GetProdutsItems" -->
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.GetProdutsItems(System.Guid)">
+            <summary>
+            Get Produt
+            </summary>
+            <param name="id">Guid</param>
+            <returns>ProductVM</returns>
+        </member>
         <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Post(CtrlBox.Application.ViewModels.ProductVM)">
             <summary>
-            
+            Create Product
             </summary>
-            <param name="productVM"></param>
-            <returns></returns>
+            <param name="productVM">ProductVM</param>
+            <returns>IActionResult</returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Put(CtrlBox.Application.ViewModels.ProductVM)">
+            <summary>
+            Update Product
+            </summary>
+            <param name="productVM">ProductVM</param>
+            <returns>IActionResult</returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Delete(System.Guid)">
+            <summary>
+            Delete Product
+            </summary>
+            <param name="id">Guid</param>
         </member>
     </members>
 </doc>

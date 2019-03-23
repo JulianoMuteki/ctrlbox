@@ -11,13 +11,9 @@ namespace CtrlBox.Domain.Interfaces.Application
 
         Task<ICollection<T>> GetAllAsync();
 
-        T GetById(int id);
+        T GetById(Guid id);
 
-        Task<T> GetByIdAsync(int id);
-
-        T GetByUniqueId(string id);
-
-        Task<T> GetByUniqueIdAsync(string id);
+        Task<T> GetByIdAsync(Guid id);
 
         T Add(T entity);
 
@@ -27,8 +23,8 @@ namespace CtrlBox.Domain.Interfaces.Application
 
         Task<T> UpdateAsync(T updated);
 
-        void Delete(T t);
+        void Delete(Guid id);
 
-        Task<int> DeleteAsync(T t);
+        Task<Guid> DeleteAsync(Guid id);
     }
 }

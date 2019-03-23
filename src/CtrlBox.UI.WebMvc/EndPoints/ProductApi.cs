@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -23,27 +24,9 @@ namespace CtrlBox.UI.WebMvc.EndPoints
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-       public void ShowProdutoVM(ProdutoVM ProdutoVM)
+        public ICollection<ProdutoVM> GetProdutoVM()
         {
-            //Console.WriteLine($"Name: {ProdutoVM.Nome}\tDT_ROWID: " +
-            //    $"{ProdutoVM.DT_RowId}\tQTDE: {ProdutoVM.Qtde}");
-        }
-
-
-       public async Task<ICollection<ProdutoVM>> GetProdutoVMAsync(string path)
-        {
-            ICollection<ProdutoVM> ProdutoVM = null;
-            HttpResponseMessage response = await client.GetAsync(_urlEndPoint + path);
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadAsAsync<ICollection<ProdutoVM>>();
-            }
-
-            return ProdutoVM;
-        }
-
-        public ICollection<ProdutoVM> GetProdutoVM(string path)
-        {
+            string path = "";
             ICollection<ProdutoVM> ProdutoVM = null;
             HttpResponseMessage response = client.GetAsync(_urlEndPoint + path).Result;
             if (response.IsSuccessStatusCode)
@@ -54,6 +37,19 @@ namespace CtrlBox.UI.WebMvc.EndPoints
             return ProdutoVM;
         }
 
+        public ProdutoVM GetProdutoVM(Guid id)
+        {
+            string path = "";
+
+            ProdutoVM productVM = null;
+            HttpResponseMessage response = client.GetAsync(_urlEndPoint + path + "/" + id.ToString()).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Content.ReadAsAsync<ProdutoVM>().Result;
+            }
+
+            return productVM;
+        }
 
         public Uri CreateProduct(ProdutoVM product)
         {
@@ -65,5 +61,22 @@ namespace CtrlBox.UI.WebMvc.EndPoints
             return response.Headers.Location;
         }
 
+        public ProdutoVM UpdateProductAsync(ProdutoVM product)
+        {
+            HttpResponseMessage response = client.PutAsJsonAsync(
+                $"api/products/{product.DT_RowId}", product).Result;
+            response.EnsureSuccessStatusCode();
+
+            // Deserialize the updated product from the response body.
+            product = response.Content.ReadAsAsync<ProdutoVM>().Result;
+            return product;
+        }
+
+        public HttpStatusCode DeleteProductAsync(Guid id)
+        {
+            HttpResponseMessage response = client.DeleteAsync(
+                $"api/products/{id}").Result;
+            return response.StatusCode;
+        }
     }
 }

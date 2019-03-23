@@ -2,6 +2,7 @@
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,22 +28,12 @@ namespace CtrlBox.Application
             throw new System.NotImplementedException();
         }
 
-        public Product GetById(int id)
+        public Product GetById(Guid id)
         {
-            throw new System.NotImplementedException();
+            return _unitOfWork.Repository<Product>().GetById(id);
         }
 
-        public Task<Product> GetByIdAsync(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Product GetByUniqueId(string id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<Product> GetByUniqueIdAsync(string id)
+        public Task<Product> GetByIdAsync(Guid id)
         {
             throw new System.NotImplementedException();
         }
@@ -65,7 +56,13 @@ namespace CtrlBox.Application
 
         public Product Update(Product updated)
         {
-            throw new System.NotImplementedException();
+            if (_unitOfWork.Repository<Product>().Exist(p => p.Id == updated.Id))
+            {
+                updated.UpdateData();
+                updated = _unitOfWork.Repository<Product>().Update(updated);
+                _unitOfWork.Commit();
+            }
+            return updated;
         }
 
         public Task<Product> UpdateAsync(Product updated)
@@ -73,12 +70,19 @@ namespace CtrlBox.Application
             throw new System.NotImplementedException();
         }
 
-        public void Delete(Product t)
+        public void Delete(Guid id)
         {
-            throw new System.NotImplementedException();
+            var product = _unitOfWork.Repository<Product>().GetById(id);
+
+           if(product != null)
+            {
+               
+                 _unitOfWork.Repository<Product>().Delete(product);
+                _unitOfWork.Commit();
+            }
         }
 
-        public Task<int> DeleteAsync(Product t)
+        public Task<Guid> DeleteAsync(Guid id)
         {
             throw new System.NotImplementedException();
         }

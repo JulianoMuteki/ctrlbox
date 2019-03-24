@@ -156,5 +156,18 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult Edit(ProdutoVM produtoVM)
+        {
+            var uri = _api.Update(produtoVM);
+
+            var products = _api.GetT();
+            return Json(new
+            {
+                success = true,
+                Message = "OK"
+            },
+                  JsonRequestBehavior.AllowGet);
+        }
     }
 }

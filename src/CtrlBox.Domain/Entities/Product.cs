@@ -27,9 +27,12 @@ namespace CtrlBox.Domain.Entities
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
         }
 
-        public void UpdateData()
+        public void UpdateData(Product update)
         {
-            throw new NotImplementedException();
+            this.Name = update.Name;
+            this.Description = update.Description;
+            this.Weight = update.Weight;
+            this.DateModified = DateTime.Now;
         }
     }
 }

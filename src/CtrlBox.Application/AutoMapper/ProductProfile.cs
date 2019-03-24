@@ -12,7 +12,9 @@ namespace CtrlBox.Application.AutoMapper
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id));
 
-            CreateMap<ProductVM, Product>();
+            CreateMap<ProductVM, Product>()
+                .ForMember(dest => dest.Id,
+                          opts => opts.MapFrom(src => src.DT_RowId));
         }
     }
 }

@@ -56,13 +56,15 @@ namespace CtrlBox.Application
 
         public Product Update(Product updated)
         {
-            if (_unitOfWork.Repository<Product>().Exist(p => p.Id == updated.Id))
+            Product product = _unitOfWork.Repository<Product>().GetById(updated.Id);
+
+            if (product != null)
             {
-                updated.UpdateData();
-                updated = _unitOfWork.Repository<Product>().Update(updated);
-                _unitOfWork.Commit();
+                product.UpdateData(updated);
+                product = _unitOfWork.Repository<Product>().Update(product);
+               _unitOfWork.Commit();
             }
-            return updated;
+            return product;
         }
 
         public Task<Product> UpdateAsync(Product updated)

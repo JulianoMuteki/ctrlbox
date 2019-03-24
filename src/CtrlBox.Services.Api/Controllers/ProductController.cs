@@ -33,9 +33,9 @@ namespace CtrlBox.Services.Api.Controllers
 
         // GET: api/Product
         /// <summary>
-        /// Get Produts
+        /// GetProdutsItems
         /// </summary>
-        /// <returns>IList<ProductVM></returns>
+        /// <returns>Lista ProductVM</returns>
         [HttpGet]
         public IEnumerable<ProductVM> GetProdutsItems()
         {
@@ -88,10 +88,9 @@ namespace CtrlBox.Services.Api.Controllers
                         return NotFound();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    return BadRequest();
+                    return BadRequest(ex.Message);
                 }
             }
         }

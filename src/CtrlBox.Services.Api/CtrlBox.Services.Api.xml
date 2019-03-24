@@ -15,6 +15,38 @@
             </summary>
             <param name="services"></param>
         </member>
+        <member name="T:CtrlBox.Services.Api.Controllers.ClientController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.#ctor(CtrlBox.Domain.Interfaces.Application.IClientApplicationService,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="clientApplicationService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.GetClients">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.GetClient(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.Post(CtrlBox.Application.ViewModels.ClientVM)">
+            <summary>
+            
+            </summary>
+            <param name="clientVM"></param>
+            <returns></returns>
+        </member>
         <member name="T:CtrlBox.Services.Api.Controllers.ProductController">
             <summary>
             
@@ -27,7 +59,12 @@
             <param name="productApplicationService"></param>
             <param name="mapper"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:CtrlBox.Services.Api.Controllers.ProductController.GetProdutsItems" -->
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.GetProdutsItems">
+            <summary>
+            GetProdutsItems
+            </summary>
+            <returns>Lista ProductVM</returns>
+        </member>
         <member name="M:CtrlBox.Services.Api.Controllers.ProductController.GetProdutsItems(System.Guid)">
             <summary>
             Get Produt

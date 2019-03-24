@@ -45,39 +45,39 @@ namespace CtrlBox.UI.WebMvc.EndPoints
         {
             string action = $"{_urlEndPoint}/api/{_controller}/{id.ToString()}";
 
-            T productVM = null;
+            T entityVM = null;
             HttpResponseMessage response = client.GetAsync(action).Result;
             if (response.IsSuccessStatusCode)
             {
                 return response.Content.ReadAsAsync<T>().Result;
             }
 
-            return productVM;
+            return entityVM;
         }
 
-        public Uri Create(T product)
+        public Uri Create(T entity)
         {
             string action = $"{_urlEndPoint}/api/{_controller}";
 
             HttpResponseMessage response = client.PostAsJsonAsync(
-              action, product).Result;
+              action, entity).Result;
             response.EnsureSuccessStatusCode();
 
             // return URI of the created resource.
             return response.Headers.Location;
         }
 
-        public T Update(T product)
+        public T Update(T entity)
         {
-            string action = $"{_urlEndPoint}/api/{_controller}/{product.DT_RowId}";
+            string action = $"{_urlEndPoint}/api/{_controller}/{entity.DT_RowId}";
 
             HttpResponseMessage response = client.PutAsJsonAsync(
-                action, product).Result;
+                action, entity).Result;
             response.EnsureSuccessStatusCode();
 
-            // Deserialize the updated product from the response body.
-            product = response.Content.ReadAsAsync<T>().Result;
-            return product;
+            // Deserialize the updated entity from the response body.
+            entity = response.Content.ReadAsAsync<T>().Result;
+            return entity;
         }
 
         public HttpStatusCode Delete(Guid id)

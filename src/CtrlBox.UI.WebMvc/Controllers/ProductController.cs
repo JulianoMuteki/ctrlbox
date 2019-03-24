@@ -33,8 +33,6 @@ namespace CtrlBox.UI.WebMvc.Controllers
             },JsonRequestBehavior.AllowGet);
         }
         
-
-
         public ActionResult ValorPorProduto(string clienteID)
         {
             ViewData["clienteID"] = clienteID;
@@ -154,7 +152,6 @@ namespace CtrlBox.UI.WebMvc.Controllers
             var products = _api.GetT();
             return View("Index", products);
         }
-
 
         [HttpPost]
         public ActionResult Edit(ProdutoVM produtoVM)

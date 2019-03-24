@@ -11,6 +11,10 @@ namespace CtrlBox.Application.AutoMapper
             CreateMap<Client, ClientVM>()
                  .ForMember(dest => dest.DT_RowId,
                            opts => opts.MapFrom(src => src.Id));
+
+            CreateMap<ClientVM, Client>()
+                   .ForMember(dest => dest.Id,
+                             opts => opts.MapFrom(src => src.DT_RowId));
         }
     }
 }

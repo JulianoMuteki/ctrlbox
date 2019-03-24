@@ -1584,6 +1584,7 @@
     <Content Include="Content\assets\scripts\table-editable.js" />
     <Content Include="Content\assets\scripts\table-managed.js" />
     <Content Include="Content\assets\scripts\tasks.js" />
+    <Content Include="Content\assets\scripts\tb-client.js" />
     <Content Include="Content\assets\scripts\tb-product.js" />
     <Content Include="Content\assets\scripts\ui-general.js" />
     <Content Include="Content\assets\scripts\ui-jqueryui.js" />
@@ -1873,6 +1874,7 @@
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Client\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

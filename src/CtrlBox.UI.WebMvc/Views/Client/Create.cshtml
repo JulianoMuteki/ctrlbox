@@ -1,23 +1,11 @@
-﻿
+﻿@model CtrlBox.UI.WebMvc.Models.ClienteVM
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/Content/assets/scripts/tb-client.js"></script>
 
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        var url = '@Url.Content("~/Client/AjaxHandlerGet")';
-
-        TableEditable.init(url);
-    });
-</script>
-
-@Html.Hidden("editUrl", Url.Action("Client/Index"))
-
-
-<!-- BEGIN PAGE -->
 <div class="page-content">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <div id="portlet-config" class="modal hide">
@@ -82,7 +70,7 @@
                 <!-- END BEGIN STYLE CUSTOMIZER -->
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                 <h3 class="page-title">
-                    Editable Tables <small>editable table samples</small>
+                    Blank Page <small>blank page</small>
                 </h3>
                 <ul class="breadcrumb">
                     <li>
@@ -91,10 +79,10 @@
                         <i class="icon-angle-right"></i>
                     </li>
                     <li>
-                        <a href="#">Data Tables</a>
+                        <a href="#">Layouts</a>
                         <i class="icon-angle-right"></i>
                     </li>
-                    <li><a href="#">Editable Tables</a></li>
+                    <li><a href="#">Blank Page</a></li>
                 </ul>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
@@ -103,60 +91,72 @@
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
             <div class="span12">
-                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                <div class="portlet box blue">
-                    <div class="portlet-title">
-                        <div class="caption"><i class="icon-edit"></i>Editable Table</div>
-                        <div class="tools">
-                            <a href="javascript:;" class="collapse"></a>
-                            <a href="#portlet-config" data-toggle="modal" class="config"></a>
-                            <a href="javascript:;" class="reload"></a>
-                            <a href="javascript:;" class="remove"></a>
-                        </div>
-                    </div>
-                    <div class="portlet-body">
-                        <div class="table-toolbar">
-                            <div class="btn-group">
-                                <button id="sample_editable_1_new" class="btn green">
-                                    Add New <i class="icon-plus"></i>
-                                </button>
-                            </div>
-                            <div class="btn-group pull-right">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    Tools <i class="icon-angle-down"></i>
-                                </button>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="#">Print</a></li>
-                                    <li><a href="#">Save as PDF</a></li>
-                                    <li><a href="#">Export to Excel</a></li>
-                                </ul>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.DT_RowId)
+                    <div class="form-horizontal">
+                        <h4>ClienteVM</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "")
+                        <div>
+                            @Html.LabelFor(model => model.Name)
+                            <div>
+                                @Html.EditorFor(model => model.Name)
+                                @Html.ValidationMessageFor(model => model.Name, "")
                             </div>
                         </div>
-                        <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
-                            <thead>
-                                <tr>
-                                    <th>Username</th>
-                                    <th>Full Name</th>
-                                    <th>Notes</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                    <th>Full Name</th>
-                                    <th>Notes</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
+
+                        <div>
+                            @Html.LabelFor(model => model.QuantityBoxes)
+                            <div>
+                                @Html.EditorFor(model => model.QuantityBoxes)
+                                @Html.ValidationMessageFor(model => model.QuantityBoxes, "")
+                            </div>
+                        </div>
+
+                        <div>
+                            @Html.LabelFor(model => model.BalanceDue)
+                            <div>
+                                @Html.EditorFor(model => model.BalanceDue)
+                                @Html.ValidationMessageFor(model => model.BalanceDue, "")
+                            </div>
+                        </div>
+
+                        <div>
+                            @Html.LabelFor(model => model.Address)
+                            <div>
+                                @Html.EditorFor(model => model.Address)
+                                @Html.ValidationMessageFor(model => model.Address, "")
+                            </div>
+                        </div>
+
+                        <div>
+                            @Html.LabelFor(model => model.Phone)
+                            <div>
+                                @Html.EditorFor(model => model.Phone)
+                                @Html.ValidationMessageFor(model => model.Phone, "")
+                            </div>
+                        </div>
+
+                        <div>
+                            @Html.LabelFor(model => model.Contact)
+                            <div>
+                                @Html.EditorFor(model => model.Contact)
+                                @Html.ValidationMessageFor(model => model.Contact, "")
+                            </div>
+                        </div>  
+
+                        <div>
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <!-- END EXAMPLE TABLE PORTLET-->
+                }
             </div>
         </div>
-        <!-- END PAGE CONTENT -->
+        <!-- END PAGE CONTENT-->
     </div>
     <!-- END PAGE CONTAINER-->
 </div>
-<!-- END PAGE -->

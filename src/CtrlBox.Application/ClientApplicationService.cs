@@ -2,6 +2,7 @@
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,16 +18,57 @@ namespace CtrlBox.Application
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Client>> GetAllClient()
+        public Client Add(Client entity)
         {
-            return await _unitOfWork.Repository<Client>().GetAll().AsQueryable().ToListAsync();
+            var client = _unitOfWork.Repository<Client>().Add(entity);
+            _unitOfWork.Commit();
 
+            return client;
+        }
+
+        public Task<Client> AddAsync(Client entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Guid> DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
         public ICollection<Client> GetAll()
         {
             return _unitOfWork.Repository<Client>().GetAll();
+        }
 
+        public Task<ICollection<Client>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Client GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Client> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Client Update(Client updated)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Client> UpdateAsync(Client updated)
+        {
+            throw new NotImplementedException();
         }
     }
 }

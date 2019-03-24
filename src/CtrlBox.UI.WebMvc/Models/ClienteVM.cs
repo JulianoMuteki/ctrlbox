@@ -5,29 +5,16 @@ using System.Web;
 
 namespace CtrlBox.UI.WebMvc.Models
 { 
-    public class ClienteVM
+    public class ClienteVM: ViewModelBase
     {
-    public string DT_RowId { get; set; }
-        public string Nome { get; set; }
-        public string Endereco { get; set; }
-        public string Telefone { get; set; }
-        public string Contato { get; set; }
-        public int TotalCaixa { get; set; }
-        public double SaldoDevedor { get; set; }
+        public string Name { get; set; }
+        public string QuantityBoxes { get; set; }
+        public string BalanceDue { get; set; }
 
-        public bool StatusEntrega { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string Contact { get; set; }
 
-        public ClienteVM()
-        {
-
-        }
-
-        public ClienteVM(ClienteVM cliente)
-        {
-            this.Nome = cliente.Nome;
-            this.DT_RowId = cliente.DT_RowId.ToString();
-           
-
-        }
+        public bool IsDelivery { get; set; }
     }
 }

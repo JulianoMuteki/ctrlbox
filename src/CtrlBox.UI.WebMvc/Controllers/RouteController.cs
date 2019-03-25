@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CtrlBox.UI.WebMvc.EndPoints;
+using CtrlBox.UI.WebMvc.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,11 +10,11 @@ namespace CtrlBox.UI.WebMvc.Controllers
 {
     public class RouteController : Controller
     {
-        private readonly WebApiClient<ClienteVM> _api = null;
+        private readonly WebApiClient<RouteVM> _api = null;
 
-        public ClientController()
+        public RouteController()
         {
-            _api = new WebApiClient<ClienteVM>("http://localhost:53929", "Client");
+            _api = new WebApiClient<RouteVM>("http://localhost:53929", "Route");
         }
 
 
@@ -38,20 +40,19 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ClienteVM produto)
+        public ActionResult Create(RouteVM routeVM)
         {
-            var uri = _api.Create(produto);
+            var uri = _api.Create(routeVM);
 
-            var products = _api.GetT();
-            return View("Index", products);
+            var routes = _api.GetT();
+            return View("Index", routes);
         }
 
         [HttpPost]
-        public ActionResult Edit(ClienteVM produtoVM)
+        public ActionResult Edit(RouteVM routeVM)
         {
-            var uri = _api.Update(produtoVM);
+            var uri = _api.Update(routeVM);
 
-            var products = _api.GetT();
             return Json(new
             {
                 success = true,

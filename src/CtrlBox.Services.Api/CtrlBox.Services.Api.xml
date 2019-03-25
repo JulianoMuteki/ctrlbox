@@ -92,5 +92,37 @@
             </summary>
             <param name="id">Guid</param>
         </member>
+        <member name="T:CtrlBox.Services.Api.Controllers.RouteController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.RouteController.#ctor(CtrlBox.Domain.Interfaces.Application.IRouteApplicationService,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="routeApplicationService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.RouteController.GetRoutes">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.RouteController.GetRoute(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.RouteController.Post(CtrlBox.Application.ViewModels.RouteVM)">
+            <summary>
+            
+            </summary>
+            <param name="RouteVM"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

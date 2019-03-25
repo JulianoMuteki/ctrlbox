@@ -20,5 +20,10 @@ namespace CtrlBox.Domain.Entities
             this.Deliveries = new HashSet<Delivery>();
             this.RoutesClients = new HashSet<RouteClient>();
         }
+
+        public void UpdateData(Route updated)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

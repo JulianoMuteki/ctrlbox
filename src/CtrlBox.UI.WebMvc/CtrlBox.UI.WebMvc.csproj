@@ -115,12 +115,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -1586,6 +1580,7 @@
     <Content Include="Content\assets\scripts\tasks.js" />
     <Content Include="Content\assets\scripts\tb-client.js" />
     <Content Include="Content\assets\scripts\tb-product.js" />
+    <Content Include="Content\assets\scripts\tb-route.js" />
     <Content Include="Content\assets\scripts\ui-general.js" />
     <Content Include="Content\assets\scripts\ui-jqueryui.js" />
     <Content Include="Content\assets\scripts\ui-modals.js" />
@@ -1875,12 +1870,12 @@
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Client\Create.cshtml" />
+    <Content Include="Views\Route\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\assets\plugins\jquery-file-upload\server\php\files\thumbnail\" />
     <Folder Include="Views\Delivery\" />
-    <Folder Include="Views\Route\" />
     <Folder Include="Views\Sale\" />
   </ItemGroup>
   <ItemGroup>

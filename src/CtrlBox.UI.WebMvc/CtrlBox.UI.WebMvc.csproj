@@ -196,7 +196,7 @@
     <Compile Include="Models\EntregaVM.cs" />
     <Compile Include="Models\Entrega_ProdutoVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\LinhaVM.cs" />
+    <Compile Include="Models\RouteVM.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PrecoProdutos_ClientesVM.cs" />
     <Compile Include="Models\ProdutoPrecoVM.cs" />

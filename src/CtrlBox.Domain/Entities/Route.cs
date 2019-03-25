@@ -10,6 +10,7 @@ namespace CtrlBox.Domain.Entities
         public string Name { get; set; }
         public int KmDistance { get; set; }
         public string Truck { get; set; }
+        public bool HasOpenDelivery { get; set; }
 
         public virtual ICollection<Delivery> Deliveries { get; set; }
         public virtual ICollection<RouteClient> RoutesClients { get; set; }

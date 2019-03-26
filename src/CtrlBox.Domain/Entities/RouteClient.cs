@@ -7,6 +7,16 @@ namespace CtrlBox.Domain.Entities
 {
     public class RouteClient : ValueObject<RouteClient>
     {
+        public RouteClient()
+        {
+
+        }
+        public RouteClient(string clientID, Guid routeID)
+        {
+            this.ClientID = new Guid(clientID);
+            this.RouteID = routeID;
+        }
+
         public Guid RouteID { get; set; }
         public Guid ClientID { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using CtrlBox.Domain.Interfaces.Repository;
+using System.Threading.Tasks;
 
 namespace CtrlBox.Domain.Interfaces.Base
 {
@@ -6,6 +7,7 @@ namespace CtrlBox.Domain.Interfaces.Base
     {
         IGenericRepository<T> Repository<T>() where T : class;
 
+        T RepositoryCustom<T>() where T : class;
         Task<int> Commit();
 
         void Rollback();

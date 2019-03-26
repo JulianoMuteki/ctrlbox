@@ -2,90 +2,46 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web;
 
 namespace CtrlBox.UI.WebMvc.EndPoints
 {
-    public class WebApiClient<T> where T : ViewModelBase
+    public class WebApiClient : WebApiBase<ClienteVM>
     {
-        HttpClient client = new HttpClient();
-
-        private string _urlEndPoint = string.Empty;
-        private string _controller = string.Empty;
-
         public WebApiClient(string urlEndPoint, string controller)
+            : base(urlEndPoint, controller)
         {
-            _urlEndPoint = urlEndPoint;
-            _controller = controller;
-            // Update port # in the following line.
-            client.BaseAddress = new Uri(_urlEndPoint);
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+
         }
 
-        public ICollection<T> GetT()
+        public ICollection<ClienteVM> GetAvailable(Guid idRoute)
         {
-            string action = $"{_urlEndPoint}/api/{_controller}";
+            string action = $"{_urlEndPoint}/api/{_controller}/GetAvailable/{idRoute}";
 
-            ICollection<T> T = null;
-            HttpResponseMessage response = client.GetAsync(action).Result;
+            ICollection<ClienteVM> T = null;
+            HttpResponseMessage response = httpClient.GetAsync(action).Result;
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadAsAsync<ICollection<T>>().Result;
+                return response.Content.ReadAsAsync<ICollection<ClienteVM>>().Result;
             }
 
             return T;
         }
 
-        public T GetT(Guid id)
+        internal ICollection<ClienteVM> GetNotAvailable(Guid idRoute)
         {
-            string action = $"{_urlEndPoint}/api/{_controller}/{id.ToString()}";
+            string action = $"{_urlEndPoint}/api/{_controller}/GetNotAvailable/{idRoute}";
 
-            T entityVM = null;
-            HttpResponseMessage response = client.GetAsync(action).Result;
+            ICollection<ClienteVM> T = null;
+            HttpResponseMessage response = httpClient.GetAsync(action).Result;
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadAsAsync<T>().Result;
+                return response.Content.ReadAsAsync<ICollection<ClienteVM>>().Result;
             }
 
-            return entityVM;
+            return T;
         }
 
-        public Uri Create(T entity)
-        {
-            string action = $"{_urlEndPoint}/api/{_controller}";
-
-            HttpResponseMessage response = client.PostAsJsonAsync(
-              action, entity).Result;
-            response.EnsureSuccessStatusCode();
-
-            // return URI of the created resource.
-            return response.Headers.Location;
-        }
-
-        public T Update(T entity)
-        {
-            string action = $"{_urlEndPoint}/api/{_controller}/{entity.DT_RowId}";
-
-            HttpResponseMessage response = client.PutAsJsonAsync(
-                action, entity).Result;
-            response.EnsureSuccessStatusCode();
-
-            // Deserialize the updated entity from the response body.
-            entity = response.Content.ReadAsAsync<T>().Result;
-            return entity;
-        }
-
-        public HttpStatusCode Delete(Guid id)
-        {
-            string action = $"{_urlEndPoint}/api/{_controller}/{id.ToString()}";
-
-            HttpResponseMessage response = client.DeleteAsync(action).Result;
-            return response.StatusCode;
-        }
     }
 }

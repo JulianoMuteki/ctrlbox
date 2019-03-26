@@ -10,11 +10,11 @@ namespace CtrlBox.UI.WebMvc.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly WebApiClient<ProdutoVM> _api = null;
+        private readonly WebApiProduct _api = null;
 
         public ProductController()
         {
-             _api = new WebApiClient<ProdutoVM>("http://localhost:53929", "Product");
+             _api = new WebApiProduct("http://localhost:53929", "Product");
         }
         // GET: Product
         public ActionResult Index()

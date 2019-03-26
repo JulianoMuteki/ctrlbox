@@ -8,5 +8,6 @@ namespace CtrlBox.Domain.Interfaces.Repository
 {
     public interface IRouteRepository : IGenericRepository<Route>
     {
+        ICollection<Route> GetCustom();
     }
 }

@@ -47,6 +47,26 @@
             <param name="clientVM"></param>
             <returns></returns>
         </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.Delete(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.GetAvailable(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="idRoute"></param>
+            <returns>Guid</returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.GetNotAvailable(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="idRoute"></param>
+            <returns>Guid</returns>
+        </member>
         <member name="T:CtrlBox.Services.Api.Controllers.ProductController">
             <summary>
             

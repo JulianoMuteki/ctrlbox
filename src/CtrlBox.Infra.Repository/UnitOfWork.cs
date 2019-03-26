@@ -1,10 +1,13 @@
-﻿using CtrlBox.Domain.Interfaces.Base;
+﻿using CtrlBox.Infra.Repository.Repositories;
 using CtrlBox.Infra.Context;
 using CtrlBox.Infra.Repository.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CtrlBox.Domain.Interfaces.Repository;
+using CtrlBox.Domain.Entities;
+using CtrlBox.Domain.Interfaces.Base;
 
 namespace CtrlBox.Infra.Repository
 {
@@ -34,6 +37,47 @@ namespace CtrlBox.Infra.Repository
             IGenericRepository<T> repo = new GenericRepository<T>(_dbContext);
             Repositories.Add(typeof(T), repo);
             return repo;
+        }
+
+
+        private readonly Dictionary<Type, object> _repositoriesCustom = new Dictionary<Type, object>();
+
+        public Dictionary<Type, object> RepositoriesCustom
+        {
+            get { return _repositoriesCustom; }
+            set { RepositoriesCustom = value; }
+        }
+
+        public T RepositoryCustom<T>() where T : class
+        {
+            if (!RepositoriesCustom.Keys.Contains(typeof(T)))
+            {
+                CreateReository<T>();
+            }
+
+            var obj = RepositoriesCustom[typeof(T)] as T;
+
+            return obj;
+        }
+
+        private void CreateReository<T>() where T : class
+        {
+            if (typeof(IRouteRepository).Equals((typeof(T))) && !RepositoriesCustom.Keys.Contains(typeof(T)))
+            {
+                IRouteRepository repository = new RouteRepository(_dbContext);
+                RepositoriesCustom.Add(typeof(T), repository);
+            }
+            else if (typeof(IClientRepository).Equals((typeof(T))) && !RepositoriesCustom.Keys.Contains(typeof(T)))
+            {
+                IClientRepository repository = new ClientRepository(_dbContext);
+                RepositoriesCustom.Add(typeof(T), repository);
+            }
+            else if (typeof(IProductRepository).Equals((typeof(T))) && !RepositoriesCustom.Keys.Contains(typeof(T)))
+            {
+                IProductRepository repository = new ProductRepository(_dbContext);
+                RepositoriesCustom.Add(typeof(T), repository);
+            }
+
         }
 
         public async Task<int> Commit()

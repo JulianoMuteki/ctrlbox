@@ -11,8 +11,8 @@ namespace CtrlBox.Infra.Repository.Common
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly CtrlBoxContext _context;
-        private readonly IUnitOfWork _unitOfWork;
+        protected readonly CtrlBoxContext _context;
+        protected readonly IUnitOfWork _unitOfWork;
 
         public GenericRepository(CtrlBoxContext context)
         {
@@ -68,6 +68,13 @@ namespace CtrlBox.Infra.Repository.Common
         public T Add(T entity)
         {
             _context.Set<T>().Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public ICollection<T> AddRAnge(ICollection<T> entity)
+        {
+            _context.Set<T>().AddRange(entity);
             _context.SaveChanges();
             return entity;
         }

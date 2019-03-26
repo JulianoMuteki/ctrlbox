@@ -10,11 +10,11 @@ namespace CtrlBox.UI.WebMvc.Controllers
 {
     public class ClientController : Controller
     {
-        private readonly WebApiClient<ClienteVM> _api = null;
+        private readonly WebApiClient _api = null;
 
         public ClientController()
         {
-            _api = new WebApiClient<ClienteVM>("http://localhost:53929", "Client");
+            _api = new WebApiClient("http://localhost:53929", "Client");
         }
 
 

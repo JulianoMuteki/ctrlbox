@@ -6,6 +6,8 @@ namespace CtrlBox.Application.ViewModels
 {
     public class RouteVM : ViewModelBase
     {
+        public string ClientesIDs { get; set; }
+
         public string Name { get; set; }
         public int KmDistance { get; set; }
         public string Truck { get; set; }

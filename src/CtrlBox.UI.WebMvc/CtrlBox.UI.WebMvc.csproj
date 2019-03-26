@@ -178,7 +178,10 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SaleController.cs" />
+    <Compile Include="EndPoints\WebApiBase.cs" />
     <Compile Include="EndPoints\WebApiClient.cs" />
+    <Compile Include="EndPoints\WebApiProduct.cs" />
+    <Compile Include="EndPoints\WebApiRoute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1871,6 +1874,7 @@
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Client\Create.cshtml" />
     <Content Include="Views\Route\Index.cshtml" />
+    <Content Include="Views\Route\ClientRelation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

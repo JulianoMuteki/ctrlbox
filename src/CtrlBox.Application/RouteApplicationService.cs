@@ -3,12 +3,13 @@ using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CtrlBox.Application
 {
-   public class RouteApplicationService: IRouteApplicationService
+    public class RouteApplicationService : IRouteApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -28,6 +29,20 @@ namespace CtrlBox.Application
         public Task<Route> AddAsync(Route entity)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<RouteClient> ConnectRouteToClient(Route route, string clientesIDs)
+        {
+            IList<RouteClient> routesClients = new List<RouteClient>();
+            var clients = clientesIDs.Split('&').Select(x => x.Split('=')[1]).ToList();
+            foreach (var client in clients)
+            {
+                routesClients.Add(new RouteClient(client, route.Id));
+            }
+            var routeClientReturn = _unitOfWork.Repository<RouteClient>().AddRAnge(routesClients);
+            _unitOfWork.Commit();
+
+            return routeClientReturn;
         }
 
         public void Delete(Guid id)

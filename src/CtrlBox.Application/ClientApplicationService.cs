@@ -1,10 +1,9 @@
 ﻿using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
-using Microsoft.EntityFrameworkCore;
+using CtrlBox.Domain.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CtrlBox.Application
@@ -24,6 +23,11 @@ namespace CtrlBox.Application
             _unitOfWork.Commit();
 
             return client;
+        }
+
+        public ICollection<Client> GetAvailable(Guid routeID)
+        {
+            return _unitOfWork.RepositoryCustom<IClientRepository>().GetAvailable(routeID);
         }
 
         public Task<Client> AddAsync(Client entity)
@@ -69,6 +73,11 @@ namespace CtrlBox.Application
         public Task<Client> UpdateAsync(Client updated)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<Client> GetNotAvailable(Guid idRoute)
+        {
+            return _unitOfWork.RepositoryCustom<IClientRepository>().GetNotAvailable(idRoute);
         }
     }
 }

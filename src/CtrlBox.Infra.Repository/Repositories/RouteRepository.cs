@@ -13,5 +13,10 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
            
         }
+
+        public ICollection<Route> GetCustom()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -107,5 +107,33 @@ namespace CtrlBox.Services.Api.Controllers
         public void Delete(int id)
         {
         }
+
+        [HttpPost("[action]")]
+        public IActionResult ConnectRouteToClient(RouteVM routeVM)
+        {
+            //if (ModelState.IsValid)
+            if (true)
+            {
+                try
+                {
+                    var route = _mapper.Map<Route>(routeVM);
+
+                    var newClient = _routeApplicationService.ConnectRouteToClient(route, routeVM.ClientesIDs);
+
+                    if (newClient.Count > 0)
+                    {
+                        return Ok(newClient);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
     }
 }

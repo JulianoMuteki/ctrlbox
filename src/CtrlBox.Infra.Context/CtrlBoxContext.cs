@@ -1,6 +1,7 @@
 ﻿using CtrlBox.Domain.Entities;
 using CtrlBox.Infra.Context.Mapping;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CtrlBox.Infra.Context
 {
@@ -19,6 +20,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<Route> Routes { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleProduct> SalesProducts { get; set; }
+        public DbSet<RouteClient> RoutesClients { get; set; }
 
         public CtrlBoxContext()
         {
@@ -28,7 +30,6 @@ namespace CtrlBox.Infra.Context
         public CtrlBoxContext(DbContextOptions<CtrlBoxContext> options)
              : base(options)
         {
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

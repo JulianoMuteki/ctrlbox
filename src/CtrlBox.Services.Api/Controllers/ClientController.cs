@@ -14,7 +14,7 @@ namespace CtrlBox.Services.Api.Controllers
     /// <summary>
     /// 
     /// </summary>
-    [Route("api/Client")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ClientController : ControllerBase
     {
@@ -102,9 +102,41 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idRoute"></param>
+        /// <returns>Guid</returns>
+        [HttpGet("[action]/{idRoute}")]
+        public IEnumerable<ClientVM> GetAvailable(Guid idRoute)
+        {
+            var clients = _clientApplicationService.GetAvailable(idRoute);
+
+            IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
+            return clientsVM;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idRoute"></param>
+        /// <returns>Guid</returns>
+        [HttpGet("[action]/{idRoute}")]
+        public IEnumerable<ClientVM> GetNotAvailable(Guid idRoute)
+        {
+            var clients = _clientApplicationService.GetNotAvailable(idRoute);
+
+            IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
+            return clientsVM;
         }
     }
 }

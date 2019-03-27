@@ -195,7 +195,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\RouteVM.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\PrecoProdutos_ClientesVM.cs" />
+    <Compile Include="Models\ClientProductValueVM.cs" />
     <Compile Include="Models\ProdutoPrecoVM.cs" />
     <Compile Include="Models\ProdutoVM.cs" />
     <Compile Include="Models\ValorPorProdutoVM.cs" />
@@ -1875,11 +1875,12 @@
     <Content Include="Views\Client\Create.cshtml" />
     <Content Include="Views\Route\Index.cshtml" />
     <Content Include="Views\Route\ClientRelation.cshtml" />
+    <Content Include="Views\Product\ClientProductValue.cshtml" />
+    <Content Include="Views\Delivery\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\assets\plugins\jquery-file-upload\server\php\files\thumbnail\" />
-    <Folder Include="Views\Delivery\" />
     <Folder Include="Views\Sale\" />
   </ItemGroup>
   <ItemGroup>

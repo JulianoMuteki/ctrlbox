@@ -57,7 +57,7 @@ namespace CtrlBox.Application
 
         public Client GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _unitOfWork.Repository<Client>().GetById(id);
         }
 
         public Task<Client> GetByIdAsync(Guid id)

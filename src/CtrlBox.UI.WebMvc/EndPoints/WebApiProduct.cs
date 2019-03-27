@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 
 namespace CtrlBox.UI.WebMvc.EndPoints
@@ -12,6 +13,18 @@ namespace CtrlBox.UI.WebMvc.EndPoints
             : base(urlEndPoint, controller)
         {
 
+        }
+
+        internal object ConnectProductToClient(ICollection<ClientProductValueVM> productsClients)
+        {
+            string action = $"{_urlEndPoint}/api/{_controller}/ConnectProductToClient";
+
+            HttpResponseMessage response = httpClient.PostAsJsonAsync(
+              action, productsClients).Result;
+            response.EnsureSuccessStatusCode();
+
+            // return URI of the created resource.
+            return response.Headers.Location;
         }
     }
 }

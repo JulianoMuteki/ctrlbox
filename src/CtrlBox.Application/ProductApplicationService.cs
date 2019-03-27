@@ -62,7 +62,7 @@ namespace CtrlBox.Application
             {
                 product.UpdateData(updated);
                 product = _unitOfWork.Repository<Product>().Update(product);
-               _unitOfWork.Commit();
+                _unitOfWork.Commit();
             }
             return product;
         }
@@ -76,10 +76,10 @@ namespace CtrlBox.Application
         {
             var product = _unitOfWork.Repository<Product>().GetById(id);
 
-           if(product != null)
+            if (product != null)
             {
-               
-                 _unitOfWork.Repository<Product>().Delete(product);
+
+                _unitOfWork.Repository<Product>().Delete(product);
                 _unitOfWork.Commit();
             }
         }
@@ -87,6 +87,14 @@ namespace CtrlBox.Application
         public Task<Guid> DeleteAsync(Guid id)
         {
             throw new System.NotImplementedException();
+        }
+
+        public ICollection<ClientProductValue> ConnectRouteToClient(ICollection<ClientProductValue> clientsProducts)
+        {
+            var result = _unitOfWork.Repository<ClientProductValue>().AddRAnge(clientsProducts);
+            _unitOfWork.Commit();
+
+            return result;
         }
     }
 }

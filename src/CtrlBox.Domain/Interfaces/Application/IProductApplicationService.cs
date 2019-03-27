@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IProductApplicationService: IApplicationServiceBase<Product>
+    public interface IProductApplicationService : IApplicationServiceBase<Product>
     {
-
-
+        ICollection<ClientProductValue> ConnectRouteToClient(ICollection<ClientProductValue> clientsProducts);
     }
 }

@@ -67,8 +67,6 @@ namespace CtrlBox.Services.Api.Controllers
         /// <param name="productVM">ProductVM</param>
         /// <returns>IActionResult</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post(ProductVM productVM)
         {
             //if (ModelState.IsValid)
@@ -142,6 +140,34 @@ namespace CtrlBox.Services.Api.Controllers
             {
 
                 return BadRequest();
+            }
+        }
+
+        [HttpPost("[action]")]
+        public IActionResult ConnectProductToClient(ICollection<ClientProductValueVM> productsClients)
+        {
+            //if (ModelState.IsValid)
+            if (true)
+            {
+                try
+                {
+                    var clientsProducts = _mapper.Map<ICollection<ClientProductValue>>(productsClients);
+
+                    var newClient = _productApplicationService.ConnectRouteToClient(clientsProducts);
+
+                    if (newClient.Count > 0)
+                    {
+                        return Ok(newClient);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
         }
     }

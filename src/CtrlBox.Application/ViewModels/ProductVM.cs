@@ -10,4 +10,14 @@ namespace CtrlBox.Application.ViewModels
         public string Description { get; set; }
         public float Weight { get; set; }
     }
+
+   public class ClientProductValueVM
+    {
+        public Guid ProductID { get; set; }
+
+        public Guid ClientID { get; set; }
+
+        public float Price { get; set; }
+
+    }
 }

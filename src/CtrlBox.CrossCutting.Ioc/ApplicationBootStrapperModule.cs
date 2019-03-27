@@ -10,7 +10,10 @@ namespace CtrlBox.CrossCutting.Ioc
         {
             services.AddScoped<IProductApplicationService, ProductApplicationService>();
             services.AddScoped<IClientApplicationService, ClientApplicationService>();
-            services.AddScoped<IRouteApplicationService, RouteApplicationService>();            
+            services.AddScoped<IRouteApplicationService, RouteApplicationService>();
+            services.AddScoped<IDeliveryApplicationService, DeliveryApplicationService>();
+
+            
         }
     }
 }

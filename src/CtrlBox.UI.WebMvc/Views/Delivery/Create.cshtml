@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+
+
+
+
+        //carregar dropdown linhas
+        var $div = $("<div>", { class: "a" });
+        var sel = $('<select class="calor"/>').appendTo($div);
+        sel.append($("<option>").attr('value', 0).text('selecione'));
+        $("#mainSelect").append($("<option>").attr('value', 0).text('selecione'));
+        $.ajax({
+            type: "GET",
+            url: '@Url.Content("~/Route/AjaxHandlerGet")',
+            dataType: "json",
+            success: function (data) {
+
+                if (data.aaData.length > 0) {
+                    var url = '@Url.Content("~/Product/AjaxHandlerGet")';
+
+                    var oTable = $('#tbProdutos').dataTable({
+                        "bPaginate": false,
+                        "bAutoWidth": false,
+                        "sAjaxSource": url,
+                        bFilter: false, bInfo: false,
+                        "bDestroy": true,
+                        "aoColumns": [
+                                            {
+                                                "mData": "Name",
+                                                "bSortable": false
+                                            },
+                                            {
+                                                "mData": null,
+                                                "sType": "html",
+                                                "bSortable": false,
+                                                sClass: "calc",
+                                                "mRender": function (data, type, row) {
+                                                    if (type === 'display') {
+                                                        return '<input type="text" placeholder="0" class="m-wrap small qtde">';
+                                                    }
+                                                    return data;
+                                                }
+                                            }
+                        ]
+                    });
+
+                    $.each(data.aaData, function (i, obj) {
+                        sel.append($("<option>").attr('value', obj.DT_RowId).text(obj.Name));
+                        $("#mainSelect").append($("<option>").attr('value', obj.DT_RowId).text(obj.Name));
+                    });
+                }
+            }
+        });
+
+
+
+
+
+        $("#btnSubmit").click(function () {
+
+            var oTable = $('#tbProdutos').dataTable();
+            var tb = [];
+            $.each(oTable.fnGetNodes(), function (index, value) {
+                var row = oTable.fnGetData(value);
+                row.Qtde = $(value).find('input.qtde').val();
+                tb.push(row);
+            });
+            var myJsonString = JSON.stringify(tb);
+            var linhaValor = $("select#mainSelect").val();
+
+
+            $.ajax({
+                url: '@Url.Content("~/Delivery/SubmitCadastrarEntrega")',
+                type: 'POST',
+                dataType: 'json',
+                data: { tbProdutos: myJsonString, linha: linhaValor },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        window.history.go(-1);
+                    }
+                }
+               // "error": handleAjaxError
+            });
+            event.preventDefault();
+
+            return true;
+        });
+
+    });
+
+</script>
+
+
+<!-- BEGIN PAGE -->
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button"></button>
+            <h3>portlet Settings</h3>
+        </div>
+        <div class="modal-body">
+            <p>Here will be a configuration form</p>
+        </div>
+    </div>
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <h3 class="page-title">
+                    Cadastrar entrega <small>saída de caminhão</small>
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Data Tables</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li><a href="#">Basic Tables</a></li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+
+        </div>
+        <!-- END PAGE HEADER-->
+        <!--Begin Info linha-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="alert alert-success">
+                    <button class="close" data-dismiss="alert"></button>
+                    Selecione a linha e entre com a quantidade de cada produto.<br>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- BEGIN PAGE CONTENT-->
+
+
+        <div class="row-fluid">
+            <div class="span6">
+                <!-- BEGIN VALIDATION STATES-->
+                <div class="portlet box purple">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Criar entrega</div>
+
+                    </div>
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <form action="#" id="form_sample_1" class="form-horizontal">
+
+                            <div class="control-group">
+                                <label class="control-label">Linhas<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select id="mainSelect" class="span6 m-wrap" name="category"></select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button id="btnSubmit" type="button" class="btn purple">Criar entrega</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+                <!-- END VALIDATION STATES-->
+            </div>
+
+
+            <div class="span6">
+                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                <div class="portlet box red">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-cogs"></i>Produtos</div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <table id="tbProdutos" class="table table-hover">
+                            <thead>
+                                <tr>
+
+                                    <th>Produto</th>
+                                    <th>Qtde</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END SAMPLE TABLE PORTLET-->
+            </div>
+
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+<!-- END PAGE -->

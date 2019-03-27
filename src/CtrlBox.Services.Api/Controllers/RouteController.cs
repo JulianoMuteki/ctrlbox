@@ -68,8 +68,6 @@ namespace CtrlBox.Services.Api.Controllers
         /// <param name="RouteVM"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(Route), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post(RouteVM RouteVM)
         {
             //if (ModelState.IsValid)

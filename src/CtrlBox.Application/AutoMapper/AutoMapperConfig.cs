@@ -10,6 +10,9 @@ namespace CtrlBox.Application.AutoMapper
             {
                 cfg.AddProfile(new ClientProfile());
                 cfg.AddProfile(new ProductProfile());
+                cfg.AddProfile(new RouteProfile());
+                cfg.AddProfile(new DeliveryProfile());
+                cfg.AddProfile(new ClientProductValueProfile());
             });
         }
     }

@@ -52,6 +52,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -180,17 +181,20 @@
     <Compile Include="Controllers\SaleController.cs" />
     <Compile Include="EndPoints\WebApiBase.cs" />
     <Compile Include="EndPoints\WebApiClient.cs" />
+    <Compile Include="EndPoints\WebApiDelivery.cs" />
     <Compile Include="EndPoints\WebApiProduct.cs" />
     <Compile Include="EndPoints\WebApiRoute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\JsonSerialize.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CadastroVenda.cs" />
     <Compile Include="Models\ChequeVM.cs" />
     <Compile Include="Models\ClienteVM.cs" />
+    <Compile Include="Models\DeliveryProductVM.cs" />
+    <Compile Include="Models\DeliveryVM.cs" />
     <Compile Include="Models\DespesaVM.cs" />
-    <Compile Include="Models\EntregaVM.cs" />
     <Compile Include="Models\Entrega_ProdutoVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\RouteVM.cs" />
@@ -1877,6 +1881,7 @@
     <Content Include="Views\Route\ClientRelation.cshtml" />
     <Content Include="Views\Product\ClientProductValue.cshtml" />
     <Content Include="Views\Delivery\Index.cshtml" />
+    <Content Include="Views\Delivery\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

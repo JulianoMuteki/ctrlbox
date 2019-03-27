@@ -67,6 +67,33 @@
             <param name="idRoute"></param>
             <returns>Guid</returns>
         </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.#ctor(CtrlBox.Domain.Interfaces.Application.IDeliveryApplicationService,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="deliveryApplicationService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Get">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Get(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Post(CtrlBox.Application.ViewModels.DeliveryVM)">
+            <summary>
+            
+            </summary>
+            <param name="DeliveryVM"></param>
+            <returns></returns>
+        </member>
         <member name="T:CtrlBox.Services.Api.Controllers.ProductController">
             <summary>
             

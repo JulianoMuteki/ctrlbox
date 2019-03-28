@@ -17,7 +17,7 @@
                         "bDestroy": true,
                         "aoColumns": [
                                             {
-                                                "mData": "Name",
+                                                "mData": "Product.Name",
                                                 "bSortable": false
                                             },
                                             {
@@ -27,7 +27,7 @@
                                                 sClass: "calc",
                                                 "mRender": function (data, type, row) {
                                                     if (type === 'display') {
-                                                        return '<input type="text" placeholder="0" class="m-wrap small amount">';
+                                                        return '<input type="text" placeholder="0" value="' + row.Amount + '" class="m-wrap small amount"></input>';
                                                     }
                                                     return data;
                                                 }

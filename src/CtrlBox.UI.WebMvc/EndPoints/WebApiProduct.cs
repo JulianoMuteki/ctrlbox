@@ -38,5 +38,19 @@ namespace CtrlBox.UI.WebMvc.EndPoints
             // return URI of the created resource.
             return response.Headers.Location;
         }
+
+        internal ICollection<StockProductVM> GetProductsStock()
+        {
+            string action = $"{_urlEndPoint}/api/{_controller}/GetProductsStock";
+
+            ICollection<StockProductVM> T = null;
+            HttpResponseMessage response = httpClient.GetAsync(action).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Content.ReadAsAsync<ICollection<StockProductVM>>().Result;
+            }
+
+            return T;
+        }
     }
 }

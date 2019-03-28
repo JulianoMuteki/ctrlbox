@@ -150,13 +150,8 @@ namespace CtrlBox.UI.WebMvc.Controllers
         {
             try
             {
-                IList<StockProductVM> stocksProducts = new List<StockProductVM>();
-                var products = _api.GetT();
+                ICollection<StockProductVM> stocksProducts = _api.GetProductsStock();
 
-                foreach (var product in products)
-                {
-                    stocksProducts.Add(new StockProductVM() { ProductID = product.DT_RowId, Name = product.Name });
-                }
                 return Json(new
                 {
                     aaData = stocksProducts

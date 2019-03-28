@@ -199,5 +199,15 @@ namespace CtrlBox.Services.Api.Controllers
             }
         }
 
+        [HttpGet("[action]")]
+        public IEnumerable<StockProductVM> GetProductsStock()
+        {
+            var prodsStock = _productApplicationService.GetProductsStock();
+            ICollection<StockProductVM> productsStockVM = _mapper.Map<List<StockProductVM>>(prodsStock);
+
+            return productsStockVM;
+        }
+
+        
     }
 }

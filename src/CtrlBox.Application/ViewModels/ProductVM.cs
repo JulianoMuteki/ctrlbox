@@ -27,6 +27,6 @@ namespace CtrlBox.Application.ViewModels
         public Guid ProductID { get; set; }
         public Guid StockID { get; set; }
 
-        public string Name { get; set; }
+        public ProductVM Product { get; set; }
     }
 }

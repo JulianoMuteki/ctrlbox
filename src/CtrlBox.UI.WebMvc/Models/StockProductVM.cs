@@ -11,6 +11,6 @@ namespace CtrlBox.UI.WebMvc.Models
         public Guid ProductID { get; set; }
         public Guid StockID { get; set; }
 
-        public string Name { get; set; }
+        public ProdutoVM Product { get; set; }
     }
 }

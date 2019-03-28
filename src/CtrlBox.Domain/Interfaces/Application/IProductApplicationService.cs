@@ -8,5 +8,6 @@ namespace CtrlBox.Domain.Interfaces.Application
     {
         ICollection<ClientProductValue> ConnectRouteToClient(ICollection<ClientProductValue> clientsProducts);
         int AddProductStock(ICollection<StockProduct> stocksProducts);
+        ICollection<StockProduct> GetProductsStock();
     }
 }

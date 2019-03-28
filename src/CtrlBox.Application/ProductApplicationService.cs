@@ -106,6 +106,7 @@ namespace CtrlBox.Application
                 var resultstocksProd = stocksProducts.Select(e =>
                 {
                     e.StockID = stock.Id;
+                    e.Product = null;
                     return e;
                 }).ToList();
 
@@ -118,6 +119,26 @@ namespace CtrlBox.Application
             {
                 throw ex;
             }
+        }
+
+        public ICollection<StockProduct> GetProductsStock()
+        {
+            var productsStock = _unitOfWork.Repository<StockProduct>().GetAll();
+
+            var products = _unitOfWork.Repository<Product>().GetAll();
+            var productsWithoutStock = products.Where(p => !productsStock.Any(sp => sp.ProductID == p.Id)).ToList();
+
+            foreach (var product in productsWithoutStock)
+            {
+                productsStock.Add(new StockProduct()
+                {
+                    ProductID = product.Id,
+                    Amount = 0,
+                    Product = product
+                });
+            }
+
+            return productsStock;
         }
     }
 }

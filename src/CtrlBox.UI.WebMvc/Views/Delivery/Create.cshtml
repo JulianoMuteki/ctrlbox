@@ -42,7 +42,7 @@
                                                 sClass: "calc",
                                                 "mRender": function (data, type, row) {
                                                     if (type === 'display') {
-                                                        return '<input type="text" placeholder="0" class="m-wrap small qtde">';
+                                                        return '<input type="text" placeholder="0" class="m-wrap small amount">';
                                                     }
                                                     return data;
                                                 }
@@ -68,7 +68,8 @@
             var tb = [];
             $.each(oTable.fnGetNodes(), function (index, value) {
                 var row = oTable.fnGetData(value);
-                row.Qtde = $(value).find('input.qtde').val();
+                row.Amount = $(value).find('input.amount').val();
+                row.ProductID = row.DT_RowId;
                 tb.push(row);
             });
             var myJsonString = JSON.stringify(tb);

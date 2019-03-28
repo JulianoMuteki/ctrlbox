@@ -31,4 +31,4 @@ namespace CtrlBox.Application.ViewModels
 
         public int Amount { get; set; }
     }
-}
+}l

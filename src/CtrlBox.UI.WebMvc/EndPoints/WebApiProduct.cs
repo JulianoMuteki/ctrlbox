@@ -26,5 +26,17 @@ namespace CtrlBox.UI.WebMvc.EndPoints
             // return URI of the created resource.
             return response.Headers.Location;
         }
+
+        internal object AddProductStock(ICollection<StockProductVM> stocksProductsVM)
+        {
+            string action = $"{_urlEndPoint}/api/{_controller}/AddProductStock";
+
+            HttpResponseMessage response = httpClient.PostAsJsonAsync(
+              action, stocksProductsVM).Result;
+            response.EnsureSuccessStatusCode();
+
+            // return URI of the created resource.
+            return response.Headers.Location;
+        }
     }
 }

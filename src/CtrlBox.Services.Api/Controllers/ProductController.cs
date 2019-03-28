@@ -170,5 +170,34 @@ namespace CtrlBox.Services.Api.Controllers
                 }
             }
         }
+
+        [HttpPost("[action]")]
+        public IActionResult AddProductStock(ICollection<StockProductVM> stocksProducts)
+        {
+            //if (ModelState.IsValid)
+            if (true)
+            {
+                try
+                {
+                    var stocksProd = _mapper.Map<ICollection<StockProduct>>(stocksProducts);
+
+                    var result = _productApplicationService.AddProductStock(stocksProd);
+
+                    if (result > 0)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+
     }
 }

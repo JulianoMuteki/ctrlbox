@@ -1,4 +1,5 @@
 ﻿using CtrlBox.UI.WebMvc.EndPoints;
+using CtrlBox.UI.WebMvc.Helpers;
 using CtrlBox.UI.WebMvc.Models;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace CtrlBox.UI.WebMvc.Controllers
             _clientApi = new WebApiClient("http://localhost:53929", "Client");
 
         }
+
         #region Product
         public ActionResult Index()
         {
@@ -138,6 +140,49 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
         #endregion
 
+        #region ProductStock
+        public ActionResult ProductStock()
+        {
+            return View();
+        }
 
+        public ActionResult AjaxHandlerProductStock()
+        {
+            try
+            {
+                IList<StockProductVM> stocksProducts = new List<StockProductVM>();
+                var products = _api.GetT();
+
+                foreach (var product in products)
+                {
+                    stocksProducts.Add(new StockProductVM() { ProductID = product.DT_RowId, Name = product.Name });
+                }
+                return Json(new
+                {
+                    aaData = stocksProducts
+                },
+                JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SubmitProductStock(string[] tbProdutos)
+        {
+            JsonSerialize jsonS = new JsonSerialize();
+            var stocksProductsVM = jsonS.JsonDeserialize<StockProductVM>(tbProdutos[0]);
+
+            var stocksProducts = _api.AddProductStock(stocksProductsVM);
+            return Json(new
+            {
+                success = true,
+                Message = "OK"
+            },
+                   JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

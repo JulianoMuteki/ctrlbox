@@ -23,15 +23,5 @@ namespace CtrlBox.Domain.Entities
         public Route Route { get; set; }
         public Client Client { get; set; }
 
-
-        protected override bool EqualsCore(RouteClient other)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override int GetHashCodeCore()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

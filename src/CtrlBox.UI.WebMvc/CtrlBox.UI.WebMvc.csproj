@@ -202,6 +202,7 @@
     <Compile Include="Models\ClientProductValueVM.cs" />
     <Compile Include="Models\ProdutoPrecoVM.cs" />
     <Compile Include="Models\ProdutoVM.cs" />
+    <Compile Include="Models\StockProductVM.cs" />
     <Compile Include="Models\ValorPorProdutoVM.cs" />
     <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1882,6 +1883,7 @@
     <Content Include="Views\Product\ClientProductValue.cshtml" />
     <Content Include="Views\Delivery\Index.cshtml" />
     <Content Include="Views\Delivery\Create.cshtml" />
+    <Content Include="Views\Product\ProductStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

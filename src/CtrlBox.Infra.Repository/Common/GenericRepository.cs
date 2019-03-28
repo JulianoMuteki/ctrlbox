@@ -72,11 +72,11 @@ namespace CtrlBox.Infra.Repository.Common
             return entity;
         }
 
-        public ICollection<T> AddRAnge(ICollection<T> entity)
+        public int AddRange(ICollection<T> entity)
         {
             _context.Set<T>().AddRange(entity);
-            _context.SaveChanges();
-            return entity;
+            var result = _context.SaveChanges();
+            return result;
         }
 
         public async Task<T> AddAsync(T entity)

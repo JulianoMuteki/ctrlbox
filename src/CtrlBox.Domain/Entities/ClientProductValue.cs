@@ -13,15 +13,5 @@ namespace CtrlBox.Domain.Entities
         public Client Client { get; set; }
 
         public float Price { get; set; }
-
-        protected override bool EqualsCore(ClientProductValue other)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override int GetHashCodeCore()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

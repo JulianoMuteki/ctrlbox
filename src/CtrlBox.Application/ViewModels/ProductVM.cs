@@ -11,7 +11,7 @@ namespace CtrlBox.Application.ViewModels
         public float Weight { get; set; }
     }
 
-   public class ClientProductValueVM
+    public class ClientProductValueVM
     {
         public Guid ProductID { get; set; }
 
@@ -19,5 +19,14 @@ namespace CtrlBox.Application.ViewModels
 
         public float Price { get; set; }
 
+    }
+
+    public class StockProductVM
+    {
+        public int Amount { get; set; }
+        public Guid ProductID { get; set; }
+        public Guid StockID { get; set; }
+
+        public string Name { get; set; }
     }
 }

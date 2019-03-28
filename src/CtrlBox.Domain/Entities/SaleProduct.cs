@@ -17,14 +17,5 @@ namespace CtrlBox.Domain.Entities
         public virtual Product Product { get; set; }
         public virtual Sale Sale { get; set; }
 
-        protected override bool EqualsCore(SaleProduct other)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override int GetHashCodeCore()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -13,14 +13,5 @@ namespace CtrlBox.Domain.Entities
         public Delivery Delivery { get; set; }
         public Product Product { get; set; }
 
-        protected override bool EqualsCore(DeliveryProduct other)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override int GetHashCodeCore()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

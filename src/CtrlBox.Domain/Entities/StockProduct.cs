@@ -15,14 +15,5 @@ namespace CtrlBox.Domain.Entities
 
         public int Amount { get; set; }
 
-        protected override bool EqualsCore(StockProduct other)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override int GetHashCodeCore()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

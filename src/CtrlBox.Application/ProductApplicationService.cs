@@ -91,10 +91,33 @@ namespace CtrlBox.Application
 
         public ICollection<ClientProductValue> ConnectRouteToClient(ICollection<ClientProductValue> clientsProducts)
         {
-            var result = _unitOfWork.Repository<ClientProductValue>().AddRAnge(clientsProducts);
+            _unitOfWork.Repository<ClientProductValue>().AddRange(clientsProducts);
             _unitOfWork.Commit();
 
-            return result;
+            return clientsProducts;
+        }
+
+        public int AddProductStock(ICollection<StockProduct> stocksProducts)
+        {
+            try
+            {
+                var stock = _unitOfWork.Repository<Stock>().GetAll().FirstOrDefault();
+
+                var resultstocksProd = stocksProducts.Select(e =>
+                {
+                    e.StockID = stock.Id;
+                    return e;
+                }).ToList();
+
+                var result = _unitOfWork.Repository<StockProduct>().AddRange(resultstocksProd);
+                _unitOfWork.Commit();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

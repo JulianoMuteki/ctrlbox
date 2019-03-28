@@ -31,7 +31,7 @@ namespace CtrlBox.Domain.Interfaces.Base
 
         Task<T> AddAsync(T entity);
 
-        ICollection<T> AddRAnge(ICollection<T> entity);
+        int AddRange(ICollection<T> entity);
 
         T Update(T updated);
 

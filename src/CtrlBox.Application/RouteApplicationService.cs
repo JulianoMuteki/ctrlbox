@@ -39,10 +39,10 @@ namespace CtrlBox.Application
             {
                 routesClients.Add(new RouteClient(client, route.Id));
             }
-            var routeClientReturn = _unitOfWork.Repository<RouteClient>().AddRAnge(routesClients);
+            var routeClientReturn = _unitOfWork.Repository<RouteClient>().AddRange(routesClients);
             _unitOfWork.Commit();
 
-            return routeClientReturn;
+            return routesClients;
         }
 
         public void Delete(Guid id)

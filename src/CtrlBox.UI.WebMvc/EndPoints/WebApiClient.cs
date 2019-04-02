@@ -1,13 +1,11 @@
-﻿using CtrlBox.UI.WebMvc.Models;
+﻿using CtrlBox.Application.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Web;
 
 namespace CtrlBox.UI.WebMvc.EndPoints
 {
-    public class WebApiClient : WebApiBase<ClienteVM>
+    public class WebApiClient : WebApiBase<ClientVM>
     {
         public WebApiClient(string urlEndPoint, string controller)
             : base(urlEndPoint, controller)
@@ -15,29 +13,29 @@ namespace CtrlBox.UI.WebMvc.EndPoints
 
         }
 
-        public ICollection<ClienteVM> GetAvailable(Guid idRoute)
+        public ICollection<ClientVM> GetAvailable(Guid idRoute)
         {
             string action = $"{_urlEndPoint}/api/{_controller}/GetAvailable/{idRoute}";
 
-            ICollection<ClienteVM> T = null;
+            ICollection<ClientVM> T = null;
             HttpResponseMessage response = httpClient.GetAsync(action).Result;
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadAsAsync<ICollection<ClienteVM>>().Result;
+                return response.Content.ReadAsAsync<ICollection<ClientVM>>().Result;
             }
 
             return T;
         }
 
-        internal ICollection<ClienteVM> GetNotAvailable(Guid idRoute)
+        internal ICollection<ClientVM> GetNotAvailable(Guid idRoute)
         {
             string action = $"{_urlEndPoint}/api/{_controller}/GetNotAvailable/{idRoute}";
 
-            ICollection<ClienteVM> T = null;
+            ICollection<ClientVM> T = null;
             HttpResponseMessage response = httpClient.GetAsync(action).Result;
             if (response.IsSuccessStatusCode)
             {
-                return response.Content.ReadAsAsync<ICollection<ClienteVM>>().Result;
+                return response.Content.ReadAsAsync<ICollection<ClientVM>>().Result;
             }
 
             return T;

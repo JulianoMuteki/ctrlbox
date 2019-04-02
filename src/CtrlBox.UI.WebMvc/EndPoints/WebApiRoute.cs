@@ -1,4 +1,4 @@
-﻿using CtrlBox.UI.WebMvc.Models;
+﻿using CtrlBox.Application.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,15 +1,10 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script type="text/javascript">
-
-
-
     jQuery(document).ready(function () {
-
 
         var url = '@Url.Content("~/Delivery/AjaxHandlerEntregas")';
 
@@ -21,57 +16,42 @@
             "bAutoWidth": false,
             "bDestroy": true,
             "aoColumns": [
-                                 {
-                                     data: null,
-                                     //  sClass: "checkboxCell",
-                                     "sType": "html",
-                                     "bSortable": false,
-                                     sClass: "calc",
-                                     render: function (data, type, row) {
-                                         if (type === 'display') {
-                                             var url = '@Url.Action("ExecutarEntrega", "Delivery")?entregaID=' + data.DT_RowId + '&linhaID=' + data.LinhaID;
-
-                                             return '<a href="'+ url + '" class="glyphicons no-js search"><i></i></a>';
-                                         }
-                                         return data;
-                                     }
-                                 },
-                                {
-                                    "mData": "Linha"
-
-                                },
-
-                                {
-                                    "mData": "CriadoPor"
-
-                                },
-                                {
-                                    "mData": "FinalizadoPor"
-
-                                },
-                                 {
-                                     "mData": "DataCriação"
-
-                                 },
-                                  {
-                                      "mData": "DataFinalização"
-
-                                  },
-                                   {
-                                       "mData": "Finalizado"
-
-                                   }
+                        {
+                            "mData": null,
+                            //  sClass: "checkboxCell",
+                            "sType": "html",
+                            "bSortable": false,
+                            sClass: "calc",
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    var url = '@Url.Action("ExecutarEntrega", "Delivery")?entregaID=' + data.DT_RowId + '&linhaID=' + data.RouteID;
+                                    return '<a href="'+ url + '" class="glyphicons no-js search"><i></i></a>';
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "mData": "RouteVM.Name",
+                            "defaultContent": "<i>Not set</i>"
+                        },
+                        {
+                            "mData": "CreatedBy"
+                        },
+                        {
+                            "mData": "FinalizedBy"
+                        },
+                        {
+                            "mData": "DtStart"
+                        },
+                        {
+                            "mData": "DtEnd"
+                        },
+                        {
+                            "mData": "IsFinalized"
+                        }
 
             ]
-
         });
-
-
-
-
-
-
-
     });
 </script>
 
@@ -128,7 +108,7 @@
                                         Add New <i class="icon-plus"></i>
                                     </button>*@
 
-                                @Html.ActionLink("CadastrarEntrega", "CadastrarEntrega", "Delivery", new { @class = "btn green" })
+                                @Html.ActionLink("CadastrarEntrega", "Create", "Delivery", new { @class = "btn green" })
                             </div>
 
                         </div>

@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Services.Api", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.UI.WebMvc", "src\CtrlBox.UI.WebMvc\CtrlBox.UI.WebMvc.csproj", "{88D575CE-9CB2-4F71-91B3-F9DB6C6C3C31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.Application.ViewModel", "src\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj", "{0AC7E7CC-82D9-4CD8-A221-B596CA948504}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{88D575CE-9CB2-4F71-91B3-F9DB6C6C3C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88D575CE-9CB2-4F71-91B3-F9DB6C6C3C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88D575CE-9CB2-4F71-91B3-F9DB6C6C3C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC7E7CC-82D9-4CD8-A221-B596CA948504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC7E7CC-82D9-4CD8-A221-B596CA948504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC7E7CC-82D9-4CD8-A221-B596CA948504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC7E7CC-82D9-4CD8-A221-B596CA948504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{FC6E4A56-1015-44FD-B2A0-9E0E2EF3E7D4} = {E4265AE8-C489-4795-9595-22D806BCD227}
 		{44BACD92-967F-461D-8D31-663A941AD003} = {85DA2C24-01AE-4C71-9980-3213DF735023}
 		{88D575CE-9CB2-4F71-91B3-F9DB6C6C3C31} = {E4265AE8-C489-4795-9595-22D806BCD227}
+		{0AC7E7CC-82D9-4CD8-A221-B596CA948504} = {5B480AE6-3293-4831-86FC-3134BC612C5C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {596B5757-71F3-4F30-92FA-D05D56830A44}

@@ -1,6 +1,6 @@
-﻿using CtrlBox.UI.WebMvc.EndPoints;
+﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.UI.WebMvc.EndPoints;
 using CtrlBox.UI.WebMvc.Helpers;
-using CtrlBox.UI.WebMvc.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +45,7 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ProdutoVM produto)
+        public ActionResult Create(ProductVM produto)
         {
             var uri = _api.Create(produto);
 
@@ -54,9 +54,9 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(ProdutoVM produtoVM)
+        public ActionResult Edit(ProductVM ProductVM)
         {
-            var uri = _api.Update(produtoVM);
+            var uri = _api.Update(ProductVM);
 
             var products = _api.GetT();
             return Json(new
@@ -79,12 +79,12 @@ namespace CtrlBox.UI.WebMvc.Controllers
         {
             try
             {
-                IList<ValorPorProdutoVM> valoresProdutos = new List<ValorPorProdutoVM>();
+                IList<ClientProductValueVM> valoresProdutos = new List<ClientProductValueVM>();
                 var products = _api.GetT();
 
                 foreach (var product in products)
                 {
-                    valoresProdutos.Add(new ValorPorProdutoVM(new ClientProductValueVM(), product));
+                    valoresProdutos.Add(new ClientProductValueVM() { Product = product});
                 }
                 return Json(new
                 {

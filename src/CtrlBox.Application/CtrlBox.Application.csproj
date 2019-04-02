@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj" />
     <ProjectReference Include="..\CtrlBox.Domain\CtrlBox.Domain.csproj" />
     <ProjectReference Include="..\CtrlBox.Infra.Repository\CtrlBox.Infra.Repository.csproj" />
   </ItemGroup>

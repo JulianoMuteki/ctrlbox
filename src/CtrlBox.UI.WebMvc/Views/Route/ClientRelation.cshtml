@@ -1,4 +1,4 @@
-﻿@model CtrlBox.UI.WebMvc.Models.RouteVM
+﻿@model CtrlBox.Application.ViewModel.RouteVM
 
 @{
     ViewBag.Title = "ClientRelation";
@@ -53,7 +53,7 @@
                                 "sType": "html",
                                 "mRender": function (data, type, row) {
                                     if (type === 'display') {
-                                        return '<input type="checkbox" name="ckbClienteID" value="' + row.DT_RowId + '">';
+                                        return '<input type="checkbox" name="ClienteID" value="' + row.DT_RowId + '">';
                                     }
                                     return data;
                                 }
@@ -91,21 +91,19 @@
 
 
     jQuery(document).ready(function () {
-
-
-
         carregarTabelas('@linhaID');
 
         $('#btnSubmitAdicionar').click(function () {
 
             var oTableAdicionar = $('#tbAdicionar').dataTable();
-            var sData = $("input[name='ckbClienteID']:checked", oTableAdicionar.fnGetNodes()).serialize();
+            var sData = $("input[name='ClienteID']:checked", oTableAdicionar.fnGetNodes()).serialize();
+            var myJsonString = JSON.stringify(tb);
 
             $.ajax({
                 url: '@Url.Content("~/Route/SubmitAdicionarClientes")',
                 type: 'POST',
                 dataType: 'json',
-                data: { linhaID: '@linhaID', clientesIDs: sData },
+                data: { linhaID: '@linhaID', clientesIDs: myJsonString },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');

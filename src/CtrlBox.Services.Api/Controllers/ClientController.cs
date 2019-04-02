@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using CtrlBox.Application.ViewModels;
+using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Http;

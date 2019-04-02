@@ -19,25 +19,22 @@ namespace CtrlBox.Application
 
         public Delivery Add(Delivery entity)
         {
+            entity.Init();
             foreach (var item in entity.DeliveriesProducts)
             {
-                DeliveryProduct deliveryProduct = new DeliveryProduct()
-                {
-                    DeliveryID = entity.Id,
-                    ProductID = item.ProductID,
-                    Amount = 33
-                };
+                item.DeliveryID = entity.Id;
+                item.Amount = 33;
 
                 var stockProduct = _unitOfWork.Repository<StockProduct>().Find(x => x.ProductID == item.ProductID);
-                stockProduct.Amount -= deliveryProduct.Amount;
-                _unitOfWork.Repository<DeliveryProduct>().Add(deliveryProduct);
+
+                stockProduct.Amount -= item.Amount;
                 _unitOfWork.Repository<StockProduct>().Update(stockProduct);
             }
+            var delivery = _unitOfWork.Repository<Delivery>().Add(entity);
 
-            var Route = _unitOfWork.Repository<Delivery>().Add(entity);
             _unitOfWork.Commit();
 
-            return Route;
+            return delivery;
         }
 
         public Task<Delivery> AddAsync(Delivery entity)

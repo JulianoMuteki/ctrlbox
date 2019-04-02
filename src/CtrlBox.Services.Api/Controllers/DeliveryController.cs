@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using CtrlBox.Application.ViewModels;
+using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CtrlBox.Services.Api.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class DeliveryController : ControllerBase
@@ -58,11 +58,11 @@ namespace CtrlBox.Services.Api.Controllers
             return DeliveryVM;
         }
 
-        // POST: api/Delivery
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="DeliveryVM"></param>
+        /// <param name="deliveryVM"></param>
         /// <returns></returns>
         [HttpPost]
         public IActionResult Post(DeliveryVM deliveryVM)
@@ -92,12 +92,21 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         // PUT: api/Delivery/5
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE: api/ApiWithActions/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

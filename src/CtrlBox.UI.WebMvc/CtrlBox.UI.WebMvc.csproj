@@ -189,22 +189,8 @@
     </Compile>
     <Compile Include="Helpers\JsonSerialize.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\CadastroVenda.cs" />
-    <Compile Include="Models\ChequeVM.cs" />
-    <Compile Include="Models\ClienteVM.cs" />
-    <Compile Include="Models\DeliveryProductVM.cs" />
-    <Compile Include="Models\DeliveryVM.cs" />
-    <Compile Include="Models\DespesaVM.cs" />
-    <Compile Include="Models\Entrega_ProdutoVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\RouteVM.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ClientProductValueVM.cs" />
-    <Compile Include="Models\ProdutoPrecoVM.cs" />
-    <Compile Include="Models\ProdutoVM.cs" />
-    <Compile Include="Models\StockProductVM.cs" />
-    <Compile Include="Models\ValorPorProdutoVM.cs" />
-    <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1902,6 +1888,12 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj">
+      <Project>{0ac7e7cc-82d9-4cd8-a221-b596ca948504}</Project>
+      <Name>CtrlBox.Application.ViewModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

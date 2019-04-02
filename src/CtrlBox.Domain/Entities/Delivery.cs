@@ -15,7 +15,6 @@ namespace CtrlBox.Domain.Entities
         public string CreatedBy { get; set; }
         public string FinalizedBy { get; set; }
 
-
         public virtual Route Route { get; set; }
 
         public virtual ICollection<Expense> Expenses { get; set; }
@@ -26,9 +25,20 @@ namespace CtrlBox.Domain.Entities
 
         public Delivery()
         {
+            Init();
+
             this.Expenses = new HashSet<Expense>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
             this.Sales = new HashSet<Sale>();
+        }
+
+        public void Init()
+        {
+            this.IsFinalized = false;
+            this.Id = Guid.NewGuid();
+            this.DtStart = DateTime.Now;
+            this.CreatedBy = "Juliano";
+            this.FinalizedBy = "Juliano";
         }
     }
 }

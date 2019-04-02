@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace CtrlBox.UI.WebMvc.Models
+namespace CtrlBox.Application.ViewModel
 {
     public class DeliveryVM : ViewModelBase
     {

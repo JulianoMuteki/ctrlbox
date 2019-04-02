@@ -1,9 +1,7 @@
-﻿using CtrlBox.UI.WebMvc.EndPoints;
-using CtrlBox.UI.WebMvc.Models;
+﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.UI.WebMvc.EndPoints;
+using CtrlBox.UI.WebMvc.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CtrlBox.UI.WebMvc.Controllers
@@ -114,11 +112,14 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitAdicionarClientes(string linhaID, string clientesIDs)
+        public ActionResult SubmitAdicionarClientes(string linhaID, string[] clientesIDs)
         {
             try
             {
-                var clientesVM = _apiRoute.ConnectRouteToClient(new RouteVM(linhaID, clientesIDs));
+                JsonSerialize jsonS = new JsonSerialize();
+                var routesClientsVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
+
+                var clientesVM = _apiRoute.ConnectRouteToClient(new RouteVM() { DT_RowId = linhaID, RoutesClients = routesClientsVM });
 
                 return Json(new
                 {

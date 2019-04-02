@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CtrlBox.Application.ViewModels;
+using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Entities;
 
 namespace CtrlBox.Application.AutoMapper

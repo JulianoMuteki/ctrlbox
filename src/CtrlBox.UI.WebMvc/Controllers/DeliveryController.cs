@@ -1,10 +1,7 @@
-﻿using CtrlBox.UI.WebMvc.EndPoints;
+﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.UI.WebMvc.EndPoints;
 using CtrlBox.UI.WebMvc.Helpers;
-using CtrlBox.UI.WebMvc.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CtrlBox.UI.WebMvc.Controllers

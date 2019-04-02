@@ -40,7 +40,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.Post(CtrlBox.Application.ViewModels.ClientVM)">
+        <member name="M:CtrlBox.Services.Api.Controllers.ClientController.Post(CtrlBox.Application.ViewModel.ClientVM)">
             <summary>
             
             </summary>
@@ -67,6 +67,11 @@
             <param name="idRoute"></param>
             <returns>Guid</returns>
         </member>
+        <member name="T:CtrlBox.Services.Api.Controllers.DeliveryController">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.#ctor(CtrlBox.Domain.Interfaces.Application.IDeliveryApplicationService,AutoMapper.IMapper)">
             <summary>
             
@@ -87,12 +92,25 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Post(CtrlBox.Application.ViewModels.DeliveryVM)">
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Post(CtrlBox.Application.ViewModel.DeliveryVM)">
             <summary>
             
             </summary>
-            <param name="DeliveryVM"></param>
+            <param name="deliveryVM"></param>
             <returns></returns>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Put(System.Int32,System.String)">
+             <summary>
+            
+             </summary>
+             <param name="id"></param>
+             <param name="value"></param>
+        </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Delete(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
         </member>
         <member name="T:CtrlBox.Services.Api.Controllers.ProductController">
             <summary>
@@ -119,14 +137,14 @@
             <param name="id">Guid</param>
             <returns>ProductVM</returns>
         </member>
-        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Post(CtrlBox.Application.ViewModels.ProductVM)">
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Post(CtrlBox.Application.ViewModel.ProductVM)">
             <summary>
             Create Product
             </summary>
             <param name="productVM">ProductVM</param>
             <returns>IActionResult</returns>
         </member>
-        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Put(CtrlBox.Application.ViewModels.ProductVM)">
+        <member name="M:CtrlBox.Services.Api.Controllers.ProductController.Put(CtrlBox.Application.ViewModel.ProductVM)">
             <summary>
             Update Product
             </summary>
@@ -164,7 +182,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:CtrlBox.Services.Api.Controllers.RouteController.Post(CtrlBox.Application.ViewModels.RouteVM)">
+        <member name="M:CtrlBox.Services.Api.Controllers.RouteController.Post(CtrlBox.Application.ViewModel.RouteVM)">
             <summary>
             
             </summary>

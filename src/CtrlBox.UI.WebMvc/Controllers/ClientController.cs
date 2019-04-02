@@ -1,9 +1,5 @@
-﻿using CtrlBox.UI.WebMvc.EndPoints;
-using CtrlBox.UI.WebMvc.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.UI.WebMvc.EndPoints;
 using System.Web.Mvc;
 
 namespace CtrlBox.UI.WebMvc.Controllers
@@ -40,7 +36,7 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ClienteVM produto)
+        public ActionResult Create(ClientVM produto)
         {
             var uri = _api.Create(produto);
 
@@ -49,7 +45,7 @@ namespace CtrlBox.UI.WebMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(ClienteVM produtoVM)
+        public ActionResult Edit(ClientVM produtoVM)
         {
             var uri = _api.Update(produtoVM);
 

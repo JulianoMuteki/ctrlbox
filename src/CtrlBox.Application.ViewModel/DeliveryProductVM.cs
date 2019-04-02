@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Text;
 
-namespace CtrlBox.UI.WebMvc.Models
+namespace CtrlBox.Application.ViewModel
 {
     public class DeliveryProductVM
     {
@@ -11,5 +10,8 @@ namespace CtrlBox.UI.WebMvc.Models
         public Guid ProductID { get; set; }
 
         public int Amount { get; set; }
+
+        public DeliveryVM DeliveryVM { get; set; }
+        public ProductVM ProductVM { get; set; }
     }
 }

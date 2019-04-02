@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using CtrlBox.Application.ViewModels;
+using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Application.AutoMapper
 {

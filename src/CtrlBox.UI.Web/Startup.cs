@@ -35,6 +35,11 @@ namespace CtrlBox.UI.Web
             services.AddAutoMapperSetup();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddMvc().AddJsonOptions(options =>
+                                    {
+                                    options.SerializerSettings.ContractResolver
+                                        = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                                    });
             RegisterServices(services);
         }
 

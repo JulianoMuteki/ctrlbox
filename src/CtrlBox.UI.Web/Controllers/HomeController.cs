@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CtrlBox.UI.Web.Models;
+using CtrlBox.Application.ViewModel;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -12,7 +13,7 @@ namespace CtrlBox.UI.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return View( new List<ClientVM>());
         }
 
         public IActionResult Privacy()

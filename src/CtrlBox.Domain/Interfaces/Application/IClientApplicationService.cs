@@ -10,5 +10,6 @@ namespace CtrlBox.Domain.Interfaces.Application
 
         ICollection<Client> GetAvailable(Guid routeID);
         ICollection<Client> GetNotAvailable(Guid idRoute);
+        ICollection<Client> GetByRouteID(Guid routeID);
     }
 }

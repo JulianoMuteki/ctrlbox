@@ -34,6 +34,7 @@ namespace CtrlBox.UI.Web
 
             services.AddAutoMapperSetup();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddXmlSerializerFormatters();
 
             services.AddMvc().AddJsonOptions(options =>
                                     {

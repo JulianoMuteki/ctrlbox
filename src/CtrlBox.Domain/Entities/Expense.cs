@@ -13,8 +13,11 @@ namespace CtrlBox.Domain.Entities
 
         public string Description { get; set; }
 
-        public virtual Delivery Delivery { get; set; }
+        public Delivery Delivery { get; set; }
 
+        public Expense()
+        {
 
+        }
     }
 }

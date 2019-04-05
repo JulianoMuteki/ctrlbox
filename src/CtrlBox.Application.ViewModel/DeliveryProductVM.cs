@@ -11,7 +11,7 @@ namespace CtrlBox.Application.ViewModel
 
         public int Amount { get; set; }
 
-        public DeliveryVM DeliveryVM { get; set; }
-        public ProductVM ProductVM { get; set; }
+        public DeliveryVM Delivery { get; set; }
+        public ProductVM Product { get; set; }
     }
 }

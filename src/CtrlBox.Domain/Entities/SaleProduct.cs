@@ -14,8 +14,12 @@ namespace CtrlBox.Domain.Entities
         public Guid SaleID { get; set; }
         public Guid ProductID { get; set; }
 
-        public virtual Product Product { get; set; }
-        public virtual Sale Sale { get; set; }
+        public Product Product { get; set; }
+        public Sale Sale { get; set; }
 
+        public SaleProduct()
+        {
+
+        }
     }
 }

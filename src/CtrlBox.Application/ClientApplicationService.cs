@@ -5,6 +5,7 @@ using CtrlBox.Domain.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace CtrlBox.Application
 {
@@ -78,6 +79,11 @@ namespace CtrlBox.Application
         public ICollection<Client> GetNotAvailable(Guid idRoute)
         {
             return _unitOfWork.RepositoryCustom<IClientRepository>().GetNotAvailable(idRoute);
+        }
+
+        public ICollection<Client> GetByRouteID(Guid routeID)
+        {
+            return _unitOfWork.RepositoryCustom<IClientRepository>().FindAll(x => x.RoutesClients.Where(r => r.RouteID == routeID).Select(c => c.ClientID).Contains(x.Id));
         }
     }
 }

@@ -13,5 +13,9 @@ namespace CtrlBox.Domain.Entities
         public Delivery Delivery { get; set; }
         public Product Product { get; set; }
 
+        public DeliveryProduct()
+        {
+
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -19,7 +18,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<Sale> Sales { get; set; }
-        public virtual ICollection<RouteClient> RoutesClients { get; set; }
+        public ICollection<RouteClient> RoutesClients { get; set; }
 
         public Client()
         {

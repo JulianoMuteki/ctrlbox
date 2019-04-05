@@ -9,7 +9,7 @@ namespace CtrlBox.Domain.Entities
     {
         public int AmountBoxes { get; set; }
 
-        public virtual ICollection<StockProduct> StocksProducts { get; set; }
+        public ICollection<StockProduct> StocksProducts { get; set; }
 
         public Stock()
         {

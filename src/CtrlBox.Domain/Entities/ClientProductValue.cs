@@ -13,5 +13,9 @@ namespace CtrlBox.Domain.Entities
         public Client Client { get; set; }
 
         public float Price { get; set; }
+        public ClientProductValue()
+        {
+                
+        }
     }
 }

@@ -3,28 +3,28 @@
 }
 
 <script type="text/javascript">
+
+    function getElementRelation(url) {
+        return '<a href="' + url + '" class="btn mini"><i class="icon-search"></i> View</a>';
+    }
+
     jQuery(document).ready(function () {
 
         var url = '@Url.Content("~/Delivery/AjaxHandlerEntregas")';
 
         var oTable = $('#tbClientes').dataTable({
-            bJQueryUI: false,
-            "sPaginationType": "full_numbers",
             "sAjaxSource": url,
-            "bProcessing": true,
+            "bPaginate": false,
             "bAutoWidth": false,
-            "bDestroy": true,
+            bFilter: false, bInfo: false,
             "aoColumns": [
                         {
                             "mData": null,
-                            //  sClass: "checkboxCell",
                             "sType": "html",
-                            "bSortable": false,
-                            sClass: "calc",
                             "mRender": function (data, type, row) {
                                 if (type === 'display') {
-                                    var url = '@Url.Action("ExecutarEntrega", "Delivery")?entregaID=' + data.DT_RowId + '&linhaID=' + data.RouteID;
-                                    return '<a href="'+ url + '" class="glyphicons no-js search"><i></i></a>';
+                                    var url = '@Url.Action("ExecuteDelivery", "Delivery")?entregaID=' + data.DT_RowId + '&linhaID=' + data.RouteID;
+                                    return getElementRelation(url);
                                 }
                                 return data;
                             }

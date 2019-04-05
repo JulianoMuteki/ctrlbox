@@ -10,10 +10,14 @@ namespace CtrlBox.Domain.Entities
         public Guid StockID { get; set; }
         public Guid ProductID { get; set; }
 
-        public virtual Stock Stock { get; set; }
-        public virtual Product Product { get; set; }
+        public Stock Stock { get; set; }
+        public Product Product { get; set; }
 
         public int Amount { get; set; }
 
+        public StockProduct()
+        {
+
+        }
     }
 }

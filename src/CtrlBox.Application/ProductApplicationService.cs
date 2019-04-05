@@ -1,7 +1,7 @@
 ﻿using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
-using Microsoft.EntityFrameworkCore;
+using CtrlBox.Domain.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,6 +139,11 @@ namespace CtrlBox.Application
             }
 
             return productsStock;
+        }
+
+        public ICollection<DeliveryProduct> GetDeliveryProducts(Guid deliveryID)
+        {
+            return _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryProductsLoad(deliveryID);
         }
     }
 }

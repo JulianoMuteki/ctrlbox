@@ -15,13 +15,13 @@ namespace CtrlBox.Domain.Entities
         public string CreatedBy { get; set; }
         public string FinalizedBy { get; set; }
 
-        public virtual Route Route { get; set; }
+        public  Route Route { get; set; }
 
-        public virtual ICollection<Expense> Expenses { get; set; }
+        public  ICollection<Expense> Expenses { get; set; }
 
-        public virtual ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
+        public  ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
 
-        public virtual ICollection<Sale> Sales { get; set; }
+        public  ICollection<Sale> Sales { get; set; }
 
         public Delivery()
         {

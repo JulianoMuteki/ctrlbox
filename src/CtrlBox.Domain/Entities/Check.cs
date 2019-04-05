@@ -14,5 +14,9 @@ namespace CtrlBox.Domain.Entities
 
         public Sale Sale { get; set; }
 
+        public Check()
+        {
+
+        }
     }
 }

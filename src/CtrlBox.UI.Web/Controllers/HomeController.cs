@@ -16,6 +16,11 @@ namespace CtrlBox.UI.Web.Controllers
             return View( new List<ClientVM>());
         }
 
+        public IActionResult LayputTable()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

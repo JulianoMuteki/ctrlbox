@@ -97,6 +97,8 @@ namespace CtrlBox.Application
             return clientsProducts;
         }
 
+
+
         public int AddProductStock(ICollection<StockProduct> stocksProducts)
         {
             try
@@ -144,6 +146,11 @@ namespace CtrlBox.Application
         public ICollection<DeliveryProduct> GetDeliveryProducts(Guid deliveryID)
         {
             return _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryProductsLoad(deliveryID);
+        }
+
+        public ICollection<ClientProductValue> GetClientsProductsByClientID(Guid clientID)
+        {
+            return _unitOfWork.Repository<ClientProductValue>().FindAll(x => x.ClientID == clientID);
         }
     }
 }

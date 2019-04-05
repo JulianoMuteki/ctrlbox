@@ -75,7 +75,7 @@
                                     return '';
                                 }
                                 else {
-                                     var url = '@Url.Action("Vender", "Delivery")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
+                                     var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
                                     return '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> View</a>';
                                 }
                             }

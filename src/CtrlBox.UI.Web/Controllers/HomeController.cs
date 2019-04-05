@@ -16,7 +16,7 @@ namespace CtrlBox.UI.Web.Controllers
             return View( new List<ClientVM>());
         }
 
-        public IActionResult LayputTable()
+        public IActionResult LayoutTable()
         {
             return View();
         }

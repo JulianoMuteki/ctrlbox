@@ -1,11 +1,14 @@
 ﻿using CtrlBox.Domain.Entities;
+using CtrlBox.Infra.Context.Identity;
 using CtrlBox.Infra.Context.Mapping;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace CtrlBox.Infra.Context
 {
-    public class CtrlBoxContext : DbContext
+    public class CtrlBoxContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }

@@ -7,6 +7,6 @@ namespace CtrlBox.Domain.Interfaces.Application
 {
     public interface IDeliveryApplicationService : IApplicationServiceBase<Delivery>
     {
-        Delivery Add(Delivery entity);
+        
     }
 }

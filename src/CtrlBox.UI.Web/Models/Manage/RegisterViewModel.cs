@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CtrlBox.UI.Web.Models.Role;
+using System.ComponentModel.DataAnnotations;
 
-namespace CtrlBox.UI.Web.Models.Account
+namespace CtrlBox.UI.Web.Models.Manage
 {
     public class RegisterViewModel
     {
@@ -34,5 +35,13 @@ namespace CtrlBox.UI.Web.Models.Account
         //        ErrorMessage = "Phone is required and must be properly formatted.")]
         [Display(Name = "Phone")]
         public string PhoneNumber { get; set; }
+
+
+        public RolesToUsersViewModel RolesToUsersVM { get; set; }
+
+        public RegisterViewModel()
+        {
+            this.RolesToUsersVM = new RolesToUsersViewModel();
+        }
     }
 }

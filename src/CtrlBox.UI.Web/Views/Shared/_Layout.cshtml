@@ -14,9 +14,9 @@
         @Scripts.Render("~/bundles/modernizr")*@
 
     <meta charset="utf-8" />
-    <title>CDE | Controle para seu negócio</title>
+    <title>CtrlBox | Controle para seu negócio</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="" name="CDE" />
+    <meta content="" name="CtrlBox" />
     <meta content="" name="Juliano Cesar Pestili" />
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
@@ -73,8 +73,8 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <!-- BEGIN LOGO -->
-                <a class="brand" target="_blank" href="\\E:\SkyDrive\Projetos\Distribuidora%20Banana\Controle%20de%20Entrega\Metronicztemplate_content\index.html">
-                    <img src="~/img/logo.png" alt="logo" />
+                <a class="brand" target="_blank" href="#">
+                    <img src="~/img/logo_ctrlbox.png" alt="logo" />
                 </a>
                 <!-- END LOGO -->
                 <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -88,8 +88,8 @@
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" src="~/img/avatar1_small.jpg" />
-                            <span class="username">Bob Nilson</span>
+                            <img alt="" src="~/img/jcp.jpg" />
+                            <span class="username">Juliano Pestili</span>
                             <i class="icon-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
@@ -164,6 +164,21 @@
                 </li>
                 <li>
                     <a href="javascript:;">
+                        <i class="icon-lock"></i>
+                        <span class="title">Security</span>
+                        <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            @Html.ActionLink("Manage", "Index", "Manage")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Register", "Register", "Account")
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
                         <i class="icon-cogs"></i>
                         <span class="title">Work</span>
                         <span class="arrow "></span>
@@ -210,7 +225,7 @@
     <!-- BEGIN FOOTER -->
     <div class="footer">
         <div class="footer-inner">
-            copyright &copy 2015 Juliano C. Pestili  ;
+            copyright &copy 2019 - CtrlBox;
         </div>
         <div class="footer-tools">
             <span class="go-top">
@@ -219,7 +234,6 @@
         </div>
     </div>
     <!-- END FOOTER -->
-
 
     <script>
         jQuery(document).ready(function () {

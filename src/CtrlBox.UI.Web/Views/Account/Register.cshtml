@@ -3,54 +3,231 @@
     ViewData["Title"] = "Register";
 }
 
-<section class="content-header">
-    <h1>
-        Register
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Account</a></li>
-        <li class="active">Users</li>
-    </ol>
-</section>
-<!-- Main content -->
-<section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">Manage Users</h3>
+
+<div class="page-content" style="min-height:1029px !important">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Account</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Register</a>
+                    </li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="span3">
+                    <ul class="ver-inline-menu tabbable margin-bottom-10">
+                        <li class="active">
+                            <a data-toggle="tab" href="#tab_1-1">
+                                <i class="icon-cog"></i>
+                                Personal info
+                            </a>
+                            <span class="after"></span>
+                        </li>
+                        <li><a data-toggle="tab" href="#tab_2-2"><i class="icon-picture"></i> Change Avatar</a></li>
+                        <li><a data-toggle="tab" href="#tab_3-3"><i class="icon-lock"></i> Change Password</a></li>
+                        <li><a data-toggle="tab" href="#tab_4-4"><i class="icon-eye-open"></i> Privacity Settings</a></li>
+                        <li><a data-toggle="tab" href="#tab_5-5"><i class="icon-user"></i> Occupation</a></li>
+                    </ul>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="col-md-4">
-                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-                            <h4>Create a new account.</h4>
-                            <hr />
-                            <div asp-validation-summary="All" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="Email"></label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="span9">
+                    <div class="tab-content">
+                        <div id="tab_1-1" class="tab-pane active">
+                            <div style="height: auto;" id="accordion1-1" class="accordion collapse in">
+                                <form asp-action="Register" asp-controller="Account" method="post">
+                                    <label asp-for="FirstName" class="control-label">First Name</label>
+                                    <input asp-for="FirstName" type="text" placeholder="John" class="m-wrap span8">
+                                    <label asp-for="LastName" class="control-label">Last Name</label>
+                                    <input asp-for="LastName" type="text" placeholder="Doe" class="m-wrap span8">
+                                    <label asp-for="PhoneNumber" class="control-label">Mobile Number</label>
+                                    <input asp-for="PhoneNumber" type="text" placeholder="19-99999-9999" class="m-wrap span8">
+                                    <label asp-for="Email" class="control-label">E-mail</label>
+                                    <input asp-for="Email" type="text" placeholder="E-mail" class="m-wrap span8">
+                                    <label asp-for="Password" class="control-label">Password</label>
+                                    <input asp-for="Password" type="password" placeholder="Password" class="m-wrap span8">
+                                    <label asp-for="ConfirmPassword" class="control-label">Re-type Your Password</label>
+                                    <input asp-for="ConfirmPassword" type="password" placeholder="Re-type Your Password" class="m-wrap span8">
+                                    <div class="submit-btn">
+                                        <button type="submit" class="btn green">Register</button>
+                                        <a href="#" class="btn">Cancel</a>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="Password"></label>
-                                <input asp-for="Password" class="form-control" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div id="tab_2-2" class="tab-pane">
+                            <div style="height: auto;" id="accordion2-2" class="accordion collapse in">
+                                <form action="#">
+                                    <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                                    <br>
+                                    <div class="controls">
+                                        <div class="thumbnail" style="width: 291px; height: 170px;">
+                                            <img src="#" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="space10"></div>
+                                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                                        <div class="input-append">
+                                            <div class="uneditable-input">
+                                                <i class="icon-file fileupload-exists"></i>
+                                                <span class="fileupload-preview"></span>
+                                            </div>
+                                            <span class="btn btn-file">
+                                                <span class="fileupload-new">Select file</span>
+                                                <span class="fileupload-exists">Change</span>
+                                                <input type="file" class="default">
+                                            </span>
+                                            <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="controls">
+                                        <span class="label label-important">NOTE!</span>
+                                        <span>You can write some information here..</span>
+                                    </div>
+                                    <div class="space10"></div>
+                                    <div class="submit-btn">
+                                        <a href="#" class="btn green">Submit</a>
+                                        <a href="#" class="btn">Cancel</a>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="ConfirmPassword"></label>
-                                <input asp-for="ConfirmPassword" class="form-control" />
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div id="tab_3-3" class="tab-pane">
+                            <div style="height: auto;" id="accordion3-3" class="accordion collapse in">
+                                <form action="#">
+                                    <label class="control-label">Current Password</label>
+                                    <input type="password" class="m-wrap span8">
+                                    <label class="control-label">New Password</label>
+                                    <input type="password" class="m-wrap span8">
+                                    <label class="control-label">Re-type New Password</label>
+                                    <input type="password" class="m-wrap span8">
+                                    <div class="submit-btn">
+                                        <a href="#" class="btn green">Change Password</a>
+                                        <a href="#" class="btn">Cancel</a>
+                                    </div>
+                                </form>
                             </div>
-                            <button type="submit" class="btn btn-default">Register</button>
-                        </form>
+                        </div>
+                        <div id="tab_4-4" class="tab-pane">
+                            <div style="height: auto;" id="accordion4-4" class="accordion collapse in">
+                                <form action="#">
+                                    <div class="profile-settings row-fluid">
+                                        <div class="span9">
+                                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus..</p>
+                                        </div>
+                                        <div class="control-group span3">
+                                            <div class="controls">
+                                                <label class="radio">
+                                                    <div class="radio"><span><input type="radio" name="optionsRadios1" value="option1"></span></div>
+                                                    Yes
+                                                </label>
+                                                <label class="radio">
+                                                    <div class="radio"><span class="checked"><input type="radio" name="optionsRadios1" value="option2" checked=""></span></div>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end profile-settings-->
+                                    <div class="profile-settings row-fluid">
+                                        <div class="span9">
+                                            <p>Enim eiusmod high life accusamus terry richardson ad squid wolf moon</p>
+                                        </div>
+                                        <div class="control-group span3">
+                                            <div class="controls">
+                                                <label class="checkbox">
+                                                    <div class="checker"><span><input type="checkbox" value=""></span></div> All
+                                                </label>
+                                                <label class="checkbox">
+                                                    <div class="checker"><span><input type="checkbox" value=""></span></div> Friends
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end profile-settings-->
+                                    <div class="profile-settings row-fluid">
+                                        <div class="span9">
+                                            <p>Pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson</p>
+                                        </div>
+                                        <div class="control-group span3">
+                                            <div class="controls">
+                                                <label class="checkbox">
+                                                    <div class="checker"><span><input type="checkbox" value=""></span></div> Yes
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end profile-settings-->
+                                    <div class="profile-settings row-fluid">
+                                        <div class="span9">
+                                            <p>Cliche reprehenderit enim eiusmod high life accusamus terry</p>
+                                        </div>
+                                        <div class="control-group span3">
+                                            <div class="controls">
+                                                <label class="checkbox">
+                                                    <div class="checker"><span><input type="checkbox" value=""></span></div> Yes
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end profile-settings-->
+                                    <div class="profile-settings row-fluid">
+                                        <div class="span9">
+                                            <p>Oiusmod high life accusamus terry richardson ad squid wolf fwopo</p>
+                                        </div>
+                                        <div class="control-group span3">
+                                            <div class="controls">
+                                                <label class="checkbox">
+                                                    <div class="checker"><span><input type="checkbox" value=""></span></div> Yes
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end profile-settings-->
+                                    <div class="space5"></div>
+                                    <div class="submit-btn">
+                                        <a href="#" class="btn green">Save Changes</a>
+                                        <a href="#" class="btn">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="tab_5-5" class="tab-pane">
+                            <div style="height: auto;" id="accordion3-3" class="accordion collapse in">
+                                <form action="#">
+                                    <label class="control-label">Current Password</label>
+                                    <input type="password" class="m-wrap span8">
+                                    <label class="control-label">New Password</label>
+                                    <input type="password" class="m-wrap span8">
+                                    <label class="control-label">Re-type New Password</label>
+                                    <input type="password" class="m-wrap span8">
+                                    <div class="submit-btn">
+                                        <a href="#" class="btn green">Change Password</a>
+                                        <a href="#" class="btn">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <!-- /.box-body -->
+                <!--end span9-->
             </div>
-            <!-- /.box -->
         </div>
-        <!-- /.col -->
+        <!-- END PAGE CONTENT-->
     </div>
-    <!-- /.row -->
-</section>
+    <!-- END PAGE CONTAINER-->
+</div>

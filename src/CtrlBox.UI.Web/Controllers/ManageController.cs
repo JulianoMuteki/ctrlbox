@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace CtrlBox.UI.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
@@ -44,61 +45,26 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            var users = await _userManager.Users.ToListAsync();
+            if (users == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var model = new IndexViewModel
+            List<IndexViewModel> usersModel = new List<IndexViewModel>();
+            foreach (var user in users)
             {
-                Username = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(IndexViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var email = user.Email;
-            if (model.Email != email)
-            {
-                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                if (!setEmailResult.Succeeded)
+                usersModel.Add(new IndexViewModel
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
-                }
-            }
+                    Username = $"{ user.FirstName} { user.LastName}",
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    IsEmailConfirmed = user.EmailConfirmed,
+                    StatusMessage = StatusMessage
+                });
 
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
             }
-
-            StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            return View(usersModel);
         }
 
         [HttpPost]

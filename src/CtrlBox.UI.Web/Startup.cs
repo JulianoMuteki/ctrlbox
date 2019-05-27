@@ -44,10 +44,10 @@ namespace CtrlBox.UI.Web
                 // Password settings
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 6;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredUniqueChars = 7; //Pa$$w0rd
 
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);

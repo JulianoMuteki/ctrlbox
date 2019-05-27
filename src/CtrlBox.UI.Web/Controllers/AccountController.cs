@@ -211,13 +211,13 @@ namespace CtrlBox.UI.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                  //  var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                   //  var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
                     //  await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 

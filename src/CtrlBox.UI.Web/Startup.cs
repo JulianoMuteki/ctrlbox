@@ -78,15 +78,16 @@ namespace CtrlBox.UI.Web
 
             services.AddAutoMapperSetup();
             // Add application services.
-            services.AddMvc().AddRazorPagesOptions(options => {
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc().AddXmlSerializerFormatters();
 
             services.AddMvc().AddJsonOptions(options =>
                                     {
-                                    options.SerializerSettings.ContractResolver
-                                        = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                                        options.SerializerSettings.ContractResolver
+                                            = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                                     });
             RegisterServices(services);
         }
@@ -126,5 +127,6 @@ namespace CtrlBox.UI.Web
             InfraBootStrapperModule.RegisterServices(services);
             ApplicationBootStrapperModule.RegisterServices(services);
         }
+
     }
 }

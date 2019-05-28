@@ -5,7 +5,6 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using CtrlBox.UI.Web.Models.Manage;
 using CtrlBox.Infra.Context.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -60,6 +59,7 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 usersModel.Add(new IndexViewModel
                 {
+                    IdUser = user.Id.ToString(),
                     Username = $"{ user.FirstName} { user.LastName}",
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
@@ -72,12 +72,21 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult CreateUser(string idUser)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            RegisterViewModel registerModel = GetUserViewModel(idUser);
+            return View(registerModel);
+        }
 
+        private RegisterViewModel GetUserViewModel(string idUser)
+        {
             RegisterViewModel registerModel = new RegisterViewModel();
 
+            if (!string.IsNullOrEmpty(idUser))
+            {
+                ApplicationUser model = _userManager.FindByIdAsync(idUser).Result;
+                registerModel = new RegisterViewModel() { IdUser = model.Id, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName };
+            }
             registerModel.RolesToUsersVM.AllRoles = _roleManager.Roles.ToList()
                                                  .Select(role => new SelectListItem
                                                  {
@@ -91,12 +100,12 @@ namespace CtrlBox.UI.Web.Controllers
                                                        Value = user.Id.ToString(),
                                                        Text = user.UserName
                                                    }).ToList();
-            return View(registerModel);
+            return registerModel;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> CreateUser(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -113,15 +122,33 @@ namespace CtrlBox.UI.Web.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateUser(RegisterViewModel model, string returnUrl = null)
+        {
+                ApplicationUser user = await _userManager.FindByIdAsync(model.IdUser.ToString());
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.PhoneNumber;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    _logger.LogError("Failure User UpdateAsync.");
+                }
+
+            // If we got this far, something failed, redisplay form
+            RegisterViewModel registerModel = GetUserViewModel(model.IdUser.ToString());
+            return View(registerModel);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
@@ -138,7 +165,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-           // var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
+            // var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
             var email = user.Email;
             // await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 

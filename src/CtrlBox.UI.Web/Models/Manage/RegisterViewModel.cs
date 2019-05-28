@@ -1,10 +1,13 @@
 ﻿using CtrlBox.UI.Web.Models.Role;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace CtrlBox.UI.Web.Models.Manage
 {
     public class RegisterViewModel
     {
+        public Guid IdUser { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

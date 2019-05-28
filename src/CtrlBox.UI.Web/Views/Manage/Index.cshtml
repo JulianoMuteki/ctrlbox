@@ -56,7 +56,7 @@
                                         <td>@item.PhoneNumber</td>
                                         <td>@item.Email</td>
                                         <td>
-                                            <a href="#" class="btn mini green"><i class="icon-edit"></i> Edit</a>
+                                            <a asp-action="CreateUser" asp-route-idUser="@item.IdUser" class="btn mini green"><i class="icon-edit"></i> Edit</a>
                                             <a href="#" class="btn mini red"><i class="icon-trash"></i> Delete</a>
                                             <a href="#" class="btn mini yellow"><i class="icon-share"></i> Disable</a>
                                         </td>

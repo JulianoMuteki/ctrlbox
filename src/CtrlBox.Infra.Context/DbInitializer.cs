@@ -1,8 +1,12 @@
-﻿using CtrlBox.Domain.Security;
+﻿using CtrlBox.Domain.Entities;
+using CtrlBox.Domain.Interfaces.Application;
+using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace CtrlBox.Infra.Context
@@ -13,12 +17,13 @@ namespace CtrlBox.Infra.Context
         {
             try
             {
-                var userManager = serviceProvider.    GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = serviceProvider.    GetRequiredService<RoleManager<ApplicationRole>>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
-                SeedData    (userManager, roleManager);
+                SeedData(userManager, roleManager);
+                SeedData(serviceProvider);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -65,7 +70,65 @@ namespace CtrlBox.Infra.Context
                         roleResult = roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, $"{ roleName },{ claimName }")).Result;
                     }
                 }
-            }          
+            }
+        }
+
+        public static void SeedData(IServiceProvider serviceProvider)
+        {
+            var clientService = serviceProvider.GetRequiredService<IClientApplicationService>();
+            if (clientService.GetAll().Count == 0)
+            {
+                for (int i = 0; i < 50; i++)
+                {
+                    Client client = new Client();
+                    client.Name = $"Cliente - {i}";
+                    client.Address = $"Rua José Nº {i}";
+                    client.BalanceDue = 0;
+                    client.Contact = $"Contanto - {i}";
+                    client.IsDelivery = false;
+                    client.Phone = "19-99999-9999";
+                    client.QuantityBoxes = 0;
+                    clientService.Add(client);
+                }
+
+                var productService = serviceProvider.GetRequiredService<IProductApplicationService>();
+
+                for (int i = 0; i < 5; i++)
+                {
+                    Product product = new Product();
+                    product.Description = $"Descrição nanica {i}";
+                    product.Name = $"Banana nanica - {i}";
+                    product.Weight = i;
+                    productService.Add(product);
+                }
+                for (int i = 0; i < 5; i++)
+                {
+                    Product product = new Product();
+                    product.Description = $"Descrição maçã {i}";
+                    product.Name = $"Banana maçã - {i}";
+                    product.Weight = i;
+                    productService.Add(product);
+                }
+                for (int i = 0; i < 5; i++)
+                {
+                    Product product = new Product();
+                    product.Description = $"Descrição prata {i}";
+                    product.Name = $"Banana prata - {i}";
+                    product.Weight = i;
+                    productService.Add(product);
+                }
+
+                var routeService = serviceProvider.GetRequiredService<IRouteApplicationService>();
+                for (int i = 0; i < 10; i++)
+                {
+                    Route route = new Route();
+                    route.Name = $"Rota - {1}";
+                    route.KmDistance = 100 + 1;
+                    route.Truck = $"Costallation - {i}";
+                    route.HasOpenDelivery = false;
+                    routeService.Add(route);
+                }
+            }
         }
     }
 }

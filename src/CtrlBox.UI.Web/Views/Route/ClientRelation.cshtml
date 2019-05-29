@@ -30,12 +30,8 @@
     function carregarTabela(id, url) {
 
         var oTable = $(id).dataTable({
-            bJQueryUI: false,
-            "sPaginationType": "full_numbers",
             "sAjaxSource": url,
-            "bPaginate": false,
-            "bAutoWidth": false,
-            bFilter: false, bInfo: false,
+            "bProcessing": true,
             "bDestroy": true,
             "aoColumns": [
                             {
@@ -57,6 +53,26 @@
                                     return data;
                                 }
                             }
+            ],
+            "aLengthMenu": [
+                [5, 15, 20, -1],
+                [5, 15, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "iDisplayLength": 5,
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ records per page",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }
             ],
             "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                 oSettings.jqXHR = $.ajax({
@@ -87,22 +103,29 @@
         carregarTabela('#tbRemover', urlClientesNaoDisponiveis);
     }
 
-
+    (function ($) {
+        $.fn.serializeFormJSON = function () {
+            var lista = [];
+            var a = this.serializeArray();
+            $.each(a, function () {
+                lista.push({ "ClientID": this.value, "RouteID": '@routeID' });
+            });
+            return JSON.stringify(lista);
+        };
+    })(jQuery);
 
     jQuery(document).ready(function () {
         carregarTabelas('@routeID');
 
         $('#btnSubmitAdicionar').click(function () {
-
             var oTableAdicionar = $('#tbAdicionar').dataTable();
-            var sData = $("input[name='ClienteID']:checked", oTableAdicionar.fnGetNodes()).serialize();
-            var myJsonString = JSON.stringify(tb);
+            var data = $(oTableAdicionar.$("input[name='ClienteID']:checked")).serializeFormJSON();
 
             $.ajax({
                 url: '@Url.Content("~/Route/SubmitAdicionarClientes")',
                 type: 'POST',
                 dataType: 'json',
-                data: { routeID: '@routeID', clientesIDs: myJsonString },
+                data: { linhaID: '@routeID', clientesIDs: data },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
@@ -111,8 +134,7 @@
                 }
             });
 
-            return false;
-
+           return false;
         });
 
         $('#btnSubmitRemover').click(function () {

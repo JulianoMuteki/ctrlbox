@@ -122,7 +122,7 @@ namespace CtrlBox.Infra.Context
                 for (int i = 0; i < 10; i++)
                 {
                     Route route = new Route();
-                    route.Name = $"Rota - {1}";
+                    route.Name = $"Rota - {i}";
                     route.KmDistance = 100 + 1;
                     route.Truck = $"Costallation - {i}";
                     route.HasOpenDelivery = false;

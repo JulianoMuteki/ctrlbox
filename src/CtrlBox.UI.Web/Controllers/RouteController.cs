@@ -127,11 +127,11 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var routesClientsVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
+                var routeClientVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
 
-                var routeVM = new RouteVM() { DT_RowId = linhaID, RoutesClients = routesClientsVM };
-                var route = _mapper.Map<Route>(routeVM);
-                _routeApplicationService.ConnectRouteToClient(route, routeVM.ClientesIDs);
+               // var routeVM = new RouteVM() { DT_RowId = linhaID, RoutesClients = routesClientsVM };
+                var routeClient = _mapper.Map<List<RouteClient>>(routeClientVM);
+                _routeApplicationService.ConnectRouteToClient(routeClient);
 
                 return Json(new
                 {

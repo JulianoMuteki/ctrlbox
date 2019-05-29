@@ -11,5 +11,6 @@ namespace CtrlBox.Application.ViewModel
 
         public RouteVM Route { get; set; }
         public ClientVM Client { get; set; }
+
     }
 }

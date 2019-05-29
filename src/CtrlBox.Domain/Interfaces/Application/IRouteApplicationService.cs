@@ -5,6 +5,6 @@ namespace CtrlBox.Domain.Interfaces.Application
 {
     public interface IRouteApplicationService : IApplicationServiceBase<Route>
     {
-        ICollection<RouteClient> ConnectRouteToClient(Route route, string clientesIDs);
+        ICollection<RouteClient> ConnectRouteToClient(ICollection<RouteClient> routesClients);
     }
 }

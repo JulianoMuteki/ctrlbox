@@ -144,6 +144,24 @@
                 </li>
                 <li>
                     <a href="javascript:;">
+                        <i class="icon-lock"></i>
+                        <span class="title">Security</span>
+                        <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            @Html.ActionLink("Panel Users", "Index", "Manage")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Login", "Login", "Account")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Authorizations", "Index", "Role")
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
                         <i class="icon-cogs"></i>
                         <span class="title">Cadastros</span>
                         <span class="arrow "></span>
@@ -163,24 +181,6 @@
                         </li>
                     </ul>
 
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-lock"></i>
-                        <span class="title">Security</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            @Html.ActionLink("Panel Users", "Index", "Manage")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Login", "Login", "Account")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Authorizations", "Index", "Role")
-                        </li>
-                    </ul>
                 </li>
                 <li>
                     <a href="javascript:;">

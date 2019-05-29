@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
     @{
-                var linhaID = ViewData["linhaID"];
+                var routeID = ViewData["routeID"];
             }
     function handleAjaxError(xhr, textStatus, error) {
 
@@ -80,17 +80,17 @@
 
     function carregarTabelas(linhaID) {
 
-        var urlClientesDisponiveis = '@Url.Content("~/Route/AjaxHandlerClientesDisponiveis")?linhaID=' + '@linhaID';
+        var urlClientesDisponiveis = '@Url.Content("~/Route/AjaxHandlerClientesDisponiveis")?routeID=' + '@routeID';
         carregarTabela('#tbAdicionar', urlClientesDisponiveis);
 
-        var urlClientesNaoDisponiveis = '@Url.Content("~/Route/AjaxHandlerClientesNaoDisponiveis")?linhaID=' + '@linhaID';
+        var urlClientesNaoDisponiveis = '@Url.Content("~/Route/AjaxHandlerClientesNaoDisponiveis")?routeID=' + '@routeID';
         carregarTabela('#tbRemover', urlClientesNaoDisponiveis);
     }
 
 
 
     jQuery(document).ready(function () {
-        carregarTabelas('@linhaID');
+        carregarTabelas('@routeID');
 
         $('#btnSubmitAdicionar').click(function () {
 
@@ -102,11 +102,11 @@
                 url: '@Url.Content("~/Route/SubmitAdicionarClientes")',
                 type: 'POST',
                 dataType: 'json',
-                data: { linhaID: '@linhaID', clientesIDs: myJsonString },
+                data: { routeID: '@routeID', clientesIDs: myJsonString },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
-                        carregarTabelas('@linhaID');
+                        carregarTabelas('@routeID');
                     }
                 }
             });
@@ -122,11 +122,11 @@
                 url: '@Url.Content("~/Route/SubmitRemoverClientes")',
                 type: 'POST',
                 dataType: 'json',
-                data: { linhaID: '@linhaID', clientesIDs: sData },
+                data: { routeID: '@routeID', clientesIDs: sData },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
-                        carregarTabelas('@linhaID');
+                        carregarTabelas('@routeID');
                     }
                 }
             });

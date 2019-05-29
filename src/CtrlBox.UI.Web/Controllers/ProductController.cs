@@ -153,10 +153,11 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 var prodsStock = _productService.GetProductsStock();
-                ICollection<StockProductVM> productsStockVM = _mapper.Map<List<StockProductVM>>(prodsStock);
+                IList<StockProductVM> productsStocks = _mapper.Map<List<StockProductVM>>(prodsStock);
                 return Json(new
                 {
-                    aaData = productsStockVM
+                    aaData = productsStocks.Select(x=> new { x.StockID, x.ProductID, x.Amount, ProductName = x.Product.Name }).ToList(),
+                    success = true
                 });
             }
             catch (Exception ex)

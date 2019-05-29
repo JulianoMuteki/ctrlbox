@@ -121,7 +121,18 @@
                             }
                             return data;
                         }
-                    }
+                    },
+                      {
+                          "mData": null,
+                          "sType": "html",
+                          "mRender": function (data, type, row) {
+                              if (type === 'display') {
+                                  var url = '/Product/ClientProductValue?clienteID=' + data.DT_RowId;
+                                  return '<a href="' + url + '" class="btn mini"><i class="icon-link"></i> Relation</a>';
+                              }
+                              return data;
+                          }
+                      }
                 ],
                 "aLengthMenu": [
                     [5, 15, 20, -1],

@@ -2,15 +2,14 @@
 
 namespace CtrlBox.Application.ViewModel
 {
-    public class StockProductVM
+    public class StockProductVM : ViewModelBase
     {
         public Guid StockID { get; set; }
         public Guid ProductID { get; set; }
 
-        public virtual StockVM Stock { get; set; }
-        public virtual ProductVM Product { get; set; }
+        public StockVM Stock { get; set; }
+        public ProductVM Product { get; set; }
 
         public int Amount { get; set; }
-
     }
 }

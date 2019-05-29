@@ -74,7 +74,7 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult ClientRelation(string linhaID)
         {
             //caso esta linha tenha alguma entrega pendente, não pode remover o cliente
-            ViewBag.linhaID = linhaID;
+            ViewData["routeID"] = linhaID;
 
             var route = _routeApplicationService.GetById(new Guid(linhaID));
             var routeVM = _mapper.Map<RouteVM>(route);

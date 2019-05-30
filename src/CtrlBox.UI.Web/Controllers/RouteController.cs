@@ -129,7 +129,6 @@ namespace CtrlBox.UI.Web.Controllers
                 JsonSerialize jsonS = new JsonSerialize();
                 var routeClientVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
 
-               // var routeVM = new RouteVM() { DT_RowId = linhaID, RoutesClients = routesClientsVM };
                 var routeClient = _mapper.Map<List<RouteClient>>(routeClientVM);
                 _routeApplicationService.ConnectRouteToClient(routeClient);
 

@@ -82,13 +82,18 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                IList<ClientProductValueVM> valoresProdutos = new List<ClientProductValueVM>();
+                var productsClients = _productService.GetClientsProductsByClientID(new Guid(clienteID));
+                IList<ClientProductValueVM> productsClientsVMs = _mapper.Map<List<ClientProductValueVM>>(productsClients);
+
                 var products = _productService.GetAll();
                 IList<ProductVM> productVMs = _mapper.Map<List<ProductVM>>(products);
 
+                IList<ClientProductValueVM> valoresProdutos = new List<ClientProductValueVM>();
                 foreach (var product in productVMs)
                 {
-                    valoresProdutos.Add(new ClientProductValueVM() { Product = product });
+                    var prodValueExits = productsClientsVMs.Where(x => x.ProductID.ToString() == product.DT_RowId).FirstOrDefault();
+
+                    valoresProdutos.Add(new ClientProductValueVM() { Product = product, ClientID = new Guid(clienteID), Price = (prodValueExits != null ? prodValueExits.Price : 0) });
                 }
                 return Json(new
                 {
@@ -102,38 +107,14 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitValorPorProduto(string clienteID, string lista)
+        public ActionResult SubmitValorPorProduto(string clienteID, string[] lista)
         {
-            var valores = lista.Split('&').ToList();
+            JsonSerialize jsonS = new JsonSerialize();
+            var clientsProductsValuesVM = jsonS.JsonDeserialize<ClientProductValueVM>(lista[0]);
+            var clientsProductsValues = _mapper.Map<ICollection<ClientProductValue>>(clientsProductsValuesVM);
 
-            ICollection<ClientProductValueVM> productsClients = new List<ClientProductValueVM>();
+            _productService.ConnectRouteToClient(clientsProductsValues);
 
-            foreach (var item in valores)
-            {
-                var val = item.Split('=');
-
-                if (!string.IsNullOrEmpty(val[1]))
-                {
-                    string id = val[0];
-
-                    Guid idcliente = new Guid(clienteID);
-                    Guid idProduto = new Guid(id);
-
-                    ClientProductValueVM x = new ClientProductValueVM()
-                    {
-                        ClientID = idcliente,
-                        ProductID = idProduto,
-                        Price = float.Parse(val[1])
-                    };
-
-                    productsClients.Add(x);
-                }
-            }
-
-            var clientsProducts = _mapper.Map<ICollection<ClientProductValue>>(productsClients);
-
-             _productService.ConnectRouteToClient(clientsProducts);
-           
             return Json(new
             {
                 success = true,
@@ -156,7 +137,7 @@ namespace CtrlBox.UI.Web.Controllers
                 IList<StockProductVM> productsStocks = _mapper.Map<List<StockProductVM>>(prodsStock);
                 return Json(new
                 {
-                    aaData = productsStocks.Select(x=> new { x.StockID, x.ProductID, x.Amount, ProductName = x.Product.Name }).ToList(),
+                    aaData = productsStocks.Select(x => new { x.StockID, x.ProductID, x.Amount, ProductName = x.Product.Name }).ToList(),
                     success = true
                 });
             }

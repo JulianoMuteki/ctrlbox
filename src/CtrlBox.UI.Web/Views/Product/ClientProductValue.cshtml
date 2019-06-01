@@ -1,39 +1,33 @@
 ﻿@model CtrlBox.Application.ViewModel.ClientVM
-
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <script type="text/javascript">
-    @{ var clienteID = Model.DT_RowId;
-
+    @{ var clientID = Model.DT_RowId;
            }
-
 
     (function ($) {
         $.fn.serializeFormJSON = function () {
-            var lista = [];
+            var list = [];
             var a = this.serializeArray();
             $.each(a, function () {
-                lista.push({ "ClientID": '@clienteID', "ProductID": this.name, "Price": this.value });
+                list.push({ "ClientID": '@clientID', "ProductID": this.name, "Price": this.value });
             });
-            return JSON.stringify(lista);
+            return JSON.stringify(list);
         };
     })(jQuery);
 
-
     jQuery(document).ready(function () {
-
         $('#btnSubmit').click(function () {
-            var oTableAdicionar = $('#tbValorPorProduto').dataTable();
-            var sData = oTableAdicionar.$('input.PriceProduct').serializeFormJSON();
-            console.log(sData);
+            var oTableAdd = $('#tbProductValue').dataTable();
+            var sData = oTableAdd.$('input.PriceProduct').serializeFormJSON();
 
             $.ajax({
                 url: '@Url.Content("~/Product/SubmitValorPorProduto")',
                 type: 'POST',
                 dataType: 'json',
-                data: { clienteID: '@clienteID', lista: sData },
+                data: { listJSON: sData },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
@@ -42,12 +36,11 @@
             });
 
             return false;
-
         });
 
-        var url = '@Url.Content("~/Product/AjaxHandlerValorPorProduto")?clienteID=' + '@clienteID';
+        var url = '@Url.Content("~/Product/AjaxHandlerProductValue")?clientID=' + '@clientID';
 
-        var oTable = $('#tbValorPorProduto').dataTable({
+        var oTable = $('#tbProductValue').dataTable({
             "sAjaxSource": url,
             "bProcessing": true,
             "bDestroy": true,
@@ -100,17 +93,15 @@
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
-
             <div class="span8">
                 <!-- BEGIN SAMPLE TABLE PORTLET-->
                 <div class="portlet box green">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-cogs"></i>Cliente: <span> @Model.Name</span></div>
-
                     </div>
                     <div class="portlet-body">
                         <form id="form">
-                            <table id="tbValorPorProduto" class="table table-hover">
+                            <table id="tbProductValue" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Produto</th>

@@ -127,7 +127,7 @@
                           "sType": "html",
                           "mRender": function (data, type, row) {
                               if (type === 'display') {
-                                  var url = '/Product/ClientProductValue?clienteID=' + data.DT_RowId;
+                                  var url = '/Product/ClientProductValue?clientID=' + data.DT_RowId;
                                   return '<a href="' + url + '" class="btn mini"><i class="icon-link"></i> Price product</a>';
                               }
                               return data;

@@ -71,18 +71,18 @@ namespace CtrlBox.UI.Web.Controllers
         #endregion
 
         #region ClientProductValue
-        public ActionResult ClientProductValue(string clienteID)
+        public ActionResult ClientProductValue(string clientID)
         {
-            var client = _clientService.GetById(new Guid(clienteID));
+            var client = _clientService.GetById(new Guid(clientID));
             ClientVM clientsVM = _mapper.Map<ClientVM>(client);
             return View(clientsVM);
         }
 
-        public ActionResult AjaxHandlerValorPorProduto(string clienteID)
+        public ActionResult AjaxHandlerProductValue(string clientID)
         {
             try
             {
-                var productsClients = _productService.GetClientsProductsByClientID(new Guid(clienteID));
+                var productsClients = _productService.GetClientsProductsByClientID(new Guid(clientID));
                 IList<ClientProductValueVM> productsClientsVMs = _mapper.Map<List<ClientProductValueVM>>(productsClients);
 
                 var products = _productService.GetAll();
@@ -93,7 +93,7 @@ namespace CtrlBox.UI.Web.Controllers
                 {
                     var prodValueExits = productsClientsVMs.Where(x => x.ProductID.ToString() == product.DT_RowId).FirstOrDefault();
 
-                    valoresProdutos.Add(new ClientProductValueVM() { Product = product, ClientID = new Guid(clienteID), Price = (prodValueExits != null ? prodValueExits.Price : 0) });
+                    valoresProdutos.Add(new ClientProductValueVM() { Product = product, ClientID = new Guid(clientID), Price = (prodValueExits != null ? prodValueExits.Price : 0) });
                 }
                 return Json(new
                 {
@@ -107,10 +107,10 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitValorPorProduto(string clienteID, string[] lista)
+        public ActionResult SubmitProductValue(string[] listJSON)
         {
             JsonSerialize jsonS = new JsonSerialize();
-            var clientsProductsValuesVM = jsonS.JsonDeserialize<ClientProductValueVM>(lista[0]);
+            var clientsProductsValuesVM = jsonS.JsonDeserialize<ClientProductValueVM>(listJSON[0]);
             var clientsProductsValues = _mapper.Map<ICollection<ClientProductValue>>(clientsProductsValuesVM);
 
             _productService.ConnectRouteToClient(clientsProductsValues);

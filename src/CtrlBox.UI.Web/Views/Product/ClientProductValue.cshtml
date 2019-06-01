@@ -24,7 +24,7 @@
             var sData = oTableAdd.$('input.PriceProduct').serializeFormJSON();
 
             $.ajax({
-                url: '@Url.Content("~/Product/SubmitValorPorProduto")',
+                url: '@Url.Content("~/Product/SubmitProductValue")',
                 type: 'POST',
                 dataType: 'json',
                 data: { listJSON: sData },
@@ -39,7 +39,6 @@
         });
 
         var url = '@Url.Content("~/Product/AjaxHandlerProductValue")?clientID=' + '@clientID';
-
         var oTable = $('#tbProductValue').dataTable({
             "sAjaxSource": url,
             "bProcessing": true,
@@ -124,7 +123,7 @@
                                 </tbody>
                             </table>
                         </form>
-                        <a href="#" id="btnSubmit" class="btn green"><i class="icon-plus"></i>Salvar</a>
+                        <a href="#" id="btnSubmit" class="btn green"><i class="icon-plus"></i> Salvar</a>
 
                     </div>
                 </div>

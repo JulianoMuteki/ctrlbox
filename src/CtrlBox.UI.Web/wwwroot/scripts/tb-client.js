@@ -1,13 +1,10 @@
 ﻿var TableEditable = function () {
-
     return {
-
         //main function to initiate the module
         init: function (url) {
             function restoreRow(oTable, nRow) {
                 var aData = oTable.fnGetData(nRow);
                 var jqTds = $('>td', nRow);
-
 
                 oTable.fnUpdate(aData.Name, nRow, 0, false);
                 oTable.fnUpdate(aData.QuantityBoxes, nRow, 1, false);
@@ -169,7 +166,7 @@
                 var aiNew = oTable.fnAddData(['', '', '',
                     '<a class="edit" href="">Edit</a>', '<a class="cancel" data-mode="new" href="">Cancel</a>'
                 ]);
-                console.log(aiNew[0]);
+                //console.log(aiNew[0]);
                 var nRow = oTable.fnGetNodes(aiNew[0]);
                 editRow(oTable, nRow);
                 nEditing = nRow;

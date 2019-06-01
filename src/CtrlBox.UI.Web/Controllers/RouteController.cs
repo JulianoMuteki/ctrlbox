@@ -83,7 +83,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
 
-        public ActionResult AjaxHandlerClientesNaoDisponiveis(string routeID)
+        public ActionResult AjaxHandlerCustomersNotAvailable(string routeID)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        public ActionResult AjaxHandlerClientesDisponiveis(string routeID)
+        public ActionResult AjaxHandlerCustomersAvailable(string routeID)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitAdicionarClientes(string linhaID, string[] clientesIDs)
+        public ActionResult SubmitAddClients(string linhaID, string[] clientesIDs)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitRemoverClientes(string linhaID, string clientesIDs)
+        public ActionResult SubmitRemoveClients(string linhaID, string clientesIDs)
         {
             //var clientes = clientesIDs.Split('&').ToList();
             //ModelCodeFirst context = new ModelCodeFirst();

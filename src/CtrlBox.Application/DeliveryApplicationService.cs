@@ -23,15 +23,12 @@ namespace CtrlBox.Application
             foreach (var item in entity.DeliveriesProducts)
             {
                 item.DeliveryID = entity.Id;
-                item.Amount = 33;
-
                 var stockProduct = _unitOfWork.Repository<StockProduct>().Find(x => x.ProductID == item.ProductID);
 
                 stockProduct.Amount -= item.Amount;
                 _unitOfWork.Repository<StockProduct>().Update(stockProduct);
             }
             var delivery = _unitOfWork.Repository<Delivery>().Add(entity);
-
             _unitOfWork.Commit();
 
             return delivery;

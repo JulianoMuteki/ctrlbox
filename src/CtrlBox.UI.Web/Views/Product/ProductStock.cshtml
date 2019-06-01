@@ -3,11 +3,44 @@
 }
 
 <script type="text/javascript" charset="utf-8">
+    @{ var stockID = ViewData["StockID"];
+      }
+
+    (function ($) {
+        $.fn.serializeFormJSON = function () {
+            var list = [];
+            var a = this.serializeArray();
+            $.each(a, function () {
+                console.log(this);
+                list.push({ "StockID": '@stockID', "ProductID": this.name, "Amount": this.value });
+            });
+            return JSON.stringify(list);
+        };
+    })(jQuery);
+
     $(document).ready(function () {
+        $('#btnSubmit').click(function () {
+            var oTableAdd = $('#tbProductStock').dataTable();
+            var sData = oTableAdd.$('input').serializeFormJSON();
+
+            $.ajax({
+                url: '@Url.Content("~/Product/SubmitProductStock")',
+                type: 'POST',
+                dataType: 'json',
+                data: { tbProducts: sData },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Complete');
+                    }
+                }
+            });
+
+            return false;
+        });
 
             var url = '@Url.Content("~/Product/AjaxHandlerProductStock")';
 
-                 var oTable = $('#tbProdutosStock').dataTable({
+                 var oTable = $('#tbProductStock').dataTable({
                 "sAjaxSource": url,
                 "bProcessing": true,
                 "bDestroy": true,
@@ -22,7 +55,7 @@
                         sClass: "calc",
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
-                                return '<input type="text" placeholder="' + row.Amount + '" class="m-wrap small" name="" />'
+                                return '<input type="text" placeholder="' + row.Amount + '" class="m-wrap small" name="' + row.ProductID + '" />'
                             }
                             return data;
                         }
@@ -99,7 +132,7 @@
                     </div>
                     <div class="portlet-body">
                         <form id="form">
-                            <table id="tbProdutosStock" class="table table-hover">
+                            <table id="tbProductStock" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Produto</th>

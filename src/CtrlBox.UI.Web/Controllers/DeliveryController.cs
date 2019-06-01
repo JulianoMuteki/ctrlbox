@@ -30,6 +30,7 @@ namespace CtrlBox.UI.Web.Controllers
         // GET: Delivery
         public ActionResult Index()
         {
+            ViewBag.Stock = "Check stock of the product: XXXXXXXX";
             return View();
         }
 

@@ -126,6 +126,10 @@ namespace CtrlBox.UI.Web.Controllers
         #region ProductStock
         public ActionResult ProductStock()
         {
+            var stock = _productService.GetStock();
+            var stockVM = _mapper.Map<StockVM>(stock);
+
+            ViewData["StockID"] = stockVM.DT_RowId;
             return View();
         }
 
@@ -148,13 +152,14 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitProductStock(string[] tbProdutos)
+        public ActionResult SubmitProductStock(string[] tbProducts)
         {
             JsonSerialize jsonS = new JsonSerialize();
-            var stocksProductsVM = jsonS.JsonDeserialize<StockProductVM>(tbProdutos[0]);
+            var stocksProductsVM = jsonS.JsonDeserialize<StockProductVM>(tbProducts[0]);
 
             var stocksProd = _mapper.Map<ICollection<StockProduct>>(stocksProductsVM);
             var result = _productService.AddProductStock(stocksProd);
+
             return Json(new
             {
                 success = true,

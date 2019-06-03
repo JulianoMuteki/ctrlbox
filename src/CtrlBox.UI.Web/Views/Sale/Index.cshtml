@@ -4,6 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section scriptsViews
+    {
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+}
+
 <script type="text/javascript">
     function handleAjaxError(xhr, textStatus, error) {
 
@@ -224,7 +229,7 @@
             saleObj.ReceivedValue = valorRecebido;
             saleObj.ForwardValue = valorPrazo;
             saleObj.TotalReturnedBoxes = retornoCaixaVazia;
-            
+
             var oTable = $('#tbVenda').dataTable();
             var tbVenda = [];
             $.each(oTable.fnGetNodes(), function (index, value) {

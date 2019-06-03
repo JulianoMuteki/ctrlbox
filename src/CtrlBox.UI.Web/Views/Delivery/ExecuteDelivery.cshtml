@@ -3,7 +3,10 @@
     ViewData["Title"] = "ExecuteDelivery";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section scriptsViews
+    {
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+}
 <script type="text/javascript">
             @{ var entregaID = ViewData["entregaID"];
                 var linhaID = ViewData["linhaID"];

@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+@section scriptsViews
+    {
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+}
 <script type="text/javascript">
     @{
                 var routeID = ViewData["routeID"];

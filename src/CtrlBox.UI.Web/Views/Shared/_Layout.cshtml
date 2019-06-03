@@ -10,30 +10,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @*@Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")*@
-
     <meta charset="utf-8" />
     <title>CtrlBox | Full control</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="CtrlBox" />
     <meta content="" name="Juliano Cesar Pestili" />
 
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/style-metro.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/style-responsive.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
-    <link href="~/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="~/plugins/data-tables/DT_bootstrap.css" />
-    <!-- END PAGE LEVEL STYLES -->
+    <partial name="~/Views/PartialsSections/_CSS.cshtml" />
+    @RenderSection("cssViews", required: false)
     <!-- END GLOBAL MANDATORY STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
     <partial name="~/Views/PartialsSections/_Scripts.cshtml" />
@@ -49,7 +33,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <!-- BEGIN LOGO -->
-                <a class="brand" target="_blank" href="\\E:\SkyDrive\Projetos\Distribuidora%20Banana\Controle%20de%20Entrega\Metronicztemplate_content\index.html">
+                <a class="brand" target="_blank" href="#">
                     <img src="~/img/logo.png" alt="logo" />
                 </a>
                 <!-- END LOGO -->

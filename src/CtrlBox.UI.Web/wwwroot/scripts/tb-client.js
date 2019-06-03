@@ -1,13 +1,10 @@
 ﻿var TableEditable = function () {
-
     return {
-
         //main function to initiate the module
         init: function (url) {
             function restoreRow(oTable, nRow) {
                 var aData = oTable.fnGetData(nRow);
                 var jqTds = $('>td', nRow);
-
 
                 oTable.fnUpdate(aData.Name, nRow, 0, false);
                 oTable.fnUpdate(aData.QuantityBoxes, nRow, 1, false);
@@ -121,7 +118,18 @@
                             }
                             return data;
                         }
-                    }
+                    },
+                      {
+                          "mData": null,
+                          "sType": "html",
+                          "mRender": function (data, type, row) {
+                              if (type === 'display') {
+                                  var url = '/Product/ClientProductValue?clientID=' + data.DT_RowId;
+                                  return '<a href="' + url + '" class="btn mini"><i class="icon-link"></i> Price product</a>';
+                              }
+                              return data;
+                          }
+                      }
                 ],
                 "aLengthMenu": [
                     [5, 15, 20, -1],
@@ -158,7 +166,7 @@
                 var aiNew = oTable.fnAddData(['', '', '',
                     '<a class="edit" href="">Edit</a>', '<a class="cancel" data-mode="new" href="">Cancel</a>'
                 ]);
-                console.log(aiNew[0]);
+                //console.log(aiNew[0]);
                 var nRow = oTable.fnGetNodes(aiNew[0]);
                 editRow(oTable, nRow);
                 nEditing = nRow;

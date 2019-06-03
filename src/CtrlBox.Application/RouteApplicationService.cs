@@ -31,14 +31,8 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public ICollection<RouteClient> ConnectRouteToClient(Route route, string clientesIDs)
+        public ICollection<RouteClient> ConnectRouteToClient(ICollection<RouteClient> routesClients)
         {
-            IList<RouteClient> routesClients = new List<RouteClient>();
-            var clients = clientesIDs.Split('&').Select(x => x.Split('=')[1]).ToList();
-            foreach (var client in clients)
-            {
-                routesClients.Add(new RouteClient(client, route.Id));
-            }
             var routeClientReturn = _unitOfWork.Repository<RouteClient>().AddRange(routesClients);
             _unitOfWork.Commit();
 

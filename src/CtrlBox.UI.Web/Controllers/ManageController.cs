@@ -5,20 +5,22 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using CtrlBox.UI.Web.Models.Manage;
 using CtrlBox.Infra.Context.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
@@ -29,11 +31,13 @@ namespace CtrlBox.UI.Web.Controllers
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
+          RoleManager<ApplicationRole> roleManager,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _urlEncoder = urlEncoder;
         }
@@ -44,63 +48,107 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            var users = await _userManager.Users.ToListAsync();
+            if (users == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var model = new IndexViewModel
+            List<IndexViewModel> usersModel = new List<IndexViewModel>();
+            foreach (var user in users)
             {
-                Username = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
-            };
+                usersModel.Add(new IndexViewModel
+                {
+                    IdUser = user.Id.ToString(),
+                    Username = $"{ user.FirstName} { user.LastName}",
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    IsEmailConfirmed = user.EmailConfirmed,
+                    StatusMessage = StatusMessage
+                });
 
-            return View(model);
+            }
+            return View(usersModel);
+        }
+
+        [HttpGet]
+        public IActionResult CreateUser(string idUser)
+        {
+            RegisterViewModel registerModel = GetUserViewModel(idUser);
+            return View(registerModel);
+        }
+
+        private RegisterViewModel GetUserViewModel(string idUser)
+        {
+            RegisterViewModel registerModel = new RegisterViewModel();
+
+            if (!string.IsNullOrEmpty(idUser))
+            {
+                ApplicationUser model = _userManager.FindByIdAsync(idUser).Result;
+                registerModel = new RegisterViewModel() { IdUser = model.Id, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName };
+            }
+            registerModel.RolesToUsersVM.AllRoles = _roleManager.Roles.ToList()
+                                                 .Select(role => new SelectListItem
+                                                 {
+                                                     Value = role.Name,
+                                                     Text = role.Name
+                                                 }).ToList();
+
+            registerModel.RolesToUsersVM.AllUsers = _userManager.Users.ToList()
+                                                   .Select(user => new SelectListItem
+                                                   {
+                                                       Value = user.Id.ToString(),
+                                                       Text = user.UserName
+                                                   }).ToList();
+            return registerModel;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(IndexViewModel model)
+        public async Task<IActionResult> CreateUser(RegisterViewModel model, string returnUrl = null)
         {
-            if (!ModelState.IsValid)
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var email = user.Email;
-            if (model.Email != email)
-            {
-                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                if (!setEmailResult.Succeeded)
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                    _logger.LogInformation("User created a new account with password.");
+
+                    //  var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //  var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
+                    //  await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return RedirectToAction("Index");
                 }
+                AddErrors(result);
             }
 
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
-            }
-
-            StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            // If we got this far, something failed, redisplay form
+            return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateUser(RegisterViewModel model, string returnUrl = null)
+        {
+                ApplicationUser user = await _userManager.FindByIdAsync(model.IdUser.ToString());
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.PhoneNumber;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    _logger.LogError("Failure User UpdateAsync.");
+                }
+
+            // If we got this far, something failed, redisplay form
+            RegisterViewModel registerModel = GetUserViewModel(model.IdUser.ToString());
+            return View(registerModel);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
@@ -117,7 +165,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-           // var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
+            // var callbackUrl = Url.EmailConfirmationLink(user.Id.ToString(), code, Request.Scheme);
             var email = user.Email;
             // await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
@@ -535,6 +583,17 @@ namespace CtrlBox.UI.Web.Controllers
             model.AuthenticatorUri = GenerateQrCodeUri(user.Email, unformattedKey);
         }
 
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
         #endregion
     }
 }

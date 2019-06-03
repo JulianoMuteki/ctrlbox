@@ -10,7 +10,11 @@ namespace CtrlBox.Application.AutoMapper
         {
             CreateMap<Product, ProductVM>()
                 .ForMember(dest => dest.DT_RowId,
-                          opts => opts.MapFrom(src => src.Id));
+                          opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CustomersProductsValues, opt => opt.Ignore())
+                .ForMember(dest => dest.DeliveriesProducts, opt => opt.Ignore())
+                .ForMember(dest => dest.StocksProducts, opt => opt.Ignore())
+                .ForMember(dest => dest.SalesProducts, opt => opt.Ignore());
 
             CreateMap<ProductVM, Product>()
                 .ForMember(dest => dest.Id,

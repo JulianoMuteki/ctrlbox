@@ -74,7 +74,7 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult ClientRelation(string linhaID)
         {
             //caso esta linha tenha alguma entrega pendente, não pode remover o cliente
-            ViewBag.linhaID = linhaID;
+            ViewData["routeID"] = linhaID;
 
             var route = _routeApplicationService.GetById(new Guid(linhaID));
             var routeVM = _mapper.Map<RouteVM>(route);
@@ -83,7 +83,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
 
-        public ActionResult AjaxHandlerClientesNaoDisponiveis(string routeID)
+        public ActionResult AjaxHandlerCustomersNotAvailable(string routeID)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        public ActionResult AjaxHandlerClientesDisponiveis(string routeID)
+        public ActionResult AjaxHandlerCustomersAvailable(string routeID)
         {
             try
             {
@@ -122,16 +122,15 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitAdicionarClientes(string linhaID, string[] clientesIDs)
+        public ActionResult SubmitAddClients(string linhaID, string[] clientesIDs)
         {
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var routesClientsVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
+                var routeClientVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
 
-                var routeVM = new RouteVM() { DT_RowId = linhaID, RoutesClients = routesClientsVM };
-                var route = _mapper.Map<Route>(routeVM);
-                _routeApplicationService.ConnectRouteToClient(route, routeVM.ClientesIDs);
+                var routeClient = _mapper.Map<List<RouteClient>>(routeClientVM);
+                _routeApplicationService.ConnectRouteToClient(routeClient);
 
                 return Json(new
                 {
@@ -146,7 +145,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitRemoverClientes(string linhaID, string clientesIDs)
+        public ActionResult SubmitRemoveClients(string linhaID, string clientesIDs)
         {
             //var clientes = clientesIDs.Split('&').ToList();
             //ModelCodeFirst context = new ModelCodeFirst();

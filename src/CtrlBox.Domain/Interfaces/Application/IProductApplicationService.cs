@@ -13,5 +13,6 @@ namespace CtrlBox.Domain.Interfaces.Application
 
         ICollection<DeliveryProduct> GetDeliveryProducts(Guid deliveryID);
         ICollection<ClientProductValue> GetClientsProductsByClientID(Guid clientID);
+        Stock GetStock();
     }
 }

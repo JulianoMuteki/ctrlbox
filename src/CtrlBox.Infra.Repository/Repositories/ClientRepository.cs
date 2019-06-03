@@ -18,20 +18,19 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         public ICollection<Client> GetAvailable(Guid routeID)
         {
-            var clientsAvailable = _context.Set<Client>()
-                                               .Where(x => !_context.Set<RouteClient>().Any(r=> r.ClientID == x.Id))                                           
-                                               .ToList();
+            var query = _context.Set<Client>()
+                                               .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id));
 
-            return clientsAvailable;
+
+
+              return query.ToList();
         }
 
         public ICollection<Client> GetNotAvailable(Guid routeID)
         {
-            var clientsNotAvailable = _context.Set<Client>()
-                                               .Where(x => _context.Set<RouteClient>().Any(r => r.ClientID == x.Id))
-                                               .ToList();
+            var query = _context.Set<Client>().Where(c => _context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(z => z.ClientID == c.Id));
 
-            return clientsNotAvailable;
+            return query.ToList();
         }
     }
 }

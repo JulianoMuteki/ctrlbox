@@ -17,7 +17,8 @@ namespace CtrlBox.Domain.Entities
 
         public StockProduct()
         {
-
+            this.Stock = new Stock();
+            this.Product = new Product();
         }
     }
 }

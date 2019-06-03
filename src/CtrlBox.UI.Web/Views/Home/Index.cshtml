@@ -1,72 +1,14 @@
-﻿@model IEnumerable<CtrlBox.Application.ViewModel.ClientVM>
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
-<!-- BEGIN PAGE -->
-<div class="page-content">
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-        <div class="modal-header">
-            <button data-dismiss="modal" class="close" type="button"></button>
-            <h3>portlet Settings</h3>
-        </div>
-        <div class="modal-body">
-            <p>Here will be a configuration form</p>
-        </div>
-    </div>
-    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+<div class="page-content" style="min-height:1029px !important">
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <!-- BEGIN PAGE HEADER-->
         <div class="row-fluid">
             <div class="span12">
-                <!-- BEGIN STYLE CUSTOMIZER -->
-                <div class="color-panel hidden-phone">
-                    <div class="color-mode-icons icon-color"></div>
-                    <div class="color-mode-icons icon-color-close"></div>
-                    <div class="color-mode">
-                        <p>THEME COLOR</p>
-                        <ul class="inline">
-                            <li class="color-black current color-default" data-style="default"></li>
-                            <li class="color-blue" data-style="blue"></li>
-                            <li class="color-brown" data-style="brown"></li>
-                            <li class="color-purple" data-style="purple"></li>
-                            <li class="color-grey" data-style="grey"></li>
-                            <li class="color-white color-light" data-style="light"></li>
-                        </ul>
-                        <label>
-                            <span>Layout</span>
-                            <select class="layout-option m-wrap small">
-                                <option value="fluid" selected>Fluid</option>
-                                <option value="boxed">Boxed</option>
-                            </select>
-                        </label>
-                        <label>
-                            <span>Header</span>
-                            <select class="header-option m-wrap small">
-                                <option value="fixed" selected>Fixed</option>
-                                <option value="default">Default</option>
-                            </select>
-                        </label>
-                        <label>
-                            <span>Sidebar</span>
-                            <select class="sidebar-option m-wrap small">
-                                <option value="fixed">Fixed</option>
-                                <option value="default" selected>Default</option>
-                            </select>
-                        </label>
-                        <label>
-                            <span>Footer</span>
-                            <select class="footer-option m-wrap small">
-                                <option value="fixed">Fixed</option>
-                                <option value="default" selected>Default</option>
-                            </select>
-                        </label>
-                    </div>
-                </div>
-                <!-- END BEGIN STYLE CUSTOMIZER -->
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                 <h3 class="page-title">
                     Blank Page <small>blank page</small>
@@ -90,11 +32,79 @@
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
             <div class="span12">
-                Blank page content goes here
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Validation States</div>
+                        <div class="tools">
+                            <a href="javascript:;" class="collapse"></a>
+                            <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                            <a href="javascript:;" class="reload"></a>
+                            <a href="javascript:;" class="remove"></a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <h3 class="block">Basic validation states</h3>
+                        <!-- BEGIN FORM-->
+                        <form action="#" class="form-horizontal">
+                            <div class="control-group warning">
+                                <label class="control-label" for="inputWarning">Input with warning</label>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap" id="inputWarning">
+                                    <span class="help-inline">Something may have gone wrong</span>
+                                </div>
+                            </div>
+                            <div class="control-group error">
+                                <label class="control-label" for="inputError">Input with error</label>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap" id="inputError">
+                                    <span class="help-inline">Please correct the error</span>
+                                </div>
+                            </div>
+                            <div class="control-group success">
+                                <label class="control-label" for="inputSuccess">Input with success</label>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap" id="inputSuccess">
+                                    <span class="help-inline ok"></span>
+                                </div>
+                            </div>
+                            <div class="control-group warning">
+                                <label class="control-label">Input with warning</label>
+                                <div class="controls input-icon">
+                                    <input type="text" class="span6 m-wrap">
+                                    <span class="input-warning tooltips" data-original-title="please write a valid email">
+                                        <i class="icon-warning-sign"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="control-group error">
+                                <label class="control-label">Input with error</label>
+                                <div class="controls input-icon">
+                                    <input type="text" class="span6 m-wrap">
+                                    <span class="input-error tooltips" data-original-title="please write a valid email">
+                                        <i class="icon-exclamation-sign"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="control-group success">
+                                <label class="control-label">Input with success</label>
+                                <div class="controls input-icon">
+                                    <input type="text" class="span6 m-wrap">
+                                    <span class="input-success tooltips" data-original-title="Success input!">
+                                        <i class="icon-ok"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn blue">Save</button>
+                                <button type="button" class="btn">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
             </div>
         </div>
         <!-- END PAGE CONTENT-->
     </div>
     <!-- END PAGE CONTAINER-->
 </div>
-<!-- END PAGE -->  

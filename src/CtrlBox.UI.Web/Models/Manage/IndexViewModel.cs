@@ -4,6 +4,9 @@ namespace CtrlBox.UI.Web.Models.Manage
 {
     public class IndexViewModel
     {
+       
+        public string IdUser { get; set; }
+
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }

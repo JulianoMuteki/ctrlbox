@@ -71,24 +71,29 @@ namespace CtrlBox.UI.Web.Controllers
         #endregion
 
         #region ClientProductValue
-        public ActionResult ClientProductValue(string clienteID)
+        public ActionResult ClientProductValue(string clientID)
         {
-            var client = _clientService.GetById(new Guid(clienteID));
+            var client = _clientService.GetById(new Guid(clientID));
             ClientVM clientsVM = _mapper.Map<ClientVM>(client);
             return View(clientsVM);
         }
 
-        public ActionResult AjaxHandlerValorPorProduto(string clienteID)
+        public ActionResult AjaxHandlerProductValue(string clientID)
         {
             try
             {
-                IList<ClientProductValueVM> valoresProdutos = new List<ClientProductValueVM>();
+                var productsClients = _productService.GetClientsProductsByClientID(new Guid(clientID));
+                IList<ClientProductValueVM> productsClientsVMs = _mapper.Map<List<ClientProductValueVM>>(productsClients);
+
                 var products = _productService.GetAll();
                 IList<ProductVM> productVMs = _mapper.Map<List<ProductVM>>(products);
 
+                IList<ClientProductValueVM> valoresProdutos = new List<ClientProductValueVM>();
                 foreach (var product in productVMs)
                 {
-                    valoresProdutos.Add(new ClientProductValueVM() { Product = product });
+                    var prodValueExits = productsClientsVMs.Where(x => x.ProductID.ToString() == product.DT_RowId).FirstOrDefault();
+
+                    valoresProdutos.Add(new ClientProductValueVM() { Product = product, ClientID = new Guid(clientID), Price = (prodValueExits != null ? prodValueExits.Price : 0) });
                 }
                 return Json(new
                 {
@@ -102,38 +107,14 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitValorPorProduto(string clienteID, string lista)
+        public ActionResult SubmitProductValue(string[] listJSON)
         {
-            var valores = lista.Split('&').ToList();
+            JsonSerialize jsonS = new JsonSerialize();
+            var clientsProductsValuesVM = jsonS.JsonDeserialize<ClientProductValueVM>(listJSON[0]);
+            var clientsProductsValues = _mapper.Map<ICollection<ClientProductValue>>(clientsProductsValuesVM);
 
-            ICollection<ClientProductValueVM> productsClients = new List<ClientProductValueVM>();
+            _productService.ConnectRouteToClient(clientsProductsValues);
 
-            foreach (var item in valores)
-            {
-                var val = item.Split('=');
-
-                if (!string.IsNullOrEmpty(val[1]))
-                {
-                    string id = val[0];
-
-                    Guid idcliente = new Guid(clienteID);
-                    Guid idProduto = new Guid(id);
-
-                    ClientProductValueVM x = new ClientProductValueVM()
-                    {
-                        ClientID = idcliente,
-                        ProductID = idProduto,
-                        Price = float.Parse(val[1])
-                    };
-
-                    productsClients.Add(x);
-                }
-            }
-
-            var clientsProducts = _mapper.Map<ICollection<ClientProductValue>>(productsClients);
-
-             _productService.ConnectRouteToClient(clientsProducts);
-           
             return Json(new
             {
                 success = true,
@@ -145,6 +126,10 @@ namespace CtrlBox.UI.Web.Controllers
         #region ProductStock
         public ActionResult ProductStock()
         {
+            var stock = _productService.GetStock();
+            var stockVM = _mapper.Map<StockVM>(stock);
+
+            ViewData["StockID"] = stockVM.DT_RowId;
             return View();
         }
 
@@ -153,10 +138,11 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 var prodsStock = _productService.GetProductsStock();
-                ICollection<StockProductVM> productsStockVM = _mapper.Map<List<StockProductVM>>(prodsStock);
+                IList<StockProductVM> productsStocks = _mapper.Map<List<StockProductVM>>(prodsStock);
                 return Json(new
                 {
-                    aaData = productsStockVM
+                    aaData = productsStocks.Select(x => new { x.StockID, x.ProductID, x.Amount, ProductName = x.Product.Name }).ToList(),
+                    success = true
                 });
             }
             catch (Exception ex)
@@ -166,13 +152,14 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitProductStock(string[] tbProdutos)
+        public ActionResult SubmitProductStock(string[] tbProducts)
         {
             JsonSerialize jsonS = new JsonSerialize();
-            var stocksProductsVM = jsonS.JsonDeserialize<StockProductVM>(tbProdutos[0]);
+            var stocksProductsVM = jsonS.JsonDeserialize<StockProductVM>(tbProducts[0]);
 
             var stocksProd = _mapper.Map<ICollection<StockProduct>>(stocksProductsVM);
             var result = _productService.AddProductStock(stocksProd);
+
             return Json(new
             {
                 success = true,

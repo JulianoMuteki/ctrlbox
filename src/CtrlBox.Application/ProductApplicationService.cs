@@ -103,16 +103,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var stock = _unitOfWork.Repository<Stock>().GetAll().FirstOrDefault();
-
-                var resultstocksProd = stocksProducts.Select(e =>
-                {
-                    e.StockID = stock.Id;
-                    e.Product = null;
-                    return e;
-                }).ToList();
-
-                var result = _unitOfWork.Repository<StockProduct>().AddRange(resultstocksProd);
+                var result = _unitOfWork.Repository<StockProduct>().AddRange(stocksProducts);
                 _unitOfWork.Commit();
 
                 return result;
@@ -151,6 +142,11 @@ namespace CtrlBox.Application
         public ICollection<ClientProductValue> GetClientsProductsByClientID(Guid clientID)
         {
             return _unitOfWork.Repository<ClientProductValue>().FindAll(x => x.ClientID == clientID);
+        }
+
+        public Stock GetStock()
+        {
+            return _unitOfWork.Repository<Stock>().GetAll().FirstOrDefault();
         }
     }
 }

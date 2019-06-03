@@ -14,9 +14,9 @@
         @Scripts.Render("~/bundles/modernizr")*@
 
     <meta charset="utf-8" />
-    <title>CDE | Controle para seu negócio</title>
+    <title>CtrlBox | Controle para seu negócio</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="" name="CDE" />
+    <meta content="" name="CtrlBox" />
     <meta content="" name="Juliano Cesar Pestili" />
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
     <link rel="stylesheet" href="~/plugins/data-tables/DT_bootstrap.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
     <!-- END PAGE LEVEL STYLES -->
     <!-- END GLOBAL MANDATORY STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
@@ -60,6 +61,7 @@
     <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="~/plugins/data-tables/DT_bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="~/scripts/app.js"></script>
@@ -73,8 +75,8 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <!-- BEGIN LOGO -->
-                <a class="brand" target="_blank" href="\\E:\SkyDrive\Projetos\Distribuidora%20Banana\Controle%20de%20Entrega\Metronicztemplate_content\index.html">
-                    <img src="~/img/logo.png" alt="logo" />
+                <a class="brand" target="_blank" href="#">
+                    <img src="~/img/logo_ctrlbox.png" alt="logo" />
                 </a>
                 <!-- END LOGO -->
                 <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -88,8 +90,8 @@
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" src="~/img/avatar1_small.jpg" />
-                            <span class="username">Bob Nilson</span>
+                            <img alt="" src="~/img/jcp.jpg" />
+                            <span class="username">Juliano Pestili</span>
                             <i class="icon-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
@@ -142,14 +144,29 @@
                 </li>
                 <li>
                     <a href="javascript:;">
+                        <i class="icon-lock"></i>
+                        <span class="title">Security</span>
+                        <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            @Html.ActionLink("Panel Users", "Index", "Manage")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Login", "Login", "Account")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Authorizations", "Index", "Role")
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
                         <i class="icon-cogs"></i>
                         <span class="title">Cadastros</span>
                         <span class="arrow "></span>
                     </a>
                     <ul class="sub-menu">
-                        <li>
-                            @Html.ActionLink("Contatos", "Index", "Security")
-                        </li>
                         <li>
                             @Html.ActionLink("Clientes", "Index", "Client")
                         </li>
@@ -210,7 +227,7 @@
     <!-- BEGIN FOOTER -->
     <div class="footer">
         <div class="footer-inner">
-            copyright &copy 2015 Juliano C. Pestili  ;
+            copyright &copy 2019 - CtrlBox;
         </div>
         <div class="footer-tools">
             <span class="go-top">
@@ -220,12 +237,16 @@
     </div>
     <!-- END FOOTER -->
 
-
     <script>
         jQuery(document).ready(function () {
             // initiate layout and plugins
             App.init();
             //FormComponents.init();
+            $('#select2_sample2').select2({
+                placeholder: "Select a State",
+                allowClear: true
+            });
+            
         });
     </script>
     <!-- END JAVASCRIPTS -->

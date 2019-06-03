@@ -32,6 +32,9 @@ namespace CtrlBox.Domain.Entities
             this.Sales = new HashSet<Sale>();
         }
 
+        /// <summary>
+        /// Inicialize property and ID - GUID
+        /// </summary>
         public void Init()
         {
             this.IsFinalized = false;

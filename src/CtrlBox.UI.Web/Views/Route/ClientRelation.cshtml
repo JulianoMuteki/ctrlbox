@@ -6,36 +6,14 @@
 
 <script type="text/javascript">
     @{
-                var linhaID = ViewData["linhaID"];
+                var routeID = ViewData["routeID"];
             }
-    function handleAjaxError(xhr, textStatus, error) {
 
-        $('#example').dataTable({
-            "bDestroy": true,
-            "bProcessing": false
-        });
-
-        if (textStatus === 'timeout') {
-            alert('The server took too long to send the data.');
-        }
-        else {
-            var obj = $.parseJSON(xhr.responseText);
-            alert(obj.Message);
-            alert("É necessário atualizar a página");
-        }
-
-        return false;
-    }
-
-    function carregarTabela(id, url) {
+    function loadTable(id, url) {
 
         var oTable = $(id).dataTable({
-            bJQueryUI: false,
-            "sPaginationType": "full_numbers",
             "sAjaxSource": url,
-            "bPaginate": false,
-            "bAutoWidth": false,
-            bFilter: false, bInfo: false,
+            "bProcessing": true,
             "bDestroy": true,
             "aoColumns": [
                             {
@@ -52,81 +30,92 @@
                                 "sType": "html",
                                 "mRender": function (data, type, row) {
                                     if (type === 'display') {
-                                        return '<input type="checkbox" name="ClienteID" value="' + row.DT_RowId + '">';
+                                        return '<input type="checkbox" name="ClientID" value="' + row.DT_RowId + '">';
                                     }
                                     return data;
                                 }
                             }
             ],
-            "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
-                oSettings.jqXHR = $.ajax({
-                    "dataType": 'json',
-                    "type": "POST",
-                    "url": sSource,
-                    "data": aoData,
-                    "success": function (json) {
-                        if (!json.NotAuthorized) {
-                            //  var obj = $.parseJSON(JSON.stringify(json));
-                        }
-                        fnCallback(json);
-                    },
-                    "error": handleAjaxError
-                });
+            "aLengthMenu": [
+                [5, 15, 20, -1],
+                [5, 15, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "iDisplayLength": 5,
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ records per page",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
             }
+            ]
         });
 
         return oTable;
     }
 
-    function carregarTabelas(linhaID) {
+    function loadTables(linhaID) {
 
-        var urlClientesDisponiveis = '@Url.Content("~/Route/AjaxHandlerClientesDisponiveis")?linhaID=' + '@linhaID';
-        carregarTabela('#tbAdicionar', urlClientesDisponiveis);
+        var urlCustomersAvailable = '@Url.Content("~/Route/AjaxHandlerCustomersAvailable")?routeID=' + '@routeID';
+        loadTable('#tbAdd', urlCustomersAvailable);
 
-        var urlClientesNaoDisponiveis = '@Url.Content("~/Route/AjaxHandlerClientesNaoDisponiveis")?linhaID=' + '@linhaID';
-        carregarTabela('#tbRemover', urlClientesNaoDisponiveis);
+        var urlCustomersNotAvailable = '@Url.Content("~/Route/AjaxHandlerCustomersNotAvailable")?routeID=' + '@routeID';
+        loadTable('#tbRemove', urlCustomersNotAvailable);
     }
 
-
+    (function ($) {
+        $.fn.serializeFormJSON = function () {
+            var lista = [];
+            var a = this.serializeArray();
+            $.each(a, function () {
+                lista.push({ "ClientID": this.value, "RouteID": '@routeID' });
+            });
+            return JSON.stringify(lista);
+        };
+    })(jQuery);
 
     jQuery(document).ready(function () {
-        carregarTabelas('@linhaID');
+        loadTables('@routeID');
 
-        $('#btnSubmitAdicionar').click(function () {
-
-            var oTableAdicionar = $('#tbAdicionar').dataTable();
-            var sData = $("input[name='ClienteID']:checked", oTableAdicionar.fnGetNodes()).serialize();
-            var myJsonString = JSON.stringify(tb);
+        $('#btnSubmitAdd').click(function () {
+            var oTableAdd = $('#tbAdd').dataTable();
+            var data = $(oTableAdd.$("input[name='ClientID']:checked")).serializeFormJSON();
 
             $.ajax({
-                url: '@Url.Content("~/Route/SubmitAdicionarClientes")',
+                url: '@Url.Content("~/Route/SubmitAddClients")',
                 type: 'POST',
                 dataType: 'json',
-                data: { linhaID: '@linhaID', clientesIDs: myJsonString },
+                data: { linhaID: '@routeID', clientesIDs: data },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
-                        alert('Completo');
-                        carregarTabelas('@linhaID');
+                        alert('Complete');
+                        loadTables('@routeID');
                     }
                 }
             });
 
-            return false;
-
+           return false;
         });
 
-        $('#btnSubmitRemover').click(function () {
-            var oTableRemover = $('#tbRemover').dataTable();
-            var sData = $('input', oTableRemover.fnGetNodes()).serialize();
+        $('#btnSubmitRemove').click(function () {
+            var oTableRemove = $('#tbRemove').dataTable();
+            var sData = $('input', oTableRemove.fnGetNodes()).serialize();
             $.ajax({
-                url: '@Url.Content("~/Route/SubmitRemoverClientes")',
+                url: '@Url.Content("~/Route/SubmitRemoveClients")',
                 type: 'POST',
                 dataType: 'json',
-                data: { linhaID: '@linhaID', clientesIDs: sData },
+                data: { routeID: '@routeID', clientesIDs: sData },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
-                        alert('Completo');
-                        carregarTabelas('@linhaID');
+                        alert('Complete');
+                        loadTables('@routeID');
                     }
                 }
             });
@@ -175,7 +164,7 @@
                     </div>
                     <div class="portlet-body">
                         <form id="form">
-                            <table id="tbAdicionar" class="table table-hover">
+                            <table id="tbAdd" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -189,7 +178,7 @@
                                 <tbody></tbody>
                             </table>
                         </form>
-                        <a href="#" id="btnSubmitAdicionar" class="btn green"><i class="icon-plus"></i>Adicionar</a>
+                        <a href="#" id="btnSubmitAdd" class="btn green"><i class="icon-plus"></i>Adicionar</a>
 
                     </div>
                 </div>
@@ -205,7 +194,7 @@
                     </div>
                     <div class="portlet-body">
                         <form id="form">
-                            <table id="tbRemover" class="table table-hover">
+                            <table id="tbRemove" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -221,7 +210,7 @@
                         </form>
                         @if (!Model.HasOpenDelivery)
                         {
-                            <a href="#" id="btnSubmitRemover" class="btn red"><i class="icon-trash"></i>Remover</a>
+                            <a href="#" id="btnSubmitRemove" class="btn red"><i class="icon-trash"></i>Remover</a>
                         }
                         else
                         {

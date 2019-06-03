@@ -68,8 +68,9 @@
                 return '<a class="delete" href="javascript:;"><i class="icon-trash"></i> Delete</a>';
             }
 
-            function getElementRelation() {
-                return '<a href="#" class="btn mini"><i class="icon-link"></i> Relation</a>';
+            function getElementRelation(id) {
+                var url = '/Route/ClientRelation?linhaID=' + id;
+                return '<a href="' + url +'" class="btn mini"><i class="icon-link"></i> Relation clients</a>';
             }
 
             function cancelEditRow(oTable, nRow) {
@@ -123,7 +124,7 @@
                     "sType": "html",
                     "mRender": function (data, type, row) {
                         if (type === 'display') {
-                            return getElementRelation();
+                            return getElementRelation(data.DT_RowId);
                         }
                         return data;
                     }

@@ -4,45 +4,109 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <h1>
-        Security 
-        <small>and identity</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Role</a></li>
-        <li><a href="#">Index</a></li>
-    </ol>
-</section>
+<div class="page-content" style="min-height:1029px !important">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Security</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Roles</a>
+                    </li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
 
-<!-- Main content -->
-<section class="content">
-
-    <!-- Default box -->
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Roles</h3>
+        <div class="row-fluid">
+            <div class="span4">
+                <!-- BEGIN UNORDERED LISTS PORTLET-->
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-list-ul"></i>Roles Lists</div>
+                        <div class="tools">
+                            <div class="btn-group">
+                                <a class="btn mini green" href="#" data-toggle="dropdown">
+                                    <i class="icon-key"></i> Action
+                                    <i class="icon-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
+                                    <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
+                                    <li><a asp-action="Create"><i class="icon-plus"></i> Add</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-action="AssignRoleToUser"><i class="icon-plus-sign"></i> Rule To User</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <ul>
+                            @foreach (var item in Model)
+                            {
+                                <li>@item.Name</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <!-- END UNORDERED LISTS PORTLET-->
+            </div>
+            <div class="span4">
+                <!-- BEGIN UNORDERED LISTS PORTLET-->
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-list-ul"></i>Claims Lists</div>
+                        <div class="tools">
+                            <div class="btn-group">
+                                <a class="btn mini green" href="#" data-toggle="dropdown">
+                                    <i class="icon-key"></i> Action
+                                    <i class="icon-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
+                                    <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
+                                    <li><a asp-action="Create"><i class="icon-plus"></i> Add</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-action="AssignClaimToUser"><i class="icon-plus-sign"></i> Claim To User</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <ul>
+                            <li>Lorem ipsum dolor sit amet</li>
+                            <li>Consectetur adipiscing elit</li>
+                            <li>Integer molestie lorem at massa</li>
+                            <li>Facilisis in pretium nisl aliquet</li>
+                            <li>
+                                Nulla volutpat aliquam velit
+                                <ul>
+                                    <li>Phasellus iaculis neque</li>
+                                    <li>Purus sodales ultricies</li>
+                                    <li>Vestibulum laoreet porttitor sem</li>
+                                    <li>Ac tristique libero volutpat at</li>
+                                </ul>
+                            </li>
+                            <li>Faucibus porta lacus fringilla vel</li>
+                            <li>Aenean sit amet erat nunc</li>
+                            <li>Eget porttitor lorem</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- END UNORDERED LISTS PORTLET-->
+            </div>
         </div>
-        <div class="box-body">
-            <table id="example1" class="table table-bordered table-striped">       
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Name</td>
-                        </tr>
-                    }
-            </table>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            <a asp-action="Create" class="btn btn-default">Create Rule</a>
-            <a asp-action="AssignRoleToUser" class="btn btn-default">Assign Role To User</a>
-        </div>
-        <!-- /.box-footer-->
+        <!-- END PAGE CONTENT-->
     </div>
-    <!-- /.box -->
+    <!-- END PAGE CONTAINER-->
+</div>
 
-</section>
-<!-- /.content -->

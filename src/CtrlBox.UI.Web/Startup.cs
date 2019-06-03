@@ -44,10 +44,10 @@ namespace CtrlBox.UI.Web
                 // Password settings
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 6;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredUniqueChars = 7; //Pa$$w0rd
 
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
@@ -78,15 +78,16 @@ namespace CtrlBox.UI.Web
 
             services.AddAutoMapperSetup();
             // Add application services.
-            services.AddMvc().AddRazorPagesOptions(options => {
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc().AddXmlSerializerFormatters();
 
             services.AddMvc().AddJsonOptions(options =>
                                     {
-                                    options.SerializerSettings.ContractResolver
-                                        = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                                        options.SerializerSettings.ContractResolver
+                                            = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                                     });
             RegisterServices(services);
         }
@@ -126,5 +127,6 @@ namespace CtrlBox.UI.Web
             InfraBootStrapperModule.RegisterServices(services);
             ApplicationBootStrapperModule.RegisterServices(services);
         }
+
     }
 }

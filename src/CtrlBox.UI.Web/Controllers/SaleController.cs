@@ -79,7 +79,6 @@ namespace CtrlBox.UI.Web.Controllers
                 JsonSerialize jsonS = new JsonSerialize();
                 var vendas_Produtos = jsonS.JsonDeserializeObject<SaleVM>(strSaleJSON[0]);
 
-
                 return Json(new
                 {
                     success = true,

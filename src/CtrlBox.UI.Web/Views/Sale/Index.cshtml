@@ -247,7 +247,7 @@
             var valorPrazo = parseFloat($("#mask_currencyY").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
             valorRecebido = valorRecebido || 0;
             valorPrazo = valorPrazo || 0;
-            var retornoCaixaVazia = parseFloat($("#retornoCaixaVazia").val());
+            var retornoCaixaVazia = parseFloat($("#ReturnBox").val());
             retornoCaixaVazia = retornoCaixaVazia || 0;
 
             saleObj.ReceivedValue = valorRecebido;
@@ -502,7 +502,12 @@
                                                 <input class="span6 m-wrap" id="mask_currencyY" type="text">
                                             </div>
                                         </div>
-
+                                        <div class="control-group">
+                                            <label class="control-label">Total caixa retorno</label>
+                                            <div class="controls">
+                                                <input class="span6 m-wrap" id="ReturnBox" type="text">
+                                            </div>
+                                        </div>
                                         <div class="form-actions">
                                             <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
                                         </div>

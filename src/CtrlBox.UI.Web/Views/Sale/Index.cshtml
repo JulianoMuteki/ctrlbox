@@ -53,15 +53,15 @@
         var oTableSaleCheck = $('#tbCheques').DataTable({
             "aoColumns": [
                         {
-                            "mData": "NumeroCheque",
+                            "mData": "Number",
                             "bSortable": false
                         },
                         {
-                            "mData": "Valor",
+                            "mData": "Value",
                             "bSortable": false
                         },
                         {
-                            "mData": "Data",
+                            "mData": "DateCheck",
                             "bSortable": false
                         },
                             {
@@ -96,16 +96,14 @@
         var rowID = 0;
         //Salva linha de cheque
         $("#target").click(function (event) {
-
             var valor =   parseFloat($("#mask_currency").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
             valor = valor.formatMoney();
 
             var tb = $('#tbCheques').DataTable();
             var rowADD = {
-                // "DT_RowId": rowID + 1,
-                "NumeroCheque": $("#numeroCheque").val(),
-                "Valor": valor,
-                "Data":  $("#dtCheque").val(),
+                "Number": $("#numeroCheque").val(),
+                "Value": valor,
+                "DateCheck": $("#dtCheque").val(),
                 "Status": "<span class=\"label label-warning\">Pendding</span>",
                 "Action": "<a class=\"delete\" href=\"\">Delete</a>"
             };
@@ -266,10 +264,10 @@
                 qtdeVenda = qtdeVenda || 0;
                 qtdeRetorno = qtdeRetorno || 0;
 
-                row.QtdeVenda = qtdeVenda;
-                row.QtdeRetorno = qtdeRetorno;
+                row.Amount = qtdeVenda;
+                row.ExchangeQuantity = qtdeRetorno;
 
-                row.ValorProduto = row.ValorProduto.replace(/[^0-9\.]+/g, "");
+                row.SaleValue = row.ValorProduto.replace(/[^0-9\.]+/g, "");
                 row.Total = row.Total.replace(/[^0-9\.]+/g, "");
 
                 tbVenda.push(row);
@@ -281,8 +279,9 @@
             $.each(oTableSaleCheque.fnGetNodes(), function (index, value) {
                 var row = oTableSaleCheque.fnGetData(value);
 
-                row.Valor = row.Valor.replace(/[^0-9\,]+/g, "").replace(",", ".");
+                row.Value = row.Value.replace(/[^0-9\,]+/g, "").replace(",", ".");
                 delete row.Status;
+                delete row.Action;
 
                 listChecks.push(row);
             });
@@ -291,20 +290,19 @@
             var myJsonString = JSON.stringify(saleObj);
             console.log(myJsonString);
 
-            @*$.ajax({
-                url: '@Url.Content("~/Home/SubmitData")',
+            $.ajax({
+                url: '@Url.Content("~/Sale/SubmitData")',
                 type: 'POST',
                 dataType: 'json',
-                // contentType: "application/json",
-                data: { entregaID: id,clienteID : id2, tbVenda: myJsonString, valorRecebido: valorRecebido, valorPrazo: valorPrazo, retornoCaixa: retornoCaixaVazia, tbCheques: myJsonStringCheques },
+                data: { strSaleJSON: myJsonString },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
-                        window.history.go(-1);
+                     //   window.history.go(-1);
                     }
                 },
                 "error": handleAjaxError
-            });*@
+            });
             event.preventDefault();
 
             return true;
@@ -465,7 +463,7 @@
                                         <div class="control-group">
                                             <div class="table-toolbar">
                                                 <div class="btn-group">
-                                                    <a href="#portlet-config" data-toggle="modal" class="config btn gray"><i class="icon-plus"></i> Add</a>                                                   
+                                                    <a href="#portlet-config" data-toggle="modal" class="config btn gray"><i class="icon-plus"></i> Add</a>
                                                 </div>
                                             </div>
                                             <table id="tbCheques" class="table table-hover">
@@ -537,17 +535,6 @@
                                                         </ul>
                                                     </div>
                                                     <div class="span4">
-                                                        <h4>About:</h4>
-                                                        <ul class="unstyled">
-                                                            <li>Drem psum dolor sit amet</li>
-                                                            <li>Laoreet dolore magna</li>
-                                                            <li>Consectetuer adipiscing elit</li>
-                                                            <li>Magna aliquam tincidunt erat volutpat</li>
-                                                            <li>Olor sit amet adipiscing eli</li>
-                                                            <li>Laoreet dolore magna</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="span4 invoice-payment">
                                                         <h4>Payment Details:</h4>
                                                         <ul class="unstyled">
                                                             <li><strong>V.A.T Reg #:</strong> 542554(DEMO)78</li>
@@ -557,6 +544,45 @@
                                                             <li><strong>Account Name:</strong> FoodMaster Ltd</li>
                                                             <li><strong>SWIFT code:</strong> 45454DEMO545DEMO</li>
                                                         </ul>
+                                                    </div>
+                                                    <div class="span4 invoice-payment">
+                                                        <h4>Checks:</h4>
+                                                        <table class="table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Número</th>
+                                                                    <th>Data</th>
+                                                                    <th class="numeric">Valor</th>
+                                                                    <th class="numeric">Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>616164161</td>
+                                                                    <td>05-05-2019</td>
+                                                                    <td class="numeric">$1.38</td>
+                                                                    <td class="numeric">Pendente</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>616164161</td>
+                                                                    <td>05-05-2019</td>
+                                                                    <td class="numeric">$1.38</td>
+                                                                    <td class="numeric">Pendente</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>616164161</td>
+                                                                    <td>05-05-2019</td>
+                                                                    <td class="numeric">$1.38</td>
+                                                                    <td class="numeric">Pendente</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>616164161</td>
+                                                                    <td>05-05-2019</td>
+                                                                    <td class="numeric">$1.38</td>
+                                                                    <td class="numeric">Pendente</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                                 <div class="row-fluid">
@@ -607,6 +633,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                <hr />
                                                 <div class="row-fluid">
                                                     <div class="span4">
                                                         <div class="well">

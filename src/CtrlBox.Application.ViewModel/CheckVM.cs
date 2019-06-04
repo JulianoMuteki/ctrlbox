@@ -11,6 +11,7 @@ namespace CtrlBox.Application.ViewModel
         public float Value { get; set; }
         public DateTime? DtExpire { get; set; }
 
+        public string DateCheck { get; set; }
         public SaleVM Sale { get; set; }
     }
 }

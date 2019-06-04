@@ -97,7 +97,7 @@
                         "mData": "Contact"
                     },
                     {
-                        "mData": "IsDelivery"
+                        "mData": "SaleIsFinished"
                     },                  
                     {
                         "mData": null,

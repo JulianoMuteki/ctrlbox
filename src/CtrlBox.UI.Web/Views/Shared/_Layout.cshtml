@@ -102,14 +102,30 @@
                 </li>
                 <li>
                     <a href="javascript:;">
+                        <i class="icon-lock"></i>
+                        <span class="title">Security</span>
+                        <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            @Html.ActionLink("Usuários", "Index", "Manage")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Permissões", "Index", "Role")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Login", "Login", "Account")
+                        </li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="javascript:;">
                         <i class="icon-cogs"></i>
                         <span class="title">Cadastros</span>
                         <span class="arrow "></span>
                     </a>
                     <ul class="sub-menu">
-                        <li>
-                            @Html.ActionLink("Contatos", "Index", "Security")
-                        </li>
                         <li>
                             @Html.ActionLink("Clientes", "Index", "Client")
                         </li>

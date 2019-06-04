@@ -17,14 +17,17 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly IDeliveryApplicationService _deliveryService;
         private readonly IRouteApplicationService _routeService;
         private readonly IProductApplicationService _productService;
+        private readonly ISaleApplicationService _saleService;
 
         public DeliveryController(IClientApplicationService clientService, IRouteApplicationService routeService,
-                                   IDeliveryApplicationService deliveryService, IProductApplicationService productService, IMapper mapper)
+                                   IDeliveryApplicationService deliveryService, IProductApplicationService productService,
+                                   ISaleApplicationService saleService, IMapper mapper)
         {
             _clientService = clientService;
             _routeService = routeService;
             _deliveryService = deliveryService;
             _productService = productService;
+            _saleService = saleService;
             _mapper = mapper;
         }
         // GET: Delivery
@@ -113,9 +116,14 @@ namespace CtrlBox.UI.Web.Controllers
 
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
 
+                var sales = _saleService.FindAllByDelivery(delivery.Id);
+
+                var clientsVMs = clientsVM.Select(c => { c.SaleIsFinished = 
+                                                                ((from x in sales where x.ClientID.ToString() == c.DT_RowId
+                                                                        select x).FirstOrDefault().IsFinished); return c; }).ToList();
                 return Json(new
                 {
-                    aaData = clientsVM,
+                    aaData = clientsVMs,
                     xaData = productsDeliveryVM.Select(x=> new { x.Product.Name, x.Product.DT_RowId, x.DeliveryID, x.Amount }).ToList(),
                     xbData = despesasVM,
                     success = true

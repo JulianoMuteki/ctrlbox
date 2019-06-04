@@ -4,6 +4,7 @@ using CtrlBox.Domain.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace CtrlBox.Application
                 _unitOfWork.Repository<DeliveryProduct>().Update(entregaProduto);
             }
 
-            var delivery = _unitOfWork.Repository<Sale>().Add(entity);
+            _unitOfWork.Repository<Sale>().Add(entity);
             _unitOfWork.Commit();
 
             return entity;
@@ -49,6 +50,12 @@ namespace CtrlBox.Application
         public Task<Guid> DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<Sale> FindAllByDelivery(Guid deliveryID)
+        {
+            var sales = _unitOfWork.Repository<Sale>().FindAll(x => x.DeliveryID == deliveryID);
+            return sales;
         }
 
         public ICollection<Sale> GetAll()

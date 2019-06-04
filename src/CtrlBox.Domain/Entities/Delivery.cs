@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
-   public class Delivery: EntityBase
+    public class Delivery : EntityBase
     {
         public Guid RouteID { get; set; }
 
@@ -15,13 +15,13 @@ namespace CtrlBox.Domain.Entities
         public string CreatedBy { get; set; }
         public string FinalizedBy { get; set; }
 
-        public  Route Route { get; set; }
+        public Route Route { get; set; }
 
-        public  ICollection<Expense> Expenses { get; set; }
+        public ICollection<Expense> Expenses { get; set; }
 
-        public  ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
+        public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
 
-        public  ICollection<Sale> Sales { get; set; }
+        public ICollection<Sale> Sales { get; set; }
 
         public Delivery()
         {
@@ -41,6 +41,13 @@ namespace CtrlBox.Domain.Entities
             this.Id = Guid.NewGuid();
             this.DtStart = DateTime.Now;
             this.CreatedBy = "Juliano";
+            this.FinalizedBy = "Juliano";
+        }
+
+        public void FinalizeDelivery()
+        {
+            this.IsFinalized = true;
+            this.DateModified = DateTime.Now;
             this.FinalizedBy = "Juliano";
         }
     }

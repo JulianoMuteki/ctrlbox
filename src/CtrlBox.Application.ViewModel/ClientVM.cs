@@ -14,7 +14,7 @@ namespace CtrlBox.Application.ViewModel
         public string Phone { get; set; }
         public string Contact { get; set; }
 
-        public bool IsDelivery { get; set; }
+        public bool SaleIsFinished { get; set; }
 
         public ICollection<ClientProductValueVM> CustomersProductsValues { get; set; }
         public ICollection<SaleVM> Sales { get; set; }

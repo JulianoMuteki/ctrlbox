@@ -70,11 +70,11 @@
                         "mData": null,
                         "sType": "html",
                         "bSortable": false,
-                        sClass: "calc",
+                        "sClass": "calc",
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
 
-                                if (row.StatusEntrega) {
+                                if (row.SaleIsFinished) {
                                     return '';
                                 }
                                 else {
@@ -94,7 +94,7 @@
                                 var status = 'warning';
                                 var texto = "Pendente";
 
-                                if (row.IsDelivery) {
+                                if (row.SaleIsFinished) {
                                     status = 'success';
                                     texto = "Entregue"
                                 }

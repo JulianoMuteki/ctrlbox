@@ -12,7 +12,10 @@ namespace CtrlBox.Application.ViewModel
         public DateTime? DtExpire
         {
             get
-            { return DateTime.ParseExact(DateCheck, "yyyy-MM-dd HH:mm tt", null); }
+            {
+                DateTime? dt = DateTime.Parse(DateCheck);
+                return dt;
+            }
         }
 
         public string DateCheck { get; set; }

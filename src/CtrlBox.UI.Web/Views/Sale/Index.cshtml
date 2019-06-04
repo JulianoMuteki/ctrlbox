@@ -46,7 +46,7 @@
         if (jQuery().datepicker) {
             $('.date-picker').datepicker({
                 rtl: App.isRTL(),
-                format: 'dd/mm/yyyy'
+                format: 'dd-mm-yyyy'
             });
         }
 
@@ -269,7 +269,7 @@
 
                 row.SaleValue = row.ValorProduto.replace(/[^0-9\.]+/g, "");
                 row.Total = row.Total.replace(/[^0-9\.]+/g, "");
-
+                row.ProductID = row.DT_RowId;
                 tbVenda.push(row);
             });
             saleObj.SalesProducts = tbVenda;

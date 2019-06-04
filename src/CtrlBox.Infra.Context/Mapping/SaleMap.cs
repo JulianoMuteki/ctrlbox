@@ -20,11 +20,11 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired();
 
             builder.Property(e => e.ForwardValue)
-                 .HasColumnType("decimal(5,2)")
+                 .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
             builder.Property(e => e.ReceivedValue)
-                 .HasColumnType("decimal(5,2)")
+                 .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
             builder.Property(e => e.TotalReturnedBoxes)

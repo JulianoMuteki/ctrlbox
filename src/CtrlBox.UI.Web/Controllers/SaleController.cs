@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,17 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly IDeliveryApplicationService _deliveryService;
         private readonly IRouteApplicationService _routeService;
         private readonly IProductApplicationService _productService;
+        private readonly ISaleApplicationService _saleService;
 
         public SaleController(IClientApplicationService clientService, IRouteApplicationService routeService,
-                                   IDeliveryApplicationService deliveryService, IProductApplicationService productService, IMapper mapper)
+                                   IDeliveryApplicationService deliveryService, IProductApplicationService productService,
+                                   ISaleApplicationService saleService, IMapper mapper)
         {
             _clientService = clientService;
             _routeService = routeService;
             _deliveryService = deliveryService;
             _productService = productService;
+            _saleService = saleService;
             _mapper = mapper;
         }
         // GET: Sale
@@ -77,7 +81,9 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var vendas_Produtos = jsonS.JsonDeserializeObject<SaleVM>(strSaleJSON[0]);
+                var saleVM = jsonS.JsonDeserializeObject<SaleVM>(strSaleJSON[0]);
+                var sale = _mapper.Map<Sale>(saleVM);
+                _saleService.Add(sale);
 
                 return Json(new
                 {

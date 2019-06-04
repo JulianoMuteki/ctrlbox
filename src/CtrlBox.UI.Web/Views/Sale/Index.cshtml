@@ -50,32 +50,48 @@
             });
         }
 
-        var tbCheque = $('#tbCheques').DataTable({
-
-            "bPaginate": false,
-            "bAutoWidth": false,
-            bFilter: false, bInfo: false,
-
+        var oTableSaleCheck = $('#tbCheques').DataTable({
             "aoColumns": [
-                               {
-                                   "mData": "NumeroCheque",
-                                   data : null,
-                                   "bSortable": false
-                               },
-                                {
-                                    "mData": "Valor",
-                                    "bSortable": false
-                                },
-                                {
-                                    "mData": "Data",
-                                    "bSortable": false
-                                },
-                                 {
-                                     "mData": "Status",
-                                     "bSortable": false
-                                 }]
-
-
+                        {
+                            "mData": "NumeroCheque",
+                            "bSortable": false
+                        },
+                        {
+                            "mData": "Valor",
+                            "bSortable": false
+                        },
+                        {
+                            "mData": "Data",
+                            "bSortable": false
+                        },
+                            {
+                                "mData": "Status",
+                                "bSortable": false
+                            },
+                        {
+                            "mData": "Action",
+                            "bSortable": false
+                        }],
+            "aLengthMenu": [
+       [5, 15, 20, -1],
+       [5, 15, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "iDisplayLength": 5,
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ records per page",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }
+            ]
         });
         var rowID = 0;
         //Salva linha de cheque
@@ -90,7 +106,8 @@
                 "NumeroCheque": $("#numeroCheque").val(),
                 "Valor": valor,
                 "Data":  $("#dtCheque").val(),
-                "Status": "<span class=\"label label-warning\">Pendding</span>"
+                "Status": "<span class=\"label label-warning\">Pendding</span>",
+                "Action": "<a class=\"delete\" href=\"\">Delete</a>"
             };
 
             tb.row.add(rowADD).draw();
@@ -100,19 +117,17 @@
             $("#btnCloseModal").click();
         });
 
-        //Seleciona uma linha de cheque para excluir
-        $('#tbCheques tbody').on('click', 'tr', function () {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
+        $('#tbCheques a.delete').live('click', function (e) {
+            e.preventDefault();
+
+            if (confirm("Are you sure to delete this row ?") == false) {
+                return;
             }
-            else {
-                tbCheque.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        });
-        //Exclui linha de cheque
-        $('#deleteRow').click(function () {
-            tbCheque.row('.selected').remove().draw(false);
+
+            oTableSaleCheck
+                    .row($(this).parents('tr'))
+                    .remove()
+                    .draw();
         });
 
         //Calcula os valores para os produtos
@@ -157,7 +172,7 @@
 
         var url = '@Url.Content("~/Sale/AjaxHandlerExecutarVenda")?clienteID=' + '@clienteID' + '&linhaID=' + '@linhaID';
 
-        var oTable = $('#tbVenda').dataTable({
+        var oTableSale = $('#tbVenda').dataTable({
             "sAjaxSource": url,
             "bProcessing": true,
             "bDestroy": true,
@@ -191,7 +206,6 @@
                                 },
                                 {
                                     "mData": "ValorProduto"
-
                                 },
                                 {
                                     "mData": "Total",
@@ -242,10 +256,10 @@
             saleObj.ForwardValue = valorPrazo;
             saleObj.TotalReturnedBoxes = retornoCaixaVazia;
 
-            var oTable = $('#tbVenda').dataTable();
+            var oTableSale = $('#tbVenda').dataTable();
             var tbVenda = [];
-            $.each(oTable.fnGetNodes(), function (index, value) {
-                var row = oTable.fnGetData(value);
+            $.each(oTableSale.fnGetNodes(), function (index, value) {
+                var row = oTableSale.fnGetData(value);
                 var qtdeVenda = $(value).find('input.qtdeVenda').val();
                 var qtdeRetorno = $(value).find('input.qtdeRetorno').val();
 
@@ -262,17 +276,17 @@
             });
             saleObj.SalesProducts = tbVenda;
 
-            var oTableCheque = $('#tbCheques').dataTable();
-            var tbCheques = [];
-            $.each(oTableCheque.fnGetNodes(), function (index, value) {
-                var row = oTableCheque.fnGetData(value);
+            var oTableSaleCheque = $('#tbCheques').dataTable();
+            var listChecks = [];
+            $.each(oTableSaleCheque.fnGetNodes(), function (index, value) {
+                var row = oTableSaleCheque.fnGetData(value);
 
                 row.Valor = row.Valor.replace(/[^0-9\,]+/g, "").replace(",", ".");
                 delete row.Status;
 
-                tbCheques.push(row);
+                listChecks.push(row);
             });
-            saleObj.Checks = tbCheques;
+            saleObj.Checks = listChecks;
 
             var myJsonString = JSON.stringify(saleObj);
             console.log(myJsonString);
@@ -451,9 +465,7 @@
                                         <div class="control-group">
                                             <div class="table-toolbar">
                                                 <div class="btn-group">
-                                                    <a href="#portlet-config" data-toggle="modal" class="config btn gray"><i class="icon-plus"></i> Add</a>
-                                                    <a id="deleteRow" class="btn gray"><i class="icon-remove"></i> Remover</a>
-
+                                                    <a href="#portlet-config" data-toggle="modal" class="config btn gray"><i class="icon-plus"></i> Add</a>                                                   
                                                 </div>
                                             </div>
                                             <table id="tbCheques" class="table table-hover">
@@ -463,6 +475,7 @@
                                                         <th>Valor</th>
                                                         <th>Data</th>
                                                         <th>Status</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>

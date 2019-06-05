@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context.Identity;
@@ -80,12 +81,12 @@ namespace CtrlBox.Infra.Context
             {
                 for (int i = 0; i < 50; i++)
                 {
-                    Client client = new Client();
+                    ClientVM client = new ClientVM();
                     client.Name = $"Cliente - {i}";
                     client.Address = $"Rua José Nº {i}";
                     client.BalanceDue = 0;
                     client.Contact = $"Contanto - {i}";
-                    client.IsDelivery = false;
+                    client.SaleIsFinished = false;
                     client.Phone = "19-99999-9999";
                     client.QuantityBoxes = 0;
                     clientService.Add(client);

@@ -148,5 +148,14 @@ namespace CtrlBox.Application
         {
             return _unitOfWork.Repository<Stock>().GetAll().FirstOrDefault();
         }
+
+        public void AddStock(int stockTotal)
+        {
+            Stock stock = new Stock();
+            stock.AmountBoxes = stockTotal;
+
+            _unitOfWork.Repository<Stock>().Add(stock);
+            _unitOfWork.Commit();
+        }
     }
 }

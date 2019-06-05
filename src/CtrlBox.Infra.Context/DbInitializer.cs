@@ -128,6 +128,9 @@ namespace CtrlBox.Infra.Context
                     route.HasOpenDelivery = false;
                     routeService.Add(route);
                 }
+
+                var productApplicationService = serviceProvider.GetRequiredService<IProductApplicationService>();
+                productApplicationService.AddStock(100000);
             }
         }
     }

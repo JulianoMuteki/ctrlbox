@@ -27,9 +27,10 @@ namespace CtrlBox.Application
                 var entregaProduto = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
                 entregaProduto.Amount -= (int)item.Amount;
                 item.SaleID = entity.Id;
-
+                
                 _unitOfWork.Repository<DeliveryProduct>().Update(entregaProduto);
             }
+            entity.IsFinished = true;
 
             _unitOfWork.Repository<Sale>().Add(entity);
             _unitOfWork.Commit();

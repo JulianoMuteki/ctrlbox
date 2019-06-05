@@ -1,7 +1,6 @@
 ﻿using CtrlBox.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
@@ -14,5 +13,7 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<DeliveryProduct> GetDeliveryProducts(Guid deliveryID);
         ICollection<ClientProductValue> GetClientsProductsByClientID(Guid clientID);
         Stock GetStock();
+
+        void AddStock(int stockTotal);
     }
 }

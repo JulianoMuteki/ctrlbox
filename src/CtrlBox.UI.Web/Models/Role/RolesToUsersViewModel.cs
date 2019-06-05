@@ -10,5 +10,12 @@ namespace CtrlBox.UI.Web.Models.Role
 
         public string RoleSelected { get; set; }
         public string UserSelected { get; set; }
+
+        public RolesToUsersViewModel()
+        {
+            this.AllRoles = new HashSet<SelectListItem>();
+            this.AllUsers = new HashSet<SelectListItem>();
+
+        }
     }
 }

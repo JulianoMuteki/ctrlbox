@@ -42,7 +42,6 @@
                         <li><a data-toggle="tab" href="#tab_2-2"><i class="icon-picture"></i> Change Avatar</a></li>
                         <li><a data-toggle="tab" href="#tab_3-3"><i class="icon-lock"></i> Change Password</a></li>
                         <li><a data-toggle="tab" href="#tab_4-4"><i class="icon-eye-open"></i> Privacity Settings</a></li>
-                        <li><a data-toggle="tab" href="#tab_5-5"><i class="icon-user"></i> Occupation</a></li>
                     </ul>
                 </div>
                 <div class="span9">
@@ -110,88 +109,51 @@
                         </div>
                         <div id="tab_4-4" class="tab-pane">
                             <div style="height: auto;" id="accordion4-4" class="accordion collapse in">
-                                <div class="portlet-body form">
-                                    <!-- BEGIN FORM-->
-                                    <form asp-route="AddRoles" method="post" class="form-horizontal">
-                                        <div class="control-group">
-                                            <label class="control-label">Multi-Roles Select</label>
-                                            <div class="controls">
 
-                                                <select id="select2_sample2" class="span6 select2" multiple name="UserSelected" asp-for="RolesToUsersVM.UserSelected" asp-items="@Model.RolesToUsersVM.AllUsers"></select>
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <div class="portlet box red">
+                                            <div class="portlet-title">
+                                                <div class="caption"><i class="icon-reorder"></i>Cargos</div>
+                                                <div class="tools">
+                                                    <a href="javascript:;" class="collapse"></a>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body">
+                                                <ul>
+                                                    @foreach (var item in Model.RolesToUsersVM.AllRoles)
+                                                    {
+                                                        <li>@item.Text</li>
+                                                    }
+                                                </ul>
                                             </div>
                                         </div>
-                                    </form>
-                                    <!-- END FORM-->
-                                </div>
-
-                            </div>
-                        </div>
-                        <div id="tab_5-5" class="tab-pane">
-                            <div style="height: auto;" id="accordion3-3" class="accordion collapse in">
-                                <div class="portlet-body form">
-                                    <!-- BEGIN FORM-->
-                                    <form asp-route="Permission" method="post" class="form-horizontal">
-                                        <div class="control-group">
-                                            <label class="control-label">Multi-Value Select</label>
-                                            <div class="controls">
-                                                <select id="select2_sample2" class="span6 select2" multiple>
-                                                    <optgroup label="NFC EAST">
-                                                        <option>Dallas Cowboys</option>
-                                                        <option>New York Giants</option>
-                                                        <option>Philadelphia Eagles</option>
-                                                        <option>Washington Redskins</option>
-                                                    </optgroup>
-                                                    <optgroup label="NFC NORTH">
-                                                        <option>Chicago Bears</option>
-                                                        <option>Detroit Lions</option>
-                                                        <option>Green Bay Packers</option>
-                                                        <option>Minnesota Vikings</option>
-                                                    </optgroup>
-                                                    <optgroup label="NFC SOUTH">
-                                                        <option>Atlanta Falcons</option>
-                                                        <option>Carolina Panthers</option>
-                                                        <option>New Orleans Saints</option>
-                                                        <option>Tampa Bay Buccaneers</option>
-                                                    </optgroup>
-                                                    <optgroup label="NFC WEST">
-                                                        <option>Arizona Cardinals</option>
-                                                        <option>St. Louis Rams</option>
-                                                        <option>San Francisco 49ers</option>
-                                                        <option>Seattle Seahawks</option>
-                                                    </optgroup>
-                                                    <optgroup label="AFC EAST">
-                                                        <option>Buffalo Bills</option>
-                                                        <option>Miami Dolphins</option>
-                                                        <option>New England Patriots</option>
-                                                        <option>New York Jets</option>
-                                                    </optgroup>
-                                                    <optgroup label="AFC NORTH">
-                                                        <option>Baltimore Ravens</option>
-                                                        <option>Cincinnati Bengals</option>
-                                                        <option>Cleveland Browns</option>
-                                                        <option>Pittsburgh Steelers</option>
-                                                    </optgroup>
-                                                    <optgroup label="AFC SOUTH">
-                                                        <option>Houston Texans</option>
-                                                        <option>Indianapolis Colts</option>
-                                                        <option>Jacksonville Jaguars</option>
-                                                        <option>Tennessee Titans</option>
-                                                    </optgroup>
-                                                    <optgroup label="AFC WEST">
-                                                        <option>Denver Broncos</option>
-                                                        <option>Kansas City Chiefs</option>
-                                                        <option>Oakland Raiders</option>
-                                                        <option>San Diego Chargers</option>
-                                                    </optgroup>
-                                                </select>
+                                    </div>
+                                    <div class="span6">
+                                        <div class="portlet box red">
+                                            <div class="portlet-title">
+                                                <div class="caption"><i class="icon-reorder"></i>Permissões</div>
+                                                <div class="tools">
+                                                    <a href="javascript:;" class="collapse"></a>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body">
+                                                <ul>
+                                                    <li>Lorem ipsum dolor sit amet</li>
+                                                    <li>Consectetur adipiscing elit</li>
+                                                    <li>Integer molestie lorem at massa</li>
+                                                    <li>Facilisis in pretium nisl aliquet</li>
+                                                    <li>Faucibus porta lacus fringilla vel</li>
+                                                    <li>Aenean sit amet erat nunc</li>
+                                                    <li>Eget porttitor lorem</li>
+                                                </ul>
                                             </div>
                                         </div>
-                                    </form>
-                                    <!-- END FORM-->
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <!--end span9-->

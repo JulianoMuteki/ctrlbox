@@ -117,14 +117,19 @@ namespace CtrlBox.UI.Web.Controllers
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
 
                 var sales = _saleService.FindAllByDelivery(delivery.Id);
+                sales = (sales ?? new List<Sale>());
 
-                var clientsVMs = clientsVM.Select(c => { c.SaleIsFinished = 
-                                                                ((from x in sales where x.ClientID.ToString() == c.DT_RowId
-                                                                        select x).FirstOrDefault().IsFinished); return c; }).ToList();
+                var clientsVMs = clientsVM.Select(c =>
+                                            {
+                                                c.SaleIsFinished =
+                                                       ((from x in sales
+                                                         where x.ClientID.ToString() == c.DT_RowId
+                                                         select (x == null ? false: x.IsFinished)).FirstOrDefault()); return c;
+                                            }).ToList();
                 return Json(new
                 {
                     aaData = clientsVMs,
-                    xaData = productsDeliveryVM.Select(x=> new { x.Product.Name, x.Product.DT_RowId, x.DeliveryID, x.Amount }).ToList(),
+                    xaData = productsDeliveryVM.Select(x => new { x.Product.Name, x.Product.DT_RowId, x.DeliveryID, x.Amount }).ToList(),
                     xbData = despesasVM,
                     success = true
                 });

@@ -37,7 +37,7 @@
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <form action="#" class="form-horizontal">
+                        <form asp-controller="Role" asp-action="AssignRoleToUser" class="form-horizontal">
                             <div class="control-group">
                                 <label>Users</label>
                                 <select name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers" class="form-control"> <option>Please select one</option></select>

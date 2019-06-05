@@ -13,6 +13,10 @@ namespace CtrlBox.Domain.Entities
 
         public Stock()
         {
+            this.Id = Guid.NewGuid();
+            this.CreationDate = DateTime.Now;
+            this.DateModified = DateTime.Now;
+
             this.StocksProducts = new HashSet<StockProduct>();
         }
     }

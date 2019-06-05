@@ -86,20 +86,14 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 ApplicationUser model = _userManager.FindByIdAsync(idUser).Result;
                 registerModel = new RegisterViewModel() { IdUser = model.Id, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName };
+                registerModel.RolesToUsersVM.AllRoles = _userManager.GetRolesAsync(model).Result
+                                     .Select(role => new SelectListItem
+                                     {
+                                         Value = role,
+                                         Text = role
+                                     }).ToList();
             }
-            registerModel.RolesToUsersVM.AllRoles = _roleManager.Roles.ToList()
-                                                 .Select(role => new SelectListItem
-                                                 {
-                                                     Value = role.Name,
-                                                     Text = role.Name
-                                                 }).ToList();
 
-            registerModel.RolesToUsersVM.AllUsers = _userManager.Users.ToList()
-                                                   .Select(user => new SelectListItem
-                                                   {
-                                                       Value = user.Id.ToString(),
-                                                       Text = user.UserName
-                                                   }).ToList();
             return registerModel;
         }
 

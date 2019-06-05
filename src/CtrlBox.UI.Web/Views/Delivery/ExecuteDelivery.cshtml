@@ -72,14 +72,15 @@
                         "bSortable": false,
                         "sClass": "calc",
                         "mRender": function (data, type, row) {
-                            if (type === 'display') {
-                                var textLink = "Sale";
+                            if (type === 'display') {                               
+                                var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
+                                var link = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
+
                                 if (row.SaleIsFinished) {
-                                    textLink = "View";
+                                    link = '<a href="' + url + '" class="btn mini"><i class="icon-print"></i> Invoice</a>';
                                 }
 
-                                var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
-                                return '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> ' + textLink +'</a>';
+                                return link;
                             }
                             return data;
                         }

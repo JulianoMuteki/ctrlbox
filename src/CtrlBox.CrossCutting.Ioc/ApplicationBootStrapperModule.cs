@@ -12,7 +12,8 @@ namespace CtrlBox.CrossCutting.Ioc
             services.AddScoped<IClientApplicationService, ClientApplicationService>();
             services.AddScoped<IRouteApplicationService, RouteApplicationService>();
             services.AddScoped<IDeliveryApplicationService, DeliveryApplicationService>();
-            
+            services.AddScoped<ISaleApplicationService, SaleApplicationService>();
+
             services.AddScoped<ICustomEmailSender, CustomEmailSender>();
 
         }

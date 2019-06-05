@@ -113,7 +113,7 @@ namespace CtrlBox.Services.Api.Controllers
                 {
                     var route = _mapper.Map<Route>(routeVM);
 
-                    var newClient = _routeApplicationService.ConnectRouteToClient(route, routeVM.ClientesIDs);
+                    var newClient = _routeApplicationService.ConnectRouteToClient(null);
 
                     if (newClient.Count > 0)
                     {

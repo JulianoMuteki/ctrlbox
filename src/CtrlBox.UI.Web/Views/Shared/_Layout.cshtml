@@ -34,7 +34,7 @@
             <div class="container-fluid">
                 <!-- BEGIN LOGO -->
                 <a class="brand" target="_blank" href="#">
-                    <img src="~/img/logo.png" alt="logo" />
+                    <img src="~/img/logo_ctrlbox.png" alt="logo" />
                 </a>
                 <!-- END LOGO -->
                 <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -48,8 +48,8 @@
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" src="~/img/avatar1_small.jpg" />
-                            <span class="username">Bob Nilson</span>
+                            <img alt="" src="~/img/jcp.jpg" />
+                            <span class="username">Juliano Pestili</span>
                             <i class="icon-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
@@ -102,14 +102,30 @@
                 </li>
                 <li>
                     <a href="javascript:;">
+                        <i class="icon-lock"></i>
+                        <span class="title">Security</span>
+                        <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            @Html.ActionLink("Usuários", "Index", "Manage")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Permissões", "Index", "Role")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Login", "Login", "Account")
+                        </li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="javascript:;">
                         <i class="icon-cogs"></i>
                         <span class="title">Cadastros</span>
                         <span class="arrow "></span>
                     </a>
                     <ul class="sub-menu">
-                        <li>
-                            @Html.ActionLink("Contatos", "Index", "Security")
-                        </li>
                         <li>
                             @Html.ActionLink("Clientes", "Index", "Client")
                         </li>

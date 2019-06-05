@@ -7,7 +7,14 @@ namespace CtrlBox.Domain.Common
         public Guid Id { get; protected set; }
         public DateTime CreationDate { get; protected set; }
         public DateTime DateModified { get; protected set; }
-        
+
+        public EntityBase()
+        {
+            this.DateModified = DateTime.Now;
+            this.CreationDate = DateTime.Now;
+            this.Id = Guid.NewGuid();
+        }
+
         public override bool Equals(object obj)
         {
             var compareTo = obj as EntityBase;

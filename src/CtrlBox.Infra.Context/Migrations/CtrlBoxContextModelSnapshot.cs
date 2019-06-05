@@ -254,10 +254,12 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid>("DeliveryID");
 
                     b.Property<decimal>("ForwardValue")
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<bool>("IsFinished");
 
                     b.Property<decimal>("ReceivedValue")
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("TotalReturnedBoxes");
 
@@ -282,7 +284,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<int>("ExchangeQuantity");
 
                     b.Property<decimal>("SaleValue")
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("ProductID", "SaleID");
 

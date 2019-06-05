@@ -93,7 +93,7 @@ namespace CtrlBox.Infra.Context
 
                 var productService = serviceProvider.GetRequiredService<IProductApplicationService>();
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Product product = new Product();
                     product.Description = $"Descrição nanica {i}";
@@ -101,7 +101,7 @@ namespace CtrlBox.Infra.Context
                     product.Weight = i;
                     productService.Add(product);
                 }
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Product product = new Product();
                     product.Description = $"Descrição maçã {i}";
@@ -109,7 +109,7 @@ namespace CtrlBox.Infra.Context
                     product.Weight = i;
                     productService.Add(product);
                 }
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Product product = new Product();
                     product.Description = $"Descrição prata {i}";

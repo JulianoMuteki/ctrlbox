@@ -72,10 +72,9 @@ namespace CtrlBox.Services.Api.Controllers
             {
                 try
                 {
-                    var route = _mapper.Map<Route>(RouteVM);
-                    var newClient = _routeApplicationService.Add(route);
+                    var newClient = _routeApplicationService.Add(RouteVM);
 
-                    if (newClient.Id != Guid.Empty)
+                    if (newClient.ID != Guid.Empty)
                     {
                         return Ok(newClient);
                     }

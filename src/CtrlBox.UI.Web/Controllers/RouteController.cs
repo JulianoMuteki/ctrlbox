@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
 using CtrlBox.Application.ViewModel;
-using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +10,12 @@ namespace CtrlBox.UI.Web.Controllers
     {
         private readonly IClientApplicationService _clientApplicationService;
         private readonly IRouteApplicationService _routeApplicationService;
-        private readonly IMapper _mapper;
 
-        public RouteController(IClientApplicationService clientService, IRouteApplicationService routeService, IMapper mapper)
+        public RouteController(IClientApplicationService clientService, IRouteApplicationService routeService)
         {
             _clientApplicationService = clientService;
             _routeApplicationService = routeService;
-            _mapper = mapper;
         }
-
-
 
         public ActionResult Index()
         {
@@ -32,11 +25,11 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public ActionResult AjaxHandlerGet()
         {
-            var routes = _routeApplicationService.GetAll();
-            IList<RouteVM> routesVM = _mapper.Map<List<RouteVM>>(routes);
+            var routesVMs = _routeApplicationService.GetAll();
+            
             return Json(new
             {
-                aaData = routesVM,
+                aaData = routesVMs,
                 success = true
             });
         }
@@ -49,19 +42,16 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult Create(RouteVM routeVM)
         {
-            var route = _mapper.Map<Route>(routeVM);
-            _routeApplicationService.Add(route);
-
-            var routes = _routeApplicationService.GetAll();
-            IList<RouteVM> routesVM = _mapper.Map<List<RouteVM>>(routes);
-            return View("Index", routesVM);
+            _routeApplicationService.Add(routeVM);
+            var routesVMs = _routeApplicationService.GetAll();
+           
+            return View("Index", routesVMs);
         }
 
         [HttpPost]
         public ActionResult Edit(RouteVM routeVM)
         {
-            var route = _mapper.Map<Route>(routeVM);
-            _routeApplicationService.Update(route);
+            _routeApplicationService.Update(routeVM);
 
             return Json(new
             {
@@ -76,9 +66,8 @@ namespace CtrlBox.UI.Web.Controllers
             //caso esta linha tenha alguma entrega pendente, não pode remover o cliente
             ViewData["routeID"] = linhaID;
 
-            var route = _routeApplicationService.GetById(new Guid(linhaID));
-            var routeVM = _mapper.Map<RouteVM>(route);
-
+            var routeVM = _routeApplicationService.GetById(new Guid(linhaID));
+            
             return View(routeVM);
         }
 
@@ -87,8 +76,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                var clients = _clientApplicationService.GetNotAvailable(new Guid(routeID));
-                IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
+                var clientsVM = _clientApplicationService.GetNotAvailable(new Guid(routeID));
 
                 return Json(new
                 {
@@ -106,9 +94,8 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                var clients = _clientApplicationService.GetAvailable(new Guid(routeID));
-                IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
-
+                var clientsVM = _clientApplicationService.GetAvailable(new Guid(routeID));
+               
                 return Json(new
                 {
                     aaData = clientsVM,
@@ -129,8 +116,7 @@ namespace CtrlBox.UI.Web.Controllers
                 JsonSerialize jsonS = new JsonSerialize();
                 var routeClientVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
 
-                var routeClient = _mapper.Map<List<RouteClient>>(routeClientVM);
-                _routeApplicationService.ConnectRouteToClient(routeClient);
+                _routeApplicationService.ConnectRouteToClient(routeClientVM);
 
                 return Json(new
                 {

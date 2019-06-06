@@ -1,15 +1,14 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.Application.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IClientApplicationService : IApplicationServiceBase<Client>
+    public interface IClientApplicationService : IApplicationServiceBase<ClientVM>
     {
 
-        ICollection<Client> GetAvailable(Guid routeID);
-        ICollection<Client> GetNotAvailable(Guid idRoute);
-        ICollection<Client> GetByRouteID(Guid routeID);
+        ICollection<ClientVM> GetAvailable(Guid routeID);
+        ICollection<ClientVM> GetNotAvailable(Guid idRoute);
+        ICollection<ClientVM> GetByRouteID(Guid routeID);
     }
 }

@@ -1,4 +1,6 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using AutoMapper;
+using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Domain.Interfaces.Repository;
@@ -12,62 +14,73 @@ namespace CtrlBox.Application
     public class ProductApplicationService : IProductApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProductApplicationService(IUnitOfWork unitOfWork)
+        public ProductApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public ICollection<Product> GetAll()
+        public ICollection<ProductVM> GetAll()
         {
-            return _unitOfWork.Repository<Product>().GetAll();
+            var products = _unitOfWork.Repository<Product>().GetAll();
+            var productVMs = _mapper.Map<IList<ProductVM>>(products);
+            return productVMs;
         }
 
-        public Task<ICollection<Product>> GetAllAsync()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Product GetById(Guid id)
-        {
-            return _unitOfWork.Repository<Product>().GetById(id);
-        }
-
-        public Task<Product> GetByIdAsync(Guid id)
+        public Task<ICollection<ProductVM>> GetAllAsync()
         {
             throw new System.NotImplementedException();
         }
 
-        public Product Add(Product entity)
+        public ProductVM GetById(Guid id)
         {
-            var product = _unitOfWork.Repository<Product>().Add(entity);
-            _unitOfWork.Commit();
-
-            return product;
+            var product = _unitOfWork.Repository<Product>().GetById(id);
+            var productVM = _mapper.Map<ProductVM>(product);
+            return productVM;
         }
 
-        public Task<Product> AddAsync(Product entity)
+        public Task<ProductVM> GetByIdAsync(Guid id)
         {
-            var product = _unitOfWork.Repository<Product>().AddAsync(entity);
-            _unitOfWork.Commit();
-
-            return product;
+            throw new System.NotImplementedException();
         }
 
-        public Product Update(Product updated)
+        public ProductVM Add(ProductVM entity)
         {
-            Product product = _unitOfWork.Repository<Product>().GetById(updated.Id);
+            var product = _mapper.Map<Product>(entity);
 
-            if (product != null)
+            _unitOfWork.Repository<Product>().Add(product);
+            _unitOfWork.Commit();
+
+            return entity;
+        }
+
+        public Task<ProductVM> AddAsync(ProductVM entity)
+        {
+            var product = _mapper.Map<Product>(entity);
+
+            _unitOfWork.Repository<Product>().AddAsync(product);
+            _unitOfWork.Commit();
+
+            return Task.FromResult(entity);
+        }
+
+        public ProductVM Update(ProductVM updated)
+        {
+            var product = _mapper.Map<Product>(updated);
+            Product productUpdate = _unitOfWork.Repository<Product>().GetById(product.Id);
+
+            if (productUpdate != null)
             {
-                product.UpdateData(updated);
-                product = _unitOfWork.Repository<Product>().Update(product);
+                productUpdate.UpdateData(product);
+                _unitOfWork.Repository<Product>().Update(productUpdate);
                 _unitOfWork.Commit();
             }
-            return product;
+            return updated;
         }
 
-        public Task<Product> UpdateAsync(Product updated)
+        public Task<ProductVM> UpdateAsync(ProductVM updated)
         {
             throw new System.NotImplementedException();
         }
@@ -89,20 +102,20 @@ namespace CtrlBox.Application
             throw new System.NotImplementedException();
         }
 
-        public ICollection<ClientProductValue> ConnectRouteToClient(ICollection<ClientProductValue> clientsProducts)
+        public ICollection<ClientProductValueVM> ConnectRouteToClient(ICollection<ClientProductValueVM> clientsProductsVMs)
         {
+            var clientsProducts = _mapper.Map<IList<ClientProductValue>>(clientsProductsVMs);
             _unitOfWork.Repository<ClientProductValue>().AddRange(clientsProducts);
             _unitOfWork.Commit();
 
-            return clientsProducts;
+            return clientsProductsVMs;
         }
 
-
-
-        public int AddProductStock(ICollection<StockProduct> stocksProducts)
+        public int AddProductStock(ICollection<StockProductVM> stocksProductsVM)
         {
             try
             {
+                var stocksProducts = _mapper.Map<IList<StockProduct>>(stocksProductsVM);
                 var result = _unitOfWork.Repository<StockProduct>().AddRange(stocksProducts);
                 _unitOfWork.Commit();
 
@@ -114,7 +127,7 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<StockProduct> GetProductsStock()
+        public ICollection<StockProductVM> GetProductsStock()
         {
             var productsStock = _unitOfWork.Repository<StockProduct>().GetAll();
 
@@ -131,22 +144,32 @@ namespace CtrlBox.Application
                 });
             }
 
-            return productsStock;
+            var stocksProductsVMs = _mapper.Map<IList<StockProductVM>>(productsStock);
+            return stocksProductsVMs;
         }
 
-        public ICollection<DeliveryProduct> GetDeliveryProducts(Guid deliveryID)
+        public ICollection<DeliveryProductVM> GetDeliveryProducts(Guid deliveryID)
         {
-            return _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryProductsLoad(deliveryID);
+            var deliveries = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryProductsLoad(deliveryID);
+
+            var deliveriesVMs = _mapper.Map<IList<DeliveryProductVM>>(deliveries);
+            return deliveriesVMs;
         }
 
-        public ICollection<ClientProductValue> GetClientsProductsByClientID(Guid clientID)
+        public ICollection<ClientProductValueVM> GetClientsProductsByClientID(Guid clientID)
         {
-            return _unitOfWork.Repository<ClientProductValue>().FindAll(x => x.ClientID == clientID);
+            var clientsProductsValue = _unitOfWork.Repository<ClientProductValue>().FindAll(x => x.ClientID == clientID);
+
+            var clientsProductsValueVMs = _mapper.Map<IList<ClientProductValueVM>>(clientsProductsValue);
+            return clientsProductsValueVMs;
         }
 
-        public Stock GetStock()
+        public StockVM GetStock()
         {
-            return _unitOfWork.Repository<Stock>().GetAll().FirstOrDefault();
+            var stock = _unitOfWork.Repository<Stock>().GetAll().FirstOrDefault();
+
+            var stockVM = _mapper.Map<StockVM>(stock);
+            return stockVM;
         }
 
         public void AddStock(int stockTotal)

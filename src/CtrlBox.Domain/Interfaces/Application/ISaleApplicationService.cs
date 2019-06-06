@@ -1,11 +1,11 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.Application.ViewModel;
 using System;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface ISaleApplicationService : IApplicationServiceBase<Sale>
+    public interface ISaleApplicationService : IApplicationServiceBase<SaleVM>
     {
-        ICollection<Sale> FindAllByDelivery(Guid deliveryID);
+        ICollection<SaleVM> FindAllByDelivery(Guid deliveryID);
     }
 }

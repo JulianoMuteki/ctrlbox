@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoMapper;
 using CtrlBox.Application.ViewModel;
-using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +11,6 @@ namespace CtrlBox.UI.Web.Controllers
     public class DeliveryController : Controller
     {
         private readonly IClientApplicationService _clientService;
-        private readonly IMapper _mapper;
         private readonly IDeliveryApplicationService _deliveryService;
         private readonly IRouteApplicationService _routeService;
         private readonly IProductApplicationService _productService;
@@ -21,14 +18,13 @@ namespace CtrlBox.UI.Web.Controllers
 
         public DeliveryController(IClientApplicationService clientService, IRouteApplicationService routeService,
                                    IDeliveryApplicationService deliveryService, IProductApplicationService productService,
-                                   ISaleApplicationService saleService, IMapper mapper)
+                                   ISaleApplicationService saleService)
         {
             _clientService = clientService;
             _routeService = routeService;
             _deliveryService = deliveryService;
             _productService = productService;
             _saleService = saleService;
-            _mapper = mapper;
         }
         // GET: Delivery
         public ActionResult Index()
@@ -42,8 +38,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                var deliveries = _deliveryService.GetAll();
-                var deliveriesVM = _mapper.Map<ICollection<DeliveryVM>>(deliveries);
+                var deliveriesVM = _deliveryService.GetAll();
 
                 return Json(new
                 {
@@ -74,8 +69,7 @@ namespace CtrlBox.UI.Web.Controllers
                 deliveryVM.RouteID = new Guid(linha);
                 deliveryVM.DeliveriesProducts = deliveryProductsVMs;
 
-                Delivery delivery = _mapper.Map<Delivery>(deliveryVM);
-                _deliveryService.Add(delivery);
+                _deliveryService.Add(deliveryVM);
                 return Json(new
                 {
                     success = true,
@@ -87,8 +81,6 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
-
-
 
         public ActionResult ExecuteDelivery(string entregaID, string linhaID)
         {
@@ -102,23 +94,13 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 Guid idEntrega = new Guid(entregaID);
-                var delivery = _deliveryService.GetById(idEntrega);
-                var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
-
-                var route = _routeService.GetById(delivery.RouteID);
-                var routeVM = _mapper.Map<RouteVM>(route);
-
-                var clients = _clientService.GetByRouteID(new Guid(routeVM.DT_RowId));
-                var clientsVM = _mapper.Map<ICollection<ClientVM>>(clients);
-
-                var productsDelivery = _productService.GetDeliveryProducts(new Guid(deliveryVM.DT_RowId));
-                var productsDeliveryVM = _mapper.Map<ICollection<DeliveryProductVM>>(productsDelivery);
+                var deliveryVM = _deliveryService.GetById(idEntrega);
+                var routeVM = _routeService.GetById(deliveryVM.RouteID);
+                var clientsVM = _clientService.GetByRouteID(new Guid(routeVM.DT_RowId));
+                var productsDeliveryVM = _productService.GetDeliveryProducts(new Guid(deliveryVM.DT_RowId));
 
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
-
-                var sales = _saleService.FindAllByDelivery(delivery.Id);
-                sales = (sales ?? new List<Sale>());
-
+                var sales = _saleService.FindAllByDelivery(deliveryVM.ID);
                 var clientsVMs = clientsVM.Select(c =>
                                             {
                                                 c.SaleIsFinished =

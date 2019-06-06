@@ -1,10 +1,10 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using AutoMapper;
+using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CtrlBox.Application
@@ -12,31 +12,37 @@ namespace CtrlBox.Application
     public class RouteApplicationService : IRouteApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public RouteApplicationService(IUnitOfWork unitOfWork)
+        public RouteApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Route Add(Route entity)
+        public RouteVM Add(RouteVM entity)
         {
-            var Route = _unitOfWork.Repository<Route>().Add(entity);
+            var route = _mapper.Map<Route>(entity);
+
+            _unitOfWork.Repository<Route>().Add(route);
             _unitOfWork.Commit();
 
-            return Route;
+            return entity;
         }
 
-        public Task<Route> AddAsync(Route entity)
+        public Task<RouteVM> AddAsync(RouteVM entity)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<RouteClient> ConnectRouteToClient(ICollection<RouteClient> routesClients)
+        public ICollection<RouteClientVM> ConnectRouteToClient(ICollection<RouteClientVM> routesClientsVM)
         {
+            var routesClients = _mapper.Map<List<RouteClient>>(routesClientsVM);
+
             var routeClientReturn = _unitOfWork.Repository<RouteClient>().AddRange(routesClients);
             _unitOfWork.Commit();
 
-            return routesClients;
+            return routesClientsVM;
         }
 
         public void Delete(Guid id)
@@ -56,40 +62,46 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public ICollection<Route> GetAll()
+        public ICollection<RouteVM> GetAll()
         {
-            return _unitOfWork.Repository<Route>().GetAll();
+            var routes = _unitOfWork.Repository<Route>().GetAll();
+
+            var routesVMs = _mapper.Map<List<RouteVM>>(routes);
+            return routesVMs;
         }
 
-        public Task<ICollection<Route>> GetAllAsync()
+        public Task<ICollection<RouteVM>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Route GetById(Guid id)
+        public RouteVM GetById(Guid id)
         {
-            return _unitOfWork.Repository<Route>().GetById(id);
+            var route = _unitOfWork.Repository<Route>().GetById(id);
+            var routeVM = _mapper.Map<RouteVM>(route);
+            return routeVM;
         }
 
-        public Task<Route> GetByIdAsync(Guid id)
+        public Task<RouteVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Route Update(Route updated)
+        public RouteVM Update(RouteVM updated)
         {
-            Route Route = _unitOfWork.Repository<Route>().GetById(updated.Id);
+            var route = _mapper.Map<Route>(updated);
+            Route routeUpdate = _unitOfWork.Repository<Route>().GetById(route.Id);
 
-            if (Route != null)
+            if (routeUpdate != null)
             {
-                Route.UpdateData(updated);
-                Route = _unitOfWork.Repository<Route>().Update(Route);
+                routeUpdate.UpdateData(route);
+                _unitOfWork.Repository<Route>().Update(routeUpdate);
                 _unitOfWork.Commit();
             }
-            return Route;
+            return updated;
         }
 
-        public Task<Route> UpdateAsync(Route updated)
+        public Task<RouteVM> UpdateAsync(RouteVM updated)
         {
             throw new NotImplementedException();
         }

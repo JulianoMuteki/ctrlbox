@@ -1,12 +1,10 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace CtrlBox.Infra.Context
@@ -80,12 +78,12 @@ namespace CtrlBox.Infra.Context
             {
                 for (int i = 0; i < 50; i++)
                 {
-                    Client client = new Client();
+                    ClientVM client = new ClientVM();
                     client.Name = $"Cliente - {i}";
                     client.Address = $"Rua José Nº {i}";
                     client.BalanceDue = 0;
                     client.Contact = $"Contanto - {i}";
-                    client.IsDelivery = false;
+                    client.SaleIsFinished = false;
                     client.Phone = "19-99999-9999";
                     client.QuantityBoxes = 0;
                     clientService.Add(client);
@@ -95,7 +93,7 @@ namespace CtrlBox.Infra.Context
 
                 for (int i = 0; i < 3; i++)
                 {
-                    Product product = new Product();
+                    ProductVM product = new ProductVM();
                     product.Description = $"Descrição nanica {i}";
                     product.Name = $"Banana nanica - {i}";
                     product.Weight = i;
@@ -103,7 +101,7 @@ namespace CtrlBox.Infra.Context
                 }
                 for (int i = 0; i < 3; i++)
                 {
-                    Product product = new Product();
+                    ProductVM product = new ProductVM();
                     product.Description = $"Descrição maçã {i}";
                     product.Name = $"Banana maçã - {i}";
                     product.Weight = i;
@@ -111,7 +109,7 @@ namespace CtrlBox.Infra.Context
                 }
                 for (int i = 0; i < 3; i++)
                 {
-                    Product product = new Product();
+                    ProductVM product = new ProductVM();
                     product.Description = $"Descrição prata {i}";
                     product.Name = $"Banana prata - {i}";
                     product.Weight = i;
@@ -121,7 +119,7 @@ namespace CtrlBox.Infra.Context
                 var routeService = serviceProvider.GetRequiredService<IRouteApplicationService>();
                 for (int i = 0; i < 10; i++)
                 {
-                    Route route = new Route();
+                    RouteVM route = new RouteVM();
                     route.Name = $"Rota - {i}";
                     route.KmDistance = 100 + 1;
                     route.Truck = $"Costallation - {i}";

@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
-using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -27,10 +25,9 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult AjaxHandlerGet()
         {
             var clients = _clientApplicationService.GetAll();
-            IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
             return Json(new
             {
-                aaData = clientsVM
+                aaData = clients
             });
         }
 
@@ -42,8 +39,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult Create(ClientVM clientVM)
         {
-            var client = _mapper.Map<Client>(clientVM);
-            _clientApplicationService.Add(client);
+            _clientApplicationService.Add(clientVM);
             var clients = _clientApplicationService.GetAll();
             return View("Index", clients);
         }
@@ -51,8 +47,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult Edit(ClientVM clientVM)
         {
-            var client = _mapper.Map<Client>(clientVM);
-            _clientApplicationService.Update(client);
+            _clientApplicationService.Update(clientVM);
 
             return Json(new
             {

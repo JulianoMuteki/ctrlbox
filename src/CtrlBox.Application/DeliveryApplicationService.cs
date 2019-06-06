@@ -1,9 +1,10 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using AutoMapper;
+using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CtrlBox.Application
@@ -11,30 +12,34 @@ namespace CtrlBox.Application
     public class DeliveryApplicationService : IDeliveryApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public DeliveryApplicationService(IUnitOfWork unitOfWork)
+        public DeliveryApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Delivery Add(Delivery entity)
+        public DeliveryVM Add(DeliveryVM entity)
         {
-            entity.Init();
+            var delivery = _mapper.Map<Delivery>(entity);
+
+            delivery.Init();
             foreach (var item in entity.DeliveriesProducts)
             {
-                item.DeliveryID = entity.Id;
+                item.DeliveryID = delivery.Id;
                 var stockProduct = _unitOfWork.Repository<StockProduct>().Find(x => x.ProductID == item.ProductID);
 
                 stockProduct.Amount -= item.Amount;
                 _unitOfWork.Repository<StockProduct>().Update(stockProduct);
             }
-            var delivery = _unitOfWork.Repository<Delivery>().Add(entity);
+            _unitOfWork.Repository<Delivery>().Add(delivery);
             _unitOfWork.Commit();
 
-            return delivery;
+            return entity;
         }
 
-        public Task<Delivery> AddAsync(Delivery entity)
+        public Task<DeliveryVM> AddAsync(DeliveryVM entity)
         {
             throw new NotImplementedException();
         }
@@ -49,32 +54,38 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public ICollection<Delivery> GetAll()
+        public ICollection<DeliveryVM> GetAll()
         {
-            return _unitOfWork.Repository<Delivery>().GetAll();
+            var deliveries = _unitOfWork.Repository<Delivery>().GetAll();
+
+            var deliveriesVMs = _mapper.Map<IList<DeliveryVM>>(deliveries);
+            return deliveriesVMs;
         }
 
-        public Task<ICollection<Delivery>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Delivery GetById(Guid id)
-        {
-            return _unitOfWork.Repository<Delivery>().GetById(id);
-        }
-
-        public Task<Delivery> GetByIdAsync(Guid id)
+        public Task<ICollection<DeliveryVM>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Delivery Update(Delivery updated)
+        public DeliveryVM GetById(Guid id)
+        {
+            var delivery = _unitOfWork.Repository<Delivery>().GetById(id);
+
+            var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
+            return deliveryVM;
+        }
+
+        public Task<DeliveryVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Delivery> UpdateAsync(Delivery updated)
+        public DeliveryVM Update(DeliveryVM updated)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DeliveryVM> UpdateAsync(DeliveryVM updated)
         {
             throw new NotImplementedException();
         }

@@ -74,10 +74,9 @@ namespace CtrlBox.Services.Api.Controllers
             {
                 try
                 {
-                    var client = _mapper.Map<Client>(clientVM);
-                    var newClient = _clientApplicationService.Add(client);
+                    var newClient = _clientApplicationService.Add(clientVM);
 
-                    if (newClient.Id != Guid.Empty)
+                    if (!string.IsNullOrEmpty(newClient.DT_RowId))
                     {
                         return Ok(newClient);
                     }

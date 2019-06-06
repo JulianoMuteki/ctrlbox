@@ -1,11 +1,8 @@
-﻿using CtrlBox.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CtrlBox.Application.ViewModel;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IDeliveryApplicationService : IApplicationServiceBase<Delivery>
+    public interface IDeliveryApplicationService : IApplicationServiceBase<DeliveryVM>
     {
         
     }

@@ -39,8 +39,9 @@ namespace CtrlBox.Infra.Context
             if (userManager.FindByNameAsync("AdminUser").Result == null)
             {
                 ApplicationUser user = new ApplicationUser();
-                user.UserName = "AdminUser";
+                user.UserName = "juliano.pestili@outlook.com";
                 user.Email = "juliano.pestili@outlook.com";
+                user.PhoneNumber = "(19) 99999-8888";
                 user.FirstName = "Admin";
                 user.LastName = "User";
 
@@ -55,20 +56,20 @@ namespace CtrlBox.Infra.Context
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
         {
-            //foreach (var roleName in Enum.GetNames(typeof(Role)))
-            //{
-            //    if (!roleManager.RoleExistsAsync(roleName).Result)
-            //    {
-            //        ApplicationRole role = new ApplicationRole();
-            //        role.Name = roleName;
-            //        IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            foreach (var roleName in Enum.GetNames(typeof(Role)))
+            {
+                if (!roleManager.RoleExistsAsync(roleName).Result)
+                {
+                    ApplicationRole role = new ApplicationRole();
+                    role.Name = roleName;
+                    IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
-            //        foreach (var claimName in Enum.GetNames(typeof(Claim)))
-            //        {
-            //            roleResult = roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, $"{ roleName },{ claimName }")).Result;
-            //        }
-            //    }
-            //}
+                    foreach (var claimName in Enum.GetNames(typeof(System.Security.Claims.Claim)))
+                    {
+                        roleResult = roleManager.AddClaimAsync(role, new System.Security.Claims.Claim(CustomClaimTypes.Permission, $"{ roleName }.{ claimName }")).Result;
+                    }
+                }
+            }
         }
 
         public static void SeedData(IServiceProvider serviceProvider)

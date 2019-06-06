@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using CtrlBox.UI.Web.Extensions;
 using CtrlBox.Domain.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -29,7 +30,8 @@ namespace CtrlBox.UI.Web.Controllers
             _productService = productService;
             _saleService = saleService;
         }
-        // GET: Delivery
+
+        [Authorize(Policy = "Manager,Read")]
         public ActionResult Index()
         {
             ViewBag.Stock = "Check stock of the product: XXXXXXXX";
@@ -85,7 +87,6 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        [AuthorizeEnum(DeliveryClaim.ExecuteDelivery)]
         public ActionResult ExecuteDelivery(string entregaID, string linhaID)
         {
             ViewData["entregaID"] = entregaID;

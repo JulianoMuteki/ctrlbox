@@ -18,6 +18,9 @@ namespace CtrlBox.Domain.Security
         Staff,
 
         [Display(GroupName = "Client", Name = "Client", Description = "Just client")]
-        Client
+        Client,
+
+        [Display(GroupName = "Delivery", Name = "Delivery", Description = "Delivery")]
+        Delivery,
     }
 }

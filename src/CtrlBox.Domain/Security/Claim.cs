@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CtrlBox.Domain.Security
 {
-    public enum CRUDClaim
+    public enum Claim
     {
         [Display(Name = "Create")]
         Create,    

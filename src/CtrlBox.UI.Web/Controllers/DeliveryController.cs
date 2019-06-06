@@ -5,9 +5,12 @@ using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using CtrlBox.UI.Web.Extensions;
+using CtrlBox.Domain.Security;
 
 namespace CtrlBox.UI.Web.Controllers
 {
+    [AuthorizeEnum(Role.Admin, Role.Delivery)]
     public class DeliveryController : Controller
     {
         private readonly IClientApplicationService _clientService;
@@ -82,6 +85,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        [AuthorizeEnum(DeliveryClaim.ExecuteDelivery)]
         public ActionResult ExecuteDelivery(string entregaID, string linhaID)
         {
             ViewData["entregaID"] = entregaID;

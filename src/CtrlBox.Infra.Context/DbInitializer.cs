@@ -55,20 +55,20 @@ namespace CtrlBox.Infra.Context
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
         {
-            foreach (var roleName in Enum.GetNames(typeof(Role)))
-            {
-                if (!roleManager.RoleExistsAsync(roleName).Result)
-                {
-                    ApplicationRole role = new ApplicationRole();
-                    role.Name = roleName;
-                    IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            //foreach (var roleName in Enum.GetNames(typeof(Role)))
+            //{
+            //    if (!roleManager.RoleExistsAsync(roleName).Result)
+            //    {
+            //        ApplicationRole role = new ApplicationRole();
+            //        role.Name = roleName;
+            //        IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
-                    foreach (var claimName in Enum.GetNames(typeof(CRUDClaim)))
-                    {
-                        roleResult = roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, $"{ roleName },{ claimName }")).Result;
-                    }
-                }
-            }
+            //        foreach (var claimName in Enum.GetNames(typeof(Claim)))
+            //        {
+            //            roleResult = roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, $"{ roleName },{ claimName }")).Result;
+            //        }
+            //    }
+            //}
         }
 
         public static void SeedData(IServiceProvider serviceProvider)

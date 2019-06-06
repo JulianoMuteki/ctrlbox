@@ -33,10 +33,9 @@ namespace CtrlBox.Infra.Context
             SeedUsers(userManager);
         }
 
-
         public static void SeedUsers(UserManager<ApplicationUser> userManager)
         {
-            if (userManager.FindByNameAsync("AdminUser").Result == null)
+            if (userManager.FindByNameAsync("juliano.pestili@outlook.com").Result == null)
             {
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = "juliano.pestili@outlook.com";
@@ -64,10 +63,8 @@ namespace CtrlBox.Infra.Context
                     role.Name = roleName;
                     IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
-                    foreach (var claimName in Enum.GetNames(typeof(System.Security.Claims.Claim)))
-                    {
-                        roleResult = roleManager.AddClaimAsync(role, new System.Security.Claims.Claim(CustomClaimTypes.Permission, $"{ roleName }.{ claimName }")).Result;
-                    }
+                    if (Role.Admin.ToString() == roleName)
+                        roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PolicyTypes.DeliveryPolicy.ExecuteDelivery)).Wait();
                 }
             }
         }

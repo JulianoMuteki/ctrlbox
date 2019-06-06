@@ -31,7 +31,6 @@ namespace CtrlBox.UI.Web.Controllers
             _saleService = saleService;
         }
 
-        [Authorize(Policy = "Manager,Read")]
         public ActionResult Index()
         {
             ViewBag.Stock = "Check stock of the product: XXXXXXXX";
@@ -87,6 +86,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        [Authorize(Policy = PolicyTypes.DeliveryPolicy.ExecuteDelivery)]
         public ActionResult ExecuteDelivery(string entregaID, string linhaID)
         {
             ViewData["entregaID"] = entregaID;

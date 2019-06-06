@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CtrlBox.Domain.Security
+﻿namespace CtrlBox.Domain.Security
 {
     public class CustomClaimTypes
     {

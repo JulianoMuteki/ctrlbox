@@ -1,4 +1,5 @@
 ﻿using CtrlBox.CrossCutting.Ioc;
+using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context;
 using CtrlBox.Infra.Context.Identity;
 using CtrlBox.UI.Web.Mappers;
@@ -74,7 +75,10 @@ namespace CtrlBox.UI.Web
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyTypes.DeliveryPolicy.ExecuteDelivery, policy => { policy.RequireClaim(CustomClaimTypes.Permission, PolicyTypes.DeliveryPolicy.ExecuteDelivery); });
+            });
 
             services.AddAutoMapperSetup();
             // Add application services.

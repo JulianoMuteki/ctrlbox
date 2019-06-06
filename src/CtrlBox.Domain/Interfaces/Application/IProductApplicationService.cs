@@ -1,18 +1,18 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.Application.ViewModel;
 using System;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IProductApplicationService : IApplicationServiceBase<Product>
+    public interface IProductApplicationService : IApplicationServiceBase<ProductVM>
     {
-        ICollection<ClientProductValue> ConnectRouteToClient(ICollection<ClientProductValue> clientsProducts);
-        int AddProductStock(ICollection<StockProduct> stocksProducts);
-        ICollection<StockProduct> GetProductsStock();
+        ICollection<ClientProductValueVM> ConnectRouteToClient(ICollection<ClientProductValueVM> clientsProductsVMs);
+        int AddProductStock(ICollection<StockProductVM> stocksProductsVMs);
+        ICollection<StockProductVM> GetProductsStock();
 
-        ICollection<DeliveryProduct> GetDeliveryProducts(Guid deliveryID);
-        ICollection<ClientProductValue> GetClientsProductsByClientID(Guid clientID);
-        Stock GetStock();
+        ICollection<DeliveryProductVM> GetDeliveryProducts(Guid deliveryID);
+        ICollection<ClientProductValueVM> GetClientsProductsByClientID(Guid clientID);
+        StockVM GetStock();
 
         void AddStock(int stockTotal);
     }

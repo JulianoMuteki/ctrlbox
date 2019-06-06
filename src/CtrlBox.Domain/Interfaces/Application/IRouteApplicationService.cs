@@ -1,10 +1,10 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.Application.ViewModel;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IRouteApplicationService : IApplicationServiceBase<Route>
+    public interface IRouteApplicationService : IApplicationServiceBase<RouteVM>
     {
-        ICollection<RouteClient> ConnectRouteToClient(ICollection<RouteClient> routesClients);
+        ICollection<RouteClientVM> ConnectRouteToClient(ICollection<RouteClientVM> routesClientsVM);
     }
 }

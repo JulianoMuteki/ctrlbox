@@ -72,10 +72,9 @@ namespace CtrlBox.Services.Api.Controllers
             {
                 try
                 {
-                    Delivery delivery = _mapper.Map<Delivery>(deliveryVM);
-                   var newClient = _deliveryApplicationService.Add(delivery);
+                   var newClient = _deliveryApplicationService.Add(deliveryVM);
 
-                    if (newClient.Id != Guid.Empty)
+                    if (newClient.ID != Guid.Empty)
                     {
                         return Ok(newClient);
                     }

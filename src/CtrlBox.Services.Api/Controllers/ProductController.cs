@@ -71,10 +71,9 @@ namespace CtrlBox.Services.Api.Controllers
             {
                 try
                 {
-                    var product = _mapper.Map<Product>(productVM);
-                    var prod = _productApplicationService.Add(product);
+                    var prod = _productApplicationService.Add(productVM);
 
-                    if (prod.Id != Guid.Empty)
+                    if (prod.ID != Guid.Empty)
                     {
                         return Ok(prod);
                     }
@@ -101,10 +100,9 @@ namespace CtrlBox.Services.Api.Controllers
         {
             try
             {
-                var product = _mapper.Map<Product>(productVM);
-                var prod = _productApplicationService.Update(product);
+                var prod = _productApplicationService.Update(productVM);
 
-                if (prod.Id != Guid.Empty)
+                if (prod.ID != Guid.Empty)
                 {
                     return Ok(prod);
                 }
@@ -141,16 +139,14 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult ConnectProductToClient(ICollection<ClientProductValueVM> productsClients)
+        public IActionResult ConnectProductToClient(ICollection<ClientProductValueVM> clientsProductsValuesVM)
         {
             //if (ModelState.IsValid)
             if (true)
             {
                 try
                 {
-                    var clientsProducts = _mapper.Map<ICollection<ClientProductValue>>(productsClients);
-
-                    var newClient = _productApplicationService.ConnectRouteToClient(clientsProducts);
+                    var newClient = _productApplicationService.ConnectRouteToClient(clientsProductsValuesVM);
 
                     if (newClient.Count > 0)
                     {
@@ -169,16 +165,14 @@ namespace CtrlBox.Services.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult AddProductStock(ICollection<StockProductVM> stocksProducts)
+        public IActionResult AddProductStock(ICollection<StockProductVM> stocksProductsVM)
         {
             //if (ModelState.IsValid)
             if (true)
             {
                 try
                 {
-                    var stocksProd = _mapper.Map<ICollection<StockProduct>>(stocksProducts);
-
-                    var result = _productApplicationService.AddProductStock(stocksProd);
+                    var result = _productApplicationService.AddProductStock(stocksProductsVM);
 
                     if (result > 0)
                     {

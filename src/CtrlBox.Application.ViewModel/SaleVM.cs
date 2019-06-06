@@ -12,6 +12,7 @@ namespace CtrlBox.Application.ViewModel
         public decimal ReceivedValue { get; set; }
         public decimal ForwardValue { get; set; }
         public int TotalReturnedBoxes { get; set; }
+        public bool IsFinished { get; set; }
 
         public virtual ClientVM Client { get; set; }
         public virtual DeliveryVM Delivery { get; set; }

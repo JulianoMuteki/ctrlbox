@@ -1,11 +1,11 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using AutoMapper;
+using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CtrlBox.Application
@@ -13,32 +13,36 @@ namespace CtrlBox.Application
     public class SaleApplicationService : ISaleApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public SaleApplicationService(IUnitOfWork unitOfWork)
+        public SaleApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Sale Add(Sale entity)
+        public SaleVM Add(SaleVM entity)
         {
-            var deliverysProducts = _unitOfWork.Repository<DeliveryProduct>().FindAll(x => x.DeliveryID == entity.DeliveryID);
-            foreach (var item in entity.SalesProducts)
+            var sale = _mapper.Map<Sale>(entity);
+
+            var deliverysProducts = _unitOfWork.Repository<DeliveryProduct>().FindAll(x => x.DeliveryID == sale.DeliveryID);
+            foreach (var item in sale.SalesProducts)
             {
                 var entregaProduto = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
                 entregaProduto.Amount -= (int)item.Amount;
-                item.SaleID = entity.Id;
+                item.SaleID = sale.Id;
                 
                 _unitOfWork.Repository<DeliveryProduct>().Update(entregaProduto);
             }
-            entity.IsFinished = true;
+            sale.IsFinished = true;
 
-            _unitOfWork.Repository<Sale>().Add(entity);
+            _unitOfWork.Repository<Sale>().Add(sale);
             _unitOfWork.Commit();
 
             return entity;
         }
 
-        public Task<Sale> AddAsync(Sale entity)
+        public Task<SaleVM> AddAsync(SaleVM entity)
         {
             throw new NotImplementedException();
         }
@@ -53,38 +57,39 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public ICollection<Sale> FindAllByDelivery(Guid deliveryID)
+        public ICollection<SaleVM> FindAllByDelivery(Guid deliveryID)
         {
             var sales = _unitOfWork.Repository<Sale>().FindAll(x => x.DeliveryID == deliveryID);
-            return sales;
+            var salesVMs = _mapper.Map<IList<SaleVM>>(sales);
+            return salesVMs;
         }
 
-        public ICollection<Sale> GetAll()
+        public ICollection<SaleVM> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Sale>> GetAllAsync()
+        public Task<ICollection<SaleVM>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Sale GetById(Guid id)
+        public SaleVM GetById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Sale> GetByIdAsync(Guid id)
+        public Task<SaleVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Sale Update(Sale updated)
+        public SaleVM Update(SaleVM updated)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Sale> UpdateAsync(Sale updated)
+        public Task<SaleVM> UpdateAsync(SaleVM updated)
         {
             throw new NotImplementedException();
         }

@@ -86,9 +86,10 @@ namespace CtrlBox.UI.Web.Controllers
             return RedirectToAction("Index");
         }
 
-
-        public IActionResult Layout()
+        [HttpGet]
+        public IActionResult GetAjaxHandlerRoles(string userID)
         {
+            var user = _userManager.FindByIdAsync(userID).Result;
             RoleViewModel rolesToUsersViewModel = new RoleViewModel();
 
             rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
@@ -98,9 +99,13 @@ namespace CtrlBox.UI.Web.Controllers
                                                        Text = role.Name
                                                    }).ToList();
 
-            return View(rolesToUsersViewModel);
-        }
+            var rolesSelectedNames = _userManager.GetRolesAsync(user).Result;
 
+            rolesToUsersViewModel.AllRoles = rolesToUsersViewModel.AllRoles.Select(x => { x.Selected = rolesSelectedNames.Any(r => r.Equals(x.Value)); return x; }).ToList();
+
+
+            return Json(rolesToUsersViewModel.AllRoles);
+        }
 
         public IActionResult AssignClaimToUser()
         {
@@ -130,5 +135,18 @@ namespace CtrlBox.UI.Web.Controllers
             return View(rolesToUsersViewModel);
         }
 
+        public IActionResult Layout()
+        {
+            RoleViewModel rolesToUsersViewModel = new RoleViewModel();
+
+            rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
+                                                   .Select(role => new SelectListItem
+                                                   {
+                                                       Value = role.Name,
+                                                       Text = role.Name
+                                                   }).ToList();
+
+            return View(rolesToUsersViewModel);
+        }
     }
 }

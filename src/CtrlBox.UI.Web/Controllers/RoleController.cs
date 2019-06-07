@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context.Identity;
 using CtrlBox.UI.Web.Models.Role;
 using Microsoft.AspNetCore.Identity;
@@ -52,7 +53,7 @@ namespace CtrlBox.UI.Web.Controllers
             rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
                                                    .Select(role => new SelectListItem
                                                    {
-                                                       Value = role.Name,
+                                                       Value = role.Id.ToString(),
                                                        Text = role.Name
                                                    }).ToList();
 
@@ -102,9 +103,46 @@ namespace CtrlBox.UI.Web.Controllers
             var rolesSelectedNames = _userManager.GetRolesAsync(user).Result;
 
             rolesToUsersViewModel.AllRoles = rolesToUsersViewModel.AllRoles.Select(x => { x.Selected = rolesSelectedNames.Any(r => r.Equals(x.Value)); return x; }).ToList();
-
-
             return Json(rolesToUsersViewModel.AllRoles);
+        }
+
+        [HttpGet]
+        public IActionResult GetAjaxHandlerClaimsRoles(string roleID)
+        {
+            RoleViewModel rolesViewModel = new RoleViewModel();
+
+            var rol = _roleManager.FindByIdAsync(roleID).Result;
+            var claims = _roleManager.GetClaimsAsync(rol).Result;
+
+            var claimsListItem = PolicyTypes.IdentityClaims
+                                                 .Select(claim => new SelectListItem
+                                                 {
+                                                     Value = claim.Value,
+                                                     Text = claim.Value
+                                                 }).ToList();
+
+            rolesViewModel.AllClaims = claimsListItem.Select(x => { x.Selected = claims.Any(r => r.Value.Equals(x.Value)); return x; }).ToList();
+            return Json(rolesViewModel.AllClaims);
+        }
+
+
+        [HttpGet]
+        public IActionResult GetAjaxHandlerClaimsUsers(string userID)
+        {
+            RoleViewModel rolesViewModel = new RoleViewModel();
+
+            var user = _userManager.FindByIdAsync(userID).Result;
+            var claims = _userManager.GetClaimsAsync(user).Result;
+
+            var claimsListItem = PolicyTypes.IdentityClaims
+                                                 .Select(claim => new SelectListItem
+                                                 {
+                                                     Value = claim.Value,
+                                                     Text = claim.Value
+                                                 }).ToList();
+
+            rolesViewModel.AllClaims = claimsListItem.Select(x => { x.Selected = claims.Any(r => r.Value.Equals(x.Value)); return x; }).ToList();
+            return Json(rolesViewModel.AllClaims);
         }
 
         public IActionResult AssignClaimToUser()

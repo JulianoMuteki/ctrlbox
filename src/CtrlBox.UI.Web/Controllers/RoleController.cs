@@ -47,7 +47,7 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult AssignRoleToUser()
         {
-            RolesToUsersViewModel rolesToUsersViewModel = new RolesToUsersViewModel();
+            RoleViewModel rolesToUsersViewModel = new RoleViewModel();
 
             rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
                                                    .Select(role => new SelectListItem
@@ -67,7 +67,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssignRoleToUser(RolesToUsersViewModel rolesToUsersViewModel)
+        public async Task<IActionResult> AssignRoleToUser(RoleViewModel rolesToUsersViewModel)
         {
             // ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -85,5 +85,50 @@ namespace CtrlBox.UI.Web.Controllers
             // If we got this far, something failed, redisplay form
             return RedirectToAction("Index");
         }
+
+
+        public IActionResult Layout()
+        {
+            RoleViewModel rolesToUsersViewModel = new RoleViewModel();
+
+            rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
+                                                   .Select(role => new SelectListItem
+                                                   {
+                                                       Value = role.Name,
+                                                       Text = role.Name
+                                                   }).ToList();
+
+            return View(rolesToUsersViewModel);
+        }
+
+
+        public IActionResult AssignClaimToUser()
+        {
+            RoleViewModel rolesToUsersViewModel = new RoleViewModel();
+
+            rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
+                                                   .Select(role => new SelectListItem
+                                                   {
+                                                       Value = role.Name,
+                                                       Text = role.Name
+                                                   }).ToList();
+
+            return View(rolesToUsersViewModel);
+        }
+
+        public IActionResult AssignClaimToRole()
+        {
+            RoleViewModel rolesToUsersViewModel = new RoleViewModel();
+
+            rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
+                                                   .Select(role => new SelectListItem
+                                                   {
+                                                       Value = role.Name,
+                                                       Text = role.Name
+                                                   }).ToList();
+
+            return View(rolesToUsersViewModel);
+        }
+
     }
 }

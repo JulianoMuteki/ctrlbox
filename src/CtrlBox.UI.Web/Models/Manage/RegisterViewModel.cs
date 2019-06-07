@@ -40,11 +40,11 @@ namespace CtrlBox.UI.Web.Models.Manage
         public string PhoneNumber { get; set; }
 
 
-        public RolesToUsersViewModel RolesToUsersVM { get; set; }
+        public RoleViewModel RolesToUsersVM { get; set; }
 
         public RegisterViewModel()
         {
-            this.RolesToUsersVM = new RolesToUsersViewModel();
+            this.RolesToUsersVM = new RoleViewModel();
         }
     }
 }

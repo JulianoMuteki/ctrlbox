@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace CtrlBox.Infra.Context.Identity
 {
@@ -8,6 +9,6 @@ namespace CtrlBox.Infra.Context.Identity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
+        public ICollection<ApplicationUserRole> UserRoles { get; set; }
     }
 }

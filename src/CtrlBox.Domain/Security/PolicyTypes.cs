@@ -18,17 +18,18 @@ namespace CtrlBox.Domain.Security
             public const string ExecuteDelivery = "delivery.policy.execute";
         }
 
-        public static IDictionary<CRUD, string> DefaultPolicies
+        public static IDictionary<object, string> IdentityClaims
         {
             get
             {
-                var defaultPolicies = new Dictionary<CRUD, string>();
+                var defaultPolicies = new Dictionary<object, string>();
                 foreach (var permission in Enum.GetNames(typeof(CRUD)))
                 {
                     var result = (CRUD)Enum.Parse(typeof(CRUD), permission);
                     defaultPolicies.Add(result, $"{NAME}.{permission.ToLower()}");
                 }
 
+                defaultPolicies.Add(DeliveryPolicy.ExecuteDelivery, DeliveryPolicy.ExecuteDelivery);
                 return defaultPolicies;
             }
         }

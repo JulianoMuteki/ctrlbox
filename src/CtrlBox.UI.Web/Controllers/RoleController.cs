@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context.Identity;
+using CtrlBox.UI.Web.Helpers;
 using CtrlBox.UI.Web.Models.Role;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -96,15 +98,25 @@ namespace CtrlBox.UI.Web.Controllers
             rolesToUsersViewModel.AllRoles = _roleManager.Roles.ToList()
                                                    .Select(role => new SelectListItem
                                                    {
-                                                       Value = role.Name,
+                                                       Value = role.Id.ToString(),
                                                        Text = role.Name
                                                    }).ToList();
 
             var rolesSelectedNames = _userManager.GetRolesAsync(user).Result;
 
-            rolesToUsersViewModel.AllRoles = rolesToUsersViewModel.AllRoles.Select(x => { x.Selected = rolesSelectedNames.Any(r => r.Equals(x.Value)); return x; }).ToList();
+            rolesToUsersViewModel.AllRoles = rolesToUsersViewModel.AllRoles.Select(x => { x.Selected = rolesSelectedNames.Any(r => r.Equals(x.Text)); return x; }).ToList();
             return Json(rolesToUsersViewModel.AllRoles);
         }
+
+        [HttpPost]
+        public IActionResult PostAjaxHandlerRoles(string[] rolesJSON)
+        {
+            JsonSerialize jsonS = new JsonSerialize();
+            var saleVM = jsonS.JsonDeserializeObject<List<DropDpwnViewModel>>(rolesJSON[0]);
+
+            return Json(new { OK = "ok"});
+        }
+
 
         [HttpGet]
         public IActionResult GetAjaxHandlerClaimsRoles(string roleID)

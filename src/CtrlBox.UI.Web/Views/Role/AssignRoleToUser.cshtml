@@ -19,10 +19,51 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function () {
+
+
+        $("#btnRole").click(function () {
+            var selections = (JSON.stringify($("#ddlRoles").select2('data')));
+            console.log(selections);
+
+
+            $.ajax({
+                url: '@Url.Content("~/Role/PostAjaxHandlerRoles")',
+                type: 'POST',
+                dataType: 'json',
+                data: { rolesJSON: selections },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        //   window.history.go(-1);
+                    }
+                }
+               
+            });
+            event.preventDefault();
+        });
+
+        //$('#ddlRoles').change(function () {
+        //    //var ids = $(test).val(); // works
+        //    //var selections = $(test).filter('option:selected').text(); // doesn't work
+        //    //var ids = $(test).select2('data').id; // doesn't work (returns 'undefined')
+        //    //var selections = $(test).select2('data').text; // doesn't work (returns 'undefined')
+        //    //var selections = $(test).select2('data');
+        //    var selections = (JSON.stringify($('#ddlRoles').select2('data')));
+        //    //console.log('Selected IDs: ' + ids);
+        //    console.log('Selected options: ' + selections);
+        //    //$('#selectedIDs').text(ids);
+        //});
+        //$('#ddlRoles').on('select2:select', function (e) {
+        //    var data = e.params.data;
+        //    console.log(data);
+        //});
+
         $('#ddlRoles').select2({
             placeholder: "Select a Roles",
             allowClear: true
-        });   
+        });
+
+
 
         $("#ddlUsers").change(function (event) {
             $('#ddlRoles').val(null).trigger('change');
@@ -44,17 +85,21 @@
         });
 
         $("#ddlRolesClaim").change(function (event) {
-            $('#ddlClaims').val(null).trigger('change');
-            $('#ddlClaims').empty().trigger("change");
-
-            var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsRoles")'
             var ddlSource = "#ddlRolesClaim";
-            $.getJSON(url, { roleID: $(ddlSource).val() }, function (data) {
-                $.each(data, function (index, obj) {
-                    var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
-                    $('#ddlClaims').append(newOption).trigger('change');
+            var ddlValue = $(ddlSource).val();
+
+            if (ddlValue !== '0') {
+                $('#ddlClaims').val(null).trigger('change');
+                $('#ddlClaims').empty().trigger("change");
+
+                var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsRoles")'
+                $.getJSON(url, { roleID: $(ddlSource).val() }, function (data) {
+                    $.each(data, function (index, obj) {
+                        var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
+                        $('#ddlClaims').append(newOption).trigger('change');
+                    });
                 });
-            });
+            }
         });
 
         $('#ddlClaimsUsers').select2({
@@ -117,17 +162,17 @@
                             <div class="control-group">
                                 <label class="control-label">List users</label>
                                 <div class="controls">
-                                    <select id="ddlUsers" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option>Please select user</option></select>
+                                    <select id="ddlUsers" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Select some</label>
                                 <div class="controls">
-                                    <select id="ddlRoles" data-placeholder="Policy role" class="span6 select2" tabindex="0" multiple="multiple" name="RoleSelected"> <option>Please select roles</option></select>
+                                    <select id="ddlRoles" data-placeholder="Policy role" class="span6 select2" tabindex="0" multiple="multiple" name="RoleSelected"> <option value="0">Please select roles</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button type="submit" class="btn blue">Save</button>
+                                <button id="btnRole" type="button" class="btn blue">Save</button>
                                 <button type="button" class="btn">Cancel</button>
                             </div>
                         </form>
@@ -149,13 +194,13 @@
                             <div class="control-group">
                                 <label class="control-label">List roles</label>
                                 <div class="controls">
-                                    <select id="ddlRolesClaim" class="span6" data-placeholder="Choose a role" tabindex="1" name="RoleSelected" asp-for="RoleSelected" asp-items="@Model.AllRoles"> <option>Please select role</option></select>
+                                    <select id="ddlRolesClaim" class="span6" data-placeholder="Choose a role" tabindex="1" name="RoleSelected" asp-for="RoleSelected" asp-items="@Model.AllRoles"> <option value="0">Please select role</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Select some</label>
                                 <div class="controls">
-                                    <select id="ddlClaims" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option>Please select claims</option></select>
+                                    <select id="ddlClaims" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option value="0">Please select claims</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -181,13 +226,13 @@
                             <div class="control-group">
                                 <label class="control-label">List users</label>
                                 <div class="controls">
-                                    <select id="ddlUsersClaim" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option>Please select user</option></select>
+                                    <select id="ddlUsersClaim" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Select some</label>
                                 <div class="controls">
-                                    <select id="ddlClaimsUsers" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option>Please select claims</option></select>
+                                    <select id="ddlClaimsUsers" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option value="0">Please select claims</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">

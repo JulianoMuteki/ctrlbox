@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 
 namespace CtrlBox.Domain.Security
 {
     public static class PolicyTypes
     {
-        public const string Create = "default.policy.create";
-        public const string Read = "default.policy.read";
-        public const string Update = "default.policy.update";
-        public const string Delete = "default.policy.delete";
-        public const string Index = "default.policy.index";
-
         public const string NAME = "default.policy";
 
         public static class DeliveryPolicy
@@ -19,42 +14,23 @@ namespace CtrlBox.Domain.Security
             public const string ExecuteDelivery = "delivery.policy.execute";
         }
 
-        public static IDictionary<object, string> IdentityClaims
+        public static IDictionary<CRUD, Claim> ListAllClaims
         {
             get
             {
-                var defaultPolicies = new Dictionary<object, string>();
+                var claims = new Dictionary<CRUD, Claim>();
                 foreach (var permission in Enum.GetNames(typeof(CRUD)))
                 {
                     var result = (CRUD)Enum.Parse(typeof(CRUD), permission);
-                    defaultPolicies.Add(result, $"{NAME}.{permission.ToLower()}");
+                    claims.Add(result, new Claim(CustomClaimTypes.DefaultPermission, $"{NAME}.{permission.ToLower()}"));
                 }
 
-                defaultPolicies.Add(DeliveryPolicy.ExecuteDelivery, DeliveryPolicy.ExecuteDelivery);
-                return defaultPolicies;
-            }
-        }
-
-        public static IList<Claim> ListAllClaims
-        {
-            get
-            {
-                var claims = new List<Claim>();
-                foreach (var permission in Enum.GetNames(typeof(CRUD)))
-                {
-                    var result = (CRUD)Enum.Parse(typeof(CRUD), permission);
-                    claims.Add(new Claim(CustomClaimTypes.Permission, $"{NAME}.{permission.ToLower()}"));
-                }
-
-                claims.Add(new Claim(CustomClaimTypes.Permission, $"{DeliveryPolicy.ExecuteDelivery.ToString().ToLower()}"));
+                claims.Add(CRUD.Create, new Claim(CustomClaimTypes.DefaultPermission, $"{DeliveryPolicy.ExecuteDelivery.ToString().ToLower()}"));
                 return claims;
             }
         }
-    }
 
-    public enum DeliveryPolicy
-    {
-        ExecuteDelivery
+        public static IList<string> ListClaimsAuthorizations { get { return ListAllClaims.Select(x => x.Value.Value).ToList(); } }
     }
 
     public enum CRUD

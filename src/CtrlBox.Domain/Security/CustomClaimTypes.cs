@@ -2,6 +2,7 @@
 {
     public class CustomClaimTypes
     {
-        public const string Permission = "ctrlbox/permission";
+        public const string DefaultPermission = "policy-permission";
+
     }
 }

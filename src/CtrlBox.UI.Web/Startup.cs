@@ -77,7 +77,10 @@ namespace CtrlBox.UI.Web
             });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(PolicyTypes.DeliveryPolicy.ExecuteDelivery, policy => { policy.RequireClaim(CustomClaimTypes.Permission, PolicyTypes.DeliveryPolicy.ExecuteDelivery); });
+                foreach (var item in PolicyTypes.ListAllClaims)
+                {
+                    options.AddPolicy(item.Value.Value, policy => { policy.RequireClaim(CustomClaimTypes.DefaultPermission, item.Value.Value); });
+                }
             });
 
             services.AddAutoMapperSetup();

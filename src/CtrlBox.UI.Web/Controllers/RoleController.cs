@@ -167,15 +167,15 @@ namespace CtrlBox.UI.Web.Controllers
 
                 foreach (var item in rolesClaimsToRemove)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value == item.ClaimValue).FirstOrDefault();
-                    var result = _roleManager.RemoveClaimAsync(role, claim);
+                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.ClaimValue).FirstOrDefault();
+                    var result = _roleManager.RemoveClaimAsync(role, claim.Value);
                     result.Wait();
                 }
 
                 foreach (var item in claimsToAdd)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value == item.id).FirstOrDefault();
-                    var result = _roleManager.AddClaimAsync(role, claim);
+                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.id).FirstOrDefault();
+                    var result = _roleManager.AddClaimAsync(role, claim.Value);
                     result.Wait();
                 }
 
@@ -194,11 +194,11 @@ namespace CtrlBox.UI.Web.Controllers
             var rol = _roleManager.FindByIdAsync(roleID).Result;
             var claims = _roleManager.GetClaimsAsync(rol).Result;
 
-            var claimsListItem = PolicyTypes.IdentityClaims
+            var claimsListItem = PolicyTypes.ListAllClaims
                                                  .Select(claim => new SelectListItem
                                                  {
-                                                     Value = claim.Value,
-                                                     Text = claim.Value
+                                                     Value = claim.Value.Value,
+                                                     Text = claim.Value.Value
                                                  }).ToList();
 
             rolesViewModel.AllClaims = claimsListItem.Select(x => { x.Selected = claims.Any(r => r.Value.Equals(x.Value)); return x; }).ToList();
@@ -228,15 +228,15 @@ namespace CtrlBox.UI.Web.Controllers
 
                 foreach (var item in usersClaimsToRemove)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value == item.ClaimValue).FirstOrDefault();
-                    var result = _userManager.RemoveClaimAsync(user, claim);
+                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.ClaimValue).FirstOrDefault();
+                    var result = _userManager.RemoveClaimAsync(user, claim.Value);
                     result.Wait();
                 }
 
                 foreach (var item in claimsToAdd)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value == item.id).FirstOrDefault();
-                    var result = _userManager.AddClaimAsync(user, claim);
+                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.id).FirstOrDefault();
+                    var result = _userManager.AddClaimAsync(user, claim.Value);
                     result.Wait();
                 }
 
@@ -256,11 +256,11 @@ namespace CtrlBox.UI.Web.Controllers
             var user = _userManager.FindByIdAsync(userID).Result;
             var claims = _userManager.GetClaimsAsync(user).Result;
 
-            var claimsListItem = PolicyTypes.IdentityClaims
+            var claimsListItem = PolicyTypes.ListAllClaims
                                                  .Select(claim => new SelectListItem
                                                  {
-                                                     Value = claim.Value,
-                                                     Text = claim.Value
+                                                     Value = claim.Value.Value,
+                                                     Text = claim.Value.Value
                                                  }).ToList();
 
             rolesViewModel.AllClaims = claimsListItem.Select(x => { x.Selected = claims.Any(r => r.Value.Equals(x.Value)); return x; }).ToList();

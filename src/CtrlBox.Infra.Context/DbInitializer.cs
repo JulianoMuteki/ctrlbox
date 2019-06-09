@@ -64,7 +64,7 @@ namespace CtrlBox.Infra.Context
                     IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
                     if (RoleAuthorize.Admin.ToString() == roleName)
-                        roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PolicyTypes.DeliveryPolicy.ExecuteDelivery)).Wait();
+                        roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.DefaultPermission, PolicyTypes.DeliveryPolicy.ExecuteDelivery)).Wait();
                 }
             }
         }

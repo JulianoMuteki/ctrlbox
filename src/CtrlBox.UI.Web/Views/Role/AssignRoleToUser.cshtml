@@ -23,14 +23,12 @@
 
         $("#btnRole").click(function () {
             var selections = (JSON.stringify($("#ddlRoles").select2('data')));
-            console.log(selections);
-
 
             $.ajax({
                 url: '@Url.Content("~/Role/PostAjaxHandlerRoles")',
                 type: 'POST',
                 dataType: 'json',
-                data: { rolesJSON: selections },
+                data: { rolesJSON: selections, userID: $("#ddlUsersRole").val() },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
@@ -65,12 +63,12 @@
 
 
 
-        $("#ddlUsers").change(function (event) {
+        $("#ddlUsersRole").change(function (event) {
             $('#ddlRoles').val(null).trigger('change');
             $('#ddlRoles').empty().trigger("change");
 
             var url = '@Url.Content("~/Role/GetAjaxHandlerRoles")'
-            var ddlSource = "#ddlUsers";
+            var ddlSource = "#ddlUsersRole";
             $.getJSON(url, { userID: $(ddlSource).val() }, function (data) {
                 $.each(data, function (index, obj) {
                     var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
@@ -162,7 +160,7 @@
                             <div class="control-group">
                                 <label class="control-label">List users</label>
                                 <div class="controls">
-                                    <select id="ddlUsers" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
+                                    <select id="ddlUsersRole" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
                                 </div>
                             </div>
                             <div class="control-group">

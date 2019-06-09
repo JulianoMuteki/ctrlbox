@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CtrlBox.Domain.Security
 {
-    public enum Role
+    public enum RoleAuthorize
     {
 
         [Display(GroupName = "Manager", Name = "Admin", Description = "System admin")]

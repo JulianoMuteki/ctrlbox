@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CtrlBox.Domain.Security;
@@ -8,6 +9,7 @@ using CtrlBox.UI.Web.Models.Role;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -109,12 +111,37 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostAjaxHandlerRoles(string[] rolesJSON)
+        public IActionResult PostAjaxHandlerRoles(string[] rolesJSON, string userID)
         {
-            JsonSerialize jsonS = new JsonSerialize();
-            var saleVM = jsonS.JsonDeserializeObject<List<DropDpwnViewModel>>(rolesJSON[0]);
+            Guid id;
 
-            return Json(new { OK = "ok"});
+            if (Guid.TryParse(userID,out id))
+            {
+                var user = _userManager.Users.Where(u => u.Id.ToString() == userID).Include(x => x.UserRoles).FirstOrDefault();
+                var rolesExists = user.UserRoles;
+
+                JsonSerialize jsonS = new JsonSerialize();
+                var rolesVM = jsonS.JsonDeserializeObject<List<DropDpwnViewModel>>(rolesJSON[0]);
+
+                var rolesToAdd = rolesVM;
+
+                if (rolesExists.Count > 0)
+                    rolesToAdd = rolesVM.Where(x => rolesExists.Any(z => z.RoleId.ToString() != x.id)).ToList();
+
+                var rolesUsersToRemove = rolesExists.Where(x => rolesVM.Any(z => z.id != x.RoleId.ToString())).ToList();
+                var rolesToRemove = _roleManager.Roles.Where(x => rolesUsersToRemove.Any(y => y.RoleId == x.Id)).ToList();
+
+                var result = _userManager.AddToRolesAsync(user, rolesToAdd.Select(x => x.text).ToArray()).Result;
+
+                if (rolesUsersToRemove.Count > 0)
+                    result = _userManager.RemoveFromRolesAsync(user, rolesToRemove.Select(x => x.Name).ToList()).Result;
+
+                return Json(new { OK = "ok" });
+            }
+            else
+            {
+                return Json(new { OK = "Without user" });
+            }
         }
 
 

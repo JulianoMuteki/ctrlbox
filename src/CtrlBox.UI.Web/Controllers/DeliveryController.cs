@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CtrlBox.UI.Web.Controllers
 {
-    [AuthorizeEnum(Role.Admin, Role.Delivery)]
+    [AuthorizeEnum(RoleAuthorize.Admin, RoleAuthorize.Manager, RoleAuthorize.Delivery)]
     public class DeliveryController : Controller
     {
         private readonly IClientApplicationService _clientService;

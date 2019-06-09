@@ -48,14 +48,14 @@ namespace CtrlBox.Infra.Context
 
                 if (result.Succeeded)
                 {
-                    result = userManager.AddToRoleAsync(user, Role.Admin.ToString()).Result;
+                    result = userManager.AddToRoleAsync(user, RoleAuthorize.Admin.ToString()).Result;
                 }
             }
         }
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
         {
-            foreach (var roleName in Enum.GetNames(typeof(Role)))
+            foreach (var roleName in Enum.GetNames(typeof(RoleAuthorize)))
             {
                 if (!roleManager.RoleExistsAsync(roleName).Result)
                 {
@@ -63,7 +63,7 @@ namespace CtrlBox.Infra.Context
                     role.Name = roleName;
                     IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
-                    if (Role.Admin.ToString() == roleName)
+                    if (RoleAuthorize.Admin.ToString() == roleName)
                         roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PolicyTypes.DeliveryPolicy.ExecuteDelivery)).Wait();
                 }
             }

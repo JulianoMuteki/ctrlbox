@@ -144,7 +144,48 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult PostAjaxHandlerClaimsToRole(string[] claimsJSON, string roleID)
+        {
+            Guid id;
 
+            if (Guid.TryParse(roleID, out id))
+            {
+                var role = _roleManager.Roles.Where(r => r.Id == id).Include(c => c.RoleClaims).FirstOrDefault();
+                var claimsExists = role.RoleClaims;
+
+                JsonSerialize jsonS = new JsonSerialize();
+                var claimsVM = jsonS.JsonDeserializeObject<List<DropDpwnViewModel>>(claimsJSON[0]);
+
+                var claimsToAdd = claimsVM;
+
+                if (claimsExists.Count > 0)
+                    claimsToAdd = claimsVM.Where(x => claimsExists.Any(z => z.ClaimValue != x.id)).ToList();
+
+                var rolesClaimsToRemove = claimsExists.Where(x=> claimsVM.Any(z => z.id != x.ClaimValue)).ToList();
+
+
+                foreach (var item in rolesClaimsToRemove)
+                {
+                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value == item.ClaimValue).FirstOrDefault();
+                    var result = _roleManager.RemoveClaimAsync(role, claim);
+                    result.Wait();
+                }
+
+                foreach (var item in claimsToAdd)
+                {
+                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value == item.id).FirstOrDefault();
+                    var result = _roleManager.AddClaimAsync(role, claim);
+                    result.Wait();
+                }
+
+                return Json(new { OK = "ok" });
+            }
+            else
+            {
+                return Json(new { OK = "Without user" });
+            }
+        }
         [HttpGet]
         public IActionResult GetAjaxHandlerClaimsRoles(string roleID)
         {

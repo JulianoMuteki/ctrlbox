@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace CtrlBox.Domain.Security
 {
@@ -31,6 +32,22 @@ namespace CtrlBox.Domain.Security
 
                 defaultPolicies.Add(DeliveryPolicy.ExecuteDelivery, DeliveryPolicy.ExecuteDelivery);
                 return defaultPolicies;
+            }
+        }
+
+        public static IList<Claim> ListAllClaims
+        {
+            get
+            {
+                var claims = new List<Claim>();
+                foreach (var permission in Enum.GetNames(typeof(CRUD)))
+                {
+                    var result = (CRUD)Enum.Parse(typeof(CRUD), permission);
+                    claims.Add(new Claim(CustomClaimTypes.Permission, $"{NAME}.{permission.ToLower()}"));
+                }
+
+                claims.Add(new Claim(CustomClaimTypes.Permission, $"{DeliveryPolicy.ExecuteDelivery.ToString().ToLower()}"));
+                return claims;
             }
         }
     }

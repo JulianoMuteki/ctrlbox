@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace CtrlBox.Infra.Context
 {
-    public class CtrlBoxContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>,
+    public class CtrlBoxContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, ApplicationUserClaim,
                                                         ApplicationUserRole, IdentityUserLogin<Guid>,
-                                                        IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
+                                                        ApplicationRoleClaim, IdentityUserToken<Guid>>
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }
@@ -74,6 +74,28 @@ namespace CtrlBox.Infra.Context
                 userRole.HasOne(ur => ur.User)
                     .WithMany(r => r.UserRoles)
                     .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
+
+            modelBuilder.Entity<ApplicationUserClaim>(userClaim =>
+            {
+                userClaim.HasKey(ur => ur.Id);
+
+                userClaim.HasOne(ur => ur.User)
+                    .WithMany(r => r.UserClaims)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
+
+            modelBuilder.Entity<ApplicationRoleClaim>(roleClaim =>
+            {
+                roleClaim.HasKey(ur => ur.Id);
+
+                roleClaim.HasOne(ur => ur.Role)
+                    .WithMany(r => r.RoleClaims)
+                    .HasForeignKey(ur => ur.RoleId)
                     .IsRequired();
             });
         }

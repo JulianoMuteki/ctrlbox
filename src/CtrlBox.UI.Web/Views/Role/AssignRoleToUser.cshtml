@@ -100,23 +100,44 @@
         //<!-- END AspNetRoleClaims -->
 
         //<!-- BEGIN AspNetUserClaims -->
-        $('#ddlClaimsUsers').select2({
+        var ddlRolesClaim = "#ddlClaimsUsers";
+        $("#btnUserClaim").click(function () {
+            var selections = (JSON.stringify($(ddlRolesClaim).select2('data')));
+
+            $.ajax({
+                url: '@Url.Content("~/Role/PostAjaxHandlerClaimsToUser")',
+                type: 'POST',
+                dataType: 'json',
+                data: { claimsJSON: selections, userID: $("#ddlUsersClaim").val() },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Complete');
+                    }
+                }
+            });
+            event.preventDefault();
+        });
+
+
+        $(ddlRolesClaim).select2({
             placeholder: "Select a Claims",
             allowClear: true
         });
 
         $("#ddlUsersClaim").change(function (event) {
-            $('#ddlClaimsUsers').val(null).trigger('change');
-            $('#ddlClaimsUsers').empty().trigger("change");
+            $(ddlRolesClaim).val(null).trigger('change');
+            $(ddlRolesClaim).empty().trigger("change");
 
-            var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsUsers")'
-            var ddlSource = "#ddlUsersClaim";
-            $.getJSON(url, { userID: $(ddlSource).val() }, function (data) {
-                $.each(data, function (index, obj) {
-                    var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
-                    $('#ddlClaimsUsers').append(newOption).trigger('change');
+            if ($(this).val() !== '0') {
+                var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsUsers")'
+                var ddlSource = "#ddlUsersClaim";
+                $.getJSON(url, { userID: $(ddlSource).val() }, function (data) {
+                    $.each(data, function (index, obj) {
+                        var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
+                        $(ddlRolesClaim).append(newOption).trigger('change');
+                    });
                 });
-            });
+            }
         });
         
     });
@@ -234,7 +255,7 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button type="submit" class="btn blue">Save</button>
+                                <button id="btnUserClaim" type="button" class="btn blue">Save</button>
                                 <button type="button" class="btn">Cancel</button>
                             </div>
                         </form>

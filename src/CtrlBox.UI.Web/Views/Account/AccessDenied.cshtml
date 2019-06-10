@@ -2,7 +2,44 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
-    <h2 class="text-danger">ViewData["Title"]</h2>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<div class="page-content" style="min-height:1029px !important">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Error</a>
+                    </li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN ALERTS PORTLET-->
+                <div class="portlet ">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-cogs"></i>Authorization not allowed</div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="alert alert-error">
+                            <button class="close" data-dismiss="alert"></button>
+                            <strong>Error!</strong> Access denied.
+                        </div>
+                        <div>
+                            <a onclick="window.history.back()" class="btn big">Back <i class="m-icon-big-swapleft"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END ALERTS PORTLET-->
+            </div>
+        </div>        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>

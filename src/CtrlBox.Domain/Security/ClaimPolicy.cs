@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CtrlBox.Domain.Security
 {
-    public enum CRUDClaim
+    public enum ClaimPolicy
     {
         [Display(Name = "Create")]
         Create,    

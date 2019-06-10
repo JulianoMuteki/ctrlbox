@@ -33,14 +33,14 @@ namespace CtrlBox.Infra.Context
             SeedUsers(userManager);
         }
 
-
         public static void SeedUsers(UserManager<ApplicationUser> userManager)
         {
-            if (userManager.FindByNameAsync("AdminUser").Result == null)
+            if (userManager.FindByNameAsync("juliano.pestili@outlook.com").Result == null)
             {
                 ApplicationUser user = new ApplicationUser();
-                user.UserName = "AdminUser";
+                user.UserName = "juliano.pestili@outlook.com";
                 user.Email = "juliano.pestili@outlook.com";
+                user.PhoneNumber = "(19) 99999-8888";
                 user.FirstName = "Admin";
                 user.LastName = "User";
 
@@ -48,14 +48,14 @@ namespace CtrlBox.Infra.Context
 
                 if (result.Succeeded)
                 {
-                    result = userManager.AddToRoleAsync(user, Role.Admin.ToString()).Result;
+                    result = userManager.AddToRoleAsync(user, RoleAuthorize.Admin.ToString()).Result;
                 }
             }
         }
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
         {
-            foreach (var roleName in Enum.GetNames(typeof(Role)))
+            foreach (var roleName in Enum.GetNames(typeof(RoleAuthorize)))
             {
                 if (!roleManager.RoleExistsAsync(roleName).Result)
                 {
@@ -63,10 +63,8 @@ namespace CtrlBox.Infra.Context
                     role.Name = roleName;
                     IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
-                    foreach (var claimName in Enum.GetNames(typeof(CRUDClaim)))
-                    {
-                        roleResult = roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, $"{ roleName },{ claimName }")).Result;
-                    }
+                    if (RoleAuthorize.Admin.ToString() == roleName)
+                        roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.DefaultPermission, PolicyTypes.DeliveryPolicy.ExecuteDelivery)).Wait();
                 }
             }
         }

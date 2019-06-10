@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CtrlBox.Infra.Context.Identity.ApplicationRole>
+﻿@model CtrlBox.UI.Web.Models.Role.RoleViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -33,27 +33,15 @@
                 <div class="portlet box blue">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-list-ul"></i>Roles Lists</div>
-                        <div class="tools">
-                            <div class="btn-group">
-                                <a class="btn mini green" href="#" data-toggle="dropdown">
-                                    <i class="icon-key"></i> Action
-                                    <i class="icon-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                                    <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                                    <li><a asp-action="Create"><i class="icon-plus"></i> Add</a></li>
-                                    <li class="divider"></li>
-                                    <li><a asp-action="AssignRoleToUser"><i class="icon-plus-sign"></i> Rule To User</a></li>
-                                </ul>
-                            </div>
+                        <div class="actions">
+                            <a asp-action="AssignRoleToUser" class="btn mini"><i class="icon-key"></i> Edit Authorization</a>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <ul>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.AllRoles)
                             {
-                                <li>@item.Name</li>
+                                <li>@item.Value</li>
                             }
                         </ul>
                     </div>
@@ -67,38 +55,16 @@
                         <div class="caption"><i class="icon-list-ul"></i>Claims Lists</div>
                         <div class="tools">
                             <div class="btn-group">
-                                <a class="btn mini green" href="#" data-toggle="dropdown">
-                                    <i class="icon-key"></i> Action
-                                    <i class="icon-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                                    <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                                    <li><a asp-action="Create"><i class="icon-plus"></i> Add</a></li>
-                                    <li class="divider"></li>
-                                    <li><a asp-action="AssignClaimToUser"><i class="icon-plus-sign"></i> Claim To User</a></li>
-                                </ul>
+                                <a asp-action="AssignClaimToUser"><i class="icon-plus-sign"></i> Claim To User</a>
                             </div>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <ul>
-                            <li>Lorem ipsum dolor sit amet</li>
-                            <li>Consectetur adipiscing elit</li>
-                            <li>Integer molestie lorem at massa</li>
-                            <li>Facilisis in pretium nisl aliquet</li>
-                            <li>
-                                Nulla volutpat aliquam velit
-                                <ul>
-                                    <li>Phasellus iaculis neque</li>
-                                    <li>Purus sodales ultricies</li>
-                                    <li>Vestibulum laoreet porttitor sem</li>
-                                    <li>Ac tristique libero volutpat at</li>
-                                </ul>
-                            </li>
-                            <li>Faucibus porta lacus fringilla vel</li>
-                            <li>Aenean sit amet erat nunc</li>
-                            <li>Eget porttitor lorem</li>
+                            @foreach (var item in Model.AllClaims)
+                            {
+                                <li>@item.Value</li>
+                            }
                         </ul>
                     </div>
                 </div>

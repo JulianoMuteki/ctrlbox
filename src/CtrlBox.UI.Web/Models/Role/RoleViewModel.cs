@@ -3,19 +3,22 @@ using System.Collections.Generic;
 
 namespace CtrlBox.UI.Web.Models.Role
 {
-    public class RolesToUsersViewModel
+    public class RoleViewModel
     {
         public IEnumerable<SelectListItem> AllUsers { get; set; }
         public IEnumerable<SelectListItem> AllRoles { get; set; }
+        public IEnumerable<SelectListItem> AllClaims { get; set; }
+
 
         public string RoleSelected { get; set; }
         public string UserSelected { get; set; }
+        public string ClaimSelected { get; set; }
 
-        public RolesToUsersViewModel()
+        public RoleViewModel()
         {
             this.AllRoles = new HashSet<SelectListItem>();
             this.AllUsers = new HashSet<SelectListItem>();
-
+            this.AllClaims = new HashSet<SelectListItem>();
         }
     }
 }

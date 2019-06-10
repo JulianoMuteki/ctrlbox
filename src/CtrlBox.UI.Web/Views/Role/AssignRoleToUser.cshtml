@@ -19,16 +19,21 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function () {
-
+        $('.select2_option').select2({
+            allowClear: true
+        });
         //<!-- BEGIN AspNetUserRoles -->
+        var slt2RolesToUser = "#slt2RolesToUser";
+        var ddlUserRoles = "#ddlUserRoles";
+
         $("#btnRole").click(function () {
-            var selections = (JSON.stringify($("#ddlRoles").select2('data')));
+            var selections = (JSON.stringify($(slt2RolesToUser).select2('data')));
 
             $.ajax({
                 url: '@Url.Content("~/Role/PostAjaxHandlerRoles")',
                 type: 'POST',
                 dataType: 'json',
-                data: { rolesJSON: selections, userID: $("#ddlUsersRole").val() },
+                data: { rolesJSON: selections, userID: $(ddlUserRoles).val() },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Complete');
@@ -38,21 +43,21 @@
             event.preventDefault();
         });
 
-        $('#ddlRoles').select2({
+        $(slt2RolesToUser).select2({
             placeholder: "Select a Roles",
             allowClear: true
         });
 
-        $("#ddlUsersRole").change(function (event) {
-            $('#ddlRoles').val(null).trigger('change');
-            $('#ddlRoles').empty().trigger("change");
+        $(ddlUserRoles).change(function (event) {
+            $(slt2RolesToUser).val(null).trigger('change');
+            $(slt2RolesToUser).empty().trigger("change");
 
             if ($(this).val() !== '0') {
                 var url = '@Url.Content("~/Role/GetAjaxHandlerRoles")'
                 $.getJSON(url, { userID: $(this).val() }, function (data) {
                     $.each(data, function (index, obj) {
                         var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
-                        $('#ddlRoles').append(newOption).trigger('change');
+                        $(slt2RolesToUser).append(newOption).trigger('change');
                     });
                 });
             }
@@ -60,15 +65,17 @@
         //<!-- END AspNetUserRoles -->
 
         //<!-- BEGIN AspNetRoleClaims -->
-        var ddlRolesClaim = "#ddlClaims";
+        var slt2ClaimsToRole = "#slt2ClaimsToRole";
+        var ddlRolesClaims = "#ddlRolesClaims";
+
         $("#btnRoleClaim").click(function () {
-            var selections = (JSON.stringify($(ddlRolesClaim).select2('data')));
+            var selections = (JSON.stringify($(slt2ClaimsToRole).select2('data')));
 
             $.ajax({
                 url: '@Url.Content("~/Role/PostAjaxHandlerClaimsToRole")',
                 type: 'POST',
                 dataType: 'json',
-                data: { claimsJSON: selections, roleID: $("#ddlRolesClaim").val() },
+                data: { claimsJSON: selections, roleID: $(ddlRolesClaims).val() },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Complete');
@@ -78,21 +85,21 @@
             event.preventDefault();
         });
 
-        $(ddlRolesClaim).select2({
+        $(slt2ClaimsToRole).select2({
             placeholder: "Select a Claims",
             allowClear: true
         });
 
-        $("#ddlRolesClaim").change(function (event) {
-            $(ddlRolesClaim).val(null).trigger('change');
-            $(ddlRolesClaim).empty().trigger("change");
+        $(ddlRolesClaims).change(function (event) {
+            $(slt2ClaimsToRole).val(null).trigger('change');
+            $(slt2ClaimsToRole).empty().trigger("change");
 
             if ($(this).val() !== '0') {
                 var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsRoles")'
                 $.getJSON(url, { roleID: $(this).val() }, function (data) {
                     $.each(data, function (index, obj) {
                         var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
-                        $(ddlRolesClaim).append(newOption).trigger('change');
+                        $(slt2ClaimsToRole).append(newOption).trigger('change');
                     });
                 });
             }
@@ -100,15 +107,17 @@
         //<!-- END AspNetRoleClaims -->
 
         //<!-- BEGIN AspNetUserClaims -->
-        var ddlClaimsUsers = "#ddlClaimsUsers";
+        var slt2ClaimsToUser = "#slt2ClaimsToUser";
+        var ddlUserClaims = "#ddlUserClaims";
+
         $("#btnUserClaim").click(function () {
-            var selections = (JSON.stringify($(ddlClaimsUsers).select2('data')));
+            var selections = (JSON.stringify($(slt2ClaimsToUser).select2('data')));
 
             $.ajax({
                 url: '@Url.Content("~/Role/PostAjaxHandlerClaimsToUser")',
                 type: 'POST',
                 dataType: 'json',
-                data: { claimsJSON: selections, userID: $("#ddlUsersClaim").val() },
+                data: { claimsJSON: selections, userID: $(ddlUserClaims).val() },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Complete');
@@ -119,22 +128,21 @@
         });
 
 
-        $(ddlClaimsUsers).select2({
+        $(slt2ClaimsToUser).select2({
             placeholder: "Select a Claims",
             allowClear: true
         });
 
-        $("#ddlUsersClaim").change(function (event) {
-            $(ddlClaimsUsers).val(null).trigger('change');
-            $(ddlClaimsUsers).empty().trigger("change");
+        $(ddlUserClaims).change(function (event) {
+            $(slt2ClaimsToUser).val(null).trigger('change');
+            $(slt2ClaimsToUser).empty().trigger("change");
 
             if ($(this).val() !== '0') {
                 var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsUsers")'
-                var ddlSource = "#ddlUsersClaim";
-                $.getJSON(url, { userID: $(ddlSource).val() }, function (data) {
+                $.getJSON(url, { userID: $(this).val() }, function (data) {
                     $.each(data, function (index, obj) {
                         var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
-                        $(ddlClaimsUsers).append(newOption).trigger('change');
+                        $(slt2ClaimsToUser).append(newOption).trigger('change');
                     });
                 });
             }
@@ -181,13 +189,13 @@
                             <div class="control-group">
                                 <label class="control-label">List users</label>
                                 <div class="controls">
-                                    <select id="ddlUsersRole" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
+                                    <select id="ddlUserRoles" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Select some</label>
                                 <div class="controls">
-                                    <select id="ddlRoles" data-placeholder="Policy role" class="span6 select2" tabindex="0" multiple="multiple" name="RoleSelected"> <option value="0">Please select roles</option></select>
+                                    <select id="slt2RolesToUser" data-placeholder="Policy role" class="span6 select2" tabindex="0" multiple="multiple" name="RoleSelected"> <option value="0">Please select roles</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -213,13 +221,13 @@
                             <div class="control-group">
                                 <label class="control-label">List roles</label>
                                 <div class="controls">
-                                    <select id="ddlRolesClaim" class="span6" data-placeholder="Choose a role" tabindex="1" name="RoleSelected" asp-for="RoleSelected" asp-items="@Model.AllRoles"> <option value="0">Please select role</option></select>
+                                    <select id="ddlRolesClaims" class="span6 select2_option" data-placeholder="Choose a role" tabindex="1" name="RoleSelected" asp-for="RoleSelected" asp-items="@Model.AllRoles"> <option value="0">Please select role</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Select some</label>
                                 <div class="controls">
-                                    <select id="ddlClaims" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option value="0">Please select claims</option></select>
+                                    <select id="slt2ClaimsToRole" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option value="0">Please select claims</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -245,13 +253,13 @@
                             <div class="control-group">
                                 <label class="control-label">List users</label>
                                 <div class="controls">
-                                    <select id="ddlUsersClaim" class="span6" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
+                                    <select id="ddlUserClaims" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="UserSelected" asp-for="UserSelected" asp-items="@Model.AllUsers"> <option value="0">Please select user</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Select some</label>
                                 <div class="controls">
-                                    <select id="ddlClaimsUsers" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option value="0">Please select claims</option></select>
+                                    <select id="slt2ClaimsToUser" data-placeholder="Policy claim" class="span6 select2" tabindex="0" multiple="multiple" name="ClaimSelected"> <option value="0">Please select claims</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">

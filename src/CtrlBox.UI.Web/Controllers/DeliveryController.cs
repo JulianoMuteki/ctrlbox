@@ -37,7 +37,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult AjaxHandlerEntregas()
+        public ActionResult GetTableAjaxHandlerDeliveries()
         {
             try
             {

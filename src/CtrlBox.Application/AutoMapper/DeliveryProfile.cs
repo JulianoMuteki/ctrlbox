@@ -10,7 +10,9 @@ namespace CtrlBox.Application.AutoMapper
         {
             CreateMap<Delivery, DeliveryVM>()
                 .ForMember(dest => dest.DT_RowId,
-                          opts => opts.MapFrom(src => src.Id));
+                          opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.RouteName,
+                          opts => opts.MapFrom(src => src.Route.Name));
 
             CreateMap<DeliveryVM, Delivery>()
                 .ForMember(dest => dest.Id,

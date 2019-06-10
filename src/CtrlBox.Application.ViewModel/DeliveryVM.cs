@@ -14,6 +14,7 @@ namespace CtrlBox.Application.ViewModel
         public string CreatedBy { get; set; }
         public string FinalizedBy { get; set; }
 
+        public string RouteName { get; set; }
         public RouteVM RouteVM { get; set; }
 
         public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }

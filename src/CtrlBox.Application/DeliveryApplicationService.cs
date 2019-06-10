@@ -3,6 +3,7 @@ using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
+using CtrlBox.Domain.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -56,7 +57,7 @@ namespace CtrlBox.Application
 
         public ICollection<DeliveryVM> GetAll()
         {
-            var deliveries = _unitOfWork.Repository<Delivery>().GetAll();
+            var deliveries = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryRouteLoad();
 
             var deliveriesVMs = _mapper.Map<IList<DeliveryVM>>(deliveries);
             return deliveriesVMs;

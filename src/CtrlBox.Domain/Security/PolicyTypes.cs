@@ -14,6 +14,20 @@ namespace CtrlBox.Domain.Security
             public const string ExecuteDelivery = "delivery.policy.execute";
         }
 
+        public static IList<string> ListAllRoles
+        { 
+            get
+            {
+                var roles = new List<string>();
+                foreach (var role in Enum.GetNames(typeof(RoleAuthorize)))
+                {
+                    var result = (RoleAuthorize)Enum.Parse(typeof(RoleAuthorize), role);
+                    roles.Add(role);
+                }
+                return roles;
+            }
+        }
+
         public static IDictionary<CRUD, Claim> ListAllClaims
         {
             get

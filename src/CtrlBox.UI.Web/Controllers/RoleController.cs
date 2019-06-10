@@ -26,7 +26,20 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult Index()
         {
-            return View(_roleManager.Roles.ToList());
+            RoleViewModel rolesToUsersViewModel = new RoleViewModel();
+            rolesToUsersViewModel.AllRoles = PolicyTypes.ListAllRoles
+                                       .Select(role => new SelectListItem
+                                       {
+                                           Value = role,
+                                           Text = role
+                                       }).ToList();
+            rolesToUsersViewModel.AllClaims = PolicyTypes.ListClaimsAuthorizations
+                           .Select(claim => new SelectListItem
+                           {
+                               Value = claim,
+                               Text = claim
+                           }).ToList();
+            return View(rolesToUsersViewModel);
         }
 
         public IActionResult Create()

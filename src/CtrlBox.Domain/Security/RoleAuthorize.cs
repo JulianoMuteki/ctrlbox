@@ -19,5 +19,13 @@ namespace CtrlBox.Domain.Security
 
         [Display(GroupName = "Delivery", Name = "Delivery", Description = "Delivery")]
         Delivery,
+
+        [Display(GroupName = "Employee", Name = "Employee", Description = "Employee")]
+        Employee,
+
+        [Display(GroupName = "Driver", Name = "Driver", Description = "Driver")]
+        Driver
+
+
     }
 }

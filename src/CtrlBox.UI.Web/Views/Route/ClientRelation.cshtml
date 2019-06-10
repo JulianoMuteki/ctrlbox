@@ -133,31 +133,32 @@
         <!-- BEGIN PAGE HEADER-->
         <div class="row-fluid">
             <div class="span12">
-
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-                <h3 class="page-title">
-                    <small>   Vinclular clientes a linha:</small>@Model.Name
-                </h3>
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.html">Home</a>
+                        <a href="index.html">Route</a>
                         <i class="icon-angle-right"></i>
                     </li>
                     <li>
-                        <a href="#">Data Tables</a>
+                        <a href="#">Route list</a>
                         <i class="icon-angle-right"></i>
                     </li>
-                    <li><a href="#">Basic Tables</a></li>
+                    <li><a href="#">Link route to clients</a></li>
                 </ul>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
-
         </div>
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
-
+            <div class="span12">
+                <div class="alert alert-info">
+                    <h3><strong>Route:</strong> @Model.Name</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
             <div class="span6">
                 <!-- BEGIN SAMPLE TABLE PORTLET-->
                 <div class="portlet box green">
@@ -181,7 +182,7 @@
                                 <tbody></tbody>
                             </table>
                         </form>
-                        <a href="#" id="btnSubmitAdd" class="btn green"><i class="icon-plus"></i>Adicionar</a>
+                        <a href="#" id="btnSubmitAdd" class="btn green"><i class="icon-plus"></i> Adicionar</a>
 
                     </div>
                 </div>
@@ -213,7 +214,7 @@
                         </form>
                         @if (!Model.HasOpenDelivery)
                         {
-                            <a href="#" id="btnSubmitRemove" class="btn red"><i class="icon-trash"></i>Remover</a>
+                            <a href="#" id="btnSubmitRemove" class="btn red"><i class="icon-trash"></i> Remover</a>
                         }
                         else
                         {
@@ -227,9 +228,7 @@
                 <!-- END SAMPLE TABLE PORTLET-->
 
             </div>
-
         </div>
-
         <!-- END PAGE CONTENT-->
     </div>
     <!-- END PAGE CONTAINER-->

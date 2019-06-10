@@ -25,7 +25,7 @@ namespace CtrlBox.Domain.Security
                     claims.Add(result, new Claim(CustomClaimTypes.DefaultPermission, $"{NAME}.{permission.ToLower()}"));
                 }
 
-                claims.Add(CRUD.Create, new Claim(CustomClaimTypes.DefaultPermission, $"{DeliveryPolicy.ExecuteDelivery.ToString().ToLower()}"));
+                //claims.Add(CRUD.Create, new Claim(CustomClaimTypes.DefaultPermission, $"{DeliveryPolicy.ExecuteDelivery.ToString().ToLower()}"));
                 return claims;
             }
         }

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using CtrlBox.UI.Web.Extensions;
 using CtrlBox.Domain.Security;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -86,7 +85,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        [Authorize(Policy = PolicyTypes.DeliveryPolicy.ExecuteDelivery)]
+        [AuthorizePolicyEnum(CRUD.Create)]
         public ActionResult ExecuteDelivery(string entregaID, string linhaID)
         {
             ViewData["entregaID"] = entregaID;

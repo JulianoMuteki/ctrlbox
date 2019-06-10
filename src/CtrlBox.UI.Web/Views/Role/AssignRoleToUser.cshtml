@@ -100,9 +100,9 @@
         //<!-- END AspNetRoleClaims -->
 
         //<!-- BEGIN AspNetUserClaims -->
-        var ddlRolesClaim = "#ddlClaimsUsers";
+        var ddlClaimsUsers = "#ddlClaimsUsers";
         $("#btnUserClaim").click(function () {
-            var selections = (JSON.stringify($(ddlRolesClaim).select2('data')));
+            var selections = (JSON.stringify($(ddlClaimsUsers).select2('data')));
 
             $.ajax({
                 url: '@Url.Content("~/Role/PostAjaxHandlerClaimsToUser")',
@@ -119,14 +119,14 @@
         });
 
 
-        $(ddlRolesClaim).select2({
+        $(ddlClaimsUsers).select2({
             placeholder: "Select a Claims",
             allowClear: true
         });
 
         $("#ddlUsersClaim").change(function (event) {
-            $(ddlRolesClaim).val(null).trigger('change');
-            $(ddlRolesClaim).empty().trigger("change");
+            $(ddlClaimsUsers).val(null).trigger('change');
+            $(ddlClaimsUsers).empty().trigger("change");
 
             if ($(this).val() !== '0') {
                 var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsUsers")'
@@ -134,7 +134,7 @@
                 $.getJSON(url, { userID: $(ddlSource).val() }, function (data) {
                     $.each(data, function (index, obj) {
                         var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
-                        $(ddlRolesClaim).append(newOption).trigger('change');
+                        $(ddlClaimsUsers).append(newOption).trigger('change');
                     });
                 });
             }

@@ -128,27 +128,30 @@ namespace CtrlBox.UI.Web.Controllers
         {
             Guid id;
 
-            if (Guid.TryParse(userID,out id))
+            if (Guid.TryParse(userID, out id))
             {
                 var user = _userManager.Users.Where(u => u.Id.ToString() == userID).Include(x => x.UserRoles).FirstOrDefault();
                 var rolesExists = user.UserRoles;
 
                 JsonSerialize jsonS = new JsonSerialize();
                 var rolesVM = jsonS.JsonDeserializeObject<List<DropDpwnViewModel>>(rolesJSON[0]);
+                var appUsersRolesToRemove = rolesExists.Where(x => !rolesVM.Any(z => z.id == x.RoleId.ToString())).ToList();
 
-                var rolesToAdd = rolesVM;
+                IdentityResult result;
 
                 if (rolesExists.Count > 0)
-                    rolesToAdd = rolesVM.Where(x => rolesExists.Any(z => z.RoleId.ToString() != x.id)).ToList();
+                {
+                    var rolesToAdd = rolesVM.Where(x => !rolesExists.Any(z => z.RoleId.ToString() == x.id)).ToList();
+                    if (rolesToAdd.Count > 0)
+                        result = _userManager.AddToRolesAsync(user, rolesToAdd.Select(x => x.text).ToArray()).Result;
+                }
 
-                var rolesUsersToRemove = rolesExists.Where(x => rolesVM.Any(z => z.id != x.RoleId.ToString())).ToList();
-                var rolesToRemove = _roleManager.Roles.Where(x => rolesUsersToRemove.Any(y => y.RoleId == x.Id)).ToList();
-
-                var result = _userManager.AddToRolesAsync(user, rolesToAdd.Select(x => x.text).ToArray()).Result;
-
-                if (rolesUsersToRemove.Count > 0)
-                    result = _userManager.RemoveFromRolesAsync(user, rolesToRemove.Select(x => x.Name).ToList()).Result;
-
+                if (appUsersRolesToRemove.Count > 0)
+                {
+                    var rolesNameToRemove = _roleManager.Roles.Where(x => appUsersRolesToRemove.Any(z => z.RoleId == x.Id)).Select(x => x.Name).ToList();
+                    if (rolesNameToRemove.Count > 0)
+                        result = _userManager.RemoveFromRolesAsync(user, rolesNameToRemove).Result;
+                }
                 return Json(new { OK = "ok" });
             }
             else
@@ -165,31 +168,36 @@ namespace CtrlBox.UI.Web.Controllers
             if (Guid.TryParse(roleID, out id))
             {
                 var role = _roleManager.Roles.Where(r => r.Id == id).Include(c => c.RoleClaims).FirstOrDefault();
-                var claimsExists = role.RoleClaims;
+                var rolesExists = role.RoleClaims;
 
                 JsonSerialize jsonS = new JsonSerialize();
                 var claimsVM = jsonS.JsonDeserializeObject<List<DropDpwnViewModel>>(claimsJSON[0]);
+                var appRolesClaimsToRemove = rolesExists.Where(x => !claimsVM.Any(z => z.id == x.ClaimValue.ToString())).ToList();
 
-                var claimsToAdd = claimsVM;
-
-                if (claimsExists.Count > 0)
-                    claimsToAdd = claimsVM.Where(x => claimsExists.Any(z => z.ClaimValue != x.id)).ToList();
-
-                var rolesClaimsToRemove = claimsExists.Where(x=> claimsVM.Any(z => z.id != x.ClaimValue)).ToList();
-
-
-                foreach (var item in rolesClaimsToRemove)
+                var claimsToAdd_VMs = claimsVM.Where(x => !rolesExists.Any(z => z.ClaimValue == x.id)).ToList();
+                if (claimsToAdd_VMs.Count > 0)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.ClaimValue).FirstOrDefault();
-                    var result = _roleManager.RemoveClaimAsync(role, claim.Value);
-                    result.Wait();
+                    var claimsAdd = PolicyTypes.ListAllClaims.Where(x => claimsToAdd_VMs.Any(c => c.id == x.Value.Value)).Select(x => x.Value).ToList();
+                    foreach (var item in claimsAdd)
+                    {
+                        var result = _roleManager.AddClaimAsync(role, item);
+                        result.Wait();
+                    }
                 }
 
-                foreach (var item in claimsToAdd)
+                if (appRolesClaimsToRemove.Count > 0)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.id).FirstOrDefault();
-                    var result = _roleManager.AddClaimAsync(role, claim.Value);
-                    result.Wait();
+                    var claims = _roleManager.GetClaimsAsync(role).Result;
+                    var claimsToRemove = claims.Where(x => appRolesClaimsToRemove.Any(z => z.ClaimValue == x.Value)).ToList();
+
+                    if (claimsToRemove.Count > 0)
+                    {
+                        foreach (var item in claimsToRemove)
+                        {
+                            var result = _roleManager.RemoveClaimAsync(role, item);
+                            result.Wait();
+                        }
+                    }
                 }
 
                 return Json(new { OK = "ok" });
@@ -230,27 +238,26 @@ namespace CtrlBox.UI.Web.Controllers
 
                 JsonSerialize jsonS = new JsonSerialize();
                 var claimsVM = jsonS.JsonDeserializeObject<List<DropDpwnViewModel>>(claimsJSON[0]);
+                var appUsersClaimsToRemove = claimsExists.Where(x => !claimsVM.Any(z => z.id == x.ClaimValue.ToString())).ToList();
 
-                var claimsToAdd = claimsVM;
-
-                if (claimsExists.Count > 0)
-                    claimsToAdd = claimsVM.Where(x => claimsExists.Any(z => z.ClaimValue != x.id)).ToList();
-
-                var usersClaimsToRemove = claimsExists.Where(x => claimsVM.Any(z => z.id != x.ClaimValue)).ToList();
-
-
-                foreach (var item in usersClaimsToRemove)
+                var claimsToAdd_VMs = claimsVM.Where(x => !claimsExists.Any(z => z.ClaimValue == x.id)).ToList();
+                if (claimsToAdd_VMs.Count > 0)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.ClaimValue).FirstOrDefault();
-                    var result = _userManager.RemoveClaimAsync(user, claim.Value);
+                    var claimsAdd = PolicyTypes.ListAllClaims.Where(x => claimsToAdd_VMs.Any(c => c.id == x.Value.Value)).Select(x => x.Value).ToList();
+                    var result = _userManager.AddClaimsAsync(user, claimsAdd);
                     result.Wait();
                 }
 
-                foreach (var item in claimsToAdd)
+                if (appUsersClaimsToRemove.Count > 0)
                 {
-                    var claim = PolicyTypes.ListAllClaims.Where(x => x.Value.Value == item.id).FirstOrDefault();
-                    var result = _userManager.AddClaimAsync(user, claim.Value);
-                    result.Wait();
+                    var claims = _userManager.GetClaimsAsync(user).Result;
+                    var claimsToRemove = claims.Where(x => appUsersClaimsToRemove.Any(z => z.ClaimValue == x.Value)).ToList();
+
+                    if (claimsToRemove.Count > 0)
+                    {
+                        var result = _userManager.RemoveClaimsAsync(user, claimsToRemove);
+                        result.Wait();
+                    }
                 }
 
                 return Json(new { OK = "ok" });

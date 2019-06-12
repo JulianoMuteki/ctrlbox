@@ -2,17 +2,30 @@
     ViewData["Title"] = "Home Page";
 }
 
-@section scriptsViews
-    {
-    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+@section cssViews{
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
+
+    <!-- END PAGE LEVEL STYLES -->
 }
+@section scriptsViews{
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+}
+
+
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
+        $('.select2_option').select2({
+            allowClear: true
+        });
         //carregar dropdown linhas
         var $div = $("<div>", { class: "a" });
         var sel = $('<select class="calor"/>').appendTo($div);
         sel.append($("<option>").attr('value', 0).text('selecione'));
-        $("#mainSelect").append($("<option>").attr('value', 0).text('selecione'));
+       // $("#mainSelect").append($("<option>").attr('value', 0).text('selecione'));
         $.ajax({
             type: "GET",
             url: '@Url.Content("~/Route/AjaxHandlerGet")',
@@ -124,7 +137,7 @@
         <div class="row-fluid">
             <div class="span6">
                 <!-- BEGIN VALIDATION STATES-->
-                <div class="portlet box purple">
+                <div class="portlet box blue">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-reorder"></i>Criar entrega</div>
                     </div>
@@ -135,11 +148,12 @@
                             <div class="control-group">
                                 <label class="control-label">Linhas<span class="required">*</span></label>
                                 <div class="controls">
-                                    <select id="mainSelect" class="span6 m-wrap" name="category"></select>
+                                    <select id="mainSelect" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="category"><option value="0">Please select route</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button id="btnSubmit" type="button" class="btn purple">Criar entrega</button>
+                                <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
+                                <button id="btnSubmit" type="button" class="btn blue">Criar entrega</button>
                             </div>
                         </form>
                         <!-- END FORM-->
@@ -152,16 +166,13 @@
                 <div class="portlet box red">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-cogs"></i>Produtos</div>
-
                     </div>
                     <div class="portlet-body">
                         <table id="tbProdutos" class="table table-hover">
                             <thead>
                                 <tr>
-
                                     <th>Produto</th>
                                     <th>Qtde</th>
-
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -170,7 +181,6 @@
                 </div>
                 <!-- END SAMPLE TABLE PORTLET-->
             </div>
-
         </div>
         <!-- END PAGE CONTENT-->
     </div>

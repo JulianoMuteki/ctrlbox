@@ -24,6 +24,7 @@ namespace CtrlBox.Application
         public SaleVM Add(SaleVM entity)
         {
             var sale = _mapper.Map<Sale>(entity);
+            sale.Init();
 
             var deliverysProducts = _unitOfWork.Repository<DeliveryProduct>().FindAll(x => x.DeliveryID == sale.DeliveryID);
             foreach (var item in sale.SalesProducts)
@@ -34,8 +35,7 @@ namespace CtrlBox.Application
                 
                 _unitOfWork.Repository<DeliveryProduct>().Update(entregaProduto);
             }
-            sale.IsFinished = true;
-
+   
             _unitOfWork.Repository<Sale>().Add(sale);
             _unitOfWork.Commit();
 

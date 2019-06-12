@@ -104,7 +104,7 @@ namespace CtrlBox.UI.Web.Controllers
                 var productsDeliveryVM = _productService.GetDeliveryProducts(new Guid(deliveryVM.DT_RowId));
 
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
-                var sales = _saleService.FindAllByDelivery(deliveryVM.ID);
+                var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
                 var clientsVMs = clientsVM.Select(c =>
                                             {
                                                 c.SaleIsFinished =

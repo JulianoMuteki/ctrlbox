@@ -22,11 +22,22 @@ namespace CtrlBox.Domain.Entities
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
         public ICollection<SaleProduct> SalesProducts { get; set; }
 
+        public void Init()
+        {
+            this.Id = Guid.NewGuid();
+            this.DateModified = DateTime.Now;
+            this.CreationDate = DateTime.Now;
+            this.IsFinished = true;
+
+        }
+
         public Sale()
         {
             this.SalesProducts = new HashSet<SaleProduct>();
             this.Checks = new HashSet<Check>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
+
+            Init();
         }
     }
 }

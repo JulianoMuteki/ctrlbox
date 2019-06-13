@@ -17,5 +17,10 @@ namespace CtrlBox.Domain.Entities
         {
 
         }
+
+        public void SubtractProductsDelivered(int amount)
+        {
+            this.Amount -= amount;
+        }
     }
 }

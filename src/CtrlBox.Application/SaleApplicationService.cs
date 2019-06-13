@@ -24,16 +24,13 @@ namespace CtrlBox.Application
         public SaleVM Add(SaleVM entity)
         {
             var sale = _mapper.Map<Sale>(entity);
-            sale.Init();
 
             var deliverysProducts = _unitOfWork.Repository<DeliveryProduct>().FindAll(x => x.DeliveryID == sale.DeliveryID);
             foreach (var item in sale.SalesProducts)
             {
-                var entregaProduto = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
-                entregaProduto.Amount -= (int)item.Amount;
-                item.SaleID = sale.Id;
-                
-                _unitOfWork.Repository<DeliveryProduct>().Update(entregaProduto);
+                var deliveryProduct = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
+                deliveryProduct.SubtractProductsDelivered(item.Amount);              
+                _unitOfWork.Repository<DeliveryProduct>().Update(deliveryProduct);
             }
    
             _unitOfWork.Repository<Sale>().Add(sale);

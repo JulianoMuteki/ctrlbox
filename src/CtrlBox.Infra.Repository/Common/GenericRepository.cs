@@ -100,6 +100,21 @@ namespace CtrlBox.Infra.Repository.Common
             return updated;
         }
 
+        public ICollection<T> UpdateRange(ICollection<T> updateds)
+        {
+            if (updateds == null)
+            {
+                return null;
+            }
+          
+            _context.Set<T>().UpdateRange(updateds);
+            _context.Entry(updateds).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return updateds;
+        }
+
+
         public async Task<T> UpdateAsync(T updated)
         {
             if (updated == null)
@@ -176,6 +191,12 @@ namespace CtrlBox.Infra.Repository.Common
         {
             var exist = _context.Set<T>().Where(predicate);
             return exist.Any();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

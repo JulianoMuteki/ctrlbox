@@ -12,6 +12,8 @@
                 var routeID = ViewData["routeID"];
             }
 
+    var _routeID = '@routeID';
+
     function loadTable(id, url) {
 
         var oTable = $(id).dataTable({
@@ -64,12 +66,12 @@
         return oTable;
     }
 
-    function loadTables(linhaID) {
+    function loadTables() {
 
-        var urlCustomersAvailable = '@Url.Content("~/Route/AjaxHandlerCustomersAvailable")?routeID=' + '@routeID';
+        var urlCustomersAvailable = '@Url.Content("~/Route/GetAjaxHandlerClientsAvailable")?routeID=' + '@routeID';
         loadTable('#tbAdd', urlCustomersAvailable);
 
-        var urlCustomersNotAvailable = '@Url.Content("~/Route/AjaxHandlerCustomersNotAvailable")?routeID=' + '@routeID';
+        var urlCustomersNotAvailable = '@Url.Content("~/Route/GetAjaxHandlerClientsNotAvailable")?routeID=' + '@routeID';
         loadTable('#tbRemove', urlCustomersNotAvailable);
     }
 
@@ -85,21 +87,21 @@
     })(jQuery);
 
     jQuery(document).ready(function () {
-        loadTables('@routeID');
+        loadTables();
 
         $('#btnSubmitAdd').click(function () {
             var oTableAdd = $('#tbAdd').dataTable();
-            var data = $(oTableAdd.$("input[name='ClientID']:checked")).serializeFormJSON();
+            var sData = $(oTableAdd.$("input[name='ClientID']:checked")).serializeFormJSON();
 
             $.ajax({
-                url: '@Url.Content("~/Route/SubmitAddClients")',
+                url: '@Url.Content("~/Route/PutAjaxHandlerAddClients")',
                 type: 'POST',
                 dataType: 'json',
-                data: { linhaID: '@routeID', clientesIDs: data },
+                data: { clientsIDs: sData },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Complete');
-                        loadTables('@routeID');
+                        loadTables();
                     }
                 }
             });
@@ -109,16 +111,17 @@
 
         $('#btnSubmitRemove').click(function () {
             var oTableRemove = $('#tbRemove').dataTable();
-            var sData = $('input', oTableRemove.fnGetNodes()).serialize();
+            var sData = $(oTableRemove.$("input[name='ClientID']:checked")).serializeFormJSON();
+
             $.ajax({
-                url: '@Url.Content("~/Route/SubmitRemoveClients")',
+                url: '@Url.Content("~/Route/PutAjaxHandlerRemoveClients")',
                 type: 'POST',
                 dataType: 'json',
-                data: { routeID: '@routeID', clientesIDs: sData },
+                data: { clientsIDs: sData },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Complete');
-                        loadTables('@routeID');
+                        loadTables();
                     }
                 }
             });

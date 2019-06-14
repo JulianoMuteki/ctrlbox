@@ -14,14 +14,39 @@
 <script src="~/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 <script src="~/plugins/jquery.cookie.min.js" type="text/javascript"></script>
 <script src="~/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="~/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script>
+<script src="~/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript"></script>
+
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="~/scripts/app.js"></script>
-<script>
-        jQuery(document).ready(function () {
-            // initiate layout and plugins
-            App.init();
-           
-        });
+<script src="~/scripts/ui-modals.js"></script>
+
+<script type="text/javascript">
+    function handleAjaxError(xhr, textStatus, error) {
+        var obj = $($.parseHTML(xhr.jqXHR.responseText)).filter('div.titleerror');
+        console.log(obj.text());
+        $('.accordion-inner').html(xhr.jqXHR.responseText);
+        $("#titleError").text(obj.text());
+        $("#modalError").modal();
+
+        if (textStatus === 'timeout') {
+              //  alert('The server took too long to send the data.');
+            }
+            else {
+
+               // var obj = $.parseJSON(xhr.responseText);
+               // console.log(obj);
+              //  alert(obj.Message);
+            }
+
+            return false;
+    }
+
+    jQuery(document).ready(function () {
+        // initiate layout and plugins
+        App.init();
+ 
+    });
 </script>
 <!-- END JAVASCRIPTS -->

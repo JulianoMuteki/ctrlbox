@@ -23,6 +23,8 @@ namespace CtrlBox.Domain.Entities
         public void SubtractProductsDelivered(int amount)
         {
             this.Amount -= amount;
+            if (this.Amount < 0)
+                throw new Exception("Not enough stock!");
         }
         protected override IEnumerable<object> GetEqualityComponents()
         {

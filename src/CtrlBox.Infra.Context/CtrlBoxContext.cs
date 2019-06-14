@@ -30,12 +30,13 @@ namespace CtrlBox.Infra.Context
 
         public CtrlBoxContext()
         {
-
+           // ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public CtrlBoxContext(DbContextOptions<CtrlBoxContext> options)
              : base(options)
         {
+          //  ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

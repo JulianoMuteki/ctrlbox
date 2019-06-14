@@ -1,6 +1,7 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CtrlBox.Domain.Entities
@@ -17,8 +18,12 @@ namespace CtrlBox.Domain.Entities
 
         public StockProduct()
         {
-            this.Stock = new Stock();
-            this.Product = new Product();
+        }
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+
+            return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
+
         }
     }
 }

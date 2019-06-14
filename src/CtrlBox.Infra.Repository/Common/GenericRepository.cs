@@ -106,9 +106,8 @@ namespace CtrlBox.Infra.Repository.Common
             {
                 return null;
             }
-          
+
             _context.Set<T>().UpdateRange(updateds);
-            _context.Entry(updateds).State = EntityState.Modified;
             _context.SaveChanges();
 
             return updateds;

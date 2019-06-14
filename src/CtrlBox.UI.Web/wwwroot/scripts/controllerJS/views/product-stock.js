@@ -6,7 +6,7 @@ var ProductStock = function () {
             var list = [];
             (function ($) {
                 $.fn.serializeFormJSON = function () {
-                   
+                    list = [];
                     var a = this.serializeArray();
                     $.each(a, function () {
                         if (this.value != "") {

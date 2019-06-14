@@ -102,7 +102,7 @@ namespace CtrlBox.Infra.Repository.Common
 
         public ICollection<T> UpdateRange(ICollection<T> updateds)
         {
-            if (updateds == null)
+            if (updateds == null || updateds.Count == 0)
             {
                 return null;
             }

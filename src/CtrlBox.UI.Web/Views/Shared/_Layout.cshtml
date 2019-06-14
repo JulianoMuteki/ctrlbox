@@ -112,10 +112,10 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            @Html.ActionLink("Usuários", "Index", "Manage")
+                            @Html.ActionLink("Users", "Index", "Manage")
                         </li>
                         <li>
-                            @Html.ActionLink("Permissões", "Index", "Role")
+                            @Html.ActionLink("Permissions", "Index", "Role")
                         </li>
                         <li>
                             @Html.ActionLink("Login", "Login", "Account")
@@ -131,13 +131,13 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            @Html.ActionLink("Clientes", "Index", "Client")
+                            @Html.ActionLink("Clients", "Index", "Client")
                         </li>
                         <li>
-                            @Html.ActionLink("Linhas", "Index", "Route")
+                            @Html.ActionLink("Routes", "Index", "Route")
                         </li>
                         <li>
-                            @Html.ActionLink("Produtos", "Index", "Product")
+                            @Html.ActionLink("Products", "Index", "Product")
                         </li>
                     </ul>
 
@@ -151,7 +151,7 @@
                     <ul class="sub-menu">
 
                         <li>
-                            @Html.ActionLink("Entregas", "Index", "Delivery")
+                            @Html.ActionLink("Deliveries", "Index", "Delivery")
                         </li>
                     </ul>
 
@@ -181,45 +181,37 @@
         </div>
         <!-- END SIDEBAR -->
         <!-- BEGIN PAGE -->
+        <div id="modalError" class="modal container hide fade" tabindex="-1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3>Error</h3>
+            </div>
+            <div class="modal-body">
+                <div id="modalErrorbody"></div>
+                <div class="accordion in collapse" id="accordion1" style="height: auto;">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a id="titleError" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1">
+                                <i class="icon-angle-left"></i>
 
+                            </a>
+                        </div>
+                        <div id="collapse_1" class="accordion-body collapse" style="height: 0px;">
+                            <div class="accordion-inner">
 
-
-                        <div  id="modalError" class="modal container hide fade" tabindex="-1">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h3>Error</h3>
-                            </div>
-                            <div class="modal-body">
-                                <div id="modalErrorbody"></div>
-                                <div class="accordion in collapse" id="accordion1" style="height: auto;">
-                                    <div class="accordion-group">
-                                        <div class="accordion-heading">
-                                            <a id="titleError" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1">
-                                                <i class="icon-angle-left"></i>
-                                               
-                                            </a>
-                                        </div>
-                                        <div id="collapse_1" class="accordion-body collapse" style="height: 0px;">
-                                            <div class="accordion-inner">
-                                             
-                                            </div>
-                                        </div>
-                                    </div>
-                   
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" class="btn">Close</button>
                             </div>
                         </div>
                     </div>
 
-
-        @RenderBody()
-       
-
-        <!-- END PAGE -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">Close</button>
+            </div>
+        </div>
     </div>
+    @RenderBody()
+   <!-- END PAGE -->
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="footer">
@@ -233,7 +225,6 @@
         </div>
     </div>
     <!-- END FOOTER -->
-
 </body>
 <!-- END BODY -->
 </html>

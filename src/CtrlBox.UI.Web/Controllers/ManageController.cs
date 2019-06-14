@@ -92,6 +92,13 @@ namespace CtrlBox.UI.Web.Controllers
                                          Value = role,
                                          Text = role
                                      }).ToList();
+
+                registerModel.RolesToUsersVM.AllClaims = _userManager.GetClaimsAsync(model).Result
+                     .Select(claim => new SelectListItem
+                     {
+                         Value = claim.Value,
+                         Text = claim.Value
+                     }).ToList();
             }
 
             return registerModel;

@@ -139,12 +139,9 @@ namespace CtrlBox.UI.Web.Controllers
 
                 IdentityResult result;
 
-                if (rolesExists.Count > 0)
-                {
-                    var rolesToAdd = rolesVM.Where(x => !rolesExists.Any(z => z.RoleId.ToString() == x.id)).ToList();
-                    if (rolesToAdd.Count > 0)
-                        result = _userManager.AddToRolesAsync(user, rolesToAdd.Select(x => x.text).ToArray()).Result;
-                }
+                var rolesToAdd = rolesVM.Where(x => !rolesExists.Any(z => z.RoleId.ToString() == x.id)).ToList();
+                if (rolesToAdd.Count > 0)
+                    result = _userManager.AddToRolesAsync(user, rolesToAdd.Select(x => x.text).ToArray()).Result;
 
                 if (appUsersRolesToRemove.Count > 0)
                 {

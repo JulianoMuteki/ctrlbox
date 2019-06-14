@@ -114,7 +114,7 @@
                                     <div class="span6">
                                         <div class="portlet box red">
                                             <div class="portlet-title">
-                                                <div class="caption"><i class="icon-reorder"></i>Cargos</div>
+                                                <div class="caption"><i class="icon-reorder"></i>Roles</div>
                                                 <div class="tools">
                                                     <a href="javascript:;" class="collapse"></a>
                                                 </div>
@@ -132,20 +132,17 @@
                                     <div class="span6">
                                         <div class="portlet box red">
                                             <div class="portlet-title">
-                                                <div class="caption"><i class="icon-reorder"></i>Permissões</div>
+                                                <div class="caption"><i class="icon-reorder"></i>Claims</div>
                                                 <div class="tools">
                                                     <a href="javascript:;" class="collapse"></a>
                                                 </div>
                                             </div>
                                             <div class="portlet-body">
                                                 <ul>
-                                                    <li>Lorem ipsum dolor sit amet</li>
-                                                    <li>Consectetur adipiscing elit</li>
-                                                    <li>Integer molestie lorem at massa</li>
-                                                    <li>Facilisis in pretium nisl aliquet</li>
-                                                    <li>Faucibus porta lacus fringilla vel</li>
-                                                    <li>Aenean sit amet erat nunc</li>
-                                                    <li>Eget porttitor lorem</li>
+                                                    @foreach (var item in Model.RolesToUsersVM.AllClaims)
+                                                    {
+                                                        <li>@item.Text</li>
+                                                    }
                                                 </ul>
                                             </div>
                                         </div>

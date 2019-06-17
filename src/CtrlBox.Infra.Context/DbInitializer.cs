@@ -63,8 +63,8 @@ namespace CtrlBox.Infra.Context
                     role.Name = roleName;
                     IdentityResult roleResult = roleManager.CreateAsync(role).Result;
 
-                    if (RoleAuthorize.Admin.ToString() == roleName)
-                        roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.DefaultPermission, PolicyTypes.DeliveryPolicy.ExecuteDelivery)).Wait();
+                    //if (RoleAuthorize.Admin.ToString() == roleName)
+                    //    roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.DefaultPermission, PolicyTypes.DeliveryPolicy.ExecuteDelivery)).Wait();
                 }
             }
         }

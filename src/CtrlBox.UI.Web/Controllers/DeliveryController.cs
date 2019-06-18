@@ -107,6 +107,8 @@ namespace CtrlBox.UI.Web.Controllers
         {
             ViewData["entregaID"] = entregaID;
             ViewData["linhaID"] = linhaID;
+
+            ViewData["RouteName"] = _routeService.GetById(new Guid(linhaID)).Name;
             return View();
         }
 

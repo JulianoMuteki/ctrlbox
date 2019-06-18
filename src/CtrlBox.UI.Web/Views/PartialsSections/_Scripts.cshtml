@@ -24,9 +24,18 @@
 
 <script type="text/javascript">
     function handleAjaxError(xhr, textStatus, error) {
-        var obj = $($.parseHTML(xhr.jqXHR.responseText)).filter('div.titleerror');
+
+        var responseText = "";
+
+        if (xhr.jqXHR != undefined) {
+            responseText = xhr.jqXHR.responseText;
+        }
+        else {
+            responseText = xhr.responseText;
+        }
+        var obj = $($.parseHTML(responseText)).filter('div.titleerror');
         console.log(obj.text());
-        $('.accordion-inner').html(xhr.jqXHR.responseText);
+        $('.accordion-inner').html(responseText);
         $("#titleError").text(obj.text());
         $("#modalError").modal();
 

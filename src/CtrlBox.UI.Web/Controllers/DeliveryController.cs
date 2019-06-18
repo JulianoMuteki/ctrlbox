@@ -78,15 +78,15 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitCadastrarEntrega(string[] tbProdutos, string linha)
+        public ActionResult PostAjaxHandlerCreateDelivery(string[] tbProducts, string routeID)
         {
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var deliveryProductsVMs = jsonS.JsonDeserialize<DeliveryProductVM>(tbProdutos[0]);
+                var deliveryProductsVMs = jsonS.JsonDeserialize<DeliveryProductVM>(tbProducts[0]);
 
                 DeliveryVM deliveryVM = new DeliveryVM();
-                deliveryVM.RouteID = new Guid(linha);
+                deliveryVM.RouteID = new Guid(routeID);
                 deliveryVM.DeliveriesProducts = deliveryProductsVMs;
 
                 _deliveryService.Add(deliveryVM);

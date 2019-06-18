@@ -15,7 +15,6 @@
     <!-- END PAGE LEVEL PLUGINS -->
 }
 
-
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         $('.select2_option').select2({
@@ -25,15 +24,13 @@
         var $div = $("<div>", { class: "a" });
         var sel = $('<select class="calor"/>').appendTo($div);
         sel.append($("<option>").attr('value', 0).text('selecione'));
-       // $("#mainSelect").append($("<option>").attr('value', 0).text('selecione'));
         $.ajax({
             type: "GET",
             url: '@Url.Content("~/Route/AjaxHandlerGet")',
             dataType: "json",
             success: function (data) {
-
                 if (data.aaData.length > 0) {
-                    var url = '@Url.Content("~/Product/AjaxHandlerGet")';
+                    var url = '@Url.Content("~/Delivery/GetAjaxHandlerProductsStock")';
 
                     var oTable = $('#tbProdutos').dataTable({
                         "bPaginate": false,
@@ -42,22 +39,42 @@
                         bFilter: false, bInfo: false,
                         "bDestroy": true,
                         "aoColumns": [
-                                            {
-                                                "mData": "Name",
-                                                "bSortable": false
-                                            },
-                                            {
-                                                "mData": null,
-                                                "sType": "html",
-                                                "bSortable": false,
-                                                sClass: "calc",
-                                                "mRender": function (data, type, row) {
-                                                    if (type === 'display') {
-                                                        return '<input type="text" placeholder="0" class="m-wrap small amount">';
-                                                    }
-                                                    return data;
+                                    {
+                                        "mData": null,
+                                        "sType": "html",
+                                        "bSortable": false,
+                                        "mRender": function (data, type, row) {
+                                            if (type === 'display') {
+                                                var statusStock = "green-stripe";
+                                                if (row.StockTotal <= 0) {
+                                                    statusStock = "red-stripe"
                                                 }
+                                                return '<a href="#" class="btn mini ' + statusStock + '">Total: ' + row.StockTotal + '</a>';
                                             }
+                                            return data;
+                                        }
+                                    },
+                                    {
+                                        "mData": "Name",
+                                        "bSortable": false
+                                    },
+                                    {
+                                        "mData": null,
+                                        "sType": "html",
+                                        "bSortable": false,
+                                        "sClass": "calc",
+                                        "mRender": function (data, type, row) {
+                                            if (type === 'display') {
+                                                var txtTotal = '<input type="text" placeholder="0" class="m-wrap small amount">';
+
+                                                if (row.StockTotal <= 0) {
+                                                    txtTotal = '<span class="label label-important">Unavailable</span>'
+                                                }
+                                                return txtTotal;
+                                            }
+                                            return data;
+                                        }
+                                    }
                         ]
                     });
 
@@ -69,12 +86,7 @@
             }
         });
 
-
-
-
-
         $("#btnSubmit").click(function () {
-
             var oTable = $('#tbProdutos').dataTable();
             var tb = [];
             $.each(oTable.fnGetNodes(), function (index, value) {
@@ -85,7 +97,6 @@
             });
             var myJsonString = JSON.stringify(tb);
             var linhaValor = $("select#mainSelect").val();
-
 
             $.ajax({
                 url: '@Url.Content("~/Delivery/SubmitCadastrarEntrega")',
@@ -101,12 +112,9 @@
                // "error": handleAjaxError
             });
             event.preventDefault();
-
             return true;
         });
-
     });
-
 </script>
 
 <!-- BEGIN PAGE -->
@@ -171,8 +179,9 @@
                         <table id="tbProdutos" class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Produto</th>
-                                    <th>Qtde</th>
+                                    <th>Stock</th>
+                                    <th>Products</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

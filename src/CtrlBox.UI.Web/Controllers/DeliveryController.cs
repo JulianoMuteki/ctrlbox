@@ -60,6 +60,23 @@ namespace CtrlBox.UI.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetAjaxHandlerProductsStock()
+        {
+            var productsStocks = _productService.GetProductsStock();
+            var productVMs = _productService.GetAll();
+
+            foreach (var product in productVMs)
+            {
+                product.StocksProducts = (from x in productsStocks where x.ProductID.ToString() == product.DT_RowId select x).ToList();
+            }
+            return Json(new
+            {
+                aaData = productVMs,
+                success = true
+            });
+        }
+
         [HttpPost]
         public ActionResult SubmitCadastrarEntrega(string[] tbProdutos, string linha)
         {

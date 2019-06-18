@@ -94,6 +94,22 @@
                     {
                         "mData": null,
                         "sType": "html",
+                        "bSortable": false,
+                        "sClass": "calc",
+                        "mRender": function (data, type, row) {
+                            if (type === 'display') {
+                                var statusStock = "green-stripe";
+                                if (data.StockTotal <= 0) {
+                                    statusStock = "red-stripe"
+                                }
+                                return '<a href="#" class="btn mini ' + statusStock + '">Total: ' + data.StockTotal + '</a>';
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "mData": null,
+                        "sType": "html",
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
                                 return '<a class="edit" href="javascript:;"><i class="icon-edit"></i> Edit</a>';

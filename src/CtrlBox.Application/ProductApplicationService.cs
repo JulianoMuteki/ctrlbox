@@ -25,7 +25,16 @@ namespace CtrlBox.Application
         public ICollection<ProductVM> GetAll()
         {
             var products = _unitOfWork.Repository<Product>().GetAll();
+            var productsStocks = _unitOfWork.Repository<StockProduct>().GetAll();
+
             var productVMs = _mapper.Map<IList<ProductVM>>(products);
+            var productsStocksVMs = _mapper.Map<IList<StockProductVM>>(productsStocks);
+
+            foreach (var product in productVMs)
+            {
+                product.StocksProducts = (from x in productsStocksVMs where x.ProductID.ToString() == product.DT_RowId select x).ToList();
+            }
+
             return productVMs;
         }
 

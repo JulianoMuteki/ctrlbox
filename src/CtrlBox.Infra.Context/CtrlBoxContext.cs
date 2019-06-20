@@ -86,6 +86,11 @@ namespace CtrlBox.Infra.Context
                     .WithOne(e => e.User)
                     .HasForeignKey(ur => ur.UserId)
                     .IsRequired();
+
+                b.HasMany(e => e.Deliveries)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ur => ur.UserID)
+                    .IsRequired();
             });
 
             modelBuilder.Entity<ApplicationRole>(b =>

@@ -255,6 +255,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
                     RouteID = table.Column<Guid>(nullable: false),
+                    UserID = table.Column<Guid>(nullable: false),
                     IsFinalized = table.Column<bool>(nullable: false),
                     DtStart = table.Column<DateTime>(nullable: false),
                     DtEnd = table.Column<DateTime>(nullable: true),
@@ -268,6 +269,12 @@ namespace CtrlBox.Infra.Context.Migrations
                         name: "FK_Deliveries_Routes_RouteID",
                         column: x => x.RouteID,
                         principalTable: "Routes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -511,6 +518,11 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "RouteID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deliveries_UserID",
+                table: "Deliveries",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DeliveriesProducts_ProductID",
                 table: "DeliveriesProducts",
                 column: "ProductID");
@@ -593,9 +605,6 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Sales");
 
             migrationBuilder.DropTable(
@@ -612,6 +621,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "Routes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

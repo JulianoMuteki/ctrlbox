@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190607205958_InitialCreate")]
+    [Migration("20190620160839_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -124,10 +124,14 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("RouteID");
 
+                    b.Property<Guid>("UserID");
+
                     b.HasKey("Id")
                         .HasName("DeliveryID");
 
                     b.HasIndex("RouteID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Deliveries");
                 });
@@ -327,7 +331,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("StocksProducts");
                 });
 
-            modelBuilder.Entity("CtrlBox.Infra.Context.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -351,7 +355,26 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("CtrlBox.Infra.Context.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationRoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<Guid>("RoleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -406,39 +429,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("CtrlBox.Infra.Context.Identity.ApplicationUserRole", b =>
-                {
-                    b.Property<Guid>("UserId");
-
-                    b.Property<Guid>("RoleId");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<Guid>("RoleId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -457,7 +448,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -474,7 +465,20 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserRole", b =>
+                {
+                    b.Property<Guid>("UserId");
+
+                    b.Property<Guid>("RoleId");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserToken", b =>
                 {
                     b.Property<Guid>("UserId");
 
@@ -515,6 +519,11 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Route", "Route")
                         .WithMany("Deliveries")
                         .HasForeignKey("RouteID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -595,47 +604,47 @@ namespace CtrlBox.Infra.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CtrlBox.Infra.Context.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("CtrlBox.Infra.Context.Identity.ApplicationRole", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CtrlBox.Infra.Context.Identity.ApplicationUser", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.HasOne("CtrlBox.Infra.Context.Identity.ApplicationRole")
-                        .WithMany()
+                    b.HasOne("CtrlBox.Domain.Identity.ApplicationRole", "Role")
+                        .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserClaim", b =>
                 {
-                    b.HasOne("CtrlBox.Infra.Context.Identity.ApplicationUser")
-                        .WithMany()
+                    b.HasOne("CtrlBox.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("UserClaims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserLogin", b =>
                 {
-                    b.HasOne("CtrlBox.Infra.Context.Identity.ApplicationUser")
-                        .WithMany()
+                    b.HasOne("CtrlBox.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("UserLogins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserRole", b =>
                 {
-                    b.HasOne("CtrlBox.Infra.Context.Identity.ApplicationUser")
-                        .WithMany()
+                    b.HasOne("CtrlBox.Domain.Identity.ApplicationRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationUserToken", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("UserTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CtrlBox.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
@@ -14,5 +15,9 @@ namespace CtrlBox.Domain.Identity
         public virtual ICollection<ApplicationUserClaim> UserClaims { get; set; }
         public virtual ICollection<ApplicationUserLogin> UserLogins { get; set; }
         public virtual ICollection<ApplicationUserToken> UserTokens { get; set; }
+
+        public virtual ICollection<Delivery> Deliveries { get; set; }
+
+        
     }
 }

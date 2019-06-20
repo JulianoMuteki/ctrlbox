@@ -56,7 +56,7 @@
                 var url = '@Url.Content("~/Role/GetAjaxHandlerRoles")'
                 $.getJSON(url, { userID: $(this).val() }, function (data) {
                     $.each(data, function (index, obj) {
-                        var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
+                        var newOption = new Option(obj.text, obj.value, false, obj.selected);
                         $(slt2RolesToUser).append(newOption).trigger('change');
                     });
                 });
@@ -98,7 +98,7 @@
                 var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsRoles")'
                 $.getJSON(url, { roleID: $(this).val() }, function (data) {
                     $.each(data, function (index, obj) {
-                        var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
+                        var newOption = new Option(obj.text, obj.value, false, obj.selected);
                         $(slt2ClaimsToRole).append(newOption).trigger('change');
                     });
                 });
@@ -141,7 +141,7 @@
                 var url = '@Url.Content("~/Role/GetAjaxHandlerClaimsUsers")'
                 $.getJSON(url, { userID: $(this).val() }, function (data) {
                     $.each(data, function (index, obj) {
-                        var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
+                        var newOption = new Option(obj.text, obj.value, false, obj.selected);
                         $(slt2ClaimsToUser).append(newOption).trigger('change');
                     });
                 });

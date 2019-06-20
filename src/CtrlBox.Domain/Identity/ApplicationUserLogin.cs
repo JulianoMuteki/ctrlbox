@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace CtrlBox.Infra.Context.Identity
+namespace CtrlBox.Domain.Identity
 {
     public class ApplicationUserLogin : IdentityUserLogin<Guid>
     {

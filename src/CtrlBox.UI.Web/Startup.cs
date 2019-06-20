@@ -1,7 +1,7 @@
 ﻿using CtrlBox.CrossCutting.Ioc;
+using CtrlBox.Domain.Identity;
 using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context;
-using CtrlBox.Infra.Context.Identity;
 using CtrlBox.UI.Web.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 
 namespace CtrlBox.UI.Web
 {

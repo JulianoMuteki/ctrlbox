@@ -1,11 +1,10 @@
 ﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Identity;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Security;
-using CtrlBox.Infra.Context.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Security.Claims;
 
 namespace CtrlBox.Infra.Context
 {

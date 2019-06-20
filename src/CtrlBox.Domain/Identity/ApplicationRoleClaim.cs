@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CtrlBox.Infra.Context.Identity
+namespace CtrlBox.Domain.Identity
 {
     public class ApplicationRoleClaim : IdentityRoleClaim<Guid>
     {

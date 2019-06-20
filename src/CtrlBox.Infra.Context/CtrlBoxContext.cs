@@ -1,5 +1,5 @@
 ﻿using CtrlBox.Domain.Entities;
-using CtrlBox.Infra.Context.Identity;
+using CtrlBox.Domain.Identity;
 using CtrlBox.Infra.Context.Mapping;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

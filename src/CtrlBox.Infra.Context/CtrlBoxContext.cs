@@ -1,17 +1,15 @@
 ﻿using CtrlBox.Domain.Entities;
 using CtrlBox.Infra.Context.Identity;
 using CtrlBox.Infra.Context.Mapping;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 
 namespace CtrlBox.Infra.Context
 {
     public class CtrlBoxContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, ApplicationUserClaim,
-                                                        ApplicationUserRole, IdentityUserLogin<Guid>,
-                                                        ApplicationRoleClaim, IdentityUserToken<Guid>>
+                                                        ApplicationUserRole, ApplicationUserLogin,
+                                                        ApplicationRoleClaim, ApplicationUserToken>
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }
@@ -63,40 +61,45 @@ namespace CtrlBox.Infra.Context
 
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ApplicationUserRole>(userRole =>
+            modelBuilder.Entity<ApplicationUser>(b =>
             {
-                userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
-
-                userRole.HasOne(ur => ur.Role)
-                    .WithMany(r => r.UserRoles)
-                    .HasForeignKey(ur => ur.RoleId)
+                // Each User can have many UserClaims
+                b.HasMany(e => e.UserClaims)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(uc => uc.UserId)
                     .IsRequired();
 
-                userRole.HasOne(ur => ur.User)
-                    .WithMany(r => r.UserRoles)
+                // Each User can have many UserLogins
+                b.HasMany(e => e.UserLogins)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ul => ul.UserId)
+                    .IsRequired();
+
+                // Each User can have many UserTokens
+                b.HasMany(e => e.UserTokens)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ut => ut.UserId)
+                    .IsRequired();
+
+                // Each User can have many entries in the UserRole join table
+                b.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.User)
                     .HasForeignKey(ur => ur.UserId)
                     .IsRequired();
             });
 
-
-            modelBuilder.Entity<ApplicationUserClaim>(userClaim =>
+            modelBuilder.Entity<ApplicationRole>(b =>
             {
-                userClaim.HasKey(ur => ur.Id);
-
-                userClaim.HasOne(ur => ur.User)
-                    .WithMany(r => r.UserClaims)
-                    .HasForeignKey(ur => ur.UserId)
-                    .IsRequired();
-            });
-
-
-            modelBuilder.Entity<ApplicationRoleClaim>(roleClaim =>
-            {
-                roleClaim.HasKey(ur => ur.Id);
-
-                roleClaim.HasOne(ur => ur.Role)
-                    .WithMany(r => r.RoleClaims)
+                // Each Role can have many entries in the UserRole join table
+                b.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.Role)
                     .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                // Each Role can have many associated RoleClaims
+                b.HasMany(e => e.RoleClaims)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(rc => rc.RoleId)
                     .IsRequired();
             });
         }

@@ -9,8 +9,10 @@ namespace CtrlBox.Infra.Context.Identity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public ICollection<ApplicationUserRole> UserRoles { get; set; }
-        public ICollection<ApplicationUserClaim> UserClaims { get; set; }
 
+        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+        public virtual ICollection<ApplicationUserClaim> UserClaims { get; set; }
+        public virtual ICollection<ApplicationUserLogin> UserLogins { get; set; }
+        public virtual ICollection<ApplicationUserToken> UserTokens { get; set; }
     }
 }

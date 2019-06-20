@@ -21,5 +21,10 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             return _context.Set<DeliveryProduct>().Include(x=>x.Delivery).Include(x => x.Product).Where(x => x.DeliveryID == deliveryID).ToList();
         }
+
+        public ICollection<Delivery> GetDeliveryRouteLoad()
+        {
+            return _context.Set<Delivery>().Include(x => x.Route).ToList();
+        }
     }
 }

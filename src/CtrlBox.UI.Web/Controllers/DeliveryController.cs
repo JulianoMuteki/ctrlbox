@@ -37,7 +37,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult AjaxHandlerEntregas()
+        public ActionResult GetTableAjaxHandlerDeliveries()
         {
             try
             {
@@ -60,16 +60,28 @@ namespace CtrlBox.UI.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetAjaxHandlerProductsStock()
+        {
+            var productVMs = _productService.GetAll();
+
+            return Json(new
+            {
+                aaData = productVMs,
+                success = true
+            });
+        }
+
         [HttpPost]
-        public ActionResult SubmitCadastrarEntrega(string[] tbProdutos, string linha)
+        public ActionResult PostAjaxHandlerCreateDelivery(string[] tbProducts, string routeID)
         {
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var deliveryProductsVMs = jsonS.JsonDeserialize<DeliveryProductVM>(tbProdutos[0]);
+                var deliveryProductsVMs = jsonS.JsonDeserialize<DeliveryProductVM>(tbProducts[0]);
 
                 DeliveryVM deliveryVM = new DeliveryVM();
-                deliveryVM.RouteID = new Guid(linha);
+                deliveryVM.RouteID = new Guid(routeID);
                 deliveryVM.DeliveriesProducts = deliveryProductsVMs;
 
                 _deliveryService.Add(deliveryVM);
@@ -90,6 +102,8 @@ namespace CtrlBox.UI.Web.Controllers
         {
             ViewData["entregaID"] = entregaID;
             ViewData["linhaID"] = linhaID;
+
+            ViewData["RouteName"] = _routeService.GetById(new Guid(linhaID)).Name;
             return View();
         }
 
@@ -104,7 +118,7 @@ namespace CtrlBox.UI.Web.Controllers
                 var productsDeliveryVM = _productService.GetDeliveryProducts(new Guid(deliveryVM.DT_RowId));
 
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
-                var sales = _saleService.FindAllByDelivery(deliveryVM.ID);
+                var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
                 var clientsVMs = clientsVM.Select(c =>
                                             {
                                                 c.SaleIsFinished =

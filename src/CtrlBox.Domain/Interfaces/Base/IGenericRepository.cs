@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CtrlBox.Domain.Interfaces.Base
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> : IDisposable where T : class //: IDisposable where TEntity : class
     {
         IQueryable<T> Query();
 
@@ -34,6 +33,8 @@ namespace CtrlBox.Domain.Interfaces.Base
         int AddRange(ICollection<T> entity);
 
         T Update(T updated);
+
+        ICollection<T> UpdateRange(ICollection<T> updateds);
 
         Task<T> UpdateAsync(T updated);
 

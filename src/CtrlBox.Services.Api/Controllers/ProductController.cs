@@ -73,7 +73,7 @@ namespace CtrlBox.Services.Api.Controllers
                 {
                     var prod = _productApplicationService.Add(productVM);
 
-                    if (prod.ID != Guid.Empty)
+                    if (string.IsNullOrEmpty(prod.DT_RowId))
                     {
                         return Ok(prod);
                     }
@@ -102,7 +102,7 @@ namespace CtrlBox.Services.Api.Controllers
             {
                 var prod = _productApplicationService.Update(productVM);
 
-                if (prod.ID != Guid.Empty)
+                if (string.IsNullOrEmpty(prod.DT_RowId))
                 {
                     return Ok(prod);
                 }

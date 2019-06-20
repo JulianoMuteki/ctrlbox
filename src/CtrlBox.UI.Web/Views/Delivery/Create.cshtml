@@ -2,49 +2,79 @@
     ViewData["Title"] = "Home Page";
 }
 
-@section scriptsViews
-    {
-    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+@section cssViews{
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
+
+    <!-- END PAGE LEVEL STYLES -->
 }
+@section scriptsViews{
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+}
+
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
+        $('.select2_option').select2({
+            allowClear: true
+        });
         //carregar dropdown linhas
         var $div = $("<div>", { class: "a" });
         var sel = $('<select class="calor"/>').appendTo($div);
         sel.append($("<option>").attr('value', 0).text('selecione'));
-        $("#mainSelect").append($("<option>").attr('value', 0).text('selecione'));
         $.ajax({
             type: "GET",
             url: '@Url.Content("~/Route/AjaxHandlerGet")',
             dataType: "json",
             success: function (data) {
-
                 if (data.aaData.length > 0) {
-                    var url = '@Url.Content("~/Product/AjaxHandlerGet")';
+                    var url = '@Url.Content("~/Delivery/GetAjaxHandlerProductsStock")';
 
-                    var oTable = $('#tbProdutos').dataTable({
+                    var oTable = $('#tbProducts').dataTable({
                         "bPaginate": false,
                         "bAutoWidth": false,
                         "sAjaxSource": url,
                         bFilter: false, bInfo: false,
                         "bDestroy": true,
                         "aoColumns": [
-                                            {
-                                                "mData": "Name",
-                                                "bSortable": false
-                                            },
-                                            {
-                                                "mData": null,
-                                                "sType": "html",
-                                                "bSortable": false,
-                                                sClass: "calc",
-                                                "mRender": function (data, type, row) {
-                                                    if (type === 'display') {
-                                                        return '<input type="text" placeholder="0" class="m-wrap small amount">';
-                                                    }
-                                                    return data;
+                                    {
+                                        "mData": null,
+                                        "sType": "html",
+                                        "bSortable": false,
+                                        "mRender": function (data, type, row) {
+                                            if (type === 'display') {
+                                                var statusStock = "green-stripe";
+                                                if (row.StockTotal <= 0) {
+                                                    statusStock = "red-stripe"
                                                 }
+                                                return '<a href="#" class="btn mini ' + statusStock + '">Total: ' + row.StockTotal + '</a>';
                                             }
+                                            return data;
+                                        }
+                                    },
+                                    {
+                                        "mData": "Name",
+                                        "bSortable": false
+                                    },
+                                    {
+                                        "mData": null,
+                                        "sType": "html",
+                                        "bSortable": false,
+                                        "sClass": "calc",
+                                        "mRender": function (data, type, row) {
+                                            if (type === 'display') {
+                                                var txtTotal = '<input type="text" placeholder="0" class="m-wrap small amount">';
+
+                                                if (row.StockTotal <= 0) {
+                                                    txtTotal = '<span class="label label-important">Unavailable</span>'
+                                                }
+                                                return txtTotal;
+                                            }
+                                            return data;
+                                        }
+                                    }
                         ]
                     });
 
@@ -56,44 +86,37 @@
             }
         });
 
-
-
-
-
         $("#btnSubmit").click(function () {
-
-            var oTable = $('#tbProdutos').dataTable();
+            var oTable = $('#tbProducts').dataTable();
             var tb = [];
             $.each(oTable.fnGetNodes(), function (index, value) {
-                var row = oTable.fnGetData(value);
-                row.Amount = $(value).find('input.amount').val();
-                row.ProductID = row.DT_RowId;
-                tb.push(row);
+                if ($(value).find('input.amount').val() > 0) {
+                    var row = oTable.fnGetData(value);
+                    row.Amount = $(value).find('input.amount').val();
+                    row.ProductID = row.DT_RowId;
+                    tb.push(row);
+                }
             });
             var myJsonString = JSON.stringify(tb);
             var linhaValor = $("select#mainSelect").val();
 
-
             $.ajax({
-                url: '@Url.Content("~/Delivery/SubmitCadastrarEntrega")',
+                url: '@Url.Content("~/Delivery/PostAjaxHandlerCreateDelivery")',
                 type: 'POST',
                 dataType: 'json',
-                data: { tbProdutos: myJsonString, linha: linhaValor },
+                data: { tbProducts: myJsonString, routeID: linhaValor },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
                         window.history.go(-1);
                     }
-                }
-               // "error": handleAjaxError
+                },
+                "error": handleAjaxError
             });
             event.preventDefault();
-
             return true;
         });
-
     });
-
 </script>
 
 <!-- BEGIN PAGE -->
@@ -124,7 +147,7 @@
         <div class="row-fluid">
             <div class="span6">
                 <!-- BEGIN VALIDATION STATES-->
-                <div class="portlet box purple">
+                <div class="portlet box blue">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-reorder"></i>Criar entrega</div>
                     </div>
@@ -135,11 +158,12 @@
                             <div class="control-group">
                                 <label class="control-label">Linhas<span class="required">*</span></label>
                                 <div class="controls">
-                                    <select id="mainSelect" class="span6 m-wrap" name="category"></select>
+                                    <select id="mainSelect" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="category"><option value="0">Please select route</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button id="btnSubmit" type="button" class="btn purple">Criar entrega</button>
+                                <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
+                                <button id="btnSubmit" type="button" class="btn blue">Criar entrega</button>
                             </div>
                         </form>
                         <!-- END FORM-->
@@ -152,16 +176,14 @@
                 <div class="portlet box red">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-cogs"></i>Produtos</div>
-
                     </div>
                     <div class="portlet-body">
-                        <table id="tbProdutos" class="table table-hover">
+                        <table id="tbProducts" class="table table-hover">
                             <thead>
                                 <tr>
-
-                                    <th>Produto</th>
-                                    <th>Qtde</th>
-
+                                    <th>Stock</th>
+                                    <th>Products</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -170,7 +192,6 @@
                 </div>
                 <!-- END SAMPLE TABLE PORTLET-->
             </div>
-
         </div>
         <!-- END PAGE CONTENT-->
     </div>

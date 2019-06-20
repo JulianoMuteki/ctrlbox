@@ -4,105 +4,20 @@
 @section scriptsViews
     {
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <script src="~/scripts/controllerJS/views/product-stock.js"></script>
 }
 <script type="text/javascript" charset="utf-8">
     @{ var stockID = ViewData["StockID"];
       }
 
-    (function ($) {
-        $.fn.serializeFormJSON = function () {
-            var list = [];
-            var a = this.serializeArray();
-            $.each(a, function () {
-                console.log(this);
-                list.push({ "StockID": '@stockID', "ProductID": this.name, "Amount": this.value });
-            });
-            return JSON.stringify(list);
-        };
-    })(jQuery);
-
-    $(document).ready(function () {
-        $('#btnSubmit').click(function () {
-            var oTableAdd = $('#tbProductStock').dataTable();
-            var sData = oTableAdd.$('input').serializeFormJSON();
-
-            $.ajax({
-                url: '@Url.Content("~/Product/SubmitProductStock")',
-                type: 'POST',
-                dataType: 'json',
-                data: { tbProducts: sData },
-                "success": function (json) {
-                    if (!json.NotAuthorized) {
-                        alert('Complete');
-                    }
-                }
-            });
-
-            return false;
+        jQuery(document).ready(function () {
+            ProductStock.init('@stockID');
         });
-
-            var url = '@Url.Content("~/Product/AjaxHandlerProductStock")';
-
-                 var oTable = $('#tbProductStock').dataTable({
-                "sAjaxSource": url,
-                "bProcessing": true,
-                "bDestroy": true,
-                "aoColumns": [
-                    {
-                        "mData": "ProductName",
-                    },
-                    {
-                        "mData": null,
-                        "sType": "html",
-                        "bSortable": false,
-                        sClass: "calc",
-                        "mRender": function (data, type, row) {
-                            if (type === 'display') {
-                                return '<input type="text" placeholder="' + row.Amount + '" class="m-wrap small" name="' + row.ProductID + '" />'
-                            }
-                            return data;
-                        }
-                    }
-                ],
-                "aLengthMenu": [
-                    [5, 15, 20, -1],
-                    [5, 15, 20, "All"] // change per page values here
-                ],
-                // set the initial value
-                "iDisplayLength": 5,
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-                "sPaginationType": "bootstrap",
-                "oLanguage": {
-                    "sLengthMenu": "_MENU_ records per page",
-                    "oPaginate": {
-                        "sPrevious": "Prev",
-                        "sNext": "Next"
-                    }
-                },
-                "aoColumnDefs": [{
-                    'bSortable': false,
-                    'aTargets': [0]
-                }
-                ]
-            });
-    });
-
 </script>
 
 
 <!-- BEGIN PAGE -->
-<div class="page-content">
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-        <div class="modal-header">
-            <button data-dismiss="modal" class="close" type="button"></button>
-            <h3>portlet Settings</h3>
-        </div>
-        <div class="modal-body">
-            <p>Here will be a configuration form</p>
-        </div>
-    </div>
-    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+<div class="page-content" style="min-height:1029px !important">
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <!-- BEGIN PAGE HEADER-->
@@ -116,10 +31,10 @@
                         <i class="icon-angle-right"></i>
                     </li>
                     <li>
-                        <a href="#">Data Tables</a>
+                        <a href="#">Layouts</a>
                         <i class="icon-angle-right"></i>
                     </li>
-                    <li><a href="#">Basic Tables</a></li>
+                    <li><a href="#">Blank Page</a></li>
                 </ul>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
@@ -127,28 +42,35 @@
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
-            <div class="span6">
-                <!-- BEGIN SAMPLE TABLE PORTLET-->
+            <div class="span12">
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-cogs"></i>Stock Produtos</div>
+                        <div class="caption"><i class="icon-reorder"></i>Products stock</div>
                     </div>
-                    <div class="portlet-body">
-                        <form id="form">
-                            <table id="tbProductStock" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Produto</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                    <div class="portlet-body form">
+                        <h3 class="block">Stock of local products</h3>
+                        <!-- BEGIN FORM-->
+                        <form action="#" class="form-horizontal">
+                            <div class="control-group">
+                                <table id="tbProductStock" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Produto</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="form-actions">
+                                <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
+                                <a onclick="window.history.back(); return false;" href="#" class="btn yellow"> Cancel</a>
+                                <a href="#" id="btnSubmit" class="btn green"><i class="icon-plus"></i> Salvar</a>
+                            </div>
                         </form>
-                        <a href="#" id="btnSubmit" class="btn green"><i class="icon-plus"></i> Salvar</a>
+                        <!-- END FORM-->
                     </div>
                 </div>
-                <!-- END SAMPLE TABLE PORTLET-->
             </div>
         </div>
         <!-- END PAGE CONTENT-->

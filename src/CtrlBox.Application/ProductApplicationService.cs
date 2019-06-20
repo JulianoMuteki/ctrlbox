@@ -25,7 +25,16 @@ namespace CtrlBox.Application
         public ICollection<ProductVM> GetAll()
         {
             var products = _unitOfWork.Repository<Product>().GetAll();
+            var productsStocks = _unitOfWork.Repository<StockProduct>().GetAll();
+
             var productVMs = _mapper.Map<IList<ProductVM>>(products);
+            var productsStocksVMs = _mapper.Map<IList<StockProductVM>>(productsStocks);
+
+            foreach (var product in productVMs)
+            {
+                product.StocksProducts = (from x in productsStocksVMs where x.ProductID.ToString() == product.DT_RowId select x).ToList();
+            }
+
             return productVMs;
         }
 
@@ -115,11 +124,21 @@ namespace CtrlBox.Application
         {
             try
             {
-                var stocksProducts = _mapper.Map<IList<StockProduct>>(stocksProductsVM);
-                var result = _unitOfWork.Repository<StockProduct>().AddRange(stocksProducts);
+                var stProducts = _mapper.Map<IList<StockProduct>>(stocksProductsVM);
+                var stocksProducts = _unitOfWork.Repository<StockProduct>().FindAll(x => stProducts.Any(s => s.ProductID == x.ProductID));
+
+                foreach (var item in stocksProducts)
+                {
+                    item.Amount = (from x in stProducts where x.ProductID == item.ProductID select x.Amount).FirstOrDefault();
+                }
+                var stocksProductsAdd = stProducts.Where(x => !stocksProducts.Any(s => s.ProductID == x.ProductID)).ToList();
+
+                _unitOfWork.Repository<StockProduct>().UpdateRange(stocksProducts);
+                _unitOfWork.Repository<StockProduct>().AddRange(stocksProductsAdd);
+
                 _unitOfWork.Commit();
 
-                return result;
+                return 1;
             }
             catch (Exception ex)
             {

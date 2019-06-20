@@ -1,7 +1,7 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -27,6 +27,21 @@ namespace CtrlBox.Domain.Entities
             this.SalesProducts = new HashSet<SaleProduct>();
             this.Checks = new HashSet<Check>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
+
+            Init();
+        }
+
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                this.Id = Guid.NewGuid();
+                this.DateModified = DateTime.Now;
+                this.CreationDate = DateTime.Now;
+                this.IsFinished = true;
+
+                this.SalesProducts = this.SalesProducts.Select(x => { x.SaleID = this.Id; return x; }).ToList();
+            }
         }
     }
 }

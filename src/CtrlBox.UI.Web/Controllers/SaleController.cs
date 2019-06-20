@@ -36,7 +36,8 @@ namespace CtrlBox.UI.Web.Controllers
             return View();
         }
 
-        public ActionResult AjaxHandlerExecutarVenda(string clienteID, string linhaID)
+        [HttpGet]
+        public ActionResult GetAjaxHandlerExecuteSale(string clienteID, string linhaID)
         {
             try
             {
@@ -69,7 +70,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitData(string[] strSaleJSON)
+        public ActionResult PostAjaxHandlerAddSale(string[] strSaleJSON)
         {
             try
             {

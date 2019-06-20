@@ -71,8 +71,8 @@ namespace CtrlBox.UI.Web.Controllers
             return View(routeVM);
         }
 
-
-        public ActionResult AjaxHandlerCustomersNotAvailable(string routeID)
+        [HttpGet]
+        public ActionResult GetAjaxHandlerClientsNotAvailable(string routeID)
         {
             try
             {
@@ -90,7 +90,8 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        public ActionResult AjaxHandlerCustomersAvailable(string routeID)
+        [HttpGet]
+        public ActionResult GetAjaxHandlerClientsAvailable(string routeID)
         {
             try
             {
@@ -109,12 +110,12 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitAddClients(string linhaID, string[] clientesIDs)
+        public ActionResult PutAjaxHandlerAddClients(string[] clientsIDs)
         {
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var routeClientVM = jsonS.JsonDeserialize<RouteClientVM>(clientesIDs[0]);
+                var routeClientVM = jsonS.JsonDeserialize<RouteClientVM>(clientsIDs[0]);
 
                 _routeApplicationService.ConnectRouteToClient(routeClientVM);
 
@@ -131,31 +132,25 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitRemoveClients(string linhaID, string clientesIDs)
+        public ActionResult PutAjaxHandlerRemoveClients(string[] clientsIDs)
         {
-            //var clientes = clientesIDs.Split('&').ToList();
-            //ModelCodeFirst context = new ModelCodeFirst();
-            //Guid idLinha = new Guid(linhaID);
-
-            //var linha = context.Linhas.Where(x => x.LinhaID == idLinha).FirstOrDefault();
-
-            //foreach (var item in clientes)
-            //{
-            //    var id = item.Split('=')[1];
-            //    Guid idCliente = new Guid(id);
-
-            //    var cliente = context.Clientes.Where(x => x.ClienteID == idCliente).FirstOrDefault();
-            //    linha.Clientes.Remove(cliente);
-
-            //}
-
-            //context.SaveChanges();
-            return Json(new
+            try
             {
-                success = true,
-                Message = "OK"
-            });
+                JsonSerialize jsonS = new JsonSerialize();
+                var routeClientVM = jsonS.JsonDeserialize<RouteClientVM>(clientsIDs[0]);
 
+                _routeApplicationService.RemoveRouteFromClient(routeClientVM);
+
+                return Json(new
+                {
+                    success = true,
+                    Message = "OK"
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

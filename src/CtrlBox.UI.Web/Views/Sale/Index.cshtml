@@ -3,32 +3,17 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section cssViews{
+    <link rel="stylesheet" type="text/css" href="~/plugins/bootstrap-datepicker/css/datepicker.css" />
 
+}
 @section scriptsViews
     {
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <script type="text/javascript" src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 }
 
 <script type="text/javascript">
-
-    function handleAjaxError(xhr, textStatus, error) {
-
-        $('#example').dataTable({
-            "bDestroy": true,
-            "bProcessing": false
-        });
-
-        if (textStatus === 'timeout') {
-            alert('The server took too long to send the data.');
-        }
-        else {
-            var obj = $.parseJSON(xhr.responseText);
-            alert(obj.Message);
-            alert("É necessário atualizar a página");
-        }
-
-        return false;
-    }
 
     Number.prototype.formatMoney = function (places, symbol, thousand, decimal) {
         places = !isNaN(places = Math.abs(places)) ? places : 2;
@@ -43,12 +28,63 @@
     };
 
     jQuery(document).ready(function () {
+
         if (jQuery().datepicker) {
             $('.date-picker').datepicker({
                 rtl: App.isRTL(),
                 format: 'dd-mm-yyyy'
             });
         }
+
+                @{ var clienteID = ViewData["clienteID"];
+            var linhaID = ViewData["linhaID"];
+            var entregaID = ViewData["entregaID"];
+        }
+
+        var url = '@Url.Content("~/Sale/GetAjaxHandlerExecuteSale")?clienteID=' + '@clienteID' + '&linhaID=' + '@linhaID';
+
+        var oTableSale = $('#tbVenda').dataTable({
+            "sAjaxSource": url,
+            "bProcessing": true,
+            "bDestroy": true,
+            "aoColumns": [
+                        {
+                            "mData": "NomeProduto",
+                            "bSortable": false
+                        },
+                        {
+                            "mData": null,
+                            "sType": "html",
+                            "bSortable": false,
+                            "sClass": "calc",
+                            "mData": function (data, type, row) {
+                                if (type === 'display') {
+                                    return '<input type="text" placeholder="0" class="m-wrap small qtdeVenda">';
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "mData": null,
+                            "sType": "html",
+                            "bSortable": false,
+                            "mData": function (data, type, row) {
+                                if (type === 'display') {
+                                    return '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "mData": "ValorProduto"
+                        },
+                        {
+                            "mData": "Total",
+                            sClass: "somaTotal",
+                        }
+            ]
+
+        });
 
         var oTableSaleCheck = $('#tbCheques').DataTable({
             "aoColumns": [
@@ -162,82 +198,6 @@
             $("#total").text((saldoAnterior + ct).formatMoney());
         });
 
-
-        @{ var clienteID = ViewData["clienteID"];
-           var linhaID = ViewData["linhaID"];
-           var entregaID = ViewData["entregaID"];
-           }
-
-        var url = '@Url.Content("~/Sale/AjaxHandlerExecutarVenda")?clienteID=' + '@clienteID' + '&linhaID=' + '@linhaID';
-
-        var oTableSale = $('#tbVenda').dataTable({
-            "sAjaxSource": url,
-            "bProcessing": true,
-            "bDestroy": true,
-            "aoColumns": [
-                                {
-                                    "mData": "NomeProduto",
-                                    "bSortable": false
-                                },
-                                {
-                                    "mData": null,
-                                    "sType": "html",
-                                    "bSortable": false,
-                                    "sClass": "calc",
-                                    "mData": function (data, type, row) {
-                                        if (type === 'display') {
-                                            return '<input type="text" placeholder="0" class="m-wrap small qtdeVenda">';
-                                        }
-                                        return data;
-                                    }
-                                },
-                                {
-                                    "mData": null,
-                                    "sType": "html",
-                                    "bSortable": false,
-                                    "mData": function (data, type, row) {
-                                        if (type === 'display') {
-                                            return '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
-                                        }
-                                        return data;
-                                    }
-                                },
-                                {
-                                    "mData": "ValorProduto"
-                                },
-                                {
-                                    "mData": "Total",
-                                    sClass: "somaTotal",
-                                }
-
-            ],
-
-            "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
-                oSettings.jqXHR = $.ajax({
-                    "dataType": 'json',
-                    "type": "POST",
-                    "url": sSource,
-                    "data": aoData,
-                    "success": function (json) {
-                        if (!json.NotAuthorized) {
-                            var obj = $.parseJSON(JSON.stringify(json));
-                            $('#saldoAnterior').text(obj.SaldoAnterior);
-                            $('#caixasEmDebito').text(obj.CaixasEmDebito);
-
-                            if (obj.CaixasEmDebito >= 0) {
-                                $('#statusSaldoCaixa').addClass("alert-success");
-                            } else {
-                                $('#statusSaldoCaixa').addClass("alert-error");
-                            }
-                        }
-                        fnCallback(json);
-                    },
-                    "error": handleAjaxError
-                });
-            }
-
-        });
-
         $("#btnSubmit").click(function () {
             var saleObj = {};
             saleObj.ClientID = '@clienteID';
@@ -288,17 +248,16 @@
             saleObj.Checks = listChecks;
 
             var myJsonString = JSON.stringify(saleObj);
-            console.log(myJsonString);
 
             $.ajax({
-                url: '@Url.Content("~/Sale/SubmitData")',
+                url: '@Url.Content("~/Sale/PostAjaxHandlerAddSale")',
                 type: 'POST',
                 dataType: 'json',
                 data: { strSaleJSON: myJsonString },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
-                     //   window.history.go(-1);
+                        window.history.back();
                     }
                 },
                 "error": handleAjaxError
@@ -311,6 +270,8 @@
     });
 </script>
 <div id="editor"></div>
+<div id="result"></div>
+
 <div class="page-content">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <div id="portlet-config" class="modal hide">
@@ -451,6 +412,7 @@
                                         </div>
 
                                         <div class="form-actions">
+                                            <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
                                             <button id="btnSubmit" type="button" class="btn blue"><i class="icon-ok"></i> Save</button>
                                             <button type="button" class="btn">Cancel</button>
                                         </div>
@@ -480,6 +442,7 @@
                                             </table>
                                         </div>
                                         <div class="form-actions">
+                                            <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
                                             <button type="button" class="btn blue"><i class="icon-ok"></i> Save</button>
                                             <button type="button" class="btn">Cancel</button>
                                         </div>

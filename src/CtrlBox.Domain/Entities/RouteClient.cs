@@ -1,6 +1,7 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CtrlBox.Domain.Entities
@@ -22,6 +23,14 @@ namespace CtrlBox.Domain.Entities
 
         public Route Route { get; set; }
         public Client Client { get; set; }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+         
+                return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
+            
+        }
+
 
     }
 }

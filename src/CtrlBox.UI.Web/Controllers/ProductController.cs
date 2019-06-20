@@ -120,7 +120,8 @@ namespace CtrlBox.UI.Web.Controllers
             return View();
         }
 
-        public ActionResult AjaxHandlerProductStock()
+        [HttpGet]
+        public ActionResult GetAjaxHandlerProductStock()
         {
             try
             {
@@ -138,7 +139,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitProductStock(string[] tbProducts)
+        public ActionResult PutAjaxHandlerProductStock(string[] tbProducts)
         {
             JsonSerialize jsonS = new JsonSerialize();
             var stocksProductsVM = jsonS.JsonDeserialize<StockProductVM>(tbProducts[0]);

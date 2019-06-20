@@ -74,7 +74,7 @@ namespace CtrlBox.Services.Api.Controllers
                 {
                    var newClient = _deliveryApplicationService.Add(deliveryVM);
 
-                    if (newClient.ID != Guid.Empty)
+                    if (string.IsNullOrEmpty(newClient.DT_RowId))
                     {
                         return Ok(newClient);
                     }

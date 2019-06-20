@@ -45,6 +45,19 @@ namespace CtrlBox.Application
             return routesClientsVM;
         }
 
+        public ICollection<RouteClientVM> RemoveRouteFromClient(ICollection<RouteClientVM> routesClientsVM)
+        {
+            var routesClients = _mapper.Map<List<RouteClient>>(routesClientsVM);
+
+            foreach (var item in routesClients)
+            {
+                _unitOfWork.Repository<RouteClient>().Delete(item);
+            }
+            _unitOfWork.Commit();
+
+            return routesClientsVM;
+        }
+
         public void Delete(Guid id)
         {
             var Route = _unitOfWork.Repository<Route>().GetById(id);

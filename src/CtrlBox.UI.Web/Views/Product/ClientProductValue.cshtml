@@ -34,6 +34,7 @@
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
+                        window.history.back();
                     }
                 }
             });
@@ -69,7 +70,8 @@
 </script>
 
 
-<div class="page-content">
+<!-- BEGIN PAGE -->
+<div class="page-content" style="min-height:1029px !important">
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <!-- BEGIN PAGE HEADER-->
@@ -79,64 +81,73 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.html">Home</a>
+                        <a href="index.html">Product</a>
                         <i class="icon-angle-right"></i>
                     </li>
                     <li>
-                        <a href="#">Data Tables</a>
+                        <a href="#">Index</a>
                         <i class="icon-angle-right"></i>
                     </li>
-                    <li><a href="#">Basic Tables</a></li>
+                    <li><a href="#">Client procuct value</a></li>
                 </ul>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
-
         </div>
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
-            <div class="span8">
-                <!-- BEGIN SAMPLE TABLE PORTLET-->
-                <div class="portlet box green">
+            <div class="span12">
+                <div class="alert alert-info">
+                    <h3><strong>Client name:</strong> @Model.Name</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-cogs"></i>Cliente: <span> @Model.Name</span></div>
+                        <div class="caption"><i class="icon-reorder"></i>Price per product</div>
                     </div>
-                    <div class="portlet-body">
-                        <form id="form">
-                            <table id="tbProductValue" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Produto</th>
-                                        <th>valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Nanica</td>
-                                        <td><input type="text" placeholder="0" class="m-wrap small" name="row-1-age" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Prata</td>
-                                        <td><input type="text" placeholder="0" class="m-wrap small" name="row-2-age" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Maçã</td>
-                                        <td><input type="text" placeholder="0" class="m-wrap small" name="row-3-age" /></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <form action="#" class="form-horizontal">
+                            <div class="control-group">
+                                <table id="tbProductValue" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Produto</th>
+                                            <th>valor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Nanica</td>
+                                            <td><input type="text" placeholder="0" class="m-wrap small" name="row-1-age" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Prata</td>
+                                            <td><input type="text" placeholder="0" class="m-wrap small" name="row-2-age" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maçã</td>
+                                            <td><input type="text" placeholder="0" class="m-wrap small" name="row-3-age" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-actions">
+                                <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
+                                <a onclick="window.history.back(); return false;" href="#" class="btn yellow"> Cancel</a>
+                                <a href="#" id="btnSubmit" class="btn green"><i class="icon-plus"></i> Salvar</a>
+                            </div>
                         </form>
-                        <a href="#" id="btnSubmit" class="btn green"><i class="icon-plus"></i> Salvar</a>
-
+                        <!-- END FORM-->
                     </div>
                 </div>
-                <!-- END SAMPLE TABLE PORTLET-->
-
             </div>
-
         </div>
-
         <!-- END PAGE CONTENT-->
     </div>
     <!-- END PAGE CONTAINER-->
 </div>
+<!-- END PAGE -->

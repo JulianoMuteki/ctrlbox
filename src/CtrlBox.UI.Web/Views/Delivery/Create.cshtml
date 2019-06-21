@@ -20,6 +20,21 @@
         $('.select2_option').select2({
             allowClear: true
         });
+
+          $.ajax({
+            type: "GET",
+            url: '@Url.Content("~/Delivery/GetAjaxHandlerUsers")',
+            dataType: "json",
+              success: function (data) {
+                  console.log(data);
+                  if (data.aaData.length > 0) {
+                      $.each(data.aaData, function (index, obj) {
+                        var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
+                        $("#ddlUser").append(newOption).trigger('change');
+                    });
+                }
+            }
+        });
         //carregar dropdown linhas
         var $div = $("<div>", { class: "a" });
         var sel = $('<select class="calor"/>').appendTo($div);
@@ -32,7 +47,7 @@
                 if (data.aaData.length > 0) {
                     var url = '@Url.Content("~/Delivery/GetAjaxHandlerProductsStock")';
 
-                    var oTable = $('#tbProducts').dataTable({
+                    $('#tbProducts').dataTable({
                         "bPaginate": false,
                         "bAutoWidth": false,
                         "sAjaxSource": url,
@@ -149,16 +164,21 @@
                 <!-- BEGIN VALIDATION STATES-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-reorder"></i>Criar entrega</div>
+                        <div class="caption"><i class="icon-reorder"></i>Create delivery</div>
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
                         <form action="#" id="form_sample_1" class="form-horizontal">
-
                             <div class="control-group">
-                                <label class="control-label">Linhas<span class="required">*</span></label>
+                                <label class="control-label">Routes<span class="required">*</span></label>
                                 <div class="controls">
                                     <select id="mainSelect" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="category"><option value="0">Please select route</option></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Users<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select id="ddlUser" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="UserSelected"> <option value="0">Please select user</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">

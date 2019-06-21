@@ -113,13 +113,14 @@
                 }
             });
             var myJsonString = JSON.stringify(tb);
-            var linhaValor = $("select#mainSelect").val();
+            var routeId = $("select#mainSelect").val();
+            var userId = $("select#ddlUser").val();
 
             $.ajax({
                 url: '@Url.Content("~/Delivery/PostAjaxHandlerCreateDelivery")',
                 type: 'POST',
                 dataType: 'json',
-                data: { tbProducts: myJsonString, routeID: linhaValor },
+                data: { tbProducts: myJsonString, routeID: routeId, userID: userId },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');

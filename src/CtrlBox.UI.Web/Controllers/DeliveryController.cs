@@ -8,6 +8,7 @@ using System.Linq;
 using CtrlBox.UI.Web.Extensions;
 using CtrlBox.Domain.Security;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -44,7 +45,17 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                var deliveriesVM = _deliveryService.GetAll();
+                ICollection<DeliveryVM> deliveriesVM;
+
+                if (User.IsInRole(RoleAuthorize.Driver.ToString()))
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    deliveriesVM = _deliveryService.GetByUserId(new Guid(userId));
+                }
+                else
+                {
+                    deliveriesVM = _deliveryService.GetAll();
+                }
 
                 return Json(new
                 {
@@ -66,12 +77,12 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public ActionResult GetAjaxHandlerUsers()
         {
-           var usersList = _securityService.GetAllUsers()
-                                                  .Select(user => new SelectListItem
-                                                  {
-                                                      Value = user.Id.ToString(),
-                                                      Text = user.UserName
-                                                  }).ToList();
+            var usersList = _securityService.GetAllUsers()
+                                                   .Select(user => new SelectListItem
+                                                   {
+                                                       Value = user.Id.ToString(),
+                                                       Text = user.UserName
+                                                   }).ToList();
 
             return Json(new
             {
@@ -93,7 +104,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostAjaxHandlerCreateDelivery(string[] tbProducts, string routeID)
+        public ActionResult PostAjaxHandlerCreateDelivery(string[] tbProducts, string routeID, string userID)
         {
             try
             {
@@ -102,6 +113,7 @@ namespace CtrlBox.UI.Web.Controllers
 
                 DeliveryVM deliveryVM = new DeliveryVM();
                 deliveryVM.RouteID = new Guid(routeID);
+                deliveryVM.UserID = new Guid(userID);
                 deliveryVM.DeliveriesProducts = deliveryProductsVMs;
 
                 _deliveryService.Add(deliveryVM);
@@ -144,7 +156,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                 c.SaleIsFinished =
                                                        ((from x in sales
                                                          where x.ClientID.ToString() == c.DT_RowId
-                                                         select (x == null ? false: x.IsFinished)).FirstOrDefault()); return c;
+                                                         select (x == null ? false : x.IsFinished)).FirstOrDefault()); return c;
                                             }).ToList();
                 return Json(new
                 {

@@ -98,83 +98,96 @@
                     </form>
                     <!-- END RESPONSIVE QUICK SEARCH FORM -->
                 </li>
-                <li class="start ">
-                    <a href="index.html">
-                        <i class="icon-home"></i>
-                        <span class="title">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-lock"></i>
-                        <span class="title">Security</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            @Html.ActionLink("Users", "Index", "Manage")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Permissions", "Index", "Role")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Login", "Login", "Account")
-                        </li>
-                    </ul>
-
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-cogs"></i>
-                        <span class="title">Registrations</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            @Html.ActionLink("Clients", "Index", "Client")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Routes", "Index", "Route")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Products", "Index", "Product")
-                        </li>
-                    </ul>
-
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-cogs"></i>
-                        <span class="title">Work</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
+                @if (User.IsInRole(CtrlBox.Domain.Security.RoleAuthorize.Driver.ToString()))
+                {
+                    <li class="start ">
+                        <a asp-action="Index" asp-controller="Delivery">
+                            <i class="icon-truck"></i>
+                            <span class="title">Deliveries</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="start ">
+                        <a href="index.html">
+                            <i class="icon-home"></i>
+                            <span class="title">Dashboard</span>
+                        </a>
+                    </li>
+                    @if (User.IsInRole(CtrlBox.Domain.Security.RoleAuthorize.Admin.ToString()))
+                    {
 
                         <li>
-                            @Html.ActionLink("Deliveries", "Index", "Delivery")
-                        </li>
-                    </ul>
+                            <a href="javascript:;">
+                                <i class="icon-lock"></i>
+                                <span class="title">Security</span>
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li>
+                                    @Html.ActionLink("Users", "Index", "Manage")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Permissions", "Index", "Role")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Login", "Login", "Account")
+                                </li>
+                            </ul>
 
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-cogs"></i>
-                        <span class="title">Relatórios</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            @Html.ActionLink("Produtos vendidos", "ProdutosVendidos", "Home")
                         </li>
-                        <li>
-                            @Html.ActionLink("Entregas realizadas", "Clientes", "Home")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Vendas realizadas", "Clientes", "Home")
-                        </li>
-                    </ul>
+                    }
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Registrations</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Clients", "Index", "Client")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Routes", "Index", "Route")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Products", "Index", "Product")
+                            </li>
+                        </ul>
 
-                </li>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Work</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Deliveries", "Index", "Delivery")
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Relatórios</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Produtos vendidos", "ProdutosVendidos", "Home")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Entregas realizadas", "Clientes", "Home")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Vendas realizadas", "Clientes", "Home")
+                            </li>
+                        </ul>
+                    </li>
+                }
 
             </ul>
             <!-- END SIDEBAR MENU -->
@@ -211,7 +224,7 @@
         </div>
     </div>
     @RenderBody()
-   <!-- END PAGE -->
+    <!-- END PAGE -->
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="footer">

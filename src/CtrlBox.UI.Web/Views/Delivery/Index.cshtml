@@ -2,22 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-
 @section scriptsViews
     {
 <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
 }
 
 <script type="text/javascript">
-
     function getElementRelation(url) {
         return '<a href="' + url + '" class="btn mini"><i class="icon-search"></i> View</a>';
     }
 
     jQuery(document).ready(function () {
-
         var url = '@Url.Content("~/Delivery/GetTableAjaxHandlerDeliveries")';
-
         var oTable = $('#tbClientes').dataTable({
             "sAjaxSource": url,
             "bPaginate": false,
@@ -40,6 +36,10 @@
                             "defaultContent": "<i>Not set</i>"
                         },
                         {
+                            "mData": "UserName",
+                            "defaultContent": "<i>Not set</i>"
+                        },
+                        {
                             "mData": "CreatedBy"
                         },
                         {
@@ -59,7 +59,6 @@
         });
     });
 </script>
-
 
 <div class="page-content">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -115,6 +114,7 @@
                                 <tr>
                                     <th>Visualizar</th>
                                     <th>Linha</th>
+                                    <th>User driver</th>
                                     <th>CriadoPor</th>
                                     <th>FinalizadoPor</th>
                                     <th>DataCriação</th>

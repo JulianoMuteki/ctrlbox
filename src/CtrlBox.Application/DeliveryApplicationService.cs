@@ -81,6 +81,14 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
+        public ICollection<DeliveryVM> GetByUserId(Guid userId)
+        {
+            var delivery = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryByUserWithRoute(userId);
+
+            var deliveriesVM = _mapper.Map<IList<DeliveryVM>>(delivery);
+            return deliveriesVM;
+        }
+
         public DeliveryVM Update(DeliveryVM updated)
         {
             throw new NotImplementedException();

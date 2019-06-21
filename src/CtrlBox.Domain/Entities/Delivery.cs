@@ -37,6 +37,7 @@ namespace CtrlBox.Domain.Entities
         /// </summary>
         public void Init()
         {
+            this.InitBase();
             this.IsFinalized = false;
             this.Id = Guid.NewGuid();
             this.DtStart = DateTime.Now;

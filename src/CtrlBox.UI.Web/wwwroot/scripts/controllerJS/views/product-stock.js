@@ -32,7 +32,8 @@ var ProductStock = function () {
                                 alert('Complete');
                                 window.history.back();
                             }
-                        }
+                        },
+                        "error": handleAjaxError
                     }); 
                 } else
                 {

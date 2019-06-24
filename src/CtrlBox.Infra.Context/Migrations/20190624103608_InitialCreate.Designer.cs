@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190620160839_InitialCreate")]
+    [Migration("20190624103608_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,14 +32,17 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime?>("DtExpire");
 
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
                     b.Property<int>("Number");
 
                     b.Property<Guid>("SaleID");
 
                     b.Property<float>("Value");
 
-                    b.HasKey("Id")
-                        .HasName("CheckID");
+                    b.HasKey("Id");
 
                     b.HasIndex("SaleID");
 
@@ -51,35 +54,29 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Address");
 
-                    b.Property<double>("BalanceDue")
-                        .HasColumnType("float");
+                    b.Property<float>("BalanceDue");
 
-                    b.Property<string>("Contact")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Contact");
 
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
 
+                    b.Property<bool>("IsDelete");
+
                     b.Property<bool>("IsDelivery");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<bool>("IsDisable");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
 
                     b.Property<int>("QuantityBoxes");
 
-                    b.HasKey("Id")
-                        .HasName("ClientID");
+                    b.HasKey("Id");
 
                     b.ToTable("Clients");
                 });
@@ -104,9 +101,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -116,9 +111,11 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DtStart");
 
-                    b.Property<string>("FinalizedBy")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("FinalizedBy");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
 
                     b.Property<bool>("IsFinalized");
 
@@ -126,8 +123,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("UserID");
 
-                    b.HasKey("Id")
-                        .HasName("DeliveryID");
+                    b.HasKey("Id");
 
                     b.HasIndex("RouteID");
 
@@ -166,14 +162,15 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("DeliveryID");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
 
                     b.Property<double>("Value");
 
-                    b.HasKey("Id")
-                        .HasName("ExpenseID");
+                    b.HasKey("Id");
 
                     b.HasIndex("DeliveryID");
 
@@ -189,19 +186,17 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DateModified");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Description");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<bool>("IsDelete");
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
+                    b.Property<bool>("IsDisable");
 
-                    b.HasKey("Id")
-                        .HasName("ProductID");
+                    b.Property<string>("Name");
+
+                    b.Property<float>("Weight");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Products");
                 });
@@ -217,18 +212,17 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("HasOpenDelivery");
 
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
                     b.Property<int>("KmDistance");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Name");
 
-                    b.Property<string>("Truck")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Truck");
 
-                    b.HasKey("Id")
-                        .HasName("RouteID");
+                    b.HasKey("Id");
 
                     b.ToTable("Routes");
                 });
@@ -259,18 +253,19 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("DeliveryID");
 
-                    b.Property<decimal>("ForwardValue")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<decimal>("ForwardValue");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
 
                     b.Property<bool>("IsFinished");
 
-                    b.Property<decimal>("ReceivedValue")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<decimal>("ReceivedValue");
 
                     b.Property<int>("TotalReturnedBoxes");
 
-                    b.HasKey("Id")
-                        .HasName("SaleID");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClientID");
 
@@ -310,8 +305,11 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DateModified");
 
-                    b.HasKey("Id")
-                        .HasName("StockID");
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Stocks");
                 });

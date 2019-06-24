@@ -5,10 +5,12 @@ using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class DeliveryMap : IEntityTypeConfiguration<Delivery>
+    public class DeliveryMap : EntityConfiguration<Delivery>
     {
-        public void Configure(EntityTypeBuilder<Delivery> builder)
+        protected override void Initialize(EntityTypeBuilder<Delivery> builder)
         {
+            base.Initialize(builder);
+
             builder.ToTable("Deliveries");
 
             builder.HasKey(e => e.Id).HasName("DeliveryID");
@@ -20,12 +22,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.FinalizedBy)
                 .IsRequired()
                 .HasMaxLength(250);
-
-            builder.Property(e => e.CreationDate)
-                .IsRequired();
-
-            builder.Property(e => e.DateModified)
-                .IsRequired();
 
             builder.Property(e => e.DtStart)
                 .IsRequired();

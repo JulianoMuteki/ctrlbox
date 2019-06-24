@@ -1,23 +1,18 @@
 ﻿using CtrlBox.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class StockMap : IEntityTypeConfiguration<Stock>
+    public class StockMap : EntityConfiguration<Stock>
     {
-        public void Configure(EntityTypeBuilder<Stock> builder)
+        protected override void Initialize(EntityTypeBuilder<Stock> builder)
         {
+            base.Initialize(builder);
+
             builder.ToTable("Stocks");
 
             builder.HasKey(e => e.Id).HasName("StockID");
-
-            builder.Property(e => e.CreationDate)
-                .IsRequired();
-
-            builder.Property(e => e.DateModified)
-                .IsRequired();
 
             builder.Property(e => e.AmountBoxes)
                 .IsRequired();

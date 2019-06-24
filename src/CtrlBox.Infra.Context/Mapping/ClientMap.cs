@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class ClientMap : IEntityTypeConfiguration<Client>
+    public class ClientMap : EntityConfiguration<Client>
     {
-        public void Configure(EntityTypeBuilder<Client> builder)
+        protected override void Initialize(EntityTypeBuilder<Client> builder)
         {
+            base.Initialize(builder);
+
             builder.ToTable("Clients");
 
             builder.HasKey(e => e.Id).HasName("ClientID");
@@ -15,12 +17,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(250);
-
-            builder.Property(e => e.CreationDate)
-                .IsRequired();
-
-            builder.Property(e => e.DateModified)
-                .IsRequired();
 
             builder.Property(e => e.QuantityBoxes)
                 .IsRequired();

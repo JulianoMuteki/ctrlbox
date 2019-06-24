@@ -5,18 +5,17 @@ using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class SaleMap : IEntityTypeConfiguration<Sale>
+    public class SaleMap : EntityConfiguration<Sale>
     {
-        public void Configure(EntityTypeBuilder<Sale> builder)
+        protected override void Initialize(EntityTypeBuilder<Sale> builder)
         {
+            base.Initialize(builder);
+
             builder.ToTable("Sales");
 
             builder.HasKey(e => e.Id).HasName("SaleID");
 
-            builder.Property(e => e.CreationDate)
-                .IsRequired();
-
-            builder.Property(e => e.DateModified)
+            builder.Property(e => e.IsFinished)
                 .IsRequired();
 
             builder.Property(e => e.ForwardValue)

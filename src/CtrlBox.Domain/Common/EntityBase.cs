@@ -7,6 +7,8 @@ namespace CtrlBox.Domain.Common
         public Guid Id { get; protected set; }
         public DateTime CreationDate { get; protected set; }
         public DateTime DateModified { get; protected set; }
+        public bool IsDelete { get; protected set; }
+        public bool IsDisable { get;protected set; }
 
         public EntityBase()
         {
@@ -18,6 +20,8 @@ namespace CtrlBox.Domain.Common
             this.DateModified = DateTime.Now;
             this.CreationDate = DateTime.Now;
             this.Id = Guid.NewGuid();
+            this.IsDelete = false;
+            this.IsDisable = false;
         }
 
         public override bool Equals(object obj)

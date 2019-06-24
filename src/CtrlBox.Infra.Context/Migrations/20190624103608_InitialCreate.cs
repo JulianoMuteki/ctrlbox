@@ -56,17 +56,19 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     QuantityBoxes = table.Column<int>(nullable: false),
-                    BalanceDue = table.Column<double>(type: "float", nullable: false),
-                    Address = table.Column<string>(maxLength: 250, nullable: false),
-                    Phone = table.Column<string>(maxLength: 250, nullable: false),
-                    Contact = table.Column<string>(maxLength: 250, nullable: false),
+                    BalanceDue = table.Column<float>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Contact = table.Column<string>(nullable: true),
                     IsDelivery = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("ClientID", x => x.Id);
+                    table.PrimaryKey("PK_Clients", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,13 +78,15 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: false),
-                    Description = table.Column<string>(maxLength: 250, nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false)
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Weight = table.Column<float>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("ProductID", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,14 +96,16 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     KmDistance = table.Column<int>(nullable: false),
-                    Truck = table.Column<string>(maxLength: 250, nullable: false),
+                    Truck = table.Column<string>(nullable: true),
                     HasOpenDelivery = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("RouteID", x => x.Id);
+                    table.PrimaryKey("PK_Routes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,11 +115,13 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
                     AmountBoxes = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("StockID", x => x.Id);
+                    table.PrimaryKey("PK_Stocks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,17 +262,19 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
                     RouteID = table.Column<Guid>(nullable: false),
                     UserID = table.Column<Guid>(nullable: false),
                     IsFinalized = table.Column<bool>(nullable: false),
                     DtStart = table.Column<DateTime>(nullable: false),
                     DtEnd = table.Column<DateTime>(nullable: true),
-                    CreatedBy = table.Column<string>(maxLength: 250, nullable: false),
-                    FinalizedBy = table.Column<string>(maxLength: 250, nullable: false)
+                    CreatedBy = table.Column<string>(nullable: true),
+                    FinalizedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("DeliveryID", x => x.Id);
+                    table.PrimaryKey("PK_Deliveries", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Deliveries_Routes_RouteID",
                         column: x => x.RouteID,
@@ -335,13 +345,15 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
                     DeliveryID = table.Column<Guid>(nullable: false),
                     Value = table.Column<double>(nullable: false),
-                    Description = table.Column<string>(maxLength: 250, nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("ExpenseID", x => x.Id);
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Expenses_Deliveries_DeliveryID",
                         column: x => x.DeliveryID,
@@ -357,16 +369,18 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
                     ClientID = table.Column<Guid>(nullable: false),
                     DeliveryID = table.Column<Guid>(nullable: false),
-                    ReceivedValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    ForwardValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ReceivedValue = table.Column<decimal>(nullable: false),
+                    ForwardValue = table.Column<decimal>(nullable: false),
                     TotalReturnedBoxes = table.Column<int>(nullable: false),
                     IsFinished = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("SaleID", x => x.Id);
+                    table.PrimaryKey("PK_Sales", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Sales_Clients_ClientID",
                         column: x => x.ClientID,
@@ -388,6 +402,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
                     SaleID = table.Column<Guid>(nullable: false),
                     Number = table.Column<int>(nullable: false),
                     Value = table.Column<float>(nullable: false),
@@ -395,7 +411,7 @@ namespace CtrlBox.Infra.Context.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("CheckID", x => x.Id);
+                    table.PrimaryKey("PK_Checks", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Checks_Sales_SaleID",
                         column: x => x.SaleID,

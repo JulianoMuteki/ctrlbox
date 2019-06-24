@@ -5,10 +5,12 @@ using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class ExpenseMap : IEntityTypeConfiguration<Expense>
+    public class ExpenseMap : EntityConfiguration<Expense>
     {
-        public void Configure(EntityTypeBuilder<Expense> builder)
+        protected override void Initialize(EntityTypeBuilder<Expense> builder)
         {
+            base.Initialize(builder);
+
             builder.ToTable("Expenses");
 
             builder.HasKey(e => e.Id).HasName("ExpenseID");
@@ -16,12 +18,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(250);
-
-            builder.Property(e => e.CreationDate)
-                .IsRequired();
-
-            builder.Property(e => e.DateModified)
-                .IsRequired();
 
             builder.Property(e => e.Value)
                 .IsRequired();

@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class RouteMap : IEntityTypeConfiguration<Route>
+    public class RouteMap : EntityConfiguration<Route>
     {
-        public void Configure(EntityTypeBuilder<Route> builder)
+        protected override void Initialize(EntityTypeBuilder<Route> builder)
         {
+            base.Initialize(builder);
+
             builder.ToTable("Routes");
 
             builder.HasKey(e => e.Id).HasName("RouteID");
@@ -15,12 +17,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(250);
-
-            builder.Property(e => e.CreationDate)
-                .IsRequired();
-
-            builder.Property(e => e.DateModified)
-                .IsRequired();
 
             builder.Property(e => e.KmDistance)
                 .IsRequired();

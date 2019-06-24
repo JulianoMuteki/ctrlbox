@@ -17,6 +17,11 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         }
 
+        public ICollection<Delivery> GetDeliveryByUserWithRoute(Guid userId)
+        {
+            return _context.Set<Delivery>().Include(x => x.Route).Include(x=>x.User).Where(x => x.UserID == userId).ToList();
+        }
+
         public ICollection<DeliveryProduct> GetDeliveryProductsLoad(Guid deliveryID)
         {
             return _context.Set<DeliveryProduct>().Include(x=>x.Delivery).Include(x => x.Product).Where(x => x.DeliveryID == deliveryID).ToList();
@@ -24,7 +29,7 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         public ICollection<Delivery> GetDeliveryRouteLoad()
         {
-            return _context.Set<Delivery>().Include(x => x.Route).ToList();
+            return _context.Set<Delivery>().Include(x => x.User).Include(x => x.Route).ToList();
         }
     }
 }

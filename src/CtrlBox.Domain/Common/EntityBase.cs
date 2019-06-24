@@ -10,6 +10,11 @@ namespace CtrlBox.Domain.Common
 
         public EntityBase()
         {
+            InitBase();
+        }
+
+        public void InitBase()
+        {
             this.DateModified = DateTime.Now;
             this.CreationDate = DateTime.Now;
             this.Id = Guid.NewGuid();

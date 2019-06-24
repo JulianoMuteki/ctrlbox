@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CtrlBox.Application;
-using CtrlBox.Infra.Context.Identity;
+using CtrlBox.Domain.Identity;
 using CtrlBox.UI.Web.Models.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;

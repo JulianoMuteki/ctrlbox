@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CtrlBox.Infra.Context.Identity
+namespace CtrlBox.Domain.Identity
 {
     public class ApplicationRole : IdentityRole<Guid>
     {

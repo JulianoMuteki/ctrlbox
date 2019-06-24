@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CtrlBox.Domain.Identity;
 using CtrlBox.Domain.Security;
-using CtrlBox.Infra.Context.Identity;
 using CtrlBox.UI.Web.Helpers;
 using CtrlBox.UI.Web.Models.Role;
 using Microsoft.AspNetCore.Identity;

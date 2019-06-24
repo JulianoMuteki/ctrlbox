@@ -1,13 +1,14 @@
 ﻿using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Identity;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
     public class Delivery : EntityBase
     {
         public Guid RouteID { get; set; }
+        public Guid UserID { get; set; }
 
         public bool IsFinalized { get; set; }
         public DateTime DtStart { get; set; }
@@ -16,11 +17,10 @@ namespace CtrlBox.Domain.Entities
         public string FinalizedBy { get; set; }
 
         public Route Route { get; set; }
+        public ApplicationUser User { get; set; }
 
         public ICollection<Expense> Expenses { get; set; }
-
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
-
         public ICollection<Sale> Sales { get; set; }
 
         public Delivery()
@@ -37,6 +37,7 @@ namespace CtrlBox.Domain.Entities
         /// </summary>
         public void Init()
         {
+            this.InitBase();
             this.IsFinalized = false;
             this.Id = Guid.NewGuid();
             this.DtStart = DateTime.Now;

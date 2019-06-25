@@ -8,6 +8,7 @@ using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Domain.Entities;
+using CtrlBox.CrossCutting;
 
 namespace CtrlBox.Application
 {
@@ -24,19 +25,41 @@ namespace CtrlBox.Application
 
         public ClientVM Add(ClientVM entity)
         {
-            var client = _mapper.Map<Client>(entity);
+            try
+            {
+                var client = _mapper.Map<Client>(entity);
 
-            _unitOfWork.Repository<Client>().Add(client);
-            _unitOfWork.Commit();
+                _unitOfWork.Repository<Client>().Add(client);
+                _unitOfWork.Commit();
 
-            return entity;
+                return entity;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all Add client", nameof(this.Add), ex);
+            }
         }
 
         public ICollection<ClientVM> GetAvailable(Guid routeID)
         {
-            var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetAvailable(routeID);
-            var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
-            return clientsVMs;
+            try
+            {
+                var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetAvailable(routeID);
+                var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
+                return clientsVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all available clients", nameof(this.GetAvailable), ex);
+            }
         }
 
         public Task<ClientVM> AddAsync(ClientVM entity)
@@ -56,10 +79,21 @@ namespace CtrlBox.Application
 
         public ICollection<ClientVM> GetAll()
         {
-            var clients = _unitOfWork.Repository<Client>().GetAll();
+            try
+            {
+                var clients = _unitOfWork.Repository<Client>().GetAll();
 
-            var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
-            return clientsVMs;
+                var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
+                return clientsVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get client", nameof(this.GetAll), ex);
+            }
         }
 
         public Task<ICollection<ClientVM>> GetAllAsync()
@@ -69,10 +103,21 @@ namespace CtrlBox.Application
 
         public ClientVM GetById(Guid id)
         {
-            var client = _unitOfWork.Repository<Client>().GetById(id);
+            try
+            {
+                var client = _unitOfWork.Repository<Client>().GetById(id);
 
-            var clientVM = _mapper.Map<ClientVM>(client);
-            return clientVM;
+                var clientVM = _mapper.Map<ClientVM>(client);
+                return clientVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get client", nameof(this.GetById), ex);
+            }
         }
 
         public Task<ClientVM> GetByIdAsync(Guid id)
@@ -92,18 +137,40 @@ namespace CtrlBox.Application
 
         public ICollection<ClientVM> GetNotAvailable(Guid idRoute)
         {
-            var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetNotAvailable(idRoute);
+            try
+            {
+                var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetNotAvailable(idRoute);
 
-            var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
-            return clientsVMs;
+                var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
+                return clientsVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get client", nameof(this.GetNotAvailable), ex);
+            }
         }
 
         public ICollection<ClientVM> GetByRouteID(Guid routeID)
         {
-            var clients = _unitOfWork.RepositoryCustom<IClientRepository>().FindAll(x => x.RoutesClients.Where(r => r.RouteID == routeID).Select(c => c.ClientID).Contains(x.Id));
-            IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
+            try
+            {
+                var clients = _unitOfWork.RepositoryCustom<IClientRepository>().FindAll(x => x.RoutesClients.Where(r => r.RouteID == routeID).Select(c => c.ClientID).Contains(x.Id));
+                IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
 
-            return clientsVM;
+                return clientsVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get client", nameof(this.GetByRouteID), ex);
+            }
         }
     }
 }

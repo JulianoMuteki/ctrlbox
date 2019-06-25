@@ -6,7 +6,6 @@ namespace CtrlBox.Domain.Interfaces.Application
 {
     public interface IClientApplicationService : IApplicationServiceBase<ClientVM>
     {
-
         ICollection<ClientVM> GetAvailable(Guid routeID);
         ICollection<ClientVM> GetNotAvailable(Guid idRoute);
         ICollection<ClientVM> GetByRouteID(Guid routeID);

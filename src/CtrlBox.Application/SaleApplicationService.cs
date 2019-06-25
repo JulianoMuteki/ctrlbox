@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
@@ -23,20 +24,31 @@ namespace CtrlBox.Application
 
         public SaleVM Add(SaleVM entity)
         {
-            var sale = _mapper.Map<Sale>(entity);
-
-            var deliverysProducts = _unitOfWork.Repository<DeliveryProduct>().FindAll(x => x.DeliveryID == sale.DeliveryID);
-            foreach (var item in sale.SalesProducts)
+            try
             {
-                var deliveryProduct = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
-                deliveryProduct.SubtractProductsDelivered(item.Amount);              
-                _unitOfWork.Repository<DeliveryProduct>().Update(deliveryProduct);
-            }
-   
-            _unitOfWork.Repository<Sale>().Add(sale);
-            _unitOfWork.Commit();
+                var sale = _mapper.Map<Sale>(entity);
 
-            return entity;
+                var deliverysProducts = _unitOfWork.Repository<DeliveryProduct>().FindAll(x => x.DeliveryID == sale.DeliveryID);
+                foreach (var item in sale.SalesProducts)
+                {
+                    var deliveryProduct = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
+                    deliveryProduct.SubtractProductsDelivered(item.Amount);
+                    _unitOfWork.Repository<DeliveryProduct>().Update(deliveryProduct);
+                }
+
+                _unitOfWork.Repository<Sale>().Add(sale);
+                _unitOfWork.Commit();
+
+                return entity;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add sale", nameof(this.Add), ex);
+            }
         }
 
         public Task<SaleVM> AddAsync(SaleVM entity)
@@ -56,9 +68,20 @@ namespace CtrlBox.Application
 
         public ICollection<SaleVM> FindAllByDelivery(Guid deliveryID)
         {
-            var sales = _unitOfWork.Repository<Sale>().FindAll(x => x.DeliveryID == deliveryID);
-            var salesVMs = _mapper.Map<IList<SaleVM>>(sales);
-            return salesVMs;
+            try
+            {
+                var sales = _unitOfWork.Repository<Sale>().FindAll(x => x.DeliveryID == deliveryID);
+                var salesVMs = _mapper.Map<IList<SaleVM>>(sales);
+                return salesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching find sale", nameof(this.FindAllByDelivery), ex);
+            }
         }
 
         public ICollection<SaleVM> GetAll()

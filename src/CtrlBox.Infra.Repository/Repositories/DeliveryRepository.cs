@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.CrossCutting;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Infra.Context;
 using CtrlBox.Infra.Repository.Common;
@@ -9,27 +10,48 @@ using System.Linq;
 
 namespace CtrlBox.Infra.Repository.Repositories
 {
-    public class DeliveryRepository: GenericRepository<Delivery>, IDeliveryRepository
+    public class DeliveryRepository : GenericRepository<Delivery>, IDeliveryRepository
     {
         public DeliveryRepository(CtrlBoxContext context)
-            :base(context)
+            : base(context)
         {
 
         }
 
         public ICollection<Delivery> GetDeliveryByUserWithRoute(Guid userId)
         {
-            return _context.Set<Delivery>().Include(x => x.Route).Include(x=>x.User).Where(x => x.UserID == userId).ToList();
+            try
+            {
+                return _context.Set<Delivery>().Include(x => x.Route).Include(x => x.User).Where(x => x.UserID == userId).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<DeliveryRepository>("Unexpected error fetching get deliveries", nameof(this.GetDeliveryByUserWithRoute), ex);
+            }
         }
 
         public ICollection<DeliveryProduct> GetDeliveryProductsLoad(Guid deliveryID)
         {
-            return _context.Set<DeliveryProduct>().Include(x=>x.Delivery).Include(x => x.Product).Where(x => x.DeliveryID == deliveryID).ToList();
+            try
+            {
+                return _context.Set<DeliveryProduct>().Include(x => x.Delivery).Include(x => x.Product).Where(x => x.DeliveryID == deliveryID).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<DeliveryRepository>("Unexpected error fetching get deliveries", nameof(this.GetDeliveryProductsLoad), ex);
+            }
         }
 
         public ICollection<Delivery> GetDeliveryRouteLoad()
         {
-            return _context.Set<Delivery>().Include(x => x.User).Include(x => x.Route).ToList();
+            try
+            {
+                return _context.Set<Delivery>().Include(x => x.User).Include(x => x.Route).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<DeliveryRepository>("Unexpected error fetching get deliveries", nameof(this.GetDeliveryRouteLoad), ex);
+            }
         }
     }
 }

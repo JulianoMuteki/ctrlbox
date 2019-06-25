@@ -21,8 +21,6 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                throw new Exception("teste error repository");
-
                 var query = _context.Set<Client>()
                                                    .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id));
 

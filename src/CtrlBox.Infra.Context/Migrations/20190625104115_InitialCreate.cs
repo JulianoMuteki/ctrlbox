@@ -375,7 +375,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     DeliveryID = table.Column<Guid>(nullable: false),
                     ReceivedValue = table.Column<decimal>(nullable: false),
                     ForwardValue = table.Column<decimal>(nullable: false),
-                    TotalReturnedBoxes = table.Column<int>(nullable: false),
                     IsFinished = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -460,7 +459,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     ProductID = table.Column<Guid>(nullable: false),
                     Amount = table.Column<int>(nullable: false),
                     SaleValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    ExchangeQuantity = table.Column<int>(nullable: false)
+                    DiscountAmount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

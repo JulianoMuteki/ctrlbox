@@ -20,7 +20,7 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Amount)
                 .IsRequired();
 
-            builder.Property(e => e.ExchangeQuantity)
+            builder.Property(e => e.DiscountAmount)
                 .IsRequired();
 
             builder.HasOne(tk => tk.Sale)

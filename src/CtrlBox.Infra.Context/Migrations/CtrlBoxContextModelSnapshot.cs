@@ -261,8 +261,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<decimal>("ReceivedValue");
 
-                    b.Property<int>("TotalReturnedBoxes");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClientID");
@@ -280,7 +278,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<int>("Amount");
 
-                    b.Property<int>("ExchangeQuantity");
+                    b.Property<int>("DiscountAmount");
 
                     b.Property<decimal>("SaleValue")
                         .HasColumnType("decimal(10,2)");

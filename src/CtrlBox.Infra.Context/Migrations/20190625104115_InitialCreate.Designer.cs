@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190624103608_InitialCreate")]
+    [Migration("20190625104115_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,8 +263,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<decimal>("ReceivedValue");
 
-                    b.Property<int>("TotalReturnedBoxes");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClientID");
@@ -282,7 +280,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<int>("Amount");
 
-                    b.Property<int>("ExchangeQuantity");
+                    b.Property<int>("DiscountAmount");
 
                     b.Property<decimal>("SaleValue")
                         .HasColumnType("decimal(10,2)");

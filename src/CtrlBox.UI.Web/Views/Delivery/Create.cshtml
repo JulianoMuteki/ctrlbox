@@ -109,9 +109,13 @@
             $.each(oTable.fnGetNodes(), function (index, value) {
                 if ($(value).find('input.amount').val() > 0) {
                     var row = oTable.fnGetData(value);
-                    row.Amount = $(value).find('input.amount').val();
-                    row.ProductID = row.DT_RowId;
-                    tb.push(row);
+
+                    var valueAmount = $(value).find('input.amount').val();
+                    if (valueAmount !== undefined && valueAmount !== '') {
+                        row.Amount = valueAmount;
+                        row.ProductID = row.DT_RowId;
+                        tb.push(row);
+                    }             
                 }
             });
             var myJsonString = JSON.stringify(tb);

@@ -12,7 +12,6 @@ namespace CtrlBox.Domain.Entities
 
         public decimal ReceivedValue { get; set; }
         public decimal ForwardValue { get; set; }
-        public int TotalReturnedBoxes { get; set; }
         public bool IsFinished { get; set; }
 
         public Client   Client { get; set; }

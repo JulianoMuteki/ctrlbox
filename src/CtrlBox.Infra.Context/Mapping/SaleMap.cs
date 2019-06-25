@@ -1,7 +1,6 @@
 ﻿using CtrlBox.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
@@ -24,9 +23,6 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.ReceivedValue)
                  .HasColumnType("decimal(10,2)")
-                .IsRequired();
-
-            builder.Property(e => e.TotalReturnedBoxes)
                 .IsRequired();
         }
     }

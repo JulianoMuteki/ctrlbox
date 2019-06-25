@@ -25,8 +25,8 @@ namespace CtrlBox.Infra.Repository.Repositories
                                                    .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id));
 
                 return query.ToList();
-            }        
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw CustomException.Create<ClientRepository>("Unexpected error fetching all available clients", nameof(this.GetAvailable), ex);
             }
@@ -34,9 +34,16 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         public ICollection<Client> GetNotAvailable(Guid routeID)
         {
-            var query = _context.Set<Client>().Where(c => _context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(z => z.ClientID == c.Id));
+            try
+            {
+                var query = _context.Set<Client>().Where(c => _context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(z => z.ClientID == c.Id));
 
-            return query.ToList();
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientRepository>("Unexpected error fetching all not available clients", nameof(this.GetNotAvailable), ex);
+            }
         }
     }
 }

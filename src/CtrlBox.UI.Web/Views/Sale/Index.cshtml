@@ -68,6 +68,7 @@
                             "mData": null,
                             "sType": "html",
                             "bSortable": false,
+                            "sClass": "calc",
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     return '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
@@ -80,7 +81,7 @@
                         },
                         {
                             "mData": "Total",
-                            sClass: "somaTotal",
+                            "sClass": "somaTotal",
                         }
             ]
 
@@ -167,11 +168,22 @@
         //Calcula os valores para os produtos
         $('#tbVenda tbody').on('blur', 'td.calc', function () {
             var sum = 0;
+            var nRow = $(this).parents('tr')[0];
 
             var valor = $(this).closest('tr').children().eq(3);
             var valorProduto = parseFloat($(valor).html().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            var qtde = $(this).find('.qtdeVenda').val();
-            var totalRow = valorProduto * qtde;
+
+            var qtde = $(nRow).find('.qtdeVenda').val();
+            var valueDiscount = $(nRow).find('.qtdeRetorno').val();
+
+            var totalRow = 0;
+            if (valueDiscount !== undefined && valueDiscount !== '') {
+                totalRow = (valorProduto * qtde) - parseInt(valueDiscount);
+            }
+            else {
+                totalRow = valorProduto * qtde;
+            }
+          
             var tb = $('#tbVenda').dataTable();
 
             var rowIndex = tb.fnGetPosition($(this).closest('tr')[0]);
@@ -225,7 +237,7 @@
                 qtdeRetorno = qtdeRetorno || 0;
 
                 row.Amount = qtdeVenda;
-                row.ExchangeQuantity = qtdeRetorno;
+                row.DiscountAmount = qtdeRetorno;
 
                 row.SaleValue = row.ValorProduto.replace(/[^0-9\.]+/g, "");
                 row.Total = row.Total.replace(/[^0-9\.]+/g, "");

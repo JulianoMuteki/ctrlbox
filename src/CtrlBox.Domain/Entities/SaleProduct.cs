@@ -10,7 +10,7 @@ namespace CtrlBox.Domain.Entities
     {
         public int Amount { get; set; }
         public decimal SaleValue { get; set; }
-        public int ExchangeQuantity { get; set; }
+        public int DiscountAmount { get; set; }
 
         public Guid SaleID { get; set; }
         public Guid ProductID { get; set; }

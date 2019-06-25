@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using CtrlBox.CrossCutting;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Infra.Context;
 using CtrlBox.Infra.Repository.Common;
@@ -18,12 +19,19 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         public ICollection<Client> GetAvailable(Guid routeID)
         {
-            var query = _context.Set<Client>()
-                                               .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id));
+            try
+            {
+                throw new Exception("teste error repository");
 
+                var query = _context.Set<Client>()
+                                                   .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id));
 
-
-              return query.ToList();
+                return query.ToList();
+            }        
+            catch(Exception ex)
+            {
+                throw CustomException.Create<ClientRepository>("Unexpected error fetching all available clients", nameof(this.GetAvailable), ex);
+            }
         }
 
         public ICollection<Client> GetNotAvailable(Guid routeID)

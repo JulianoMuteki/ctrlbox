@@ -8,6 +8,7 @@ using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Domain.Entities;
+using CtrlBox.CrossCutting;
 
 namespace CtrlBox.Application
 {
@@ -34,9 +35,20 @@ namespace CtrlBox.Application
 
         public ICollection<ClientVM> GetAvailable(Guid routeID)
         {
-            var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetAvailable(routeID);
-            var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
-            return clientsVMs;
+            try
+            {
+                var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetAvailable(routeID);
+                var clientsVMs = _mapper.Map<IList<ClientVM>>(clients);
+                return clientsVMs;
+            }
+            catch(CustomException exc)
+            {
+                throw exc;
+            }
+            catch(Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all available clients", nameof(this.GetAvailable), ex);
+            }
         }
 
         public Task<ClientVM> AddAsync(ClientVM entity)

@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Interfaces.Base;
+﻿using CtrlBox.CrossCutting;
+using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,174 +23,329 @@ namespace CtrlBox.Infra.Repository.Common
 
         public IQueryable<T> Query()
         {
-            return _context.Set<T>().AsQueryable();
+            try
+            {
+                return _context.Set<T>().AsQueryable();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching all not available clients", nameof(this.Query), ex);
+            }
         }
 
         public ICollection<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+            try
+            {
+                return _context.Set<T>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching get", nameof(this.GetAll), ex);
+            }
         }
 
         public async Task<ICollection<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            try
+            {
+                return await _context.Set<T>().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching get", nameof(this.GetAllAsync), ex);
+            }
         }
 
         public T GetById(Guid id)
         {
-            return _context.Set<T>().Find(id);
+            try
+            {
+                return _context.Set<T>().Find(id);
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching get", nameof(this.GetById), ex);
+            }
         }
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            try
+            {
+                return await _context.Set<T>().FindAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching get", nameof(this.GetByIdAsync), ex);
+            }
         }
 
         public T Find(Expression<Func<T, bool>> match)
         {
-            return _context.Set<T>().SingleOrDefault(match);
+            try
+            {
+                return _context.Set<T>().SingleOrDefault(match);
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching find", nameof(this.Find), ex);
+            }
         }
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<T>().SingleOrDefaultAsync(match);
+            try
+            {
+                return await _context.Set<T>().SingleOrDefaultAsync(match);
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching find", nameof(this.FindAsync), ex);
+            }
         }
 
         public ICollection<T> FindAll(Expression<Func<T, bool>> match)
         {
-            return _context.Set<T>().Where(match).ToList();
+            try
+            {
+                return _context.Set<T>().Where(match).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching find", nameof(this.FindAll), ex);
+            }
         }
 
         public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<T>().Where(match).ToListAsync();
+            try
+            {
+                return await _context.Set<T>().Where(match).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching find", nameof(this.FindAllAsync), ex);
+            }
         }
 
         public T Add(T entity)
         {
-            _context.Set<T>().Add(entity);
-            _context.SaveChanges();
-            return entity;
+            try
+            {
+                _context.Set<T>().Add(entity);
+                _context.SaveChanges();
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching add", nameof(this.Add), ex);
+            }
         }
 
         public int AddRange(ICollection<T> entity)
         {
-            _context.Set<T>().AddRange(entity);
-            var result = _context.SaveChanges();
-            return result;
+            try
+            {
+                _context.Set<T>().AddRange(entity);
+                var result = _context.SaveChanges();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching add", nameof(this.AddRange), ex);
+            }
         }
 
         public async Task<T> AddAsync(T entity)
         {
-            _context.Set<T>().Add(entity);
-            await _unitOfWork.Commit();
-            return entity;
+            try
+            {
+                _context.Set<T>().Add(entity);
+                await _unitOfWork.Commit();
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching add", nameof(this.AddAsync), ex);
+            }
         }
 
         public T Update(T updated)
         {
-            if (updated == null)
+            try
             {
-                return null;
+                if (updated == null)
+                {
+                    return null;
+                }
+
+                _context.Set<T>().Attach(updated);
+                _context.Entry(updated).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return updated;
             }
-
-            _context.Set<T>().Attach(updated);
-            _context.Entry(updated).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            return updated;
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching update", nameof(this.Update), ex);
+            }
         }
 
         public ICollection<T> UpdateRange(ICollection<T> updateds)
         {
-            if (updateds == null || updateds.Count == 0)
+            try
             {
-                return null;
+                if (updateds == null || updateds.Count == 0)
+                {
+                    return null;
+                }
+
+                _context.Set<T>().UpdateRange(updateds);
+                _context.SaveChanges();
+
+                return updateds;
             }
-
-            _context.Set<T>().UpdateRange(updateds);
-            _context.SaveChanges();
-
-            return updateds;
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching update", nameof(this.UpdateRange), ex);
+            }
         }
-
 
         public async Task<T> UpdateAsync(T updated)
         {
-            if (updated == null)
+            try
             {
-                return null;
+                if (updated == null)
+                {
+                    return null;
+                }
+
+                _context.Set<T>().Attach(updated);
+                _context.Entry(updated).State = EntityState.Modified;
+                await _unitOfWork.Commit();
+
+                return updated;
             }
-
-            _context.Set<T>().Attach(updated);
-            _context.Entry(updated).State = EntityState.Modified;
-            await _unitOfWork.Commit();
-
-            return updated;
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching update", nameof(this.UpdateAsync), ex);
+            }
         }
 
         public void Delete(T t)
         {
-            _context.Set<T>().Remove(t);
-            _context.SaveChanges();
+            try
+            {
+                _context.Set<T>().Remove(t);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching delete", nameof(this.Delete), ex);
+            }
         }
 
         public async Task<int> DeleteAsync(T t)
         {
-            _context.Set<T>().Remove(t);
-            return await _unitOfWork.Commit();
+            try
+            {
+                _context.Set<T>().Remove(t);
+                return await _unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching delete", nameof(this.DeleteAsync), ex);
+            }
         }
 
         public int Count()
         {
-            return _context.Set<T>().Count();
+            try
+            {
+                return _context.Set<T>().Count();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching count", nameof(this.Count), ex);
+            }
         }
 
         public async Task<int> CountAsync()
         {
-            return await _context.Set<T>().CountAsync();
+            try
+            {
+                return await _context.Set<T>().CountAsync();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching count", nameof(this.CountAsync), ex);
+            }
         }
 
         public IEnumerable<T> Filter(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "", int? page = null,
             int? pageSize = null)
         {
-            IQueryable<T> query = _context.Set<T>();
-            if (filter != null)
+            try
             {
-                query = query.Where(filter);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
-
-            if (includeProperties != null)
-            {
-                foreach (
-                    var includeProperty in includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                IQueryable<T> query = _context.Set<T>();
+                if (filter != null)
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Where(filter);
                 }
-            }
 
-            if (page != null && pageSize != null)
+                if (orderBy != null)
+                {
+                    query = orderBy(query);
+                }
+
+                if (includeProperties != null)
+                {
+                    foreach (
+                        var includeProperty in includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProperty);
+                    }
+                }
+
+                if (page != null && pageSize != null)
+                {
+                    query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
+                }
+
+                return query.ToList();
+            }
+            catch (Exception ex)
             {
-                query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
+                throw CustomException.Create<T>("Unexpected error fetching filter", nameof(this.Filter), ex);
             }
 
-            return query.ToList();
         }
 
         public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().Where(predicate);
+            try
+            {
+                return _context.Set<T>().Where(predicate);
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching find", nameof(this.FindBy), ex);
+            }
         }
 
         public bool Exist(Expression<Func<T, bool>> predicate)
         {
-            var exist = _context.Set<T>().Where(predicate);
-            return exist.Any();
+            try
+            {
+                var exist = _context.Set<T>().Where(predicate);
+                return exist.Any();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching exists", nameof(this.Exist), ex);
+            }
+
         }
 
         public void Dispose()

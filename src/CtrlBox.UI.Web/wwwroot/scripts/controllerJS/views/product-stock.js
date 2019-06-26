@@ -50,7 +50,7 @@ var ProductStock = function () {
                 "bDestroy": true,
                 "aoColumns": [
                     {
-                        "mData": "ProductName",
+                        "mData": "ProductName"
                     },
                     {
                         "mData": null,
@@ -63,7 +63,10 @@ var ProductStock = function () {
                             }
                             return data;
                         }
-                    }
+                    },
+                    {
+                        "mData": "UnitMeasure"
+                    },
                 ],
                 "aLengthMenu": [
                     [5, 15, 20, -1],

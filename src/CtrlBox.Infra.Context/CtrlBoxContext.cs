@@ -26,6 +26,8 @@ namespace CtrlBox.Infra.Context
         public DbSet<SaleProduct> SalesProducts { get; set; }
         public DbSet<RouteClient> RoutesClients { get; set; }
 
+        public DbSet<SystemConfiguration> SystemConfigurations { get; set; }
+
         public CtrlBoxContext()
         {
            // ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
@@ -58,6 +60,7 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new RouteMap());
             modelBuilder.ApplyConfiguration(new SaleMap());
             modelBuilder.ApplyConfiguration(new StockProductMap());
+            modelBuilder.ApplyConfiguration(new SystemConfigurationMap());
 
             base.OnModelCreating(modelBuilder);
 

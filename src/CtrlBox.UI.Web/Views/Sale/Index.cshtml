@@ -41,7 +41,7 @@
             var entregaID = ViewData["entregaID"];
         }
 
-        var url = '@Url.Content("~/Sale/GetAjaxHandlerExecuteSale")?clienteID=' + '@clienteID' + '&linhaID=' + '@linhaID';
+        var url = '@Url.Content("~/Sale/GetAjaxHandlerExecuteSale")?clienteID=' + '@clienteID' + '&linhaID=' + '@linhaID' + '&deliveryID=' + '@entregaID';
 
         var oTableSale = $('#tbVenda').dataTable({
             "sAjaxSource": url,
@@ -57,9 +57,14 @@
                             "sType": "html",
                             "bSortable": false,
                             "sClass": "calc",
+                            "defaultContent": "<i>Not set</i>",
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    return '<input type="text" placeholder="0" class="m-wrap small qtdeVenda">';
+                                    var statusStock = "green-stripe";
+                                    if (data.Amount <= 5) {
+                                        statusStock = "red-stripe"
+                                    }
+                                    return '<span class="btn mini ' + statusStock + '">Total: ' + data.Amount + ' ' + data.UnitMeasure + '</span>';
                                 }
                                 return data;
                             }
@@ -71,7 +76,28 @@
                             "sClass": "calc",
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    return '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
+                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeVenda"> ';
+                                    if (data.Amount == 0) {
+                                        link = '<span class="label label-important">finished products</span>'
+                                    }
+
+                                    return link;
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "mData": null,
+                            "sType": "html",
+                            "bSortable": false,
+                            "sClass": "calc",
+                            "mData": function (data, type, row) {
+                                if (type === 'display') {
+                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
+                                    if (data.Amount == 0) {
+                                        link = '<span class="label label-important">finished products</span>'
+                                    }
+                                    return link;
                                 }
                                 return data;
                             }
@@ -170,7 +196,7 @@
             var sum = 0;
             var nRow = $(this).parents('tr')[0];
 
-            var valor = $(this).closest('tr').children().eq(3);
+            var valor = $(this).closest('tr').children().eq(4);
             var valorProduto = parseFloat($(valor).html().replace(/[^0-9\,]+/g, "").replace(",", "."));
 
             var qtde = $(nRow).find('.qtdeVenda').val();
@@ -187,7 +213,7 @@
             var tb = $('#tbVenda').dataTable();
 
             var rowIndex = tb.fnGetPosition($(this).closest('tr')[0]);
-            tb.fnUpdate(totalRow.formatMoney(), rowIndex, 4);
+            tb.fnUpdate(totalRow.formatMoney(), rowIndex, 5);
 
             $("#tbVenda tbody .somaTotal").each(function () {
                 var valor = $(this).html();
@@ -384,9 +410,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Produtos</th>
+                                                        <th>Quantity to delivery</th>
                                                         <th>Qtde</th>
                                                         <th>Desconto</th>
-                                                        <th class="hidden-480">Valor</th>
+                                                        <th>Valor</th>
                                                         <th>Total</th>
                                                     </tr>
                                                 </thead>
@@ -397,21 +424,7 @@
                                                         <td><input type="text" placeholder="small" class="m-wrap small"></td>
                                                         <td>0</td>
                                                         <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Prata</td>
-                                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
-                                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Maçã</td>
-                                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
-                                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
+                                                    </tr>                                                  
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>

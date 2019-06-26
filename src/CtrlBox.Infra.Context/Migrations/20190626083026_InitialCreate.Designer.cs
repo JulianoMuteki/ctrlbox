@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190625104115_InitialCreate")]
+    [Migration("20190626083026_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,8 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("CheckID");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -42,7 +43,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<float>("Value");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("CheckID");
 
                     b.HasIndex("SaleID");
 
@@ -52,13 +54,19 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Client", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ClientID");
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
-                    b.Property<float>("BalanceDue");
+                    b.Property<double>("BalanceDue")
+                        .HasColumnType("float");
 
-                    b.Property<string>("Contact");
+                    b.Property<string>("Contact")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
                     b.Property<DateTime>("CreationDate");
 
@@ -70,13 +78,18 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsDisable");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
                     b.Property<int>("QuantityBoxes");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("ClientID");
 
                     b.ToTable("Clients");
                 });
@@ -99,9 +112,12 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Delivery", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("DeliveryID");
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
                     b.Property<DateTime>("CreationDate");
 
@@ -111,7 +127,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DtStart");
 
-                    b.Property<string>("FinalizedBy");
+                    b.Property<string>("FinalizedBy")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
                     b.Property<bool>("IsDelete");
 
@@ -123,7 +141,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("UserID");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("DeliveryID");
 
                     b.HasIndex("RouteID");
 
@@ -154,7 +173,8 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Expense", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ExpenseID");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -162,7 +182,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("DeliveryID");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
                     b.Property<bool>("IsDelete");
 
@@ -170,7 +192,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<double>("Value");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("ExpenseID");
 
                     b.HasIndex("DeliveryID");
 
@@ -180,23 +203,34 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ProductID");
 
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
                     b.Property<bool>("IsDelete");
 
                     b.Property<bool>("IsDisable");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
-                    b.Property<float>("Weight");
+                    b.Property<string>("UnitMeasure")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
-                    b.HasKey("Id");
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id")
+                        .HasName("ProductID");
 
                     b.ToTable("Products");
                 });
@@ -204,7 +238,8 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Route", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("RouteID");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -218,11 +253,16 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<int>("KmDistance");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
-                    b.Property<string>("Truck");
+                    b.Property<string>("Truck")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("RouteID");
 
                     b.ToTable("Routes");
                 });
@@ -243,7 +283,8 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Sale", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("SaleID");
 
                     b.Property<Guid>("ClientID");
 
@@ -253,7 +294,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("DeliveryID");
 
-                    b.Property<decimal>("ForwardValue");
+                    b.Property<decimal>("ForwardValue")
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<bool>("IsDelete");
 
@@ -261,9 +303,11 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsFinished");
 
-                    b.Property<decimal>("ReceivedValue");
+                    b.Property<decimal>("ReceivedValue")
+                        .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("SaleID");
 
                     b.HasIndex("ClientID");
 
@@ -295,7 +339,8 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Stock", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("StockID");
 
                     b.Property<int>("AmountBoxes");
 
@@ -307,7 +352,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsDisable");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("StockID");
 
                     b.ToTable("Stocks");
                 });
@@ -325,6 +371,34 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("StockID");
 
                     b.ToTable("StocksProducts");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.SystemConfiguration", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("SystemID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<string>("CultureInfo")
+                        .IsRequired()
+                        .HasMaxLength(6);
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("UnitProduct")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id")
+                        .HasName("SystemID");
+
+                    b.ToTable("SystemConfigurations");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Identity.ApplicationRole", b =>

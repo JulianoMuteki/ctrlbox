@@ -128,7 +128,7 @@ namespace CtrlBox.UI.Web.Controllers
                 var productsStocks = _productService.GetProductsStock();
                 return Json(new
                 {
-                    aaData = productsStocks.Select(x => new { x.StockID, x.ProductID, x.Amount, ProductName = x.Product.Name }).ToList(),
+                    aaData = productsStocks.Select(x => new { x.StockID, x.ProductID, x.Amount, ProductName = x.Product.Name, x.Product.UnitMeasure }).ToList(),
                     success = true
                 });
             }

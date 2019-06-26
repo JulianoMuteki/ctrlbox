@@ -11,8 +11,8 @@ namespace CtrlBox.Infra.Context.Mapping
             base.Initialize(builder);
 
             builder.ToTable("Sales");
-
-            builder.HasKey(e => e.Id).HasName("SaleID");
+            builder.Property(x => x.Id).HasColumnName("SaleID");
+            builder.HasKey(b => b.Id).HasName("SaleID");
 
             builder.Property(e => e.IsFinished)
                 .IsRequired();

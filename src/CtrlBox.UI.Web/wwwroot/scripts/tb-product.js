@@ -102,7 +102,7 @@
                                 if (data.StockTotal <= 0) {
                                     statusStock = "red-stripe"
                                 }
-                                return '<a href="#" class="btn mini ' + statusStock + '">Total: ' + data.StockTotal + '</a>';
+                                return '<a href="#" class="btn mini ' + statusStock + '">Total: ' + data.StockTotal + '</a> <span class="bold">' + data.UnitMeasure + '</span>';
                             }
                             return data;
                         }

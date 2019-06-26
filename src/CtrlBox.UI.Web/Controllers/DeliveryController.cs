@@ -161,7 +161,7 @@ namespace CtrlBox.UI.Web.Controllers
                 return Json(new
                 {
                     aaData = clientsVMs,
-                    xaData = productsDeliveryVM.Select(x => new { x.Product.Name, x.Product.DT_RowId, x.DeliveryID, x.Amount }).ToList(),
+                    xaData = productsDeliveryVM.Select(x => new { x.Product.Name, x.Product.DT_RowId, x.DeliveryID, x.Amount, x.Product.UnitMeasure }).ToList(),
                     xbData = despesasVM,
                     success = true
                 });

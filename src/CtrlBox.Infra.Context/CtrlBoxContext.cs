@@ -26,6 +26,10 @@ namespace CtrlBox.Infra.Context
         public DbSet<SaleProduct> SalesProducts { get; set; }
         public DbSet<RouteClient> RoutesClients { get; set; }
 
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<PaymentSchedule> PaymentSchedules { get; set; }
+
         public DbSet<SystemConfiguration> SystemConfigurations { get; set; }
 
         public CtrlBoxContext()
@@ -60,6 +64,11 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new RouteMap());
             modelBuilder.ApplyConfiguration(new SaleMap());
             modelBuilder.ApplyConfiguration(new StockProductMap());
+
+            modelBuilder.ApplyConfiguration(new PaymentMap());
+            modelBuilder.ApplyConfiguration(new PaymentMethodMap());
+            modelBuilder.ApplyConfiguration(new PaymentScheduleMap());
+
             modelBuilder.ApplyConfiguration(new SystemConfigurationMap());
 
             base.OnModelCreating(modelBuilder);

@@ -9,7 +9,8 @@ namespace CtrlBox.Domain.Entities
     {
         public decimal BenefitValue { get; set; }
         public DateTime ExprireDate { get; set; }
-        public DateTime RealizedDate { get; set; }
+        public DateTime? RealizedDate { get; set; }
+
         public ICollection<Payment> Payments { get; set; }
 
         public PaymentSchedule()

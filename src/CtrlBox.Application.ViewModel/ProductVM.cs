@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 
 namespace CtrlBox.Application.ViewModel
@@ -9,6 +8,7 @@ namespace CtrlBox.Application.ViewModel
         public string Name { get; set; }
         public string Description { get; set; }
         public float Weight { get; set; }
+        public string UnitMeasure { get; set; }
 
         public int StockTotal
         {
@@ -16,7 +16,6 @@ namespace CtrlBox.Application.ViewModel
             {
                 return this.StocksProducts.Sum(x => x.Amount);
             }
-
         }
 
         public ICollection<ClientProductValueVM> CustomersProductsValues { get; set; }

@@ -108,6 +108,9 @@
                         }
                     },
                     {
+                        "mData": "UnitMeasure"
+                    },
+                    {
                         "mData": null,
                         "sType": "html",
                         "mRender": function (data, type, row) {

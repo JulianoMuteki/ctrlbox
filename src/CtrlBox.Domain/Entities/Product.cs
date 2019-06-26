@@ -1,7 +1,6 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -10,6 +9,7 @@ namespace CtrlBox.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public float Weight { get; set; }
+        public string UnitMeasure { get; set; }
 
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }

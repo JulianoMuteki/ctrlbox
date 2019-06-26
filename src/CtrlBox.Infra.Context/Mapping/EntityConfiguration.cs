@@ -8,8 +8,13 @@ namespace CtrlBox.Infra.Context.Mapping
     {
         public void Configure(EntityTypeBuilder<T> builder)
         {
+            Initialize(builder);
+        }
+
+        protected virtual void Initialize(EntityTypeBuilder<T> builder)
+        {
             builder.Property(e => e.IsDelete)
-               .IsRequired();
+              .IsRequired();
 
             builder.Property(e => e.IsDisable)
                     .IsRequired();
@@ -19,10 +24,6 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.DateModified)
                     .IsRequired();
-        }
-
-        protected virtual void Initialize(EntityTypeBuilder<T> builder)
-        {
         }
     }
 }

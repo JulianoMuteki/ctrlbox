@@ -11,12 +11,13 @@ namespace CtrlBox.Infra.Context.Mapping
             base.Initialize(builder);
 
             builder.ToTable("SystemConfigurations");
-
-            builder.HasKey(e => e.Id).HasName("SystemID");
+            builder.Property(x => x.Id).HasColumnName("SystemID");
+            builder.HasKey(b => b.Id).HasName("SystemID");
 
             builder.Property(e => e.CultureInfo)
              .IsRequired()
              .HasMaxLength(6);
+
             builder.Property(e => e.UnitProduct)
              .IsRequired()
              .HasMaxLength(50);

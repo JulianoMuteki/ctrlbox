@@ -11,8 +11,8 @@ namespace CtrlBox.Infra.Context.Mapping
             base.Initialize(builder);
 
             builder.ToTable("Products");
-
-            builder.HasKey(e => e.Id).HasName("ProductID");
+            builder.Property(x => x.Id).HasColumnName("ProductID");
+            builder.HasKey(b => b.Id).HasName("ProductID");
 
             builder.Property(e => e.Name)
                 .IsRequired()
@@ -26,7 +26,9 @@ namespace CtrlBox.Infra.Context.Mapping
                  .HasColumnType("float")
                 .IsRequired();
 
-
+            builder.Property(e => e.UnitMeasure)
+              .IsRequired()
+              .HasMaxLength(50);
         }
     }
 }

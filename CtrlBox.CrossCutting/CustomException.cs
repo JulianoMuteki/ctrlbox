@@ -15,12 +15,6 @@ namespace CtrlBox.CrossCutting
             this.Source = source;
         }
 
-        public static CustomException Create<T>(string method) where T : class
-        {
-            
-            return new CustomException(GetSource<T>(method));
-        }
-
         public CustomException(string message, string source)
             : base(message)
         {
@@ -31,6 +25,16 @@ namespace CtrlBox.CrossCutting
             : base(message, inner)
         {
             this.Source = source;
+        }
+
+        public static CustomException Create<T>(string method) where T : class
+        {
+            return new CustomException(GetSource<T>(method));
+        }
+
+        public static CustomException Create<T>(string message, string method) where T : class
+        {
+            return new CustomException(message, GetSource<T>(method));
         }
 
         public static CustomException Create<T>(string message, string method, Exception inner) where T : class

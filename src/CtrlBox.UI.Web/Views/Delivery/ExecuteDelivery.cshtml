@@ -125,11 +125,23 @@
                                                    {
                                                        "mData": "Name",
                                                        "bSortable": false
-                                                   },
-                                                 {
-                                                     "mData": "Amount",
-                                                     "bSortable": false
-                                                 }]
+                                                   },                             
+                                                   {
+                                                        "mData": null,
+                                                        "sType": "html",
+                                                        "bSortable": false,
+                                                        "mRender": function (data, type, row) {
+                                                            if (type === 'display') {
+                                                                var statusStock = "green-stripe";
+                                                                if (row.Amount <= 5) {
+                                                                    statusStock = "red-stripe"
+                                                                }
+                                                                return '<span class="btn mini ' + statusStock + '">Total: ' + row.Amount + ' ' + row.UnitMeasure + '</span>';
+                                                            }
+                                                            return data;
+                                                        }
+                                                    },
+                                              ]
                             });
 
                             $('#tbDespesas').dataTable({

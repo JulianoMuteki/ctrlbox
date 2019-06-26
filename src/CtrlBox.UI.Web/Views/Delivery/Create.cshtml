@@ -65,7 +65,7 @@
                                                 if (row.StockTotal <= 0) {
                                                     statusStock = "red-stripe"
                                                 }
-                                                return '<a href="#" class="btn mini ' + statusStock + '">Total: ' + row.StockTotal + '</a>';
+                                                return '<div class="btn mini ' + statusStock + '">Total: ' + row.StockTotal + ' ' + row.UnitMeasure + '</div>';
                                             }
                                             return data;
                                         }
@@ -81,7 +81,7 @@
                                         "sClass": "calc",
                                         "mRender": function (data, type, row) {
                                             if (type === 'display') {
-                                                var txtTotal = '<input type="text" placeholder="0" class="m-wrap small amount">';
+                                                var txtTotal = '<input type="text" placeholder="0" class="m-wrap small amount"><span class="bold"> ' + row.UnitMeasure + '</span>';
 
                                                 if (row.StockTotal <= 0) {
                                                     txtTotal = '<span class="label label-important">Unavailable</span>'
@@ -210,7 +210,7 @@
                                 <tr>
                                     <th>Stock</th>
                                     <th>Products</th>
-                                    <th>Total</th>
+                                    <th>Quantidade</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

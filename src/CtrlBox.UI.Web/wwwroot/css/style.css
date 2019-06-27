@@ -2662,6 +2662,11 @@ System feeds
   width:75px;
   margin-left:-75px;
 }
+    .feeds .col3 {
+        float: left;
+        width: 100px;
+        margin-left: -100px;
+    }
 
 .feeds .col1 .cont {
   float:left;

@@ -9,9 +9,8 @@ namespace CtrlBox.Application.AutoMapper
         public PaymentScheduleProfile()
         {
             CreateMap<PaymentSchedule, PaymentScheduleVM>()
-       .ForMember(dest => dest.DT_RowId,
-                 opts => opts.MapFrom(src => src.Id))
-       .ForMember(dest => dest.PaymentsVMs, opt => opt.Ignore());
+               .ForMember(dest => dest.DT_RowId,
+                         opts => opts.MapFrom(src => src.Id));
 
             CreateMap<PaymentScheduleVM, PaymentSchedule>()
                 .ForMember(dest => dest.Id,

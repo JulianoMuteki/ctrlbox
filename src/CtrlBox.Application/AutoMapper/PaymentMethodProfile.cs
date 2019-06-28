@@ -10,8 +10,7 @@ namespace CtrlBox.Application.AutoMapper
         {
             CreateMap<PaymentMethod, PaymentMethodVM>()
             .ForMember(dest => dest.DT_RowId,
-                 opts => opts.MapFrom(src => src.Id))
-            .ForMember(dest => dest.PaymentsVMs, opt => opt.Ignore());
+                 opts => opts.MapFrom(src => src.Id));
 
             CreateMap<PaymentMethodVM, PaymentMethod>()
                 .ForMember(dest => dest.Id,

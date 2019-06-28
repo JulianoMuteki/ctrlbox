@@ -118,8 +118,6 @@ namespace CtrlBox.UI.Web.Controllers
                 aaData = usersList,
                 success = true
             });
-
-            return View();
         }
     }
 }

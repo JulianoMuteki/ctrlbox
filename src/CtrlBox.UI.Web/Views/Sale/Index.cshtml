@@ -28,9 +28,11 @@
     var sale = {};
     var paymentTemp = {};
     var nextDate = new Date();
+    sale.Payment = {};
+    sale.Payment.NumberParcels = 0;
 
     function initialPayment() {
-        sale.paymentsSchedules = [];
+        sale.Payment.PaymentsSchedules = [];
 
         ///sale.TotalAmount = 10000;
         sale.Rest = 0;
@@ -72,7 +74,7 @@
 
         paymentTemp.NumberDevide = $("#slider-range-max").slider("value");
 
-        if (sale.paymentsSchedules.length === 0) {
+        if (sale.Payment.PaymentsSchedules.length === 0) {
             sale.Rest = sale.TotalAmount;
             nextDate = new Date(moment($("#exprireDate").val(), "DD/MM/YYYY").format("YYYY-MM-DD"));
         }
@@ -81,13 +83,13 @@
             var paymentSchedule = {};
 
             paymentSchedule.ExprireDate = new Date(nextDate);
-            paymentSchedule.Method = $("select#ddlMethod").val();
+            paymentSchedule.PaymentMethodID = $("select#ddlMethod").val();
             paymentSchedule.MethodName = $("#ddlMethod").select2('data').text;
 
             paymentSchedule.BenefitValue = parseFloat($("#valueDivide").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
 
             sale.Rest -= paymentSchedule.BenefitValue;
-            sale.paymentsSchedules.push(paymentSchedule);
+            sale.Payment.PaymentsSchedules.push(paymentSchedule);
 
             var dt = add_months(nextDate, 1);
             nextDate = dt;
@@ -96,26 +98,27 @@
 
         addRowsTablePayments();
 
-        if (sale.paymentsSchedules.length > 0) {
+        if (sale.Payment.PaymentsSchedules.length > 0) {
             $("#exprireDate").prop('disabled', true);
         }
         if (sale.Rest == 0) {
             $("#idPayment-Group").hide();
         }
 
-        console.log(sale);
+        sale.Payment.NumberParcels = sale.Payment.PaymentsSchedules.length;
+        sale.Payment.Amount = 0;
     }
 
     function addRowsTablePayments() {
         $('#tbPayment tbody tr').remove();
 
-        for (var i = 0; i < sale.paymentsSchedules.length; i++) {
+        for (var i = 0; i < sale.Payment.PaymentsSchedules.length; i++) {
             $('#tbPayment tbody').append(
                 "<tr>" +
                 '<td>' + (i + 1) + '</td>' +
-                '<td>' + parseFloat(sale.paymentsSchedules[i].BenefitValue).formatMoney() + '</td>' +
-                '<td>' + sale.paymentsSchedules[i].MethodName + '</td>' +
-                '<td>' + moment(sale.paymentsSchedules[i].ExprireDate).format("DD-MM-YYYY") + '</td>' +
+                '<td>' + parseFloat(sale.Payment.PaymentsSchedules[i].BenefitValue).formatMoney() + '</td>' +
+                '<td>' + sale.Payment.PaymentsSchedules[i].MethodName + '</td>' +
+                '<td>' + moment(sale.Payment.PaymentsSchedules[i].ExprireDate).format("DD-MM-YYYY") + '</td>' +
                 '</tr>'
             );
         }
@@ -277,86 +280,8 @@
 
         });
 
-        var oTableSaleCheck = $('#tbCheques').DataTable({
-            "aoColumns": [
-                        {
-                            "mData": "Number",
-                            "bSortable": false
-                        },
-                        {
-                            "mData": "Value",
-                            "bSortable": false
-                        },
-                        {
-                            "mData": "DateCheck",
-                            "bSortable": false
-                        },
-                            {
-                                "mData": "Status",
-                                "bSortable": false
-                            },
-                        {
-                            "mData": "Action",
-                            "bSortable": false
-                        }],
-            "aLengthMenu": [
-       [5, 15, 20, -1],
-       [5, 15, 20, "All"] // change per page values here
-            ],
-            // set the initial value
-            "iDisplayLength": 5,
-            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-            "sPaginationType": "bootstrap",
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ records per page",
-                "oPaginate": {
-                    "sPrevious": "Prev",
-                    "sNext": "Next"
-                }
-            },
-            "aoColumnDefs": [{
-                'bSortable': false,
-                'aTargets': [0]
-            }
-            ]
-        });
-        var rowID = 0;
-
         $("#btnClear").click(function (event) {
             initialPayment();
-        });
-        //Salva linha de cheque
-        $("#target").click(function (event) {
-            var valor =   parseFloat($("#mask_currency").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            valor = valor.formatMoney();
-
-            var tb = $('#tbCheques').DataTable();
-            var rowADD = {
-                "Number": $("#numeroCheque").val(),
-                "Value": valor,
-                "DateCheck": $("#dtCheque").val(),
-                "Status": "<span class=\"label label-warning\">Pendding</span>",
-                "Action": "<a class=\"delete\" href=\"\">Delete</a>"
-            };
-
-            tb.row.add(rowADD).draw();
-            $("#mask_currency").val("");
-            $("#numeroCheque").val("");
-            $("#dtCheque").val("");
-            $("#btnCloseModal").click();
-        });
-
-        $('#tbCheques a.delete').live('click', function (e) {
-            e.preventDefault();
-
-            if (confirm("Are you sure to delete this row ?") == false) {
-                return;
-            }
-
-            oTableSaleCheck
-                    .row($(this).parents('tr'))
-                    .remove()
-                    .draw();
         });
 
         //Calcula os valores para os produtos
@@ -395,33 +320,10 @@
             return false;
         });
 
-        $('#calcular').click(function () {
-            var valorRecebido = parseFloat($("#mask_currencyX").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            var saldoAnterior = parseInt($("#tbTotal #saldoAnterior").text().replace(",", "."));
-
-            var sum = parseFloat($("#somaVenda").text().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            var ct = valorRecebido - sum;
-
-            $("#totalVenda").text(sum.formatMoney());
-            $("#recebido").text(valorRecebido.formatMoney())
-            $("#total").text((saldoAnterior + ct).formatMoney());
-        });
-
-        $("#btnSubmit").click(function () {
-            var saleObj = {};
-            saleObj.ClientID = '@clienteID';
-            saleObj.DeliveryID = '@entregaID';
-
-            var valorRecebido = parseFloat($("#mask_currencyX").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            var valorPrazo = parseFloat($("#mask_currencyY").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            valorRecebido = valorRecebido || 0;
-            valorPrazo = valorPrazo || 0;
-            var retornoCaixaVazia = parseFloat($("#ReturnBox").val());
-            retornoCaixaVazia = retornoCaixaVazia || 0;
-
-            saleObj.ReceivedValue = valorRecebido;
-            saleObj.ForwardValue = valorPrazo;
-            saleObj.TotalReturnedBoxes = retornoCaixaVazia;
+        $(".btnSubmit").click(function () {
+           
+            sale.ClientID = '@clienteID';
+            sale.DeliveryID = '@entregaID';
 
             var oTableSale = $('#tbVenda').dataTable();
             var tbVenda = [];
@@ -441,22 +343,9 @@
                 row.ProductID = row.DT_RowId;
                 tbVenda.push(row);
             });
-            saleObj.SalesProducts = tbVenda;
+            sale.SalesProducts = tbVenda;
 
-            var oTableSaleCheque = $('#tbCheques').dataTable();
-            var listChecks = [];
-            $.each(oTableSaleCheque.fnGetNodes(), function (index, value) {
-                var row = oTableSaleCheque.fnGetData(value);
-
-                row.Value = row.Value.replace(/[^0-9\,]+/g, "").replace(",", ".");
-                delete row.Status;
-                delete row.Action;
-
-                listChecks.push(row);
-            });
-            saleObj.Checks = listChecks;
-
-            var myJsonString = JSON.stringify(saleObj);
+            var myJsonString = JSON.stringify(sale);
 
             $.ajax({
                 url: '@Url.Content("~/Sale/PostAjaxHandlerAddSale")',
@@ -550,7 +439,7 @@
 
                                         <div class="form-actions">
                                             <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
-                                            <button id="btnSubmit" type="button" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                            <button type="button" class="btn blue btnSubmit"><i class="icon-ok"></i> Save</button>
                                             <button type="button" class="btn">Cancel</button>
                                         </div>
                                     </form>
@@ -623,7 +512,7 @@
                                                 <div class="control-group errorForm">
                                                     <label class="control-label">Pre-Plot value<span class="required">*</span></label>
                                                     <div class="controls input-icon">
-                                                        <input type="text" id="valueDivide" class="span6 m-wrap" placeholder="123456  =>  R$ ___.__1.234,56">
+                                                        <input type="text" id="valueDivide" class="span6 m-wrap" placeholder="R$ _1.234,56">
                                                         <span style="display:none;" class="input-error tooltips iconError" data-original-title="please write a value date">
                                                             <i style="display:none;" class="icon-exclamation-sign iconError"></i>
                                                         </span>
@@ -685,7 +574,7 @@
                                         </div>
                                     </div>
                                     <div class="form-actions">
-                                        <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                        <button type="submit" class="btn blue btnSubmit"><i class="icon-ok"></i> Save</button>
                                         <button type="button" class="btn">Cancel</button>
                                     </div>
                                     <!-- END FORM-->

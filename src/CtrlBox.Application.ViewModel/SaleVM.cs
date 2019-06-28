@@ -15,6 +15,7 @@ namespace CtrlBox.Application.ViewModel
 
         public virtual ClientVM Client { get; set; }
         public virtual DeliveryVM Delivery { get; set; }
+        public virtual PaymentVM Payment { get; set; }
 
         public ICollection<CheckVM> Checks { get; set; }
         public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }

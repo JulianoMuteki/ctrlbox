@@ -7,6 +7,7 @@ using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -17,16 +18,18 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly IRouteApplicationService _routeService;
         private readonly IProductApplicationService _productService;
         private readonly ISaleApplicationService _saleService;
+        private readonly IPaymentApplicationService _paymentService;
 
         public SaleController(IClientApplicationService clientService, IRouteApplicationService routeService,
                                    IDeliveryApplicationService deliveryService, IProductApplicationService productService,
-                                   ISaleApplicationService saleService)
+                                   ISaleApplicationService saleService, IPaymentApplicationService paymentService)
         {
             _clientService = clientService;
             _routeService = routeService;
             _deliveryService = deliveryService;
             _productService = productService;
             _saleService = saleService;
+            _paymentService = paymentService;
         }
         // GET: Sale
         public ActionResult Index(string linhaID, string clienteID, string entregaID)
@@ -98,6 +101,24 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult Invoice()
         {
+            return View();
+        }
+
+        public ActionResult GetAjaxHandlerPayMethods()
+        {
+            var usersList = _paymentService.GetPayMethods()
+                                       .Select(method => new SelectListItem
+                                       {
+                                           Value = method.DT_RowId,
+                                           Text = method.MethodName
+                                       }).ToList();
+
+            return Json(new
+            {
+                aaData = usersList,
+                success = true
+            });
+
             return View();
         }
     }

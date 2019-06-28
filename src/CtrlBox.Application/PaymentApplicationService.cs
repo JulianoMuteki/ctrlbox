@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using System;
@@ -58,6 +59,13 @@ namespace CtrlBox.Application
         public Task<PaymentVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<PaymentMethodVM> GetPayMethods()
+        {
+            var payMethods = _unitOfWork.Repository<PaymentMethod>().GetAll();
+            var payMethodsVMs = _mapper.Map<IList<PaymentMethodVM>>(payMethods);
+            return payMethodsVMs;
         }
 
         public PaymentVM Update(PaymentVM updated)

@@ -96,5 +96,9 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        public ActionResult Invoice()
+        {
+            return View();
+        }
     }
 }

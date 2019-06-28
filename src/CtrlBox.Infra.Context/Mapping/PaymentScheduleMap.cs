@@ -23,7 +23,15 @@ namespace CtrlBox.Infra.Context.Mapping
               .IsRequired();
 
             builder.Property(e => e.RealizedDate);
-           
+
+            builder.HasOne(e => e.Payment)
+                   .WithMany(c => c.PaymentsSchedules)
+                   .HasForeignKey(s => s.PaymentID);
+
+
+            builder.HasOne(e => e.PaymentMethod)
+                   .WithMany(c => c.PaymentsSchedules)
+                   .HasForeignKey(s => s.PaymentMethodID);
         }
     }
 }

@@ -30,6 +30,14 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.NumberParcels)
                .IsRequired();
+        
+            builder.HasMany(c => c.PaymentsSchedules)
+                 .WithOne(e => e.Payment)
+                 .HasForeignKey(s => s.PaymentID);
+
+            builder.HasOne(sa => sa.Sale)
+                  .WithOne(c => c.Payment)
+                  .HasForeignKey<Payment>(k => k.SaleID);
         }
     }
 } 

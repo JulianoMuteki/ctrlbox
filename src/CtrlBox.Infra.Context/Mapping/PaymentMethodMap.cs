@@ -21,6 +21,11 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.MethodName)
                 .IsRequired()
                 .HasMaxLength(50);
+
+
+            builder.HasMany(c => c.PaymentsSchedules)
+                 .WithOne(e => e.PaymentMethod)
+                 .HasForeignKey(s => s.PaymentMethodID);
         }
     }
 }

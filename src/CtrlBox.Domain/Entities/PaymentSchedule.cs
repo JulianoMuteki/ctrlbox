@@ -1,7 +1,5 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -11,12 +9,24 @@ namespace CtrlBox.Domain.Entities
         public DateTime ExprireDate { get; set; }
         public DateTime? RealizedDate { get; set; }
 
-        public ICollection<Payment> Payments { get; set; }
+        public Guid PaymentID { get; set; }
+        public Payment Payment { get; set; }
+
+        public Guid PaymentMethodID { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         public PaymentSchedule()
             :base()
         {
-            this.Payments = new HashSet<Payment>();
+           
+        }
+
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+            }
         }
     }
 }

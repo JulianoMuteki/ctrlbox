@@ -4,14 +4,16 @@ using CtrlBox.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    partial class CtrlBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20190628150927_Relation-Payment")]
+    partial class RelationPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,8 +231,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasKey("Id")
                         .HasName("PaymentID");
 
-                    b.HasIndex("SaleID")
-                        .IsUnique();
+                    b.HasIndex("SaleID");
 
                     b.ToTable("Payments");
                 });
@@ -723,8 +724,8 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
-                        .WithOne("Payment")
-                        .HasForeignKey("CtrlBox.Domain.Entities.Payment", "SaleID")
+                        .WithMany()
+                        .HasForeignKey("SaleID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

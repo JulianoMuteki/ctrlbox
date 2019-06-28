@@ -1,5 +1,7 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -12,17 +14,25 @@ namespace CtrlBox.Domain.Entities
         public decimal RemainingValue { get; set; }
 
         public Guid SaleID { get; set; }
-        public Guid PaymentMethodID { get; set; }
-        public Guid? PaymentScheduleID { get; set; }
-
         public Sale Sale { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
-        public PaymentSchedule PaymentSchedule { get; set; }
+
+        public ICollection<PaymentSchedule> PaymentsSchedules { get; set; }
 
         public Payment()
             :base()
         {
+            this.PaymentsSchedules = new HashSet<PaymentSchedule>();
+        }
 
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+                this.IsPaid = false;
+
+                this.PaymentsSchedules = this.PaymentsSchedules.Select(x => { x.PaymentID = this.Id; return x; }).ToList();
+            }
         }
     }
 }

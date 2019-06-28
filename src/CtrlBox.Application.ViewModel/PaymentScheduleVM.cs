@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Application.ViewModel
 {
@@ -8,6 +6,7 @@ namespace CtrlBox.Application.ViewModel
     {
         public decimal BenefitValue { get; set; }
         public string ExprireDate { get; set; }
+        public DateTime? RealizedDate { get; set; }
 
         public DateTime ExprireDateFormat { get
             {
@@ -15,8 +14,11 @@ namespace CtrlBox.Application.ViewModel
             }
                 
        }
+      
+        public Guid PaymentID { get; set; }
+        public PaymentVM Payment { get; set; }
 
-        public DateTime? RealizedDate { get; set; }
         public Guid PaymentMethodID { get; set; }
+        public PaymentMethodVM PaymentMethod { get; set; }
     }
 }

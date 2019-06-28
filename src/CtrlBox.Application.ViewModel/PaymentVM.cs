@@ -11,6 +11,9 @@ namespace CtrlBox.Application.ViewModel
         public int NumberParcels { get; set; }
         public decimal RemainingValue { get; set; }
 
+        public Guid SaleID { get; set; }
+        public SaleVM Sale { get; set; }
+
         public ICollection<PaymentScheduleVM> PaymentsSchedules { get; set; }
 
         public PaymentVM()

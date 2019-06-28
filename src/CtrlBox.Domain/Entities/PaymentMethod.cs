@@ -8,12 +8,12 @@ namespace CtrlBox.Domain.Entities
         public string MethodName { get; set; }
         public string Descrition { get; set; }
 
-        public ICollection<Payment> Payments { get; set; }
+        public ICollection<PaymentSchedule> PaymentsSchedules { get; set; }
 
         public PaymentMethod()
             :base()
         {
-            this.Payments = new HashSet<Payment>();
+            this.PaymentsSchedules = new HashSet<PaymentSchedule>();
         }
     }
 }

@@ -33,29 +33,34 @@
         else {
             responseText = xhr.responseText;
         }
-        var obj = $($.parseHTML(responseText)).filter('div.titleerror');
-        console.log(obj.text());
-        $('.accordion-inner').html(responseText);
-        $("#titleError").text(obj.text());
-        $("#modalError").modal();
+
+        if (responseText !== '') {
+            var obj = $($.parseHTML(responseText)).filter('div.titleerror');
+            console.log(obj.text());
+            $('.accordion-inner').html(responseText);
+            $("#titleError").text(obj.text());
+            $("#modalError").modal();
+        }
 
         if (textStatus === 'timeout') {
               //  alert('The server took too long to send the data.');
-            }
-            else {
+        }
+        else if (textStatus == 'error') {
+            $('.accordion-inner').html(xhr.status);
+            $("#titleError").text(error);
+            $("#modalError").modal();
+        } else {
 
-               // var obj = $.parseJSON(xhr.responseText);
-               // console.log(obj);
-              //  alert(obj.Message);
-            }
+        }
 
-            return false;
+
+        return false;
     }
 
     jQuery(document).ready(function () {
         // initiate layout and plugins
         App.init();
- 
+
     });
 </script>
 <!-- END JAVASCRIPTS -->

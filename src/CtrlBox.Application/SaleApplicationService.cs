@@ -104,6 +104,27 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
+        public SaleVM GetByClientIDAndDeliveryID(Guid clientID, Guid deliveryID)
+        {
+            try
+            {
+                var sale = _unitOfWork.Repository<Sale>().Find(x => x.ClientID == clientID && x.DeliveryID == deliveryID);
+                if (sale != null)
+                    sale.SalesProducts = _unitOfWork.Repository<SaleProduct>().FindAll(x => x.SaleID == sale.Id);
+
+                var salesVMs = _mapper.Map<SaleVM>(sale);
+                return salesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching find sale", nameof(this.GetByClientIDAndDeliveryID), ex);
+            }
+        }
+
         public SaleVM Update(SaleVM updated)
         {
             throw new NotImplementedException();

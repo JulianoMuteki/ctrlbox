@@ -34,10 +34,21 @@ namespace CtrlBox.UI.Web.Controllers
         // GET: Sale
         public ActionResult Index(string linhaID, string clienteID, string entregaID)
         {
-            ViewData["clienteID"] = clienteID;
-            ViewData["linhaID"] = linhaID;
-            ViewData["entregaID"] = entregaID;
-            return View();
+            try
+            {
+                ViewData["clienteID"] = clienteID;
+                ViewData["linhaID"] = linhaID;
+                ViewData["entregaID"] = entregaID;
+
+                var saleVM = _saleService.GetByClientIDAndDeliveryID(new Guid(clienteID), new Guid(entregaID));
+                saleVM = saleVM ?? new SaleVM();
+                ViewData["saleID"] = saleVM.DT_RowId;
+                return View(saleVM);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpGet]

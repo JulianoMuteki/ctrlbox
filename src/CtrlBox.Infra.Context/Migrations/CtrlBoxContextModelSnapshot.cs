@@ -204,12 +204,11 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("PaymentID");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(10,2)");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsCashPayment");
 
                     b.Property<bool>("IsDelete");
 
@@ -225,6 +224,9 @@ namespace CtrlBox.Infra.Context.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<Guid>("SaleID");
+
+                    b.Property<decimal>("TotalValueSale")
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id")
                         .HasName("PaymentID");
@@ -420,11 +422,14 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("SaleID");
 
-                    b.Property<int>("Amount");
+                    b.Property<int>("DiscountValueSale");
 
-                    b.Property<int>("DiscountAmount");
+                    b.Property<int>("Quantity");
 
-                    b.Property<decimal>("SaleValue")
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("ValueProductSale")
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("ProductID", "SaleID");

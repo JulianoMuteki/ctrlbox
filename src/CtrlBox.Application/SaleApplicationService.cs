@@ -32,7 +32,7 @@ namespace CtrlBox.Application
                 foreach (var item in sale.SalesProducts)
                 {
                     var deliveryProduct = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
-                    deliveryProduct.SubtractProductsDelivered(item.Amount);
+                    deliveryProduct.SubtractProductsDelivered(item.Quantity);
                     _unitOfWork.Repository<DeliveryProduct>().Update(deliveryProduct);
                 }
 

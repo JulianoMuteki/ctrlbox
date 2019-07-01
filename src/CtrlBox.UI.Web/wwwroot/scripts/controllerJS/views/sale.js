@@ -20,6 +20,8 @@ var SaleComponents = function () {
     var nextDate = new Date();
     sale.Payment = {};
     sale.Payment.NumberParcels = 0;
+    sale.IsCashPayment = false;
+
     var oTableSale;
 
     function initPage() {
@@ -39,7 +41,7 @@ var SaleComponents = function () {
             var valorProduto = parseFloat($(valor).html().replace(/[^0-9\,]+/g, "").replace(",", "."));
 
             var qtde = $(nRow).find('.qtdeVenda').val();
-            var valueDiscount = $(nRow).find('.qtdeRetorno').val();
+            var valueDiscount = $(nRow).find('.discountValueSale').val();
 
             var totalRow = 0;
             if (valueDiscount !== undefined && valueDiscount !== '') {
@@ -75,16 +77,16 @@ var SaleComponents = function () {
             $.each(oTableSale.fnGetNodes(), function (index, value) {
                 var row = oTableSale.fnGetData(value);
                 var qtdeVenda = $(value).find('input.qtdeVenda').val();
-                var qtdeRetorno = $(value).find('input.qtdeRetorno').val();
+                var discountValueSale = $(value).find('input.discountValueSale').val();
 
                 qtdeVenda = qtdeVenda || 0;
-                qtdeRetorno = qtdeRetorno || 0;
+                discountValueSale = discountValueSale || 0;
 
-                row.Amount = qtdeVenda;
-                row.DiscountAmount = qtdeRetorno;
+                row.Quantity = qtdeVenda;
+                row.DiscountValueSale = discountValueSale;
 
-                row.SaleValue = row.ValorProduto.replace(/[^0-9\.]+/g, "");
-                row.Total = row.Total.replace(/[^0-9\.]+/g, "");
+                row.ValueProductSale = row.ValorProduto.replace(/[^0-9\.]+/g, "");
+                row.TotalValue = row.Total.replace(/[^0-9\.]+/g, "");
                 row.ProductID = row.DT_RowId;
                 tbVenda.push(row);
             });
@@ -93,7 +95,7 @@ var SaleComponents = function () {
             var myJsonString = JSON.stringify(sale);
 
             $.ajax({
-                url: 'PostAjaxHandlerAddSale',
+                url: 'Sale/PostAjaxHandlerAddSale',
                 type: 'POST',
                 dataType: 'json',
                 data: { strSaleJSON: myJsonString },
@@ -218,7 +220,7 @@ var SaleComponents = function () {
                             "sClass": "calc",
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
+                                    var link = '<input type="text" placeholder="0" class="m-wrap small discountValueSale">';
                                     if (data.Amount == 0) {
                                         link = '<span class="label label-important">finished products</span>'
                                     }
@@ -236,6 +238,16 @@ var SaleComponents = function () {
                         }
             ]
 
+        });
+
+        $('.radio input[type=radio][name=IsCashPayment]').change(function () {           
+            sale.IsCashPayment = $(".radio input[type=radio][id=IsCashPayment]").is(":checked");
+            
+            if (sale.IsCashPayment) {
+                $("#IsCashPaymentGroup").hide();
+            } else {
+                $("#IsCashPaymentGroup").show();
+            }
         });
     }
 
@@ -350,9 +362,9 @@ var SaleComponents = function () {
             _deliveryID = deliveryID;
             initPage();
         },
-        load: function () {
+        view: function () {
             $('#tbSale').dataTable();
+            $(".viewPayment").hide();         
         }
-
     };
 }();

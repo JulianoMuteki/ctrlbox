@@ -13,14 +13,18 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.HasKey(t => new { t.ProductID, t.SaleID });
 
-            builder.Property(e => e.SaleValue)
+            builder.Property(e => e.ValueProductSale)
                  .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
-            builder.Property(e => e.Amount)
+            builder.Property(e => e.TotalValue)
+                 .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
-            builder.Property(e => e.DiscountAmount)
+            builder.Property(e => e.Quantity)
+                .IsRequired();
+
+            builder.Property(e => e.DiscountValueSale)
                 .IsRequired();
 
             builder.HasOne(tk => tk.Sale)

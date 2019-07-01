@@ -7,11 +7,13 @@ namespace CtrlBox.Domain.Entities
 {
   public  class Payment : EntityBase
     {
-        public decimal Amount { get; set; }
+        public decimal TotalValueSale { get; set; }
+        public decimal RemainingValue { get; set; }
+
         public DateTime PaymentDate { get; set; }
         public bool IsPaid { get; set; }
+        public bool IsCashPayment { get; set; }
         public int NumberParcels { get; set; }
-        public decimal RemainingValue { get; set; }
 
         public Guid SaleID { get; set; }
         public Sale Sale { get; set; }
@@ -30,7 +32,7 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.IsPaid = false;
-
+                this.IsCashPayment = false;
                 this.PaymentsSchedules = this.PaymentsSchedules.Select(x => { x.PaymentID = this.Id; return x; }).ToList();
             }
         }

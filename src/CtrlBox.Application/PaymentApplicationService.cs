@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
@@ -29,6 +30,25 @@ namespace CtrlBox.Application
         public Task<PaymentVM> AddAsync(PaymentVM entity)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddPaymentMethod(PaymentMethodVM paymentMethodVM)
+        {
+            try
+            {
+                var paymentMethod = _mapper.Map<PaymentMethod>(paymentMethodVM);
+
+                _unitOfWork.Repository<PaymentMethod>().Add(paymentMethod);
+                _unitOfWork.Commit();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<PaymentApplicationService>("Unexpected error fetching add PaymentMethod", nameof(this.AddPaymentMethod), ex);
+            }
         }
 
         public void Delete(Guid id)

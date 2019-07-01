@@ -88,9 +88,9 @@ namespace CtrlBox.Infra.Context
 
                 var productService = serviceProvider.GetRequiredService<IProductApplicationService>();
 
-                string unitMeasure = "Caixa";
+                string unitMeasure = "Caixa(s)";
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     ProductVM product = new ProductVM();
                     product.Description = $"Descrição nanica {i}";
@@ -99,7 +99,7 @@ namespace CtrlBox.Infra.Context
                     product.UnitMeasure = unitMeasure;
                     productService.Add(product);
                 }
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     ProductVM product = new ProductVM();
                     product.Description = $"Descrição maçã {i}";
@@ -108,7 +108,7 @@ namespace CtrlBox.Infra.Context
                     product.UnitMeasure = unitMeasure;
                     productService.Add(product);
                 }
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     ProductVM product = new ProductVM();
                     product.Description = $"Descrição prata {i}";
@@ -117,6 +117,13 @@ namespace CtrlBox.Infra.Context
                     product.UnitMeasure = unitMeasure;
                     productService.Add(product);
                 }
+
+                ProductVM productBat = new ProductVM();
+                productBat.Description = $"Descrição batata";
+                productBat.Name = $"Batata";
+                productBat.Weight = 100;
+                productBat.UnitMeasure = "saco(s)";
+                productService.Add(productBat);
 
                 var routeService = serviceProvider.GetRequiredService<IRouteApplicationService>();
                 for (int i = 0; i < 10; i++)
@@ -131,6 +138,22 @@ namespace CtrlBox.Infra.Context
 
                 var productApplicationService = serviceProvider.GetRequiredService<IProductApplicationService>();
                 productApplicationService.AddStock(100000);
+
+                var paymentService = serviceProvider.GetRequiredService<IPaymentApplicationService>();
+
+                PaymentMethodVM paymentMethodVM = new PaymentMethodVM();
+                paymentMethodVM.MethodName = "Check";
+                paymentMethodVM.Descrition = "Payment with check";
+                paymentService.AddPaymentMethod(paymentMethodVM);
+                paymentMethodVM.MethodName = "Money";
+                paymentMethodVM.Descrition = "Payment with Money";
+                paymentService.AddPaymentMethod(paymentMethodVM);
+                paymentMethodVM.MethodName = "Bank bill";
+                paymentMethodVM.Descrition = "Payment with Bank bill";
+                paymentService.AddPaymentMethod(paymentMethodVM);
+                paymentMethodVM.MethodName = "Credit";
+                paymentMethodVM.Descrition = "Payment with Credit";
+                paymentService.AddPaymentMethod(paymentMethodVM);
             }
         }
     }

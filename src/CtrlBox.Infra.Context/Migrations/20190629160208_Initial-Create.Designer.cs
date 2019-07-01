@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190628150927_Relation-Payment")]
-    partial class RelationPayment
+    [Migration("20190629160208_Initial-Create")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -206,12 +206,11 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("PaymentID");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(10,2)");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsCashPayment");
 
                     b.Property<bool>("IsDelete");
 
@@ -228,10 +227,14 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("SaleID");
 
+                    b.Property<decimal>("TotalValueSale")
+                        .HasColumnType("decimal(10,2)");
+
                     b.HasKey("Id")
                         .HasName("PaymentID");
 
-                    b.HasIndex("SaleID");
+                    b.HasIndex("SaleID")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
@@ -421,11 +424,14 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("SaleID");
 
-                    b.Property<int>("Amount");
+                    b.Property<int>("DiscountValueSale");
 
-                    b.Property<int>("DiscountAmount");
+                    b.Property<int>("Quantity");
 
-                    b.Property<decimal>("SaleValue")
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("ValueProductSale")
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("ProductID", "SaleID");
@@ -724,8 +730,8 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
-                        .WithMany()
-                        .HasForeignKey("SaleID")
+                        .WithOne("Payment")
+                        .HasForeignKey("CtrlBox.Domain.Entities.Payment", "SaleID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

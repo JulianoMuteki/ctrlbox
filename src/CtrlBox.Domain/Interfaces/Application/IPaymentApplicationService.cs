@@ -6,5 +6,6 @@ namespace CtrlBox.Domain.Interfaces.Application
     public interface IPaymentApplicationService : IApplicationServiceBase<PaymentVM>
     {
         ICollection<PaymentMethodVM> GetPayMethods();
+        void AddPaymentMethod(PaymentMethodVM paymentMethodVM);
     }
 }

@@ -14,7 +14,7 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(x => x.Id).HasColumnName("PaymentID");
             builder.HasKey(b => b.Id).HasName("PaymentID");
 
-            builder.Property(e => e.Amount)
+            builder.Property(e => e.TotalValueSale)
                  .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
@@ -26,6 +26,9 @@ namespace CtrlBox.Infra.Context.Mapping
               .IsRequired();
 
             builder.Property(e => e.IsPaid)
+                .IsRequired();
+
+            builder.Property(e => e.IsCashPayment)
                 .IsRequired();
 
             builder.Property(e => e.NumberParcels)

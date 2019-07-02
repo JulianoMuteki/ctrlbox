@@ -37,6 +37,10 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Reference)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            builder.HasMany(e => e.Clients)
+               .WithOne(c => c.Address)
+               .HasForeignKey(s => s.AddressID);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace CtrlBox.Infra.Context
                                                         ApplicationUserRole, ApplicationUserLogin,
                                                         ApplicationRoleClaim, ApplicationUserToken>
     {
+        public DbSet<Address> Addresses { get; set; }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientProductValue> CustomersProductsValues { get; set; }
@@ -50,6 +52,7 @@ namespace CtrlBox.Infra.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new AddressMap());
             modelBuilder.ApplyConfiguration(new ClientMap());
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new ClientProductMap());

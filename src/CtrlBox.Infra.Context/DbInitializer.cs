@@ -73,16 +73,27 @@ namespace CtrlBox.Infra.Context
             var clientService = serviceProvider.GetRequiredService<IClientApplicationService>();
             if (clientService.GetAll().Count == 0)
             {
+                AddressVM addressVM = new AddressVM();
+                addressVM.CEP = "13276-130";
+                addressVM.Estate = "SP";
+                addressVM.Street = "Av. Onze de Agosto";
+                addressVM.Number = "623";
+                addressVM.City = "Valinhos";
+                addressVM.District = "Centro";
+                addressVM.Reference = "";
+                var addressService = serviceProvider.GetRequiredService<IAddressApplicationService>();
+                addressVM = addressService.Add(addressVM);
+
                 for (int i = 0; i < 50; i++)
                 {
                     ClientVM client = new ClientVM();
                     client.Name = $"Cliente - {i}";
-                    client.Address = $"Rua José Nº {i}";
                     client.BalanceDue = 0;
                     client.Contact = $"Contanto - {i}";
                     client.SaleIsFinished = false;
                     client.Phone = "19-99999-9999";
                     client.QuantityBoxes = 0;
+                    client.Address = addressVM;
                     clientService.Add(client);
                 }
 

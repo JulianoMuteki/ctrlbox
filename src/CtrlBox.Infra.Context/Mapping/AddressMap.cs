@@ -26,6 +26,10 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                 .HasMaxLength(15);
 
+            builder.Property(e => e.City)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
             builder.Property(e => e.District)
                 .IsRequired()
                 .HasMaxLength(250);
@@ -38,9 +42,6 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.HasMany(e => e.Clients)
-               .WithOne(c => c.Address)
-               .HasForeignKey(s => s.AddressID);
         }
     }
 }

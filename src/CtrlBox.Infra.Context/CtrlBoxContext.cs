@@ -11,7 +11,7 @@ namespace CtrlBox.Infra.Context
                                                         ApplicationUserRole, ApplicationUserLogin,
                                                         ApplicationRoleClaim, ApplicationUserToken>
     {
-        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Address> AddressesList { get; set; }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }

@@ -30,6 +30,8 @@
             var routeID = ViewData["linhaID"];
             var deliveryID = ViewData["entregaID"];
             var saleID = ViewData["saleID"];
+            decimal total = Model.Payment != null ? Model.Payment.TotalValueSale : 0;
+            bool IsCashPayment = Model.Payment != null ? Model.Payment.IsCashPayment : false;
             }
 
 
@@ -37,8 +39,10 @@
             SaleComponents.init('@clientID', '@routeID', '@deliveryID');
         }
         else {
-            SaleComponents.view();
+            SaleComponents.readOnly('@total', '@IsCashPayment');
         }
+
+        event.preventDefault();
     });
 </script>
 
@@ -96,7 +100,7 @@
                                                     @foreach (var item in Model.SalesProducts)
                                                     {
                                                         <tr>
-                                                            <td>Nameproduto</td>
+                                                            <td>@item.Product.Name</td>
                                                             <td>N/A</td>
                                                             <td>@item.Quantity</td>
                                                             <td>@item.DiscountValueSale</td>
@@ -108,12 +112,17 @@
                                                 <tfoot>
                                                     <tr>
                                                         <th colspan="4" style="text-align:right">Total:</th>
-                                                        <th id="somaVenda"></th>
+                                                        <th id="somaVenda">
+                                                            @if (Model.Payment != null)
+                                                            {
+                                                                @Model.Payment.TotalValueSale;
+                                                            }
+                                                        </th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
                                         </div>
-                                        <div class="viewPayment form-actions">
+                                        <div class="isReadOlny form-actions">
                                             <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
                                             <button type="button" class="btn blue btnSubmit"><i class="icon-ok"></i> Save</button>
                                             <button type="button" class="btn">Cancel</button>
@@ -135,7 +144,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="span6">
+                                                <div class="span6 isReadOlny">
                                                     <div class="control-group">
                                                         <label class="control-label" for="firstName">Rest</label>
                                                         <div class="controls">
@@ -149,9 +158,9 @@
                                         <div class="span6 ">
                                             <div class="control-group">
                                                 <label class="control-label">Payment option</label>
-                                                <div class="controls">
+                                                <div id="rdCashPayment" class="controls">
                                                     <label class="radio">
-                                                        <input type="radio" id="IsCashPayment" name="IsCashPayment" value="True" />
+                                                        <input type="radio" id="IsCashRadio" name="IsCashPayment" value="True" />
                                                         Pay cash
                                                     </label>
                                                     <label class="radio">
@@ -164,8 +173,8 @@
                                         <!--/span-->
                                     </div>
                                     <!--/row-->
-                                    <div id="IsCashPaymentGroup">
-                                        <div class="viewPayment row-fluid">
+                                    <div class="isCashPayment">
+                                        <div class="row-fluid isReadOlny">
                                             <div class="span6 ">
                                                 <div class="control-group">
                                                     <label class="control-label">Method</label>
@@ -175,7 +184,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="viewPayment" id="idPayment-Group">
+                                        <div class="isReadOlny">
                                             <hr />
                                             <div class="row-fluid">
                                                 <div class="span6 ">
@@ -227,7 +236,7 @@
                                                         <div class="tools">
                                                             <a href="javascript:;" class="collapse"></a>
                                                         </div>
-                                                        <div class="actions viewPayment">
+                                                        <div class="actions isReadOlny">
                                                             <div class="btn-group">
                                                                 <a class="btn mini red" id="btnClear" href="#">Clear  <i class=" icon-remove"></i></a>
                                                             </div>
@@ -238,12 +247,25 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th></th>
-                                                                    <th><i class="icon-money"></i> From</th>
-                                                                    <th><i class="icon-briefcase"></i> Descrition</th>
-                                                                    <th><i class="icon-calendar"></i> Total</th>
+                                                                    <th><i class="icon-money"></i> Value</th>
+                                                                    <th><i class="icon-briefcase"></i> Method</th>
+                                                                    <th><i class="icon-calendar"></i> Date</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody></tbody>
+                                                            <tbody>
+                                                                @if (Model.Payment != null && Model.Payment.PaymentsSchedules != null)
+                                                                {
+                                                                    @foreach (var item in Model.Payment.PaymentsSchedules)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@(Model.Payment.PaymentsSchedules.IndexOf(item) + 1) </td>
+                                                                            <td>@item.BenefitValue</td>
+                                                                            <td>@item.PaymentMethodID</td>
+                                                                            <td>@item.ExprireDate</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -251,7 +273,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="viewPayment form-actions">
+                                    <div class="isReadOlny form-actions">
                                         <button type="submit" class="btn blue btnSubmit"><i class="icon-ok"></i> Save</button>
                                         <button type="button" class="btn">Cancel</button>
                                     </div>

@@ -16,11 +16,11 @@ namespace CtrlBox.Application.ViewModel
         public Guid SaleID { get; set; }
         public SaleVM Sale { get; set; }
 
-        public ICollection<PaymentScheduleVM> PaymentsSchedules { get; set; }
+        public IList<PaymentScheduleVM> PaymentsSchedules { get; set; }
 
         public PaymentVM()
         {
-            this.PaymentsSchedules = new HashSet<PaymentScheduleVM>();
+            this.PaymentsSchedules = new List<PaymentScheduleVM>();
         }
     }
 }

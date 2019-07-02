@@ -20,7 +20,7 @@ var SaleComponents = function () {
     var nextDate = new Date();
     sale.Payment = {};
     sale.Payment.NumberParcels = 0;
-    sale.IsCashPayment = false;
+    sale.Payment.IsCashPayment = false;
 
     var oTableSale;
 
@@ -85,8 +85,8 @@ var SaleComponents = function () {
                 row.Quantity = qtdeVenda;
                 row.DiscountValueSale = discountValueSale;
 
-                row.ValueProductSale = row.ValorProduto.replace(/[^0-9\.]+/g, "");
-                row.TotalValue = row.Total.replace(/[^0-9\.]+/g, "");
+                row.ValueProductSale = parseFloat(row.ValorProduto.replace(/[^0-9\,]+/g, "").replace(",", "."));
+                row.TotalValue = parseFloat(row.Total.replace(/[^0-9\,]+/g, "").replace(",", "."));
                 row.ProductID = row.DT_RowId;
                 tbVenda.push(row);
             });
@@ -241,12 +241,12 @@ var SaleComponents = function () {
         });
 
         $('.radio input[type=radio][name=IsCashPayment]').change(function () {           
-            sale.IsCashPayment = $(".radio input[type=radio][id=IsCashPayment]").is(":checked");
+            sale.Payment.IsCashPayment = $(".radio input[type=radio][id=IsCashRadio]").is(":checked");
             
-            if (sale.IsCashPayment) {
-                $("#IsCashPaymentGroup").hide();
+            if (sale.Payment.IsCashPayment) {
+                $(".IsCashPayment").hide();
             } else {
-                $("#IsCashPaymentGroup").show();
+                $(".IsCashPayment").show();
             }
         });
     }
@@ -362,9 +362,19 @@ var SaleComponents = function () {
             _deliveryID = deliveryID;
             initPage();
         },
-        view: function () {
+        readOnly: function (totalValueSale, isCashPayment) {
             $('#tbSale').dataTable();
-            $(".viewPayment").hide();         
+            $(".isReadOlny").hide();
+            $('#txtTotalAmount').val(parseInt(totalValueSale).formatMoney());
+            $('.radio').remove();
+            
+            if (isCashPayment) {            
+                $('#rdCashPayment').append('<input class="m-wrap medium" type="text" placeholder="Cash Payment" disabled="">');
+                $(".isCashPayment").hide();
+            }else
+            {
+                $('rdCashPayment').add('<input class="m-wrap medium" type="text" placeholder="Financed Payment" disabled="">');
+            }
         }
     };
 }();

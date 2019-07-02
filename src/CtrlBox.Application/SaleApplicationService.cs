@@ -33,9 +33,11 @@ namespace CtrlBox.Application
                 {
                     var deliveryProduct = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
                     deliveryProduct.SubtractProductsDelivered(item.Quantity);
+                    item.CalcTotalValue();
                     _unitOfWork.Repository<DeliveryProduct>().Update(deliveryProduct);
                 }
 
+                sale.CalculatePayment();
                 _unitOfWork.Repository<Sale>().Add(sale);
                 _unitOfWork.Commit();
 
@@ -110,7 +112,15 @@ namespace CtrlBox.Application
             {
                 var sale = _unitOfWork.Repository<Sale>().Find(x => x.ClientID == clientID && x.DeliveryID == deliveryID);
                 if (sale != null)
+                {
                     sale.SalesProducts = _unitOfWork.Repository<SaleProduct>().FindAll(x => x.SaleID == sale.Id);
+                    sale.Payment = _unitOfWork.Repository<Payment>().Find(x => x.SaleID == sale.Id);
+                    if (sale.Payment != null)
+                        sale.Payment.PaymentsSchedules = _unitOfWork.Repository<PaymentSchedule>().FindAll(x => x.PaymentID == sale.Payment.Id);
+                    var products = _unitOfWork.Repository<Product>().GetAll();
+
+                    sale.SalesProducts = sale.SalesProducts.Select(c => { c.Product = (from x in products where x.Id == c.ProductID select x).FirstOrDefault(); return c; }).ToList();
+                }
 
                 var salesVMs = _mapper.Map<SaleVM>(sale);
                 return salesVMs;

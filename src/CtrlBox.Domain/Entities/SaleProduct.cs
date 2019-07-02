@@ -28,5 +28,10 @@ namespace CtrlBox.Domain.Entities
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
 
         }
+
+        public void CalcTotalValue()
+        {
+            this.TotalValue = (Quantity * ValueProductSale) - DiscountValueSale;
+        }
     }
 }

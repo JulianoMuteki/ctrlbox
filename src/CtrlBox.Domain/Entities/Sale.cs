@@ -42,8 +42,12 @@ namespace CtrlBox.Domain.Entities
 
                 this.SalesProducts = this.SalesProducts.Select(x => { x.SaleID = this.Id; return x; }).ToList();
                 this.Payment.SaleID = this.Id;
-
             }
+        }
+
+        public void CalculatePayment()
+        {
+            this.Payment.TotalValueSale = this.SalesProducts.Sum(x => x.TotalValue);
         }
     }
 }

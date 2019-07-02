@@ -2,15 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
     public class SaleProduct : ValueObject<SaleProduct>
     {
-        public int Amount { get; set; }
-        public decimal SaleValue { get; set; }
-        public int DiscountAmount { get; set; }
+        public int Quantity { get; set; }
+        public decimal ValueProductSale { get; set; }
+        public int DiscountValueSale { get; set; }
+        public decimal TotalValue { get; set; }
 
         public Guid SaleID { get; set; }
         public Guid ProductID { get; set; }
@@ -27,6 +27,11 @@ namespace CtrlBox.Domain.Entities
 
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
 
+        }
+
+        public void CalcTotalValue()
+        {
+            this.TotalValue = (Quantity * ValueProductSale) - DiscountValueSale;
         }
     }
 }

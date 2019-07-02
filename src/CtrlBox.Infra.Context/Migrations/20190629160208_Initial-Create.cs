@@ -72,6 +72,23 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentsMethods",
+                columns: table => new
+                {
+                    PaymentMethodID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    MethodName = table.Column<string>(maxLength: 50, nullable: false),
+                    Descrition = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PaymentMethodID", x => x.PaymentMethodID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -470,14 +487,43 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    PaymentID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    TotalValueSale = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    RemainingValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PaymentDate = table.Column<DateTime>(nullable: false),
+                    IsPaid = table.Column<bool>(nullable: false),
+                    IsCashPayment = table.Column<bool>(nullable: false),
+                    NumberParcels = table.Column<int>(nullable: false),
+                    SaleID = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PaymentID", x => x.PaymentID);
+                    table.ForeignKey(
+                        name: "FK_Payments_Sales_SaleID",
+                        column: x => x.SaleID,
+                        principalTable: "Sales",
+                        principalColumn: "SaleID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SalesProducts",
                 columns: table => new
                 {
                     SaleID = table.Column<Guid>(nullable: false),
                     ProductID = table.Column<Guid>(nullable: false),
-                    Amount = table.Column<int>(nullable: false),
-                    SaleValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    DiscountAmount = table.Column<int>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false),
+                    ValueProductSale = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    DiscountValueSale = table.Column<int>(nullable: false),
+                    TotalValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -493,6 +539,38 @@ namespace CtrlBox.Infra.Context.Migrations
                         column: x => x.SaleID,
                         principalTable: "Sales",
                         principalColumn: "SaleID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentSchedules",
+                columns: table => new
+                {
+                    PaymentScheduleID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    BenefitValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ExprireDate = table.Column<DateTime>(nullable: false),
+                    RealizedDate = table.Column<DateTime>(nullable: true),
+                    PaymentID = table.Column<Guid>(nullable: false),
+                    PaymentMethodID = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PaymentScheduleID", x => x.PaymentScheduleID);
+                    table.ForeignKey(
+                        name: "FK_PaymentSchedules_Payments_PaymentID",
+                        column: x => x.PaymentID,
+                        principalTable: "Payments",
+                        principalColumn: "PaymentID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaymentSchedules_PaymentsMethods_PaymentMethodID",
+                        column: x => x.PaymentMethodID,
+                        principalTable: "PaymentsMethods",
+                        principalColumn: "PaymentMethodID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -571,6 +649,22 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "DeliveryID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_SaleID",
+                table: "Payments",
+                column: "SaleID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentSchedules_PaymentID",
+                table: "PaymentSchedules",
+                column: "PaymentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentSchedules_PaymentMethodID",
+                table: "PaymentSchedules",
+                column: "PaymentMethodID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoutesClients_RouteID",
                 table: "RoutesClients",
                 column: "RouteID");
@@ -626,6 +720,9 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "Expenses");
 
             migrationBuilder.DropTable(
+                name: "PaymentSchedules");
+
+            migrationBuilder.DropTable(
                 name: "RoutesClients");
 
             migrationBuilder.DropTable(
@@ -641,13 +738,19 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Sales");
+                name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "PaymentsMethods");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Stocks");
+
+            migrationBuilder.DropTable(
+                name: "Sales");
 
             migrationBuilder.DropTable(
                 name: "Clients");

@@ -16,6 +16,7 @@ namespace CtrlBox.Domain.Entities
 
         public Client   Client { get; set; }
         public Delivery Delivery { get; set; }
+        public Payment Payment { get; set; }
 
         public ICollection<Check> Checks { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
@@ -40,7 +41,13 @@ namespace CtrlBox.Domain.Entities
                 this.IsFinished = true;
 
                 this.SalesProducts = this.SalesProducts.Select(x => { x.SaleID = this.Id; return x; }).ToList();
+                this.Payment.SaleID = this.Id;
             }
+        }
+
+        public void CalculatePayment()
+        {
+            this.Payment.TotalValueSale = this.SalesProducts.Sum(x => x.TotalValue);
         }
     }
 }

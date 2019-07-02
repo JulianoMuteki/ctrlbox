@@ -1,371 +1,52 @@
-﻿
+﻿@model CtrlBox.Application.ViewModel.SaleVM
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section cssViews{
     <link rel="stylesheet" type="text/css" href="~/plugins/bootstrap-datepicker/css/datepicker.css" />
+    <link href="~/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" />
+    <link href="~/plugins/jquery-ui/jquery.ui.slider.css" rel="stylesheet" />
+    <link href="~/css/pages/tasks.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
 
 }
+
 @section scriptsViews
     {
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
     <script type="text/javascript" src="~/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/scripts/ui-sliders.js"></script>
+    <script src="~/scripts/tasks.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/scripts/controllerJS/views/sale.js"></script>
 }
 
 <script type="text/javascript">
-
-    Number.prototype.formatMoney = function (places, symbol, thousand, decimal) {
-        places = !isNaN(places = Math.abs(places)) ? places : 2;
-        symbol = symbol !== undefined ? symbol : "R$ ";
-        thousand = thousand || ".";
-        decimal = decimal || ",";
-        var number = this,
-            negative = number < 0 ? "-" : "",
-            i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
-            j = (j = i.length) > 3 ? j % 3 : 0;
-        return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
-    };
-
     jQuery(document).ready(function () {
+        @{ var clientID = ViewData["clienteID"];
+            var routeID = ViewData["linhaID"];
+            var deliveryID = ViewData["entregaID"];
+            var saleID = ViewData["saleID"];
+            decimal total = Model.Payment != null ? Model.Payment.TotalValueSale : 0;
+            bool IsCashPayment = Model.Payment != null ? Model.Payment.IsCashPayment : false;
+            }
 
-        if (jQuery().datepicker) {
-            $('.date-picker').datepicker({
-                rtl: App.isRTL(),
-                format: 'dd-mm-yyyy'
-            });
+
+        if ('@saleID' === '') {
+            SaleComponents.init('@clientID', '@routeID', '@deliveryID');
+        }
+        else {
+            SaleComponents.readOnly('@total', '@IsCashPayment');
         }
 
-                @{ var clienteID = ViewData["clienteID"];
-            var linhaID = ViewData["linhaID"];
-            var entregaID = ViewData["entregaID"];
-        }
-
-        var url = '@Url.Content("~/Sale/GetAjaxHandlerExecuteSale")?clienteID=' + '@clienteID' + '&linhaID=' + '@linhaID' + '&deliveryID=' + '@entregaID';
-
-        var oTableSale = $('#tbVenda').dataTable({
-            "sAjaxSource": url,
-            "bProcessing": true,
-            "bDestroy": true,
-            "aoColumns": [
-                        {
-                            "mData": "NomeProduto",
-                            "bSortable": false
-                        },
-                        {
-                            "mData": null,
-                            "sType": "html",
-                            "bSortable": false,
-                            "sClass": "calc",
-                            "defaultContent": "<i>Not set</i>",
-                            "mData": function (data, type, row) {
-                                if (type === 'display') {
-                                    var statusStock = "green-stripe";
-                                    if (data.Amount <= 5) {
-                                        statusStock = "red-stripe"
-                                    }
-                                    return '<span class="btn mini ' + statusStock + '">Total: ' + data.Amount + ' ' + data.UnitMeasure + '</span>';
-                                }
-                                return data;
-                            }
-                        },
-                        {
-                            "mData": null,
-                            "sType": "html",
-                            "bSortable": false,
-                            "sClass": "calc",
-                            "mData": function (data, type, row) {
-                                if (type === 'display') {
-                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeVenda"> ';
-                                    if (data.Amount == 0) {
-                                        link = '<span class="label label-important">finished products</span>'
-                                    }
-
-                                    return link;
-                                }
-                                return data;
-                            }
-                        },
-                        {
-                            "mData": null,
-                            "sType": "html",
-                            "bSortable": false,
-                            "sClass": "calc",
-                            "mData": function (data, type, row) {
-                                if (type === 'display') {
-                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeRetorno">';
-                                    if (data.Amount == 0) {
-                                        link = '<span class="label label-important">finished products</span>'
-                                    }
-                                    return link;
-                                }
-                                return data;
-                            }
-                        },
-                        {
-                            "mData": "ValorProduto"
-                        },
-                        {
-                            "mData": "Total",
-                            "sClass": "somaTotal",
-                        }
-            ]
-
-        });
-
-        var oTableSaleCheck = $('#tbCheques').DataTable({
-            "aoColumns": [
-                        {
-                            "mData": "Number",
-                            "bSortable": false
-                        },
-                        {
-                            "mData": "Value",
-                            "bSortable": false
-                        },
-                        {
-                            "mData": "DateCheck",
-                            "bSortable": false
-                        },
-                            {
-                                "mData": "Status",
-                                "bSortable": false
-                            },
-                        {
-                            "mData": "Action",
-                            "bSortable": false
-                        }],
-            "aLengthMenu": [
-       [5, 15, 20, -1],
-       [5, 15, 20, "All"] // change per page values here
-            ],
-            // set the initial value
-            "iDisplayLength": 5,
-            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-            "sPaginationType": "bootstrap",
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ records per page",
-                "oPaginate": {
-                    "sPrevious": "Prev",
-                    "sNext": "Next"
-                }
-            },
-            "aoColumnDefs": [{
-                'bSortable': false,
-                'aTargets': [0]
-            }
-            ]
-        });
-        var rowID = 0;
-        //Salva linha de cheque
-        $("#target").click(function (event) {
-            var valor =   parseFloat($("#mask_currency").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            valor = valor.formatMoney();
-
-            var tb = $('#tbCheques').DataTable();
-            var rowADD = {
-                "Number": $("#numeroCheque").val(),
-                "Value": valor,
-                "DateCheck": $("#dtCheque").val(),
-                "Status": "<span class=\"label label-warning\">Pendding</span>",
-                "Action": "<a class=\"delete\" href=\"\">Delete</a>"
-            };
-
-            tb.row.add(rowADD).draw();
-            $("#mask_currency").val("");
-            $("#numeroCheque").val("");
-            $("#dtCheque").val("");
-            $("#btnCloseModal").click();
-        });
-
-        $('#tbCheques a.delete').live('click', function (e) {
-            e.preventDefault();
-
-            if (confirm("Are you sure to delete this row ?") == false) {
-                return;
-            }
-
-            oTableSaleCheck
-                    .row($(this).parents('tr'))
-                    .remove()
-                    .draw();
-        });
-
-        //Calcula os valores para os produtos
-        $('#tbVenda tbody').on('blur', 'td.calc', function () {
-            var sum = 0;
-            var nRow = $(this).parents('tr')[0];
-
-            var valor = $(this).closest('tr').children().eq(4);
-            var valorProduto = parseFloat($(valor).html().replace(/[^0-9\,]+/g, "").replace(",", "."));
-
-            var qtde = $(nRow).find('.qtdeVenda').val();
-            var valueDiscount = $(nRow).find('.qtdeRetorno').val();
-
-            var totalRow = 0;
-            if (valueDiscount !== undefined && valueDiscount !== '') {
-                totalRow = (valorProduto * qtde) - parseInt(valueDiscount);
-            }
-            else {
-                totalRow = valorProduto * qtde;
-            }
-          
-            var tb = $('#tbVenda').dataTable();
-
-            var rowIndex = tb.fnGetPosition($(this).closest('tr')[0]);
-            tb.fnUpdate(totalRow.formatMoney(), rowIndex, 5);
-
-            $("#tbVenda tbody .somaTotal").each(function () {
-                var valor = $(this).html();
-                sum += parseFloat(valor.replace(/[^0-9\,]+/g, "").replace(",", "."));
-            });
-            $('#somaVenda').html(sum.formatMoney());
-
-            return false;
-        });
-
-        $('#calcular').click(function () {
-            var valorRecebido = parseFloat($("#mask_currencyX").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            var saldoAnterior = parseInt($("#tbTotal #saldoAnterior").text().replace(",", "."));
-
-            var sum = parseFloat($("#somaVenda").text().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            var ct = valorRecebido - sum;
-
-            $("#totalVenda").text(sum.formatMoney());
-            $("#recebido").text(valorRecebido.formatMoney())
-            $("#total").text((saldoAnterior + ct).formatMoney());
-        });
-
-        $("#btnSubmit").click(function () {
-            var saleObj = {};
-            saleObj.ClientID = '@clienteID';
-            saleObj.DeliveryID = '@entregaID';
-
-            var valorRecebido = parseFloat($("#mask_currencyX").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            var valorPrazo = parseFloat($("#mask_currencyY").val().replace(/[^0-9\,]+/g, "").replace(",", "."));
-            valorRecebido = valorRecebido || 0;
-            valorPrazo = valorPrazo || 0;
-            var retornoCaixaVazia = parseFloat($("#ReturnBox").val());
-            retornoCaixaVazia = retornoCaixaVazia || 0;
-
-            saleObj.ReceivedValue = valorRecebido;
-            saleObj.ForwardValue = valorPrazo;
-            saleObj.TotalReturnedBoxes = retornoCaixaVazia;
-
-            var oTableSale = $('#tbVenda').dataTable();
-            var tbVenda = [];
-            $.each(oTableSale.fnGetNodes(), function (index, value) {
-                var row = oTableSale.fnGetData(value);
-                var qtdeVenda = $(value).find('input.qtdeVenda').val();
-                var qtdeRetorno = $(value).find('input.qtdeRetorno').val();
-
-                qtdeVenda = qtdeVenda || 0;
-                qtdeRetorno = qtdeRetorno || 0;
-
-                row.Amount = qtdeVenda;
-                row.DiscountAmount = qtdeRetorno;
-
-                row.SaleValue = row.ValorProduto.replace(/[^0-9\.]+/g, "");
-                row.Total = row.Total.replace(/[^0-9\.]+/g, "");
-                row.ProductID = row.DT_RowId;
-                tbVenda.push(row);
-            });
-            saleObj.SalesProducts = tbVenda;
-
-            var oTableSaleCheque = $('#tbCheques').dataTable();
-            var listChecks = [];
-            $.each(oTableSaleCheque.fnGetNodes(), function (index, value) {
-                var row = oTableSaleCheque.fnGetData(value);
-
-                row.Value = row.Value.replace(/[^0-9\,]+/g, "").replace(",", ".");
-                delete row.Status;
-                delete row.Action;
-
-                listChecks.push(row);
-            });
-            saleObj.Checks = listChecks;
-
-            var myJsonString = JSON.stringify(saleObj);
-
-            $.ajax({
-                url: '@Url.Content("~/Sale/PostAjaxHandlerAddSale")',
-                type: 'POST',
-                dataType: 'json',
-                data: { strSaleJSON: myJsonString },
-                "success": function (json) {
-                    if (!json.NotAuthorized) {
-                        alert('Completo');
-                        window.history.back();
-                    }
-                },
-                "error": handleAjaxError
-            });
-            event.preventDefault();
-
-            return true;
-        });
-
+        event.preventDefault();
     });
 </script>
-<div id="editor"></div>
-<div id="result"></div>
 
 <div class="page-content">
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-        <div class="modal-body">
-            <!-- BEGIN FORM-->
-            <h3 class="form-section">Cadastro de cheque</h3>
-            <div class="row-fluid">
-                <div class="span6 ">
-                    <div class="control-group">
-                        <label class="control-label" for="numeroCheque">Número do cheque</label>
-                        <div class="controls">
-                            <input type="text" id="numeroCheque" />
-
-                        </div>
-                    </div>
-                </div>
-                <!--/span-->
-                <!--/span-->
-            </div>
-            <!--/row-->
-            <div class="row-fluid">
-                <div class="span6 ">
-                    <div class="control-group">
-                        <label class="control-label">Valor</label>
-                        <div class="controls">
-                            <input class="span6 m-wrap" id="mask_currency" type="text" />
-                            <span class="help-inline">Ex.: R$ 9.999.999,00</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!--/row-->
-            <!--/row-->
-            <div class="row-fluid">
-                <div class="span6 ">
-                    <div class="control-group">
-                        <label class="control-label">Data do cheque</label>
-                        <div class="controls">
-                            <div class="input-append date date-picker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
-                                <input id="dtCheque" class="m-wrap m-ctrl-medium date-picker" readonly size="16" type="text" value="" /><span class="add-on"><i class="icon-calendar"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!--/row-->
-            <div class="modal-footer">
-                <button id="btnCloseModal" type="button" data-dismiss="modal" class="btn">Close</button>
-                <button type="button" id="target" class="btn blue">Save changes</button>
-            </div>
-            <!-- END FORM-->
-        </div>
-    </div>
-    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <!-- BEGIN PAGE HEADER-->
@@ -396,9 +77,7 @@
                     <div class="portlet-body form">
                         <div class="tabbable portlet-tabs">
                             <ul class="nav nav-tabs">
-                                <li class=""><a id="calcular" href="#portlet_tab4" data-toggle="tab">Invoice</a></li>
-                                <li class=""><a href="#portlet_tab3" data-toggle="tab">Pagamento</a></li>
-                                <li class=""><a href="#portlet_tab2" data-toggle="tab">Check</a></li>
+                                <li class=""><a href="#portlet_tab2" data-toggle="tab">Pagamento</a></li>
                                 <li class="active"><a href="#portlet_tab1" data-toggle="tab">Venda</a></li>
                             </ul>
                             <div class="tab-content">
@@ -406,39 +85,46 @@
                                     <!-- BEGIN FORM-->
                                     <form action="#" class="form-horizontal">
                                         <div class="control-group">
-                                            <table id="tbVenda" class="table table-bordered table-hover">
+                                            <table id="tbSale" class="table table-bordered table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>Produtos</th>
-                                                        <th>Quantity to delivery</th>
-                                                        <th>Qtde</th>
-                                                        <th>Desconto</th>
-                                                        <th>Valor</th>
-                                                        <th>Total</th>
+                                                        <th>Product</th>
+                                                        <th>Available to delivery</th>
+                                                        <th>Quantity</th>
+                                                        <th>DiscountValueSale</th>
+                                                        <th>ValueProductSale</th>
+                                                        <th>TotalValue</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Nanica</td>
-                                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
-                                                        <td><input type="text" placeholder="small" class="m-wrap small"></td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>                                                  
+                                                    @foreach (var item in Model.SalesProducts)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.Product.Name</td>
+                                                            <td>N/A</td>
+                                                            <td>@item.Quantity</td>
+                                                            <td>@item.DiscountValueSale</td>
+                                                            <td>@item.ValueProductSale</td>
+                                                            <td>@item.TotalValue</td>
+                                                        </tr>
+                                                    }
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
                                                         <th colspan="4" style="text-align:right">Total:</th>
-                                                        <th id="somaVenda"></th>
+                                                        <th id="somaVenda">
+                                                            @if (Model.Payment != null)
+                                                            {
+                                                                @Model.Payment.TotalValueSale;
+                                                            }
+                                                        </th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
-
                                         </div>
-
-                                        <div class="form-actions">
+                                        <div class="isReadOlny form-actions">
                                             <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
-                                            <button id="btnSubmit" type="button" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                            <button type="button" class="btn blue btnSubmit"><i class="icon-ok"></i> Save</button>
                                             <button type="button" class="btn">Cancel</button>
                                         </div>
                                     </form>
@@ -446,226 +132,157 @@
                                 </div>
                                 <div class="tab-pane" id="portlet_tab2">
                                     <!-- BEGIN FORM-->
-                                    <form action="#" class="form-horizontal">
-                                        <div class="control-group">
-                                            <div class="table-toolbar">
-                                                <div class="btn-group">
-                                                    <a href="#portlet-config" data-toggle="modal" class="config btn gray"><i class="icon-plus"></i> Add</a>
-                                                </div>
-                                            </div>
-                                            <table id="tbCheques" class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Número do cheque</th>
-                                                        <th>Valor</th>
-                                                        <th>Data</th>
-                                                        <th>Status</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                        <div class="form-actions">
-                                            <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
-                                            <button type="button" class="btn blue"><i class="icon-ok"></i> Save</button>
-                                            <button type="button" class="btn">Cancel</button>
-                                        </div>
-                                    </form>
-                                    <!-- END FORM-->
-                                </div>
-                                <div class="tab-pane" id="portlet_tab3">
-                                    <!-- BEGIN FORM-->
-                                    <form action="#" class="form-horizontal">
-                                        <div class="control-group">
-                                            <label class="control-label">Valor recebido</label>
-                                            <div class="controls">
-                                                <input class="span6 m-wrap" id="mask_currencyX" type="text">
-
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Valor a prazo</label>
-                                            <div class="controls">
-                                                <input class="span6 m-wrap" id="mask_currencyY" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Total caixa retorno</label>
-                                            <div class="controls">
-                                                <input class="span6 m-wrap" id="ReturnBox" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-actions">
-                                            <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
-                                        </div>
-                                    </form>
-                                    <!-- END FORM-->
-                                </div>
-                                <div class="tab-pane invoice" id="portlet_tab4">
-
-                                    <!-- BEGIN FORM-->
-                                    <form action="#" class="form-horizontal">
-                                        <div id="dvContainer">
-                                            <div class="row-fluid invoice">
-                                                <div class="row-fluid invoice-logo">
-                                                    <div class="span6 invoice-logo-space"><img src="~/img/invoice_ctrlbox.png" alt="" /> </div>
-                                                    <div class="span6">
-                                                        <p>#5652256 / 28 Feb 2019 <span class="muted">Nota</span></p>
+                                    <h3 class="form-section">Payment form</h3>
+                                    <div class="row-fluid">
+                                        <div class="span6 ">
+                                            <div class="row-fluid">
+                                                <div class="span6">
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="firstName">Total Amount</label>
+                                                        <div class="controls">
+                                                            <input id="txtTotalAmount" class="m-wrap medium" type="text" placeholder="R$ 0,00" disabled="">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <hr />
-                                                <div class="row-fluid">
-                                                    <div class="span3">
-                                                        <h4>Client:</h4>
-                                                        <ul class="unstyled">
-                                                            <li>John Doe</li>
-                                                            <li>Mr Nilson Otto</li>
-                                                            <li>FoodMaster Ltd</li>
-                                                            <li>Madrid</li>
-                                                            <li>Spain</li>
-                                                            <li>1982 OOP</li>
-                                                        </ul>
+                                                <div class="span6 isReadOlny">
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="firstName">Rest</label>
+                                                        <div class="controls">
+                                                            <input id="txtRest" class="m-wrap medium" type="text" placeholder="R$ 0,00" disabled="">
+                                                        </div>
                                                     </div>
-                                                    <div class="span4">
-                                                        <h4>Payment Details:</h4>
-                                                        <ul class="unstyled">
-                                                            <li><strong>V.A.T Reg #:</strong> 542554(DEMO)78</li>
-                                                            <li><strong>Account Name:</strong> FoodMaster Ltd</li>
-                                                            <li><strong>SWIFT code:</strong> 45454DEMO545DEMO</li>
-                                                            <li><strong>V.A.T Reg #:</strong> 542554(DEMO)78</li>
-                                                            <li><strong>Account Name:</strong> FoodMaster Ltd</li>
-                                                            <li><strong>SWIFT code:</strong> 45454DEMO545DEMO</li>
-                                                        </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/span-->
+                                        <div class="span6 ">
+                                            <div class="control-group">
+                                                <label class="control-label">Payment option</label>
+                                                <div id="rdCashPayment" class="controls">
+                                                    <label class="radio">
+                                                        <input type="radio" id="IsCashRadio" name="IsCashPayment" value="True" />
+                                                        Pay cash
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" name="IsCashPayment" value="False" checked />
+                                                        Financed
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/span-->
+                                    </div>
+                                    <!--/row-->
+                                    <div class="isCashPayment">
+                                        <div class="row-fluid isReadOlny">
+                                            <div class="span6 ">
+                                                <div class="control-group">
+                                                    <label class="control-label">Method</label>
+                                                    <div class="controls">
+                                                        <select id="ddlMethod" class="span6 select2_option" data-placeholder="Choose a method" tabindex="1" name="UserSelected"></select>
                                                     </div>
-                                                    <div class="span4 invoice-payment">
-                                                        <h4>Checks:</h4>
-                                                        <table class="table-bordered">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="isReadOlny">
+                                            <hr />
+                                            <div class="row-fluid">
+                                                <div class="span6 ">
+                                                    <div class="control-group">
+                                                        <div id="slider-range-max" class="slider bg-purple"></div>
+                                                        <div class="slider-value">
+                                                            Parcelas:
+                                                            <span id="slider-range-max-amount"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group errorForm">
+                                                        <label class="control-label">Pre-Plot value<span class="required">*</span></label>
+                                                        <div class="controls input-icon">
+                                                            <input type="text" id="valueDivide" class="span6 m-wrap" placeholder="R$ _1.234,56">
+                                                            <span style="display:none;" class="input-error tooltips iconError" data-original-title="please write a value date">
+                                                                <i style="display:none;" class="icon-exclamation-sign iconError"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="span6 ">
+                                                    <div class="control-group errorForm">
+                                                        <label class="control-label">First Exprire Date<span class="required">*</span></label>
+                                                        <div class="controls input-icon">
+                                                            <input type="text" id="exprireDate" class="span6 m-wrap" placeholder="dd/mm/yyyy">
+                                                            <span style="display:none;" class="input-error tooltips iconError" data-original-title="please write a valid date">
+                                                                <i style="display:none;" class="icon-exclamation-sign iconError"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <div class="row-fluid">
+                                                <div class="span6 ">
+                                                    <input type="submit" id="AddPayment" class="btn blue" value="AddPayment" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row-fluid">
+                                            <div class="span8">
+                                                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                                                <div class="portlet">
+                                                    <div class="portlet-title">
+                                                        <div class="caption"><i class="icon-calendar"></i>Payment Schedule</div>
+                                                        <div class="tools">
+                                                            <a href="javascript:;" class="collapse"></a>
+                                                        </div>
+                                                        <div class="actions isReadOlny">
+                                                            <div class="btn-group">
+                                                                <a class="btn mini red" id="btnClear" href="#">Clear  <i class=" icon-remove"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body">
+                                                        <table id="tbPayment" class="table table-striped table-bordered table-advance table-hover">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Número</th>
-                                                                    <th>Data</th>
-                                                                    <th class="numeric">Valor</th>
-                                                                    <th class="numeric">Status</th>
+                                                                    <th></th>
+                                                                    <th><i class="icon-money"></i> Value</th>
+                                                                    <th><i class="icon-briefcase"></i> Method</th>
+                                                                    <th><i class="icon-calendar"></i> Date</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>616164161</td>
-                                                                    <td>05-05-2019</td>
-                                                                    <td class="numeric">$1.38</td>
-                                                                    <td class="numeric">Pendente</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>616164161</td>
-                                                                    <td>05-05-2019</td>
-                                                                    <td class="numeric">$1.38</td>
-                                                                    <td class="numeric">Pendente</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>616164161</td>
-                                                                    <td>05-05-2019</td>
-                                                                    <td class="numeric">$1.38</td>
-                                                                    <td class="numeric">Pendente</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>616164161</td>
-                                                                    <td>05-05-2019</td>
-                                                                    <td class="numeric">$1.38</td>
-                                                                    <td class="numeric">Pendente</td>
-                                                                </tr>
+                                                                @if (Model.Payment != null && Model.Payment.PaymentsSchedules != null)
+                                                                {
+                                                                    @foreach (var item in Model.Payment.PaymentsSchedules)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@(Model.Payment.PaymentsSchedules.IndexOf(item) + 1) </td>
+                                                                            <td>@item.BenefitValue</td>
+                                                                            <td>@item.PaymentMethodID</td>
+                                                                            <td>@item.ExprireDate</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <div class="row-fluid">
-                                                    <table class="table table-striped table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Item</th>
-                                                                <th class="hidden-480">Description</th>
-                                                                <th class="hidden-480">Quantity</th>
-                                                                <th class="hidden-480">Unit Cost</th>
-                                                                <th>Total</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Hardware</td>
-                                                                <td class="hidden-480">Server hardware purchase</td>
-                                                                <td class="hidden-480">32</td>
-                                                                <td class="hidden-480">$75</td>
-                                                                <td>$2152</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>2</td>
-                                                                <td>Furniture</td>
-                                                                <td class="hidden-480">Office furniture purchase</td>
-                                                                <td class="hidden-480">15</td>
-                                                                <td class="hidden-480">$169</td>
-                                                                <td>$4169</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>3</td>
-                                                                <td>Foods</td>
-                                                                <td class="hidden-480">Company Anual Dinner Catering</td>
-                                                                <td class="hidden-480">69</td>
-                                                                <td class="hidden-480">$49</td>
-                                                                <td>$1260</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>3</td>
-                                                                <td>Software</td>
-                                                                <td class="hidden-480">Payment for Jan 2013</td>
-                                                                <td class="hidden-480">149</td>
-                                                                <td class="hidden-480">$12</td>
-                                                                <td>$866</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <hr />
-                                                <div class="row-fluid">
-                                                    <div class="span4">
-                                                        <div class="well">
-                                                            <address>
-                                                                <strong>CtrlBox, Inc.</strong><br />
-                                                                795 - Av. Park Ave<br />
-                                                                Mauá, CEP 94107<br />
-                                                                <abbr title="Phone">P:</abbr> (234) 145-1810
-                                                            </address>
-                                                            <address>
-                                                                <strong>Juliano C. Pestili </strong><br />
-                                                                <a href="mailto:#">juliano.pestili@email.com</a>
-                                                            </address>
-                                                        </div>
-                                                    </div>
-                                                    <div class="span8 invoice-block">
-                                                        <ul class="unstyled amounts">
-                                                            <li><strong>Sub - Total amount:</strong> $9265</li>
-                                                            <li><strong>Discount:</strong> 12.9%</li>
-                                                            <li><strong>VAT:</strong> -----</li>
-                                                            <li><strong>Grand Total:</strong> $12489</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                <!-- END SAMPLE TABLE PORTLET-->
                                             </div>
                                         </div>
-                                        <div class="form-actions">
-                                            <a class="btn blue big hidden-print" onclick="javascript:window.print();">Fechar e enviar <i class="icon-envelope icon-big"></i></a>
-                                            <a id="btnPrintPDF" class="btn purple big hidden-print" onclick="javascript:window.print();">Imprimir PDF <i class="icon-print icon-big"></i></a>
-                                            <a class="btn green big hidden-print">Finish Your Invoice <i class="m-icon-big-swapright m-icon-white"></i></a>
-                                        </div>
-                                    </form>
+                                    </div>
+                                    <div class="isReadOlny form-actions">
+                                        <button type="submit" class="btn blue btnSubmit"><i class="icon-ok"></i> Save</button>
+                                        <button type="button" class="btn">Cancel</button>
+                                    </div>
                                     <!-- END FORM-->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <!-- END PAGE CONTENT-->

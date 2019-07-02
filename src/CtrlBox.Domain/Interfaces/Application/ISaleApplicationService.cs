@@ -7,5 +7,6 @@ namespace CtrlBox.Domain.Interfaces.Application
     public interface ISaleApplicationService : IApplicationServiceBase<SaleVM>
     {
         ICollection<SaleVM> FindAllByDelivery(Guid deliveryID);
+        SaleVM GetByClientIDAndDeliveryID(Guid clientID, Guid deliveryID);
     }
 }

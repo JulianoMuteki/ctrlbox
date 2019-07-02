@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190626083026_InitialCreate")]
+    [Migration("20190629160208_Initial-Create")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -200,6 +200,108 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("Expenses");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("PaymentID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsCashPayment");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<bool>("IsPaid");
+
+                    b.Property<int>("NumberParcels");
+
+                    b.Property<DateTime>("PaymentDate");
+
+                    b.Property<decimal>("RemainingValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<Guid>("SaleID");
+
+                    b.Property<decimal>("TotalValueSale")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("Id")
+                        .HasName("PaymentID");
+
+                    b.HasIndex("SaleID")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("PaymentMethodID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("Descrition")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("MethodName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id")
+                        .HasName("PaymentMethodID");
+
+                    b.ToTable("PaymentsMethods");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.PaymentSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("PaymentScheduleID");
+
+                    b.Property<decimal>("BenefitValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<DateTime>("ExprireDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<Guid>("PaymentID");
+
+                    b.Property<Guid>("PaymentMethodID");
+
+                    b.Property<DateTime?>("RealizedDate");
+
+                    b.HasKey("Id")
+                        .HasName("PaymentScheduleID");
+
+                    b.HasIndex("PaymentID");
+
+                    b.HasIndex("PaymentMethodID");
+
+                    b.ToTable("PaymentSchedules");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -322,11 +424,14 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("SaleID");
 
-                    b.Property<int>("Amount");
+                    b.Property<int>("DiscountValueSale");
 
-                    b.Property<int>("DiscountAmount");
+                    b.Property<int>("Quantity");
 
-                    b.Property<decimal>("SaleValue")
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("ValueProductSale")
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("ProductID", "SaleID");
@@ -619,6 +724,27 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Delivery", "Delivery")
                         .WithMany("Expenses")
                         .HasForeignKey("DeliveryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
+                        .WithOne("Payment")
+                        .HasForeignKey("CtrlBox.Domain.Entities.Payment", "SaleID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.PaymentSchedule", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Payment", "Payment")
+                        .WithMany("PaymentsSchedules")
+                        .HasForeignKey("PaymentID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("PaymentsSchedules")
+                        .HasForeignKey("PaymentMethodID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

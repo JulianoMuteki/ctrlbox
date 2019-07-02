@@ -32,7 +32,6 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.IsPaid = false;
-                this.IsCashPayment = false;
                 this.PaymentsSchedules = this.PaymentsSchedules.Select(x => { x.PaymentID = this.Id; return x; }).ToList();
             }
         }

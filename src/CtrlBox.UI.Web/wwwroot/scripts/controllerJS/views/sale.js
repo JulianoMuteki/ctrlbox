@@ -244,9 +244,9 @@ var SaleComponents = function () {
             sale.Payment.IsCashPayment = $(".radio input[type=radio][id=IsCashRadio]").is(":checked");
             
             if (sale.Payment.IsCashPayment) {
-                $(".IsCashPayment").hide();
+                $(".isCashPayment").hide();
             } else {
-                $(".IsCashPayment").show();
+                $(".isCashPayment").show();
             }
         });
     }

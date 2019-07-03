@@ -2,6 +2,7 @@
 using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -25,6 +26,18 @@ namespace CtrlBox.UI.Web.Controllers
         public IActionResult GetAjaxHandlerAddresses()
         {
             var adrressesVMs = _addressApplicationService.GetAll();
+
+            return Json(new
+            {
+                aaData = adrressesVMs,
+                success = true
+            });
+        }
+
+        [HttpGet]
+        public IActionResult GetAjaxHandlerAddressByID(string addressID)
+        {
+            var adrressesVMs = _addressApplicationService.GetById(new Guid(addressID));
 
             return Json(new
             {

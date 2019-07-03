@@ -11,6 +11,7 @@
 @section scriptsViews
     {
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <partial name="~/Views/PartialsSections/_ViewModalAddress.cshtml" />
     <script src="~/scripts/controllerJS/views/address.js"></script>
 }
 
@@ -50,6 +51,7 @@
                         <div class="caption"><i class="icon-bookmark"></i>Addresses</div>
                         <div class="actions">
                             <a asp-action="Create" asp-controller="Address" class="btn green"><i class="icon-plus"></i> Add</a>
+                            <a class=" btn green" data-toggle="modal" href="#modalAddress">View Demo</a>
                         </div>
                     </div>
                     <div class="portlet-body">

@@ -80,7 +80,19 @@ namespace CtrlBox.Application
 
         public AddressVM GetById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var address = _unitOfWork.Repository<Address>().GetById(id);
+                return _mapper.Map<AddressVM>(address); ;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<AddressApplicationService>("Unexpected error fetching add address", nameof(this.GetById), ex);
+            }
         }
 
         public Task<AddressVM> GetByIdAsync(Guid id)

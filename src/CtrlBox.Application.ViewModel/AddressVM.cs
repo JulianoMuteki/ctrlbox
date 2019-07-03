@@ -12,6 +12,14 @@ namespace CtrlBox.Application.ViewModel
         public string Number { get; set; }
         public string District { get; set; }
         public string Estate { get; set; }
-        public string Reference { get; set; }
+        
+        private string _reference;
+
+        public string Reference
+        {
+            get { return _reference ?? string.Empty; }
+            set { _reference = value; }
+        }
+
     }
 }

@@ -58,7 +58,19 @@ namespace CtrlBox.Application
 
         public ICollection<AddressVM> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var address = _unitOfWork.Repository<Address>().GetAll();
+                return _mapper.Map<ICollection<AddressVM>>(address); ;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<AddressApplicationService>("Unexpected error fetching add sale", nameof(this.GetAll), ex);
+            }
         }
 
         public Task<ICollection<AddressVM>> GetAllAsync()

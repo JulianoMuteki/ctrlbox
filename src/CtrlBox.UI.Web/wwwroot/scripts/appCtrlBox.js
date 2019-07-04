@@ -50,7 +50,7 @@
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');
-                        window.history.back();
+                        window.location.reload(false);
                     }
                 },
                 "error": handleAjaxError

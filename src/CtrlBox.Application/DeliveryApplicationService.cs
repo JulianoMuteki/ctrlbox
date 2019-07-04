@@ -67,6 +67,25 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
+        public void FinalizeDelivery(Guid deliveryID)
+        {
+            try
+            {
+                var delivery = _unitOfWork.Repository<Delivery>().GetById(deliveryID);
+                delivery.FinalizeDelivery();
+                _unitOfWork.Repository<Delivery>().Update(delivery);
+                _unitOfWork.Commit();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<DeliveryApplicationService>("Unexpected error fetching put delivery", nameof(this.FinalizeDelivery), ex);
+            }
+        }
+
         public ICollection<DeliveryVM> GetAll()
         {
             try

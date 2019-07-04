@@ -9,12 +9,11 @@ namespace CtrlBox.Domain.Entities
         public string Name { get; set; }
         public int QuantityBoxes { get; set; }
         public float BalanceDue { get; set; }
-
-        public string Address { get; set; }
         public string Phone { get; set; }
         public string Contact { get; set; }
 
-        public bool IsDelivery { get; set; }
+        public Guid AddressID { get; set; }
+        public virtual Address Address { get; set; }
 
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<Sale> Sales { get; set; }

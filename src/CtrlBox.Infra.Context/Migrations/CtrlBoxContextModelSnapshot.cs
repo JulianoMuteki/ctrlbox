@@ -19,6 +19,54 @@ namespace CtrlBox.Infra.Context.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("AddressID");
+
+                    b.Property<string>("CEP")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Estate")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id")
+                        .HasName("AddressID");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.Property<Guid>("Id")
@@ -55,9 +103,7 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ClientID");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<Guid>("AddressID");
 
                     b.Property<double>("BalanceDue")
                         .HasColumnType("float");
@@ -71,8 +117,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<DateTime>("DateModified");
 
                     b.Property<bool>("IsDelete");
-
-                    b.Property<bool>("IsDelivery");
 
                     b.Property<bool>("IsDisable");
 
@@ -88,6 +132,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id")
                         .HasName("ClientID");
+
+                    b.HasIndex("AddressID");
 
                     b.ToTable("Clients");
                 });
@@ -671,6 +717,14 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
                         .WithMany("Checks")
                         .HasForeignKey("SaleID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Client", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Address", "Address")
+                        .WithMany("Clients")
+                        .HasForeignKey("AddressID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

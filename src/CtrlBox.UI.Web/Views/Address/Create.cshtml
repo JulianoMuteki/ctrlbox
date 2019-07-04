@@ -1,0 +1,169 @@
+﻿@model CtrlBox.Application.ViewModel.AddressVM
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Adicionando Javascript -->
+<script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#rua").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#uf").val("");
+                $("#ibge").val("");
+            }
+
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if(validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#rua").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+                        $("#ibge").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#rua").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                                $("#ibge").val(dados.ibge);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+
+</script>
+
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Address</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Index</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Create</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-cogs"></i>New address</div>
+                    </div>
+                    <div class="portlet-body">
+                        <!-- BEGIN FORM-->
+                        <form asp-action="Create" asp-controller="Address" class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label">Cep</label>
+                                <div class="controls">
+                                    <input id="cep" type="text" name="CEP" placeholder="cep" class="m-wrap medium" />
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Rua</label>
+                                <div class="controls">
+                                    <input id="rua" type="text" name="Street" placeholder="rua" class="m-wrap large" />
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Número</label>
+                                <div class="controls">
+                                    <input type="text" name="Number" placeholder="número" class="m-wrap medium" />
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Bairro</label>
+                                <div class="controls">
+                                    <input id="bairro" name="District" type="text" placeholder="bairro" class="m-wrap large" />
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Cidade</label>
+                                <div class="controls">
+                                    <input id="cidade"name="City" type="text" placeholder="cidade" class="m-wrap large" />
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Estado</label>
+                                <div class="controls">
+                                    <input id="uf" name="Estate" type="text" placeholder="estado" class="m-wrap medium" />
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Referência</label>
+                                <div class="controls">
+                                    <input type="text" name="Reference" placeholder="referência" class="m-wrap large" />
+                                    <span class="help-inline">Some hint here</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                <button type="button" class="btn">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>

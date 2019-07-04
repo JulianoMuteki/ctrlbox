@@ -88,7 +88,15 @@
                         "mData": "BalanceDue"
                     },
                     {
-                        "mData": "Address"
+                        "mData": null,
+                        "sType": "html",
+                        "mRender": function (data, type, row) {
+                            if (type === 'display') {
+                                var id = row.AddressID;
+                                return '<label onClick="AppCtrlBox.callModalAddress(\'' + id + '\')" class="btn mini"><i class="icon-link"></i> Address</label>';
+                            }
+                            return data;
+                        }
                     },
                     {
                         "mData": "Phone"

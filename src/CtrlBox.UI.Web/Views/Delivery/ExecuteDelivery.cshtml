@@ -7,7 +7,10 @@
     {
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
 }
-    <script type="text/javascript">
+
+<partial name="~/Views/PartialsSections/_ViewModalAddress.cshtml" />
+
+<script type="text/javascript">
             @{ var entregaID = ViewData["entregaID"];
                 var linhaID = ViewData["linhaID"];
             }
@@ -58,7 +61,15 @@
                         "mData": "Name"
                     },
                     {
-                        "mData": "Address"
+                        "mData": null,
+                        "sType": "html",
+                        "mRender": function (data, type, row) {
+                            if (type === 'display') {
+                                var id = row.AddressID;
+                                return '<label onClick="AppCtrlBox.callModalAddress(\'' + id + '\')" class="btn mini"><i class="icon-link"></i> Address</label>';
+                            }
+                            return data;
+                        }
                     },
                     {
                         "mData": "Phone"
@@ -72,7 +83,7 @@
                         "bSortable": false,
                         "sClass": "calc",
                         "mRender": function (data, type, row) {
-                            if (type === 'display') {                               
+                            if (type === 'display') {
                                 var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
                                 var link = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
 
@@ -125,7 +136,7 @@
                                                    {
                                                        "mData": "Name",
                                                        "bSortable": false
-                                                   },                             
+                                                   },
                                                    {
                                                         "mData": null,
                                                         "sType": "html",
@@ -169,26 +180,6 @@
         });
     }
     jQuery(document).ready(function () {
-
-         @*var url = '@Url.Content("~/Delivery/AjaxHandlerExecutarEntrega")?entregaID=' + '@entregaID';
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            contentType: "application/json; charset=utf-8",
-            dataType: 'JSON',
-            "error": handleAjaxError,
-            complete: function (xhr, status) {
-                if (status === 'error' || !xhr.responseText) {
-                    alert(status);
-                }
-                else {
-                    var output = JSON.parse(xhr.responseText);
-                    loadTable(output);
-                }
-            }
-        });*@
-
         loadTable();
         var rowID = 0;
         //Salva linha de cheque
@@ -196,7 +187,6 @@
 
             var tb = $('#tbDespesas').DataTable();
             var rowADD = {
-                // "DT_RowId": rowID + 1,
                 "Descricao": $("#numeroCheque").val(),
                 "Valor": $("#mask_currency").val().replace(/[^0-9\,]+/g, "").replace(",", ".")
             };
@@ -208,7 +198,6 @@
                 url: '@Url.Content("~/Delivery/SubmitDespesa")',
                 type: 'POST',
                 dataType: 'json',
-                // contentType: "application/json",
                 data: { entregaID: '@entregaID', descricao : desc, valor : val },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
@@ -241,7 +230,7 @@
 
 
     });
-    </script>
+</script>
 
 <div class="page-content">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->

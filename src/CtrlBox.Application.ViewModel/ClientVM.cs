@@ -10,11 +10,13 @@ namespace CtrlBox.Application.ViewModel
         public int QuantityBoxes { get; set; }
         public float BalanceDue { get; set; }
 
-        public string Address { get; set; }
         public string Phone { get; set; }
         public string Contact { get; set; }
 
         public bool SaleIsFinished { get; set; }
+
+        public Guid AddressID { get; set; }
+        public virtual AddressVM Address { get; set; }
 
         public ICollection<ClientProductValueVM> CustomersProductsValues { get; set; }
         public ICollection<SaleVM> Sales { get; set; }

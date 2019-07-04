@@ -33,6 +33,7 @@ namespace CtrlBox.Domain.Entities
             this.Description = update.Description;
             this.Weight = update.Weight;
             this.DateModified = DateTime.Now;
+            this.UnitMeasure = update.UnitMeasure;
         }
     }
 }

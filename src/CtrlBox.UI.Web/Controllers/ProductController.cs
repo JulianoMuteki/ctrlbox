@@ -38,17 +38,21 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
 
-        public ActionResult Create()
+        public ActionResult Create(Guid productID)
         {
-            return View();
+            var productVM = _productService.GetById(productID);
+            return View(productVM);
         }
 
         [HttpPost]
         public ActionResult Create(ProductVM productVM)
         {
-            _productService.Add(productVM);
-            var productVMs = _productService.GetAll();
-            return View("Index", productVMs);
+            if (string.IsNullOrEmpty(productVM.DT_RowId))
+                _productService.Add(productVM);
+            else
+                _productService.Update(productVM);
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

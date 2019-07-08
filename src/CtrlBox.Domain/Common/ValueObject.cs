@@ -1,4 +1,5 @@
-﻿
+﻿using FluentValidation;
+using FluentValidation.Results;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,6 +52,16 @@ namespace CtrlBox.Domain.Common
         public static bool operator !=(ValueObject<T> a, ValueObject<T> b)
         {
             return !(a == b);
+        }
+
+        public bool IsValid { get; private set; }
+        public ValidationResult ValidationResult { get; private set; }
+
+        public bool Validate<TModel>(TModel model, AbstractValidator<TModel> validator)
+        {
+            ValidationResult = validator.Validate(model);
+            this.IsValid = ValidationResult.IsValid;
+            return this.IsValid;
         }
     }
 }

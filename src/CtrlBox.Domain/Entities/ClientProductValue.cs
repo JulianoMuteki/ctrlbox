@@ -1,8 +1,8 @@
 ﻿using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -16,14 +16,12 @@ namespace CtrlBox.Domain.Entities
         public float Price { get; set; }
         public ClientProductValue()
         {
-                
+            Validate(this, new ClientProductValueValidator());
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
-
         }
     }
 }

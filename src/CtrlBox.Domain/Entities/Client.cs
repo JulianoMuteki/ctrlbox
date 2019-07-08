@@ -1,4 +1,5 @@
 ﻿using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 
@@ -20,14 +21,20 @@ namespace CtrlBox.Domain.Entities
         public ICollection<RouteClient> RoutesClients { get; set; }
 
         public Client()
+            :base()
         {
-            this.Id = Guid.NewGuid();
-            this.DateModified = DateTime.Now;
-            this.CreationDate = DateTime.Now;
-
             this.RoutesClients = new HashSet<RouteClient>();
             this.Sales = new HashSet<Sale>();         
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
+        }
+
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+                base.Validate(this, new ClientValidator());               
+            }
         }
     }
 }

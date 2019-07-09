@@ -2,12 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
     public class RouteClient : ValueObject<RouteClient>
     {
+        public Guid RouteID { get; set; }
+        public Guid ClientID { get; set; }
+
+        public Route Route { get; set; }
+        public Client Client { get; set; }
+
         public RouteClient()
         {
 
@@ -18,19 +23,9 @@ namespace CtrlBox.Domain.Entities
             this.RouteID = routeID;
         }
 
-        public Guid RouteID { get; set; }
-        public Guid ClientID { get; set; }
-
-        public Route Route { get; set; }
-        public Client Client { get; set; }
-
         protected override IEnumerable<object> GetEqualityComponents()
         {
-         
-                return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
-            
+            return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
         }
-
-
     }
 }

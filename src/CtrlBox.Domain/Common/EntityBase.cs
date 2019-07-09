@@ -2,7 +2,7 @@
 
 namespace CtrlBox.Domain.Common
 {
-    public abstract class EntityBase
+    public abstract class EntityBase: BaseValidate
     {
         public Guid Id { get; protected set; }
         public DateTime CreationDate { get; protected set; }

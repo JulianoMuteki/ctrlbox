@@ -7,6 +7,12 @@ namespace CtrlBox.Domain.Entities
 {
     public class RouteClient : ValueObject<RouteClient>
     {
+        public Guid RouteID { get; set; }
+        public Guid ClientID { get; set; }
+
+        public Route Route { get; set; }
+        public Client Client { get; set; }
+
         public RouteClient()
         {
 
@@ -16,12 +22,6 @@ namespace CtrlBox.Domain.Entities
             this.ClientID = new Guid(clientID);
             this.RouteID = routeID;
         }
-
-        public Guid RouteID { get; set; }
-        public Guid ClientID { get; set; }
-
-        public Route Route { get; set; }
-        public Client Client { get; set; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

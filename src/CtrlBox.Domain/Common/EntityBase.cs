@@ -2,13 +2,19 @@
 
 namespace CtrlBox.Domain.Common
 {
-    public abstract class EntityBase: BaseValidate
+    public abstract class EntityBase
     {
         public Guid Id { get; protected set; }
         public DateTime CreationDate { get; protected set; }
         public DateTime DateModified { get; protected set; }
         public bool IsDelete { get; protected set; }
-        public bool IsDisable { get;protected set; }
+        public bool IsDisable { get; protected set; }
+
+        private IComponent _component;
+        public IComponent Component
+        {
+            get { return _component ?? new BaseValidate(); }
+        }
 
         public EntityBase()
         {

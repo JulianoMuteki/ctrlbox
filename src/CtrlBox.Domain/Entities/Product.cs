@@ -31,7 +31,7 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                base.Validate(this, new ProductValidator());
+                base.Component.Validate(this, new ProductValidator());
             }
         }
 

@@ -25,8 +25,7 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.DateModified)
                     .IsRequired();
 
-            builder.Ignore(x => x.IsValid);
-            builder.Ignore(x => x.ValidationResult);
+            builder.Ignore(x => x.Component);
         }
     }
 }

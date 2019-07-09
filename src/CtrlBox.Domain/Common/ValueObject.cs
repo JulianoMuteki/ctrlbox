@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace CtrlBox.Domain.Common
@@ -8,8 +6,7 @@ namespace CtrlBox.Domain.Common
     public abstract class ValueObject<T> where T : ValueObject<T>
     {
         protected abstract IEnumerable<object> GetEqualityComponents();
-
-
+        
         public override bool Equals(object obj)
         {
             var valueObject = obj as T;
@@ -21,8 +18,7 @@ namespace CtrlBox.Domain.Common
 
             return EqualsCore(valueObject);
         }
-
-
+        
         private bool EqualsCore(ValueObject<T> other)
         {
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
@@ -33,8 +29,7 @@ namespace CtrlBox.Domain.Common
             return GetEqualityComponents()
                 .Aggregate(1, (current, obj) => current * 23 + (obj?.GetHashCode() ?? 0));
         }
-
-
+        
         public static bool operator ==(ValueObject<T> a, ValueObject<T> b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
@@ -47,22 +42,16 @@ namespace CtrlBox.Domain.Common
 
             return a.Equals(b);
         }
-
-
+        
         public static bool operator !=(ValueObject<T> a, ValueObject<T> b)
         {
             return !(a == b);
         }
 
-        public bool IsValid { get; private set; }
-        public ValidationResult ValidationResult { get; private set; }
-
-        public bool Validate<TModel>(TModel model, AbstractValidator<TModel> validator)
+        private IComponent _component;
+        public IComponent Component
         {
-            ValidationResult = validator.Validate(model);
-            this.IsValid = ValidationResult.IsValid;
-            return this.IsValid;
+            get { return _component ?? new BaseValidate(); }
         }
     }
 }
-

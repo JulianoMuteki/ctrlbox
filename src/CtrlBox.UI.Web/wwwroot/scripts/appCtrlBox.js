@@ -11,7 +11,7 @@
         $('#modalAddress').modal('show');
     }
 
-    function  getAddress(id) {
+    function getAddress(id) {
 
         $.ajax({
             url: '/../../Address/GetAjaxHandlerAddressByID',
@@ -26,10 +26,35 @@
             "error": handleAjaxError
         });
     }
-     
+
+    function putFinalizeDelivery(deliveryID) {
+
+    }
     return {
-        callModalAddress: function(addressID){
+        callModalAddress: function (addressID) {
             getAddress(addressID);
+        },
+
+        callModalFinalizeDelivery: function (deliveryID) {
+            $("#btnCloseDelivery").val(deliveryID);
+            $('#modalFinalizeDelivery').modal('show');
+        },
+        putFinalizeDelivery: function (button) {
+
+            var id = $(button).val();
+            $.ajax({
+                url: 'Delivery/PutAjaxHandlerFinalizeDelivery',
+                type: 'POST',
+                dataType: 'json',
+                data: { deliveryID: id },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        window.location.reload(false);
+                    }
+                },
+                "error": handleAjaxError
+            });
         }
     };
 }();

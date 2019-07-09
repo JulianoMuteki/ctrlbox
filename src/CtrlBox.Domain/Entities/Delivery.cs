@@ -48,6 +48,7 @@ namespace CtrlBox.Domain.Entities
         public void FinalizeDelivery()
         {
             this.IsFinalized = true;
+            this.DtEnd = DateTime.Now;
             this.DateModified = DateTime.Now;
             this.FinalizedBy = "Juliano";
         }

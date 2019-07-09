@@ -4,8 +4,9 @@
 
 @section scriptsViews
     {
-<partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
 }
+<partial name="~/Views/Modals/_ModalFinalizeDelivery.cshtml" />
 
 <script type="text/javascript">
     function getElementRelation(url) {
@@ -52,9 +53,21 @@
                             "mData": "DtEnd"
                         },
                         {
-                            "mData": "IsFinalized"
-                        }
+                            "mData": null,
+                            "sType": "html",
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    var id = row.DT_RowId;
+                                    var link = '<label onClick="AppCtrlBox.callModalFinalizeDelivery(\'' + id + '\')" class="btn mini"><i class="icon-link"></i> Finalize</label>';
 
+                                    if (row.IsFinalized) {
+                                        link = '<span class="label label-success">Closed</span>';
+                                    }
+                                    return link;
+                                }
+                                return data;
+                            }
+                        }
             ]
         });
     });

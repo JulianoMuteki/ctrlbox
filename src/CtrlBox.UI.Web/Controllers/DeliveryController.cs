@@ -191,5 +191,24 @@ namespace CtrlBox.UI.Web.Controllers
                 success = true
             });
         }
+
+        [HttpPost]
+        public ActionResult PutAjaxHandlerFinalizeDelivery(Guid deliveryID)
+        {
+            try
+            {
+                _deliveryService.FinalizeDelivery(deliveryID);
+
+                return Json(new
+                {
+                    aaData = "ok",
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

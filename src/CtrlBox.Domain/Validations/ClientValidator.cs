@@ -1,5 +1,4 @@
-﻿using CtrlBox.Domain.Common;
-using CtrlBox.Domain.Entities;
+﻿using CtrlBox.Domain.Entities;
 using FluentValidation;
 
 namespace CtrlBox.Domain.Validations

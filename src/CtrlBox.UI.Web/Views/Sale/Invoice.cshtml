@@ -39,31 +39,31 @@
     <section id="client-info">
         <span>Bill to:</span>
         <div>
-            <span class="bold">Slate Rock and Gravel Company</span>
+            <span class="bold">@Model.Client.Name</span>
         </div>
         <div>
-            <span>222 Rocky Way</span>
+            <span>@Model.Client.Address.Street - @Model.Client.Address.Number</span>
         </div>
         <div>
-            <span>30000 Bedrock, Cobblestone County</span>
+            <span>@Model.Client.Address.City @Model.Client.Address.Estate</span>
         </div>
         <div>
-            <span>+555 7 123-5555</span>
+            <span>@Model.Client.Phone</span>
         </div>
         <div>
-            <span>fred@slaterockgravel.bed</span>
+            <span>juliano.pestili@outlook.com</span>
         </div>
         <div>
-            <span>Attn: Fred Flintstone</span>
+            <span>Attn: Juliano</span>
         </div>
     </section>
     <div class="clearfix"></div>
-    <section id="invoice-title-number">
-        <span id="title">Invoice</span>
+    <section class="invoice-title-number">
+        <span class="title">Invoice</span>
         <span id="number">#001</span>
     </section>
     <div class="clearfix"></div>
-    <section id="items">
+    <section class="items">
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th></th> <!-- Dummy cell for the row number and row commands -->
@@ -78,8 +78,8 @@
             {
                 <tr data-iterate="item">
                     <td>1</td> <!-- Don't remove this column as it's needed for the row commands -->
-                    <td>@item.Quantity</td>
                     <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
                     <td>@item.ValueProductSale</td>
                     <td>@item.DiscountValueSale</td>
                     <td>2%</td>
@@ -94,25 +94,48 @@
     <section id="sums">
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th>Subtotal:</th>
-                <td>{amount_subtotal}</td>
+                <th>Total:</th>
+                <td>@Model.Payment.TotalValueSale</td>
             </tr>
             <tr data-iterate="tax">
-                <th>Tax 1:</th>
-                <td>{tax_value}</td>
+                <th>Remaining Value:</th>
+                <td>@Model.Payment.RemainingValue</td>
             </tr>
             <tr class="amount-total">
-                <th>Total:</th>
-                <td>{amount_total}</td>
+                <th>IsCashPayment:</th>
+                <td>@Model.Payment.IsCashPayment</td>
             </tr>
             <tr data-hide-on-quote="true">
                 <th>Paid:</th>
-                <td>{amount_paid}</td>
+                <td>@Model.Payment.IsPaid</td>
             </tr>
-            <tr data-hide-on-quote="true">
-                <th>Amount Due:</th>
-                <td>{amount_due}</td>
+        </table>
+    </section>
+    <div class="clearfix"></div>
+    <section class="invoice-title-number">
+        <span class="title">PaymentsSchedules</span>
+
+    </section>
+    <div class="clearfix"></div>
+    <section class="items">
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th></th> <!-- Dummy cell for the row number and row commands -->
+                <th>Value</th>
+                <th>Method</th>
+                <th>ExprireDate</th>
+                <th>RealizedDate</th>
             </tr>
+            @foreach (var item in Model.Payment.PaymentsSchedules)
+            {
+                <tr>
+                    <td>1</td> <!-- Don't remove this column as it's needed for the row commands -->
+                    <td>@item.BenefitValue</td>
+                    <td>@item.PaymentMethod.MethodName</td>
+                    <td>@item.ExprireDateFormat</td>
+                    <td>@item.RealizedDate</td>
+                </tr>
+            }
         </table>
     </section>
     <div class="clearfix"></div>

@@ -85,9 +85,9 @@
                                 var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
                                 var link = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
 
-                                if (row.SaleVM.IsFinished) {
+                                if (row.SaleVM !== null && row.SaleVM.IsFinished) {
                                     url = '@Url.Action("Invoice", "Sale")?saleID=' + row.SaleVM.DT_RowId
-                                    link = '<a href="' + url + '" class="btn mini"><i class="icon-print"></i> Invoice</a>';
+                                    link = '<a href="' + url + '" class="btn mini" target="_blank"><i class="icon-print"></i> Invoice</a>';
                                 }
 
                                 return link;

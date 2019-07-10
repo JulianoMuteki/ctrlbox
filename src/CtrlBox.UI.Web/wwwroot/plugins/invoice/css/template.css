@@ -181,21 +181,21 @@ b, strong, .bold {
   min-width: 20px;
 }
 
-#invoice-title-number {
+.invoice-title-number {
   text-align: center;
   margin: 20px 0;
 }
-#invoice-title-number span {
+.invoice-title-number span {
   display: inline-block;
   min-width: 20px;
 }
-#invoice-title-number #title {
+.invoice-title-number .title {
   margin-right: 15px;
   text-align: right;
   font-size: 20px;
   font-weight: bold;
 }
-#invoice-title-number #number {
+.invoice-title-number #number {
   font-size: 15px;
   text-align: left;
 }
@@ -209,44 +209,44 @@ table th, table td {
   word-wrap: break-word;
 }
 
-#items {
+.items {
   margin: 20px 0 35px 0;
 }
-#items .first-cell, #items table th:first-child, #items table td:first-child {
+.items .first-cell, .items table th:first-child, .items table td:first-child {
   width: 18px;
   text-align: right;
 }
-#items table {
+.items table {
   border-collapse: separate;
   width: 100%;
 }
-#items table th {
+.items table th {
   padding: 12px 10px;
   text-align: right;
   background: #E6E7E7;
   border-bottom: 4px solid #487774;
 }
-#items table th:nth-child(2) {
+.items table th:nth-child(2) {
   width: 30%;
   text-align: left;
 }
-#items table th:last-child {
+.items table th:last-child {
   text-align: right;
   padding-right: 20px !important;
 }
-#items table td {
+.items table td {
   padding: 15px 10px;
   text-align: right;
   border-right: 1px solid #CCCCCF;
 }
-#items table td:first-child {
+.items table td:first-child {
   text-align: left;
   border-right: 0 !important;
 }
-#items table td:nth-child(2) {
+.items table td:nth-child(2) {
   text-align: left;
 }
-#items table td:last-child {
+.items table td:last-child {
   border-right: 0 !important;
   padding-right: 20px !important;
 }

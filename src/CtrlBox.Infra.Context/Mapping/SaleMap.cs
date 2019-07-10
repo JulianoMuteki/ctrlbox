@@ -24,6 +24,10 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.ReceivedValue)
                  .HasColumnType("decimal(10,2)")
                 .IsRequired();
+
+            builder.HasOne(e => e.Client)
+                .WithMany(e=>e.Sales)
+                .HasForeignKey(s => s.ClientID);
         }
     }
 }

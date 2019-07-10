@@ -21,7 +21,13 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                return _context.Set<Sale>().Include(x => x.SalesProducts).Include(x=>x.SalesProducts).ThenInclude(p => p.Product).Where(x => x.Id == saleID).FirstOrDefault();
+                return _context.Set<Sale>()
+                    .Include(x=>x.SalesProducts).ThenInclude(p => p.Product)
+                    .Include(s=>s.Payment)
+                    .Include(s=>s.Payment.PaymentsSchedules).ThenInclude(z=>z.PaymentMethod)
+                    .Include(x=>x.Client)
+                    .Include(x=> x.Client.Address)
+                    .Where(x => x.Id == saleID).FirstOrDefault();
             }
             catch (Exception ex)
             {

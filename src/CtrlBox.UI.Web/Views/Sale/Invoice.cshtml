@@ -111,33 +111,35 @@
             </tr>
         </table>
     </section>
-    <div class="clearfix"></div>
-    <section class="invoice-title-number">
-        <span class="title">PaymentsSchedules</span>
-
-    </section>
-    <div class="clearfix"></div>
-    <section class="items">
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th></th> <!-- Dummy cell for the row number and row commands -->
-                <th>Value</th>
-                <th>Method</th>
-                <th>ExprireDate</th>
-                <th>RealizedDate</th>
-            </tr>
-            @foreach (var item in Model.Payment.PaymentsSchedules)
-            {
+    @if (!Model.Payment.IsCashPayment)
+    {
+        <div class="clearfix"></div>
+        <section class="invoice-title-number">
+            <span class="title">PaymentsSchedules</span>
+        </section>
+        <div class="clearfix"></div>
+        <section class="items">
+            <table cellpadding="0" cellspacing="0">
                 <tr>
-                    <td>1</td> <!-- Don't remove this column as it's needed for the row commands -->
-                    <td>@item.BenefitValue</td>
-                    <td>@item.PaymentMethod.MethodName</td>
-                    <td>@item.ExprireDateFormat</td>
-                    <td>@item.RealizedDate</td>
+                    <th></th> <!-- Dummy cell for the row number and row commands -->
+                    <th>Value</th>
+                    <th>Method</th>
+                    <th>ExprireDate</th>
+                    <th>RealizedDate</th>
                 </tr>
-            }
-        </table>
-    </section>
+                @foreach (var item in Model.Payment.PaymentsSchedules)
+                {
+                    <tr>
+                        <td>1</td> <!-- Don't remove this column as it's needed for the row commands -->
+                        <td>@item.BenefitValue</td>
+                        <td>@item.PaymentMethod.MethodName</td>
+                        <td>@item.ExprireDateFormat</td>
+                        <td>@item.RealizedDate</td>
+                    </tr>
+                }
+            </table>
+        </section>
+    }
     <div class="clearfix"></div>
     <section id="terms">
         <span>Terms & Notes</span>

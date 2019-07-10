@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "ExecuteDelivery";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -45,7 +44,6 @@
         return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
     };
 
-
     function loadTable() {
 
          var url = '@Url.Content("~/Delivery/AjaxHandlerExecutarEntrega")?entregaID=' + '@entregaID';
@@ -87,7 +85,8 @@
                                 var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
                                 var link = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
 
-                                if (row.SaleIsFinished) {
+                                if (row.SaleVM.IsFinished) {
+                                    url = '@Url.Action("Invoice", "Sale")?saleID=' + row.SaleVM.DT_RowId
                                     link = '<a href="' + url + '" class="btn mini"><i class="icon-print"></i> Invoice</a>';
                                 }
 
@@ -201,7 +200,7 @@
                 data: { entregaID: '@entregaID', descricao : desc, valor : val },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
-                        alert('Completo');
+                        alert('Complete');
 
                         $("#btnClose").trigger("click");
                     }
@@ -227,8 +226,6 @@
             var tb = $('#tbDespesas').DataTable();
             tb.row('.selected').remove().draw(false);
         });
-
-
     });
 </script>
 

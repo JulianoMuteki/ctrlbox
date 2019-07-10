@@ -1,4 +1,5 @@
-﻿
+﻿@model CtrlBox.Application.ViewModel.SaleVM
+
 @{
     ViewData["Title"] = "Invoice";
     Layout = "~/Views/Shared/_LayoutInvoice.cshtml";
@@ -73,15 +74,18 @@
                 <th>Tax</th>
                 <th>Line total</th>
             </tr>
-            <tr data-iterate="item">
-                <td>1</td> <!-- Don't remove this column as it's needed for the row commands -->
-                <td>Frozen Brontosaurus Ribs</td>
-                <td>2</td>
-                <td>$120</td>
-                <td>10%</td>
-                <td>2%</td>
-                <td>$2,205.00</td>
-            </tr>
+            @foreach (var item in Model.SalesProducts)
+            {
+                <tr data-iterate="item">
+                    <td>1</td> <!-- Don't remove this column as it's needed for the row commands -->
+                    <td>@item.Quantity</td>
+                    <td>@item.Product.Name</td>
+                    <td>@item.ValueProductSale</td>
+                    <td>@item.DiscountValueSale</td>
+                    <td>2%</td>
+                    <td>@item.TotalValue</td>
+                </tr>
+            }
         </table>
     </section>
     <div class="currency">

@@ -153,10 +153,10 @@ namespace CtrlBox.UI.Web.Controllers
                 var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
                 var clientsVMs = clientsVM.Select(c =>
                                             {
-                                                c.SaleIsFinished =
+                                                c.SaleVM =
                                                        ((from x in sales
                                                          where x.ClientID.ToString() == c.DT_RowId
-                                                         select (x == null ? false : x.IsFinished)).FirstOrDefault()); return c;
+                                                         select (x ?? new SaleVM())).FirstOrDefault()); return c;
                                             }).ToList();
                 return Json(new
                 {

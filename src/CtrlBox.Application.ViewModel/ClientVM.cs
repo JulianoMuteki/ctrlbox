@@ -14,6 +14,7 @@ namespace CtrlBox.Application.ViewModel
         public string Contact { get; set; }
 
         public bool SaleIsFinished { get; set; }
+        public SaleVM SaleVM { get; set; }
 
         public Guid AddressID { get; set; }
         public virtual AddressVM Address { get; set; }

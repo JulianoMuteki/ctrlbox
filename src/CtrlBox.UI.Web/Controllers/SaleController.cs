@@ -110,9 +110,10 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        public ActionResult Invoice()
+        public ActionResult Invoice(Guid saleID)
         {
-            return View();
+            var saleVM = _saleService.GetInvoiceSaleByID(saleID);
+            return View(saleVM);
         }
 
         public ActionResult GetAjaxHandlerPayMethods()

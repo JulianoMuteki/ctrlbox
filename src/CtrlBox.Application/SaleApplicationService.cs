@@ -131,7 +131,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching find sale", nameof(this.GetByClientIDAndDeliveryID), ex);
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching find sale", nameof(this.GetByClientIDAndDeliveryID), ex);
             }
         }
 
@@ -141,6 +141,11 @@ namespace CtrlBox.Application
         }
 
         public Task<SaleVM> UpdateAsync(SaleVM updated)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SaleVM GetInvoiceSaleByID(Guid saleID)
         {
             throw new NotImplementedException();
         }

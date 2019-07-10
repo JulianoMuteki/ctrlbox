@@ -373,7 +373,7 @@ var SaleComponents = function () {
                 $(".isCashPayment").hide();
             }else
             {
-                $('rdCashPayment').add('<input class="m-wrap medium" type="text" placeholder="Financed Payment" disabled="">');
+                $('#rdCashPayment').append('<input class="m-wrap medium" type="text" placeholder="Financed Payment" disabled="">');
             }
         }
     };

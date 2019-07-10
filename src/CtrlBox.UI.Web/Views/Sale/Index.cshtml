@@ -31,15 +31,14 @@
             var deliveryID = ViewData["entregaID"];
             var saleID = ViewData["saleID"];
             decimal total = Model.Payment != null ? Model.Payment.TotalValueSale : 0;
-            bool IsCashPayment = Model.Payment != null ? Model.Payment.IsCashPayment : false;
             }
-
+        var isCashPayment = @(Model.Payment != null ? @Model.Payment.IsCashPayment.ToString().ToLower() : "false");
 
         if ('@saleID' === '') {
             SaleComponents.init('@clientID', '@routeID', '@deliveryID');
         }
         else {
-            SaleComponents.readOnly('@total', '@IsCashPayment');
+            SaleComponents.readOnly('@total', isCashPayment);
         }
 
         event.preventDefault();

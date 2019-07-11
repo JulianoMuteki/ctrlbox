@@ -37,10 +37,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.HasMany(c => c.PaymentsSchedules)
                  .WithOne(e => e.Payment)
                  .HasForeignKey(s => s.PaymentID);
-
-            builder.HasOne(sa => sa.Sale)
-                  .WithOne(c => c.Payment)
-                  .HasForeignKey<Payment>(k => k.SaleID);
         }
     }
 } 

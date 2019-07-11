@@ -8,5 +8,6 @@ namespace CtrlBox.Domain.Interfaces.Application
     {
         ICollection<SaleVM> FindAllByDelivery(Guid deliveryID);
         SaleVM GetByClientIDAndDeliveryID(Guid clientID, Guid deliveryID);
+        SaleVM GetInvoiceSaleByID(Guid saleID);
     }
 }

@@ -37,6 +37,10 @@ namespace CtrlBox.Infra.Context.Mapping
                 .WithMany(y => y.Clients)
                 .HasForeignKey(z => z.AddressID);
 
+            builder.HasMany(c=>c.Sales)
+                .WithOne(c=>c.Client)
+                .HasForeignKey(s => s.ClientID);
+
         }
     }
 }

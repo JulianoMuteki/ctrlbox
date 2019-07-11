@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
+﻿using CtrlBox.Domain.Interfaces.Base;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,8 +7,7 @@ namespace CtrlBox.Domain.Common
     public abstract class ValueObject<T> where T : ValueObject<T>
     {
         protected abstract IEnumerable<object> GetEqualityComponents();
-
-
+        
         public override bool Equals(object obj)
         {
             var valueObject = obj as T;
@@ -21,8 +19,7 @@ namespace CtrlBox.Domain.Common
 
             return EqualsCore(valueObject);
         }
-
-
+        
         private bool EqualsCore(ValueObject<T> other)
         {
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
@@ -33,8 +30,7 @@ namespace CtrlBox.Domain.Common
             return GetEqualityComponents()
                 .Aggregate(1, (current, obj) => current * 23 + (obj?.GetHashCode() ?? 0));
         }
-
-
+        
         public static bool operator ==(ValueObject<T> a, ValueObject<T> b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
@@ -47,22 +43,22 @@ namespace CtrlBox.Domain.Common
 
             return a.Equals(b);
         }
-
-
+        
         public static bool operator !=(ValueObject<T> a, ValueObject<T> b)
         {
             return !(a == b);
         }
 
-        public bool IsValid { get; private set; }
-        public ValidationResult ValidationResult { get; private set; }
-
-        public bool Validate<TModel>(TModel model, AbstractValidator<TModel> validator)
+        private IComponentValidate _component;
+        public IComponentValidate ComponentValidator
         {
-            ValidationResult = validator.Validate(model);
-            this.IsValid = ValidationResult.IsValid;
-            return this.IsValid;
+            get
+            {
+                if (_component == null)
+                    _component = new BaseValidate();
+
+                return _component;
+            }
         }
     }
 }
-

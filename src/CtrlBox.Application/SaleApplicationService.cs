@@ -4,6 +4,7 @@ using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
+using CtrlBox.Domain.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add sale", nameof(this.Add), ex);
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.Add), ex);
             }
         }
 
@@ -82,7 +83,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching find sale", nameof(this.FindAllByDelivery), ex);
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching find sale", nameof(this.FindAllByDelivery), ex);
             }
         }
 
@@ -131,7 +132,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching find sale", nameof(this.GetByClientIDAndDeliveryID), ex);
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching find sale", nameof(this.GetByClientIDAndDeliveryID), ex);
             }
         }
 
@@ -143,6 +144,24 @@ namespace CtrlBox.Application
         public Task<SaleVM> UpdateAsync(SaleVM updated)
         {
             throw new NotImplementedException();
+        }
+
+        public SaleVM GetInvoiceSaleByID(Guid saleID)
+        {
+            try
+            {
+                var sale = _unitOfWork.RepositoryCustom<ISaleRepository>().GetInvoiceSaleByID(saleID);
+                var saleVM = _mapper.Map<SaleVM>(sale);
+                return saleVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching find invoice", nameof(this.GetInvoiceSaleByID), ex);
+            }
         }
     }
 }

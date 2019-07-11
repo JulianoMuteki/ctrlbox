@@ -1,14 +1,27 @@
-﻿using System;
+﻿using CtrlBox.Domain.Interfaces.Base;
+using System;
 
 namespace CtrlBox.Domain.Common
 {
-    public abstract class EntityBase: BaseValidate
+    public abstract class EntityBase
     {
         public Guid Id { get; protected set; }
         public DateTime CreationDate { get; protected set; }
         public DateTime DateModified { get; protected set; }
         public bool IsDelete { get; protected set; }
-        public bool IsDisable { get;protected set; }
+        public bool IsDisable { get; protected set; }
+
+        private IComponentValidate _component;
+        public IComponentValidate ComponentValidator
+        {
+            get
+            {
+                if (_component == null)
+                    _component = new BaseValidate();
+
+                return _component;
+            }
+        }
 
         public EntityBase()
         {

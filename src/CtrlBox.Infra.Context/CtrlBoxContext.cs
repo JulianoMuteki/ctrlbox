@@ -1,6 +1,7 @@
 ﻿using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Identity;
 using CtrlBox.Infra.Context.Mapping;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,22 +37,20 @@ namespace CtrlBox.Infra.Context
 
         public CtrlBoxContext()
         {
-           // ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            // ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public CtrlBoxContext(DbContextOptions<CtrlBoxContext> options)
              : base(options)
         {
-          //  ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-           // optionsBuilder.UseLazyLoadingProxies();
+              ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<ValidationFailure>();
+            modelBuilder.Ignore<ValidationResult>();
+
             modelBuilder.ApplyConfiguration(new AddressMap());
             modelBuilder.ApplyConfiguration(new ClientMap());
             modelBuilder.ApplyConfiguration(new ProductMap());

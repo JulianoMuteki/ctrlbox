@@ -82,6 +82,11 @@ namespace CtrlBox.Infra.Repository
                 IDeliveryRepository repository = new DeliveryRepository(_dbContext);
                 RepositoriesCustom.Add(typeof(T), repository);
             }
+            else if (typeof(ISaleRepository).Equals((typeof(T))) && !RepositoriesCustom.Keys.Contains(typeof(T)))
+            {
+                ISaleRepository repository = new SaleRepository(_dbContext);
+                RepositoriesCustom.Add(typeof(T), repository);
+            }
         }
 
         public async Task<int> Commit()

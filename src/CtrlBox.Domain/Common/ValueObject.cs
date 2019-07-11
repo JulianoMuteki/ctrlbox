@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CtrlBox.Domain.Interfaces.Base;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CtrlBox.Domain.Common
@@ -48,10 +49,16 @@ namespace CtrlBox.Domain.Common
             return !(a == b);
         }
 
-        private IComponent _component;
-        public IComponent Component
+        private IComponentValidate _component;
+        public IComponentValidate ComponentValidator
         {
-            get { return _component ?? new BaseValidate(); }
+            get
+            {
+                if (_component == null)
+                    _component = new BaseValidate();
+
+                return _component;
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace CtrlBox.Domain.Entities
         public float Price { get; set; }
         public ClientProductValue()
         {
-            base.Component.Validate(this, new ClientProductValueValidator());
+            base.ComponentValidator.Validate(this, new ClientProductValueValidator());
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

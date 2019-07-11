@@ -33,7 +33,7 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                base.Component.Validate(this, new ClientValidator());               
+                base.ComponentValidator.Validate(this, new ClientValidator());               
             }
         }
     }

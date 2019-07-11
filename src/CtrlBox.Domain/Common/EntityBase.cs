@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CtrlBox.Domain.Interfaces.Base;
+using System;
 
 namespace CtrlBox.Domain.Common
 {
@@ -10,10 +11,16 @@ namespace CtrlBox.Domain.Common
         public bool IsDelete { get; protected set; }
         public bool IsDisable { get; protected set; }
 
-        private IComponent _component;
-        public IComponent Component
+        private IComponentValidate _component;
+        public IComponentValidate ComponentValidator
         {
-            get { return _component ?? new BaseValidate(); }
+            get
+            {
+                if (_component == null)
+                    _component = new BaseValidate();
+
+                return _component;
+            }
         }
 
         public EntityBase()

@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 
-namespace CtrlBox.Domain.Common
+namespace CtrlBox.Domain.Interfaces.Base
 {
-    public interface IComponent
+    public interface IComponentValidate
     {
         bool IsValid { get; set; }
         ValidationResult ValidationResult { get; set; }

@@ -210,5 +210,27 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet]
+        public ActionResult GetTableAjaxHandlerResumeDelivery(Guid deliveryID)
+        {
+            try
+            {
+                var deliveryVM = _deliveryService.GetResumeDeliveryById(deliveryID);
+
+                return Json(new
+                {
+                    aaData = new { TotalSale = deliveryVM.Sales.Sum(x => x.SalesProducts.Sum(s => s.TotalValue)),
+                        TotalProducts = deliveryVM.Sales.Sum(x => x.SalesProducts.Sum(p => p.Quantity)),
+                        StartDate = deliveryVM.DtStart.ToString("dd/MM/yyyy hh:mm")},
+
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

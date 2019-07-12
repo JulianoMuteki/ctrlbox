@@ -48,7 +48,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add delivery", nameof(this.Add), ex);
+                throw CustomException.Create<DeliveryApplicationService>("Unexpected error fetching add delivery", nameof(this.Add), ex);
             }
         }
 
@@ -101,7 +101,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get delivery", nameof(this.GetAll), ex);
+                throw CustomException.Create<DeliveryApplicationService>("Unexpected error fetching get delivery", nameof(this.GetAll), ex);
             }
         }
 
@@ -115,7 +115,6 @@ namespace CtrlBox.Application
             try
             {
                 var delivery = _unitOfWork.Repository<Delivery>().GetById(id);
-
                 var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
                 return deliveryVM;
             }
@@ -125,7 +124,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get delivery", nameof(this.GetById), ex);
+                throw CustomException.Create<DeliveryApplicationService>("Unexpected error fetching get delivery", nameof(this.GetById), ex);
             }
         }
 
@@ -149,7 +148,28 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get delivery", nameof(this.GetByIdAsync), ex);
+                throw CustomException.Create<DeliveryApplicationService>("Unexpected error fetching get delivery", nameof(this.GetByIdAsync), ex);
+            }
+        }
+
+        public DeliveryVM GetResumeDeliveryById(Guid deliveryID)
+        {
+            {
+                try
+                {
+                    var delivery = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetResumeDeliveryById(deliveryID);
+
+                    var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
+                    return deliveryVM;
+                }
+                catch (CustomException exc)
+                {
+                    throw exc;
+                }
+                catch (Exception ex)
+                {
+                    throw CustomException.Create<DeliveryApplicationService>("Unexpected error fetching get delivery", nameof(this.GetByIdAsync), ex);
+                }
             }
         }
 

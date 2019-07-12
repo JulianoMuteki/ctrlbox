@@ -39,7 +39,6 @@ namespace CtrlBox.Domain.Entities
         {
             this.InitBase();
             this.IsFinalized = false;
-            this.Id = Guid.NewGuid();
             this.DtStart = DateTime.Now;
             this.CreatedBy = "Juliano";
             this.FinalizedBy = "Juliano";

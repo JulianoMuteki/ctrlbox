@@ -67,13 +67,13 @@ namespace CtrlBox.UI.Web.Controllers
 
                 return Json(new
                 {
-                    aaData = clientsProductsVM.Select(x => new
+                    aaData = productsDeliveryVM.Select(x => new
                     {
                         DT_RowId = x.ProductID.ToString(),
-                        NomeProduto = (from p in productsDeliveryVM where p.ProductID.ToString() == x.ProductID.ToString() select p.Product.Name),
-                        ValorProduto = String.Format("{0:c}", x.Price),
-                        Amount = (from p in productsDeliveryVM where p.ProductID.ToString() == x.ProductID.ToString() select p.Amount),
-                        UnitMeasure = (from p in productsDeliveryVM where p.ProductID.ToString() == x.ProductID.ToString() select p.Product.UnitMeasure),
+                        NomeProduto = x.Product.Name,
+                        ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID == x.ProductID select c.Price).FirstOrDefault()),
+                        x.Amount,
+                        x.Product.UnitMeasure,
                         QtdeVenda = 0,
                         QtdeRetorno = 0,
                         Total = String.Format("{0:c}", 0)

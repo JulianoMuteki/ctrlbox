@@ -67,6 +67,38 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Box", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("BoxID");
+
+                    b.Property<Guid?>("BoxParentID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<bool>("IsProductBox");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id")
+                        .HasName("BoxID");
+
+                    b.HasIndex("BoxParentID");
+
+                    b.ToTable("Boxes");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.Property<Guid>("Id")
@@ -352,6 +384,8 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ProductID");
 
+                    b.Property<Guid>("BoxID");
+
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
@@ -377,6 +411,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id")
                         .HasName("ProductID");
+
+                    b.HasIndex("BoxID");
 
                     b.ToTable("Products");
                 });
@@ -712,6 +748,13 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Box", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "BoxParent")
+                        .WithMany("ChildrenBoxes")
+                        .HasForeignKey("BoxParentID");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
@@ -797,6 +840,14 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.PaymentMethod", "PaymentMethod")
                         .WithMany("PaymentsSchedules")
                         .HasForeignKey("PaymentMethodID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Product", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithMany("Products")
+                        .HasForeignKey("BoxID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

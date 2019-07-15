@@ -19,11 +19,14 @@ namespace CtrlBox.Application.ViewModel
         public string UserName { get; set; }
         public RouteVM RouteVM { get; set; }
 
+        public ICollection<SaleVM> Sales { get; set; }
+
         public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }
 
         public DeliveryVM()
         {
             this.DeliveriesProducts = new HashSet<DeliveryProductVM>();
+            this.Sales = new HashSet<SaleVM>();
         }
     }
 }

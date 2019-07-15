@@ -156,7 +156,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                 c.SaleVM =
                                                        ((from x in sales
                                                          where x.ClientID.ToString() == c.DT_RowId
-                                                         select (x ?? new SaleVM())).FirstOrDefault()); return c;
+                                                         select x).FirstOrDefault() ?? new SaleVM()); return c;
                                             }).ToList();
                 return Json(new
                 {
@@ -202,6 +202,28 @@ namespace CtrlBox.UI.Web.Controllers
                 return Json(new
                 {
                     aaData = "ok",
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetTableAjaxHandlerResumeDelivery(Guid deliveryID)
+        {
+            try
+            {
+                var deliveryVM = _deliveryService.GetResumeDeliveryById(deliveryID);
+
+                return Json(new
+                {
+                    aaData = new { TotalSale = deliveryVM.Sales.Sum(x => x.SalesProducts.Sum(s => s.TotalValue)),
+                        TotalProducts = deliveryVM.Sales.Sum(x => x.SalesProducts.Sum(p => p.Quantity)),
+                        StartDate = deliveryVM.DtStart.ToString("dd/MM/yyyy hh:mm")},
+
                     success = true
                 });
             }

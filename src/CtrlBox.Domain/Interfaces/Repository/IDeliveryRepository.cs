@@ -10,5 +10,7 @@ namespace CtrlBox.Domain.Interfaces.Repository
         ICollection<DeliveryProduct> GetDeliveryProductsLoad(Guid deliveryID);
         ICollection<Delivery> GetDeliveryRouteLoad();
         ICollection<Delivery> GetDeliveryByUserWithRoute(Guid userId);
+
+        Delivery GetResumeDeliveryById(Guid deliveryID);
     }
 }

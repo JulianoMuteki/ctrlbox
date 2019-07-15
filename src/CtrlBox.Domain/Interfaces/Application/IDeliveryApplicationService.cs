@@ -8,5 +8,6 @@ namespace CtrlBox.Domain.Interfaces.Application
     {
         ICollection<DeliveryVM> GetByUserId(Guid userId);
         void FinalizeDelivery(Guid deliveryID);
+        DeliveryVM GetResumeDeliveryById(Guid deliveryID);
     }
 }

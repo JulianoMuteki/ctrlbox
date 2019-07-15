@@ -61,19 +61,13 @@
                 <div class="portlet box blue">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-edit"></i>List all clients</div>
-                    </div>
-                    <div class="portlet-body">
-                        <div class="table-toolbar">
-                            <div class="btn-group">
-                                <button id="sample_editable_1_new" class="btn green">
-                                    Add New <i class="icon-plus"></i>
-                                </button>
-
-                            </div>
-                            <a class=" btn green" data-toggle="modal" href="#modalAddress">View Demo</a>
+                        <div class="actions">
+                            <a asp-action="Create" class="btn green"><i class="icon-plus"></i>  Add Client</a>
                         </div>
-                        <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
-                            <thead>
+                    </div>
+                    <div class="portlet-body no-more-tables">
+                        <table id="sample_editable_1" class="table-bordered table-striped table-condensed cf">
+                            <thead class="cf">
                                 <tr>
                                     <th>Name</th>
                                     <th>QuantityBoxes</th>

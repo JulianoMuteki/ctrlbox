@@ -18,6 +18,22 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         }
 
+        public Delivery GetResumeDeliveryById(Guid deliveryID)
+        {
+            try
+            {
+                return _context.Set<Delivery>()
+                    .Include(x => x.DeliveriesProducts).ThenInclude(p => p.Product)
+                    .Include(x=>x.Sales).ThenInclude(s => s.SalesProducts)
+                    .Where(x => x.Id == deliveryID)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<DeliveryRepository>("Unexpected error fetching get deliveries", nameof(this.GetDeliveryByUserWithRoute), ex);
+            }
+        }
+
         public ICollection<Delivery> GetDeliveryByUserWithRoute(Guid userId)
         {
             try

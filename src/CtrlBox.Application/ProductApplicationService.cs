@@ -246,7 +246,7 @@ namespace CtrlBox.Application
                         Product = product
                     });
                 }
-
+                productsStock = productsStock.Select(p => { p.Product = (from x in products where x.Id == p.ProductID select x).FirstOrDefault(); return p; }).ToList();
                 var stocksProductsVMs = _mapper.Map<IList<StockProductVM>>(productsStock);
                 return stocksProductsVMs;
             }

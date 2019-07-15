@@ -105,7 +105,7 @@
                                 var status = 'warning';
                                 var texto = "Pendente";
 
-                                if (row.SaleIsFinished) {
+                                if (row.SaleVM.IsFinished) {
                                     status = 'success';
                                     texto = "Entregue"
                                 }
@@ -293,10 +293,36 @@
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
-            <div class="span12">
+            <div class="span8">
                 <div class="alert alert-info">
                     <h3><strong>Route name:</strong> @ViewData["RouteName"]</h3>
                 </div>
+            </div>
+        </div>
+        <div class="row-fluid portfolio-block">
+            <div class="span5 portfolio-text">
+                <img src="~/img/profile/portfolio/logo_metronic.jpg" alt="">
+                <div class="portfolio-text-info">
+                    <h4>Metronic - Responsive Template</h4>
+                    <p>Lorem ipsum dolor sit consectetuer adipiscing elit.</p>
+                </div>
+            </div>
+            <div class="span5">
+                <div class="portfolio-info">
+                    Today Sold
+                    <span>187</span>
+                </div>
+                <div class="portfolio-info">
+                    Total Sold
+                    <span>1789</span>
+                </div>
+                <div class="portfolio-info">
+                    Earnings
+                    <span>$37.240</span>
+                </div>
+            </div>
+            <div class="span2 portfolio-btn">
+                <a href="#" class="btn bigicn-only"><span>View</span></a>
             </div>
         </div>
         <div class="row-fluid">

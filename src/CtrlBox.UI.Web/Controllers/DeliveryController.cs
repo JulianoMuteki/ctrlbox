@@ -156,7 +156,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                 c.SaleVM =
                                                        ((from x in sales
                                                          where x.ClientID.ToString() == c.DT_RowId
-                                                         select (x ?? new SaleVM())).FirstOrDefault()); return c;
+                                                         select x).FirstOrDefault() ?? new SaleVM()); return c;
                                             }).ToList();
                 return Json(new
                 {

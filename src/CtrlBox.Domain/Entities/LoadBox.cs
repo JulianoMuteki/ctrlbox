@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class LoadBox: EntityBase
+    public class LoadBox : EntityBase
     {
         public string Barcode { get; set; }
         public string Description { get; set; }
@@ -12,19 +12,19 @@ namespace CtrlBox.Domain.Entities
         public Guid BoxID { get; set; }
         public Box Box { get; set; }
 
-        //public Guid? LoadBoxParentID { get; set; }
-        //public LoadBox LoadBoxParent { get; set; }
+        public Guid? LoadBoxParentID { get; set; }
+        public LoadBox LoadBoxParent { get; set; }
 
         public Guid? ProductID { get; set; }
         public Product Product { get; set; }
 
-        //public ICollection<LoadBox> ChildrenLoadBoxes { get; set; }
+        public ICollection<LoadBox> ChildrenLoadBoxes { get; set; }
         public ICollection<LoadBoxProductItem> LoadBoxesProductItems { get; set; }
 
         public LoadBox()
-            :base()
+            : base()
         {
-           // this.ChildrenLoadBoxes = new HashSet<LoadBox>();
+            this.ChildrenLoadBoxes = new HashSet<LoadBox>();
             this.LoadBoxesProductItems = new HashSet<LoadBoxProductItem>();
         }
     }

@@ -1,0 +1,98 @@
+﻿@model CtrlBox.Application.ViewModel.BoxVM
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section cssViews{
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
+
+    <!-- END PAGE LEVEL STYLES -->
+}
+@section scriptsViews{
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $('.select2_option').select2({
+            allowClear: true
+        });
+    });
+</script>
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Address</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Index</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Create</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-plus"></i>New BoxType</div>
+                    </div>
+                    <div class="portlet-body">
+                        <!-- BEGIN FORM-->
+                        <form asp-action="CreateBoxType" asp-controller="Box" class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label">Box type</label>
+                                <div class="controls">
+                                    <select id="ddlBoxesType" class="span6 select2_option" data-placeholder="Choose a box type" tabindex="1" name="BoxTypeID" asp-for="BoxTypeID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Product</label>
+                                <div class="controls">
+                                    <select id="ddlProducts" class="span6 select2_option" data-placeholder="Choose a product" tabindex="1" name="ProductID" asp-for="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"></select>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Barcode</label>
+                                <div class="controls">
+                                    <input id="cep" type="text" name="Barcode" placeholder="201907101234" class="m-wrap medium" />
+                                    <span class="help-inline">Barcode</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Description</label>
+                                <div class="controls">
+                                    <input id="rua" type="text" name="Description" placeholder="Description" class="m-wrap large" />
+                                    <span class="help-inline">Description</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                <button type="button" class="btn">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+

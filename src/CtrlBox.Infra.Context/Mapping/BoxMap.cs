@@ -24,13 +24,6 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.IsProductBox)
                 .IsRequired();
-
-            builder.Property(e => e.BoxParentID);
-
-            builder.HasMany(c => c.Products)
-                 .WithOne(e => e.Box)
-                 .HasForeignKey(s => s.BoxID);
-
         }
     }
 }

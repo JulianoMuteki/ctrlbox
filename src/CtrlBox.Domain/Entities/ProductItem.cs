@@ -1,5 +1,6 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
+using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -11,10 +12,12 @@ namespace CtrlBox.Domain.Entities
         public Guid ProductID { get; set; }
         public Product Product { get; set; }
 
+        public ICollection<LoadBoxProductItem> LoadBoxesProductItems { get; set; }
+
         public ProductItem()
             :base()
         {
-
+            this.LoadBoxesProductItems = new HashSet<LoadBoxProductItem>();
         }
     }
 }

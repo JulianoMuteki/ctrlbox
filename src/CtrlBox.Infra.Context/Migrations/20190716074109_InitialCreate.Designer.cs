@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190715105528_InitialCreate")]
+    [Migration("20190716074109_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,8 +75,6 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("BoxID");
 
-                    b.Property<Guid?>("BoxParentID");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
@@ -95,8 +93,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id")
                         .HasName("BoxID");
-
-                    b.HasIndex("BoxParentID");
 
                     b.ToTable("Boxes");
                 });
@@ -278,6 +274,55 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("Expenses");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.LoadBox", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("LoadBoxID");
+
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasMaxLength(14);
+
+                    b.Property<Guid>("BoxID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<Guid?>("ProductId");
+
+                    b.HasKey("Id")
+                        .HasName("LoadBoxID");
+
+                    b.HasIndex("BoxID");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("LoadBoxes");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.LoadBoxProductItem", b =>
+                {
+                    b.Property<Guid>("LoadBoxID");
+
+                    b.Property<Guid>("ProductItemID");
+
+                    b.HasKey("LoadBoxID", "ProductItemID");
+
+                    b.HasIndex("ProductItemID");
+
+                    b.ToTable("LoadBoxesProductItems");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -386,8 +431,6 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ProductID");
 
-                    b.Property<Guid>("BoxID");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
@@ -414,9 +457,39 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasKey("Id")
                         .HasName("ProductID");
 
-                    b.HasIndex("BoxID");
-
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ProductItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ProductItemID");
+
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasMaxLength(14);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<Guid>("ProductID");
+
+                    b.Property<string>("Weight")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id")
+                        .HasName("ProductItemID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductItems");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Route", b =>
@@ -750,13 +823,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.Box", b =>
-                {
-                    b.HasOne("CtrlBox.Domain.Entities.Box", "BoxParent")
-                        .WithMany("ChildrenBoxes")
-                        .HasForeignKey("BoxParentID");
-                });
-
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
@@ -824,6 +890,31 @@ namespace CtrlBox.Infra.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.LoadBox", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithMany("LoadBoxes")
+                        .HasForeignKey("BoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Product")
+                        .WithMany("LoadBoxes")
+                        .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.LoadBoxProductItem", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.LoadBox", "LoadBox")
+                        .WithMany("LoadBoxesProductItems")
+                        .HasForeignKey("LoadBoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
+                        .WithMany("LoadBoxesProductItems")
+                        .HasForeignKey("ProductItemID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
@@ -845,11 +936,11 @@ namespace CtrlBox.Infra.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.Product", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ProductItem", b =>
                 {
-                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
-                        .WithMany("Products")
-                        .HasForeignKey("BoxID")
+                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

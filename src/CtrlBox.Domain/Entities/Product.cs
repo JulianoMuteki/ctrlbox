@@ -12,13 +12,12 @@ namespace CtrlBox.Domain.Entities
         public float Weight { get; set; }
         public string UnitMeasure { get; set; }
 
-        public Guid BoxID { get; set; }
-        public Box Box { get; set; }
-
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
         public ICollection<StockProduct> StocksProducts { get; set; }
         public ICollection<SaleProduct> SalesProducts { get; set; }
+
+        public ICollection<LoadBox> LoadBoxes { get; set; }
 
         public Product()
             :base()
@@ -27,6 +26,7 @@ namespace CtrlBox.Domain.Entities
             this.StocksProducts = new HashSet<StockProduct>();
             this.SalesProducts = new HashSet<SaleProduct>();
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
+            this.LoadBoxes = new HashSet<LoadBox>();
         }
 
         public void Init()

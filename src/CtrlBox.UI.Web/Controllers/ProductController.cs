@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using CtrlBox.Application.ViewModel;
-using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -156,5 +155,31 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
         #endregion
+
+        public ActionResult ProductItem()
+        {
+            var products = _productService.GetAll()
+                               .Select(prod => new SelectListItem
+                               {
+                                   Value = prod.DT_RowId,
+                                   Text = $"{prod.Name} {prod.UnitMeasure}"
+                               }).ToList();
+            ViewData["Products"] = products;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProductItem(Guid productID, int quantity)
+        {
+            JsonSerialize jsonS = new JsonSerialize();
+            _productService.GenerateProductItem(productID, quantity);
+
+            return Json(new
+            {
+                success = true,
+                Message = "OK"
+            });
+        }
     }
 }

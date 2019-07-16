@@ -46,7 +46,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get product", nameof(this.GetAll), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product", nameof(this.GetAll), ex);
             }
         }
 
@@ -69,7 +69,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get product", nameof(this.GetById), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product", nameof(this.GetById), ex);
             }
         }
 
@@ -95,7 +95,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
             }
         }
 
@@ -116,7 +116,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add delivery", nameof(this.AddAsync), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add delivery", nameof(this.AddAsync), ex);
             }
         }
 
@@ -141,7 +141,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching update delivery", nameof(this.Update), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching update delivery", nameof(this.Update), ex);
             }
         }
 
@@ -169,7 +169,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching delete delivery", nameof(this.Delete), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching delete delivery", nameof(this.Delete), ex);
             }
         }
 
@@ -194,7 +194,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching connect Route to Client", nameof(this.ConnectRouteToClient), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching connect Route to Client", nameof(this.ConnectRouteToClient), ex);
             }
         }
 
@@ -224,7 +224,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add product stock", nameof(this.AddProductStock), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add product stock", nameof(this.AddProductStock), ex);
             }
         }
 
@@ -256,7 +256,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get product stock", nameof(this.GetProductsStock), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product stock", nameof(this.GetProductsStock), ex);
             }
         }
 
@@ -275,7 +275,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get delivery delivery", nameof(this.GetDeliveryProducts), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get delivery delivery", nameof(this.GetDeliveryProducts), ex);
             }
         }
 
@@ -294,7 +294,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add client product value", nameof(this.GetClientsProductsByClientID), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add client product value", nameof(this.GetClientsProductsByClientID), ex);
             }
         }
 
@@ -313,7 +313,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add stock", nameof(this.GetStock), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.GetStock), ex);
             }
         }
 
@@ -333,7 +333,35 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add stock", nameof(this.AddStock), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.AddStock), ex);
+            }
+        }
+
+        public void GenerateProductItem(Guid productID, int quantity)
+        {
+            try
+            {
+                IList<ProductItem> productsItems = new List<ProductItem>();
+
+                for (int i = 0; i < quantity; i++)
+                {
+                    ProductItem productItem = new ProductItem();
+                    productItem.Barcode = $"{i}{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14);
+                    productItem.Weight = "10";
+                    productItem.ProductID = productID;
+                    productsItems.Add(productItem);
+                }
+
+                _unitOfWork.Repository<ProductItem>().AddRange(productsItems);
+                _unitOfWork.Commit();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.GenerateProductItem), ex);
             }
         }
     }

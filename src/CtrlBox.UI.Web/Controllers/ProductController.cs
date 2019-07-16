@@ -169,8 +169,39 @@ namespace CtrlBox.UI.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetAjaxHandlerProductItem()
+        {
+            try
+            {
+                var productsItems = _productService.GetProductsItems();
+                return Json(new
+                {
+                    aaData = productsItems,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ActionResult GenerateProductItem()
+        {
+            var products = _productService.GetAll()
+                               .Select(prod => new SelectListItem
+                               {
+                                   Value = prod.DT_RowId,
+                                   Text = $"{prod.Name} {prod.UnitMeasure}"
+                               }).ToList();
+            ViewData["Products"] = products;
+
+            return View();
+        }
+
         [HttpPost]
-        public ActionResult ProductItem(Guid productID, int quantity)
+        public ActionResult PutAjaxHandlerProductItem(Guid productID, int quantity)
         {
             JsonSerialize jsonS = new JsonSerialize();
             _productService.GenerateProductItem(productID, quantity);
@@ -181,5 +212,8 @@ namespace CtrlBox.UI.Web.Controllers
                 Message = "OK"
             });
         }
+
+
+
     }
 }

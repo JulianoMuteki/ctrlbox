@@ -19,5 +19,13 @@ namespace CtrlBox.Domain.Entities
         {
             this.LoadBoxesProductItems = new HashSet<BoxProductItem>();
         }
+
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+            }
+        }
     }
 }

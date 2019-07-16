@@ -16,5 +16,6 @@ namespace CtrlBox.Domain.Interfaces.Application
 
         void AddStock(int stockTotal);
         void GenerateProductItem(Guid productID, int quantity);
+        ICollection<ProductItemVM> GetProductsItems();
     }
 }

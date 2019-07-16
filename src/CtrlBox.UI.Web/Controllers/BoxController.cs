@@ -53,12 +53,11 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(BoxVM boxTypeVM)
+        public IActionResult Create(BoxVM boxVM)
         {
             try
             {
-
-
+                _boxApplicationService.Add(boxVM);
                 return RedirectToAction("Index");
             }
             catch (CustomException exc)

@@ -25,7 +25,30 @@ namespace CtrlBox.Application
 
         public BoxVM Add(BoxVM entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var box = _mapper.Map<Box>(entity);
+                var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID).OrderByDescending(x => x.CreationDate).Take(entity.RangeProductsItems);
+                box.LoadProductItems(productItems);
+                 
+                if (!box.ComponentValidator.Validate(box, new BoxValidator()))
+                {
+                    throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+                }
+
+                _unitOfWork.Repository<Box>().Add(box);
+                _unitOfWork.Commit();
+
+                return entity;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+            }
         }
 
         public Task<BoxVM> AddAsync(BoxVM entity)

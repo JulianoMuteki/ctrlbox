@@ -27,5 +27,24 @@ namespace CtrlBox.Domain.Entities
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
         }
+
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+            }
+        }
+
+        public void LoadProductItems(IEnumerable<ProductItem> productItems)
+        {
+            foreach (var item in productItems)
+            {
+                BoxProductItem boxProductItem = new BoxProductItem();
+                boxProductItem.BoxID = this.Id;
+                boxProductItem.ProductItemID = item.Id;
+                this.BoxesProductItems.Add(boxProductItem);
+            }
+        }
     }
 }

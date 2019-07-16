@@ -16,6 +16,7 @@ namespace CtrlBox.CrossCutting.Ioc
             services.AddScoped<ISecurityApplicationService, SecurityApplicationService>();
             services.AddScoped<IPaymentApplicationService, PaymentApplicationService>();
             services.AddScoped<IAddressApplicationService, AddressApplicationService>();
+            services.AddScoped<IBoxApplicationService, BoxApplicationService>();
 
             services.AddScoped<ICustomEmailSender, CustomEmailSender>();
 

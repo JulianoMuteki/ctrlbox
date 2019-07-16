@@ -8,6 +8,7 @@ using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
+using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Domain.Validations;
 
 namespace CtrlBox.Application
@@ -28,14 +29,14 @@ namespace CtrlBox.Application
             try
             {
                 var box = _mapper.Map<Box>(entity);
-                var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID).OrderByDescending(x => x.CreationDate).Take(entity.RangeProductsItems);
+                var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID).OrderByDescending(x => x.CreationDate).Take(entity.RangeProductsItems).ToList();
                 box.LoadProductItems(productItems);
                  
                 if (!box.ComponentValidator.Validate(box, new BoxValidator()))
                 {
                     throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
                 }
-
+                _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
                 _unitOfWork.Repository<Box>().Add(box);
                 _unitOfWork.Commit();
 
@@ -94,7 +95,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var boxes = _unitOfWork.Repository<Box>().GetAll();
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetAllWithBoxTypeAndProduct();
                 var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
                 return boxesVMs;
             }

@@ -1,7 +1,12 @@
-﻿using CtrlBox.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CtrlBox.CrossCutting;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Infra.Context;
 using CtrlBox.Infra.Repository.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace CtrlBox.Infra.Repository.Repositories
 {
@@ -11,6 +16,21 @@ namespace CtrlBox.Infra.Repository.Repositories
             : base(context)
         {
 
+        }
+
+        public ICollection<Box> GetAllWithBoxTypeAndProduct()
+        {
+            try
+            {
+                return _context.Set<Box>()
+                    .Include(x => x.Product)
+                    .Include(x => x.BoxType)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<DeliveryRepository>("Unexpected error fetching GetAll", nameof(this.GetAllWithBoxTypeAndProduct), ex);
+            }
         }
     }
 }

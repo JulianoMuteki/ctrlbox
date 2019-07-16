@@ -10,6 +10,7 @@ namespace CtrlBox.Application.ViewModel
 
         public Guid ProductID { get; set; }
         public ProductVM Product { get; set; }
+        public bool InBox { get; set; }
 
         public ICollection<BoxProductItemVM> BoxesProductItems { get; set; }
 

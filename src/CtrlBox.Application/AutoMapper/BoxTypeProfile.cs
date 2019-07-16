@@ -10,7 +10,8 @@ namespace CtrlBox.Application.AutoMapper
         {
             CreateMap<BoxType, BoxTypeVM>()
                 .ForMember(dest => dest.DT_RowId,
-                          opts => opts.MapFrom(src => src.Id));
+                          opts => opts.MapFrom(src => src.Id))
+                           .ForMember(dest => dest.Boxes, opt => opt.Ignore());
 
             CreateMap<BoxTypeVM, BoxType>()
                 .ForMember(dest => dest.Id,

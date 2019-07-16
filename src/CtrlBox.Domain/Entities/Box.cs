@@ -43,6 +43,8 @@ namespace CtrlBox.Domain.Entities
                 BoxProductItem boxProductItem = new BoxProductItem();
                 boxProductItem.BoxID = this.Id;
                 boxProductItem.ProductItemID = item.Id;
+                item.PutInTheBox();
+
                 this.BoxesProductItems.Add(boxProductItem);
             }
         }

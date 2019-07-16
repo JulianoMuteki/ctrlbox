@@ -19,9 +19,29 @@ namespace CtrlBox.UI.Web.Controllers
             _productApplicationService = productApplicationService;
 
         }
+
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetAjaxHandlerBoxes()
+        {
+            try
+            {
+                var boxesVM = _boxApplicationService.GetAll();
+
+                return Json(new
+                {
+                    aaData = boxesVM,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public IActionResult Create()
@@ -75,6 +95,7 @@ namespace CtrlBox.UI.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult GetAjaxHandlerBoxesType()
         {
             try

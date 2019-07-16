@@ -11,6 +11,7 @@ namespace CtrlBox.Domain.Entities
 
         public Guid ProductID { get; set; }
         public Product Product { get; set; }
+        public bool InBox { get; set; }
 
         public ICollection<BoxProductItem> LoadBoxesProductItems { get; set; }
 
@@ -25,7 +26,13 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
+                this.InBox = false;
             }
+        }
+
+        internal void PutInTheBox()
+        {
+            this.InBox = true;
         }
     }
 }

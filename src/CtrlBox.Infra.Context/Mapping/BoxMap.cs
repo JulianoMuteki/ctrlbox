@@ -19,6 +19,9 @@ namespace CtrlBox.Infra.Context.Mapping
                     .IsRequired()
                      .HasMaxLength(14);
 
+            builder.Property(e => e.StatusBox)
+                  .IsRequired();
+
             builder.Property(e => e.Description)
                     .IsRequired()
                      .HasMaxLength(250);

@@ -21,6 +21,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Expense> Expenses { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
+        public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
         public ICollection<Sale> Sales { get; set; }
 
         public Delivery()
@@ -29,6 +30,7 @@ namespace CtrlBox.Domain.Entities
 
             this.Expenses = new HashSet<Expense>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
+            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
             this.Sales = new HashSet<Sale>();
         }
 

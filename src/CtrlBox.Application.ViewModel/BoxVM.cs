@@ -8,6 +8,7 @@ namespace CtrlBox.Application.ViewModel
     {
         public string Barcode { get; set; }
         public string Description { get; set; }
+        public int StatusBox { get; set; }
 
         public Guid BoxTypeID { get; set; }
         public BoxTypeVM BoxType { get; set; }

@@ -8,6 +8,7 @@ namespace CtrlBox.Domain.Entities
     {
         public string Barcode { get; set; }
         public string Description { get; set; }
+        public int StatusBox { get; set; }
 
         public Guid BoxTypeID { get; set; }
         public BoxType BoxType { get; set; }
@@ -20,12 +21,14 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Box> BoxesChildren { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
+        public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
 
         public Box()
             : base()
         {
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
+            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
         }
 
         public void Init()

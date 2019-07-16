@@ -69,7 +69,20 @@ namespace CtrlBox.Application
 
         public ICollection<BoxVM> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var boxes = _unitOfWork.Repository<Box>().GetAll();
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetAll), ex);
+            }
         }
 
         public Task<ICollection<BoxVM>> GetAllAsync()

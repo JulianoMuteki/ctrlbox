@@ -8,6 +8,7 @@ namespace CtrlBox.Domain.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
+       // public bool HasProducts { get; set; }
 
         public ICollection<Box> Boxes { get; set; }
 

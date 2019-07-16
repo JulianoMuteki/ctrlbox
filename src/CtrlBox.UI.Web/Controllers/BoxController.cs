@@ -41,6 +41,14 @@ namespace CtrlBox.UI.Web.Controllers
                                             Text = $"{prod.Name} {prod.UnitMeasure}"
                                         }).ToList();
             ViewData["Products"] = products;
+
+            var boxes = _boxApplicationService.GetAll()
+                            .Select(box => new SelectListItem
+                            {
+                                Value = box.DT_RowId,
+                                Text = $"{box.Barcode} {box.Description}"
+                            }).ToList();
+            ViewData["Boxes"] = products;
             return View();
         }
 

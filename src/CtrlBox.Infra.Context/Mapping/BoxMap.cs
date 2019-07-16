@@ -32,7 +32,7 @@ namespace CtrlBox.Infra.Context.Mapping
                 .HasForeignKey(x => x.ProductID)
                 .IsRequired(false);
 
-            builder.Property(x => x.BoxParentID)
+            builder.Property(x => x.BoxChildID)
                 .IsRequired(false);
          
         }

@@ -21,6 +21,18 @@
         $('.select2_option').select2({
             allowClear: true
         });
+
+        $('.radio input[type=radio][name=HasProduct]').change(function () {
+            var hasProduct = $(".radio input[type=radio][id=idHasProduct]").is(":checked");
+
+            if (hasProduct) {
+                $("#grpProducts").show();
+                $("#grpBoxes").hide();
+            } else {
+                $("#grpProducts").hide();
+                $("#grpBoxes").show();
+            }
+        });
     });
 </script>
 <div class="page-content">
@@ -61,12 +73,30 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Product</label>
+                                <label class="control-label">Which box</label>
                                 <div class="controls">
-                                    <select id="ddlProducts" class="span6 select2_option" data-placeholder="Choose a product" tabindex="1" name="ProductID" asp-for="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"></select>
+                                    <label class="radio">
+                                        <input type="radio" id="idHasProduct" name="HasProduct" value="True" />
+                                        Has Product
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="HasProduct" value="False" checked />
+                                        Hasn't Product
+                                    </label>
                                 </div>
                             </div>
-
+                            <div id="grpProducts" style="display:none" class="control-group">
+                                <label class="control-label">Product</label>
+                                <div class="controls">
+                                    <select class="span6 select2_option" data-placeholder="Choose a product" tabindex="1" name="ProductID" asp-for="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"><option value="0">Please select Product</option></select>
+                                </div>
+                            </div>
+                            <div id="grpBoxes"  class="control-group">
+                                <label class="control-label">Boxes</label>
+                                <div class="controls">
+                                    <select id="ddlBoxChild" class="span6 select2_option" data-placeholder="Choose a BoxChild" tabindex="1" name="BoxChildID" asp-for="BoxChildID" asp-items="@((List<SelectListItem>)ViewData["Boxes"])"><option value="0">Please select box</option></select>
+                                </div>
+                            </div>
                             <div class="control-group">
                                 <label class="control-label">Barcode</label>
                                 <div class="controls">

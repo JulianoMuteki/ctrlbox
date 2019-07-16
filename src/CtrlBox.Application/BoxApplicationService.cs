@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CtrlBox.Application.ViewModel;
@@ -7,6 +8,7 @@ using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
+using CtrlBox.Domain.Validations;
 
 namespace CtrlBox.Application
 {
@@ -29,6 +31,30 @@ namespace CtrlBox.Application
         public Task<BoxVM> AddAsync(BoxVM entity)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddBoxType(BoxTypeVM entity)
+        {
+            try
+            {
+                var boxType = _mapper.Map<BoxType>(entity);
+
+                if(!boxType.ComponentValidator.Validate(boxType, new BoxTypeValidator()))
+                {
+                    throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+                }
+
+                _unitOfWork.Repository<BoxType>().Add(boxType);
+                _unitOfWork.Commit();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+            }
         }
 
         public void Delete(Guid id)

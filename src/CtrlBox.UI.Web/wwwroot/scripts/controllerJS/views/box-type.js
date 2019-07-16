@@ -7,7 +7,7 @@
 
     function inicializateComponentes() {
         oTableBox = $('#tbBoxesType').dataTable({
-            "sAjaxSource": 'Box/GetAjaxHandlerBoxesType',
+            "sAjaxSource": '../Box/GetAjaxHandlerBoxesType',
             "bProcessing": true,
             "bDestroy": true,
             "aoColumns": [

@@ -1,4 +1,5 @@
 ﻿using CtrlBox.Domain.Common;
+using System;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
@@ -14,6 +15,14 @@ namespace CtrlBox.Domain.Entities
         : base()
         {
             this.Boxes = new HashSet<Box>();
+        }
+
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+            }
         }
     }
 }

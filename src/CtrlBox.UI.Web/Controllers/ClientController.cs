@@ -8,12 +8,10 @@ namespace CtrlBox.UI.Web.Controllers
     public class ClientController : Controller
     {
         private readonly IClientApplicationService _clientApplicationService;
-        private readonly IMapper _mapper;
 
-        public ClientController(IClientApplicationService clientService, IMapper mapper)
+        public ClientController(IClientApplicationService clientService)
         {
             _clientApplicationService = clientService;
-            _mapper = mapper;
         }
 
         public ActionResult Index()

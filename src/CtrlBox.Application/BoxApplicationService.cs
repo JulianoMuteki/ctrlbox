@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting;
+using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 
 namespace CtrlBox.Application
 {
-    public class BoxApplicationService: IBoxApplicationService
+    public class BoxApplicationService : IBoxApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -47,6 +49,24 @@ namespace CtrlBox.Application
         public Task<ICollection<BoxVM>> GetAllAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<BoxTypeVM> GetAllBoxesType()
+        {
+            try
+            {
+                var boxesType = _unitOfWork.Repository<BoxType>().GetAll();
+                var boxesTypeVMs = _mapper.Map<IList<BoxTypeVM>>(boxesType);
+                return boxesTypeVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes type", nameof(this.GetAllBoxesType), ex);
+            }
         }
 
         public BoxVM GetById(Guid id)

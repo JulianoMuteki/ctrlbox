@@ -1,15 +1,17 @@
-﻿using AutoMapper;
+﻿using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace CtrlBox.UI.Web.Controllers
 {
     public class BoxController : Controller
     {
-        private readonly IMapper _mapper;
+        private readonly IBoxApplicationService _boxApplicationService;
 
-        public BoxController()
+        public BoxController(IBoxApplicationService boxApplicationService)
         {
-
+            _boxApplicationService = boxApplicationService;
+                
         }
         public IActionResult Index()
         {
@@ -23,7 +25,20 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult GetAjaxHandlerBoxesType()
         {
-            return View();
+            try
+            {
+                var boxesTypVM = _boxApplicationService.GetAllBoxesType();
+
+                return Json(new
+                {
+                    aaData = boxesTypVM,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

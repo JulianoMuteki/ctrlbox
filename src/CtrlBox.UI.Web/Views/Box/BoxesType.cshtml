@@ -1,8 +1,9 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "BoxesType";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 @section scriptsViews
     {
@@ -44,19 +45,18 @@
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-edit"></i>List all products</div>
+                        <div class="caption"><i class="icon-edit"></i>List all boxes type</div>
                         <div class="actions">
                             <a asp-action="Create" class="btn green"><i class="icon-plus"></i> New Box Type</a>
                         </div>
                     </div>
                     <div class="portlet-body no-more-tables">
-                        <table id="tbBox" class="table-bordered table-striped table-condensed cf">
+                        <table id="tbBoxesType" class="table-bordered table-striped table-condensed cf">
                             <thead class="cf">
                                 <tr>
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Edit</th>
-                                    <th>Add products</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

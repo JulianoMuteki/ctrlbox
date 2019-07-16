@@ -1,0 +1,19 @@
+﻿using CtrlBox.Domain.Common;
+using System.Collections.Generic;
+
+namespace CtrlBox.Domain.Entities
+{
+    public class BoxType : EntityBase
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        public ICollection<Box> Boxes { get; set; }
+
+        public BoxType()
+        : base()
+        {
+            this.Boxes = new HashSet<Box>();
+        }
+    }
+}

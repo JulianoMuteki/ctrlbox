@@ -1,20 +1,31 @@
 ﻿using CtrlBox.Domain.Common;
+using System;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
     public class Box : EntityBase
     {
-        public string Name { get; set; }
+        public string Barcode { get; set; }
         public string Description { get; set; }
-        public bool IsProductBox { get; set; }
 
-        public ICollection<LoadBox> LoadBoxes { get; set; }
+        public Guid BoxTypeID { get; set; }
+        public BoxType BoxType { get; set; }
+
+        public Guid? BoxParentID { get; set; }
+        public Box BoxParent { get; set; }
+
+        public Guid? ProductID { get; set; }
+        public Product Product { get; set; }
+
+        public ICollection<Box> ChildrenBoxes { get; set; }
+        public ICollection<BoxProductItem> BoxesProductItems { get; set; }
 
         public Box()
-        : base()
+            : base()
         {
-            this.LoadBoxes = new HashSet<LoadBox>();
+            this.ChildrenBoxes = new HashSet<Box>();
+            this.BoxesProductItems = new HashSet<BoxProductItem>();
         }
     }
 }

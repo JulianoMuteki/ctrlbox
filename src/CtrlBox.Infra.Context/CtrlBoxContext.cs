@@ -29,10 +29,10 @@ namespace CtrlBox.Infra.Context
         public DbSet<SaleProduct> SalesProducts { get; set; }
         public DbSet<RouteClient> RoutesClients { get; set; }
 
-        public DbSet<Box> Boxes { get; set; }
+        public DbSet<BoxType> BoxesTypes { get; set; }
         public DbSet<ProductItem> ProductItems { get; set; }
-        public DbSet<LoadBox> LoadBoxes { get; set; }
-        public DbSet<LoadBoxProductItem> LoadBoxesProductItems { get; set; }
+        public DbSet<Box> Boxes { get; set; }
+        public DbSet<BoxProductItem> BoxesProductItems { get; set; }
         
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
@@ -72,10 +72,10 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new SaleMap());
             modelBuilder.ApplyConfiguration(new StockProductMap());
 
-            modelBuilder.ApplyConfiguration(new LoadBoxMap());
-            modelBuilder.ApplyConfiguration(new ProductItemMap());
             modelBuilder.ApplyConfiguration(new BoxMap());
-            modelBuilder.ApplyConfiguration(new LoadBoxProductItemMap());
+            modelBuilder.ApplyConfiguration(new ProductItemMap());
+            modelBuilder.ApplyConfiguration(new BoxTypeMap());
+            modelBuilder.ApplyConfiguration(new BoxProductItemMap());
 
             modelBuilder.ApplyConfiguration(new PaymentMap());
             modelBuilder.ApplyConfiguration(new PaymentMethodMap());

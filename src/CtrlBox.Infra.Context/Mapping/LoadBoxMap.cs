@@ -28,11 +28,11 @@ namespace CtrlBox.Infra.Context.Mapping
 
             //builder.Property(e => e.LoadBoxParentID);
 
-            //builder
-            //.HasOne(x => x.Product)
-            //.WithMany(x => x.LoadBoxes)
-            //.HasForeignKey(x => x.ProductID)
-            //.IsRequired(false);
+            builder
+            .HasOne(x => x.Product)
+            .WithMany(x => x.LoadBoxes)
+            .HasForeignKey(x => x.ProductID)
+            .IsRequired(false);
         }
     }
 }

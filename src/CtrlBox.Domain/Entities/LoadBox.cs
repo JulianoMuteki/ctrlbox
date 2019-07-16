@@ -15,8 +15,8 @@ namespace CtrlBox.Domain.Entities
         //public Guid? LoadBoxParentID { get; set; }
         //public LoadBox LoadBoxParent { get; set; }
 
-        //public Guid? ProductID { get; set; }
-        //public Product Product { get; set; }
+        public Guid? ProductID { get; set; }
+        public Product Product { get; set; }
 
         //public ICollection<LoadBox> ChildrenLoadBoxes { get; set; }
         public ICollection<LoadBoxProductItem> LoadBoxesProductItems { get; set; }

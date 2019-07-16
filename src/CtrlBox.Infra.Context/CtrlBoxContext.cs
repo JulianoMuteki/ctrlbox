@@ -28,8 +28,10 @@ namespace CtrlBox.Infra.Context
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleProduct> SalesProducts { get; set; }
         public DbSet<RouteClient> RoutesClients { get; set; }
+
         public DbSet<Box> Boxes { get; set; }
-        
+        public DbSet<ProductItem> ProductItems { get; set; }
+
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PaymentSchedule> PaymentSchedules { get; set; }
@@ -44,7 +46,7 @@ namespace CtrlBox.Infra.Context
         public CtrlBoxContext(DbContextOptions<CtrlBoxContext> options)
              : base(options)
         {
-              ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -67,6 +69,8 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new RouteMap());
             modelBuilder.ApplyConfiguration(new SaleMap());
             modelBuilder.ApplyConfiguration(new StockProductMap());
+
+            modelBuilder.ApplyConfiguration(new ProductItemMap());
             modelBuilder.ApplyConfiguration(new BoxMap());
 
             modelBuilder.ApplyConfiguration(new PaymentMap());

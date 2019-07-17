@@ -29,11 +29,13 @@ namespace CtrlBox.Application
             try
             {
                 var box = _mapper.Map<Box>(entity);
+
                 if (box.ProductID != null && box.ProductID != Guid.Empty)
                     AddBoxHasProduct(entity.RangeProductsItems, box);
                 else
                     AddBoxWithoutProduct(entity.ChildrenBoxesID, box);
 
+                _unitOfWork.Commit();
                 return entity;
             }
             catch (CustomException exc)
@@ -52,7 +54,6 @@ namespace CtrlBox.Application
 
             _unitOfWork.Repository<Box>().Add(box);
             _unitOfWork.Repository<Box>().UpdateRange(boxesChildrenWithFather);
-            _unitOfWork.Commit();
         }
         private void AddBoxHasProduct(int rangeProductsItems, Box box)
         {
@@ -65,7 +66,6 @@ namespace CtrlBox.Application
             }
             _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
             _unitOfWork.Repository<Box>().Add(box);
-            _unitOfWork.Commit();
         }
 
         public Task<BoxVM> AddAsync(BoxVM entity)

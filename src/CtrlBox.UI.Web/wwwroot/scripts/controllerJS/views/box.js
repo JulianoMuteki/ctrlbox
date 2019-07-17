@@ -27,7 +27,8 @@ var BoxComponents = function () {
                             "mData": "BoxType.Name"
                         },
                         {
-                            "mData": "Product.Name"
+                            "mData": "Product.Name",
+                            "defaultContent": "<i>not applicable</i>",
                         }
             ]
 

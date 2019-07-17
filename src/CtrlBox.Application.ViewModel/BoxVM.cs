@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Application.ViewModel
 {
@@ -20,7 +19,7 @@ namespace CtrlBox.Application.ViewModel
         public ProductVM Product { get; set; }
 
         public int RangeProductsItems { get; set; }
-
+        
         public ICollection<BoxVM> ChildrenBoxes { get; set; }
         public string[] ChildrenBoxesID { get; set; }
 

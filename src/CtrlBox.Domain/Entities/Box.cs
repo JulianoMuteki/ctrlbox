@@ -32,11 +32,17 @@ namespace CtrlBox.Domain.Entities
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
         }
 
+        public void SetBarcode(int i)
+        {
+            this.Barcode = $"{DateTime.Now.Date.ToString("yyyyMMddHHmm")}{i.ToString("D2")}";
+        }
+
         public void Init()
         {
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
+                this.Barcode = $"{DateTime.Now.Date.ToString("yyyyMMdd")}";
             }
         }
 

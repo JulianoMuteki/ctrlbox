@@ -85,23 +85,25 @@
                                     </label>
                                 </div>
                             </div>
-                            <div id="grpProducts" style="display:none" class="control-group">
-                                <label class="control-label">Product</label>
-                                <div class="controls">
-                                    <select class="span6 select2_option" data-placeholder="Choose a product" tabindex="1" name="ProductID" asp-for="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"><option value="0">Please select Product</option></select>
+                            <div id="grpProducts" style="display:none">
+                                <div class="control-group">
+                                    <label class="control-label">Product</label>
+                                    <div class="controls">
+                                        <select class="span6 select2_option" data-placeholder="Choose a product" tabindex="1" name="ProductID" asp-for="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"><option value="0">Please select Product</option></select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Quantity product Items</label>
+                                    <div class="controls">
+                                        <input type="text" name="RangeProductsItems" placeholder="number" class="m-wrap medium" />
+                                        <span class="help-inline">Range of the first available</span>
+                                    </div>
                                 </div>
                             </div>
                             <div id="grpBoxes" class="control-group">
-                                <label class="control-label">Boxes</label>
+                                <label class="control-label">Boxes children</label>
                                 <div class="controls">
-                                    <select id="ddlBoxChild" class="span6 select2_option" data-placeholder="Choose a BoxChild" tabindex="1" name="BoxChildID" asp-for="BoxChildID" asp-items="@((List<SelectListItem>)ViewData["Boxes"])"><option value="0">Please select box</option></select>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label">Quantity product Items</label>
-                                <div class="controls">
-                                    <input type="text" name="RangeProductsItems" placeholder="number" class="m-wrap medium" />
-                                    <span class="help-inline">Range of the first available</span>
+                                    <select id="ddlBoxChild" data-placeholder="Policy role" class="span6 select2_option" tabindex="0" multiple="multiple" name="ChildrenBoxesID" asp-items="@((List<SelectListItem>)ViewData["Boxes"])"><option value="0">Please select box</option></select>
                                 </div>
                             </div>
                             <div class="control-group">

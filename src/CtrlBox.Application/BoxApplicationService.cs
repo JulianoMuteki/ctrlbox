@@ -29,16 +29,10 @@ namespace CtrlBox.Application
             try
             {
                 var box = _mapper.Map<Box>(entity);
-                var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID).OrderByDescending(x => x.CreationDate).Take(entity.RangeProductsItems).ToList();
-                box.LoadProductItems(productItems);
-                 
-                if (!box.ComponentValidator.Validate(box, new BoxValidator()))
-                {
-                    throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
-                }
-                _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
-                _unitOfWork.Repository<Box>().Add(box);
-                _unitOfWork.Commit();
+                if (box.ProductID != null && box.ProductID != Guid.Empty)
+                    AddBoxHasProduct(entity.RangeProductsItems, box);
+                else
+                    AddBoxWithoutProduct(entity.ChildrenBoxesID, box);
 
                 return entity;
             }
@@ -50,6 +44,28 @@ namespace CtrlBox.Application
             {
                 throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
             }
+        }
+        private void AddBoxWithoutProduct(string[] boxesChildrenID, Box box)
+        {
+            var boxesChildren = _unitOfWork.Repository<Box>().FindAll(x => boxesChildrenID.Any(id => new Guid(id) == x.Id)).ToList();
+            var boxesChildrenWithFather = box.AddChildren(boxesChildren);
+
+            _unitOfWork.Repository<Box>().Add(box);
+            _unitOfWork.Repository<Box>().UpdateRange(boxesChildrenWithFather);
+            _unitOfWork.Commit();
+        }
+        private void AddBoxHasProduct(int rangeProductsItems, Box box)
+        {
+            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
+            box.LoadProductItems(productItems);
+
+            if (!box.ComponentValidator.Validate(box, new BoxValidator()))
+            {
+                throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+            }
+            _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
+            _unitOfWork.Repository<Box>().Add(box);
+            _unitOfWork.Commit();
         }
 
         public Task<BoxVM> AddAsync(BoxVM entity)
@@ -63,7 +79,7 @@ namespace CtrlBox.Application
             {
                 var boxType = _mapper.Map<BoxType>(entity);
 
-                if(!boxType.ComponentValidator.Validate(boxType, new BoxTypeValidator()))
+                if (!boxType.ComponentValidator.Validate(boxType, new BoxTypeValidator()))
                 {
                     throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
                 }

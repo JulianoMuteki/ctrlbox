@@ -13,8 +13,8 @@ namespace CtrlBox.Application.ViewModel
         public Guid BoxTypeID { get; set; }
         public BoxTypeVM BoxType { get; set; }
 
-        public Guid? BoxChildID { get; set; }
-        public BoxVM BoxChild { get; set; }
+        public Guid? BoxParentID { get; set; }
+        public BoxVM BoxParent { get; set; }
 
         public Guid? ProductID { get; set; }
         public ProductVM Product { get; set; }
@@ -22,6 +22,8 @@ namespace CtrlBox.Application.ViewModel
         public int RangeProductsItems { get; set; }
 
         public ICollection<BoxVM> ChildrenBoxes { get; set; }
+        public string[] ChildrenBoxesID { get; set; }
+
         public ICollection<BoxProductItemVM> BoxesProductItems { get; set; }
 
         public BoxVM()

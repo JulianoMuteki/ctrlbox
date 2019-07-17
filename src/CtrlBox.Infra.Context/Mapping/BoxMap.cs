@@ -14,7 +14,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(x => x.Id).HasColumnName("BoxID");
             builder.HasKey(b => b.Id).HasName("BoxID");
 
-
             builder.Property(e => e.Barcode)
                     .IsRequired()
                      .HasMaxLength(14);
@@ -35,9 +34,11 @@ namespace CtrlBox.Infra.Context.Mapping
                 .HasForeignKey(x => x.ProductID)
                 .IsRequired(false);
 
-            builder.Property(x => x.BoxChildID)
+            builder.HasMany(x => x.BoxesChildren)
+                .WithOne(x=>x.BoxParent)
+                .HasForeignKey(x => x.BoxParentID)
                 .IsRequired(false);
-         
+
         }
     }
 }

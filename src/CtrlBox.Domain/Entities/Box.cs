@@ -1,6 +1,7 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -13,8 +14,8 @@ namespace CtrlBox.Domain.Entities
         public Guid BoxTypeID { get; set; }
         public BoxType BoxType { get; set; }
 
-        public Guid? BoxChildID { get; set; }
-        public Box BoxChild { get; set; }
+        public Guid? BoxParentID { get; set; }
+        public Box BoxParent { get; set; }
 
         public Guid? ProductID { get; set; }
         public Product Product { get; set; }
@@ -50,6 +51,11 @@ namespace CtrlBox.Domain.Entities
 
                 this.BoxesProductItems.Add(boxProductItem);
             }
+        }
+
+        public List<Box> AddChildren(List<Box> boxesChildren)
+        {
+            return boxesChildren.Select(x => { x.BoxParentID = this.Id; return x; }).ToList();        
         }
     }
 }

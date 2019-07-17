@@ -95,7 +95,8 @@ namespace CtrlBox.UI.Web.Controllers
                                 Value = box.DT_RowId,
                                 Text = $"{box.Barcode} {box.Description}"
                             }).ToList();
-            ViewData["Boxes"] = products;
+
+            ViewData["Boxes"] = boxes;
             return View();
         }
 

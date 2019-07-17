@@ -39,7 +39,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 return _context.Set<Box>()
                     .Include(x => x.BoxType)
-                    .Where(x=>x.BoxChildID == null)
+                    .Where(x=>x.BoxParentID == null)
                     .ToList();
             }
             catch (Exception ex)

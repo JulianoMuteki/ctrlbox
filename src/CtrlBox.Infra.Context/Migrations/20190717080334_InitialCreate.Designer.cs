@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190717070652_ChangeColumnBoxParent")]
-    partial class ChangeColumnBoxParent
+    [Migration("20190717080334_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -42,7 +42,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
             }
         }
         private void AddBoxWithoutProduct(string[] boxesChildrenID, Box box)
@@ -93,7 +93,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
             }
         }
 

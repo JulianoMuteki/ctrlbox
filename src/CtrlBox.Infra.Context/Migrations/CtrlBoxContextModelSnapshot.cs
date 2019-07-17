@@ -280,13 +280,13 @@ namespace CtrlBox.Infra.Context.Migrations
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.DeliveryBox", b =>
                 {
-                    b.Property<Guid>("BoxID");
-
                     b.Property<Guid>("DeliveryID");
 
-                    b.HasKey("BoxID", "DeliveryID");
+                    b.Property<Guid>("BoxID");
 
-                    b.HasIndex("DeliveryID");
+                    b.HasKey("DeliveryID", "BoxID");
+
+                    b.HasIndex("BoxID");
 
                     b.ToTable("DeliveriesBoxes");
                 });

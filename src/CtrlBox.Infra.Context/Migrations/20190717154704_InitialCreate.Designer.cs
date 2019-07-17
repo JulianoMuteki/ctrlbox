@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190717080334_InitialCreate")]
+    [Migration("20190717154704_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,11 +282,13 @@ namespace CtrlBox.Infra.Context.Migrations
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.DeliveryBox", b =>
                 {
-                    b.Property<Guid>("BoxID");
-
                     b.Property<Guid>("DeliveryID");
 
-                    b.HasKey("BoxID", "DeliveryID");
+                    b.Property<Guid>("BoxID");
+
+                    b.HasKey("DeliveryID", "BoxID");
+
+                    b.HasIndex("BoxID");
 
                     b.ToTable("DeliveriesBoxes");
                 });
@@ -922,7 +924,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasOne("CtrlBox.Domain.Entities.Delivery", "Delivery")
                         .WithMany("DeliveriesBoxes")
-                        .HasForeignKey("BoxID")
+                        .HasForeignKey("DeliveryID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

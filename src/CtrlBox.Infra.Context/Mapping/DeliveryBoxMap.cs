@@ -10,11 +10,11 @@ namespace CtrlBox.Infra.Context.Mapping
         {
             builder.ToTable("DeliveriesBoxes");
 
-            builder.HasKey(t => new { t.BoxID, t.DeliveryID });
+            builder.HasKey(t => new { t.DeliveryID, t.BoxID });
 
             builder.HasOne(tk => tk.Delivery)
                 .WithMany(t => t.DeliveriesBoxes)
-                .HasForeignKey(tk => tk.BoxID);
+                .HasForeignKey(tk => tk.DeliveryID);
 
             builder.HasOne(tk => tk.Box)
                 .WithMany(k => k.DeliveriesBoxes)

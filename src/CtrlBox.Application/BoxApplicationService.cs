@@ -47,6 +47,7 @@ namespace CtrlBox.Application
                 throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
             }
         }
+
         private void AddBoxWithoutProduct(string[] boxesChildrenID, Box box)
         {
             var boxesChildren = _unitOfWork.Repository<Box>().FindAll(x => boxesChildrenID.Any(id => new Guid(id) == x.Id)).ToList();
@@ -55,6 +56,7 @@ namespace CtrlBox.Application
             _unitOfWork.Repository<Box>().Add(box);
             _unitOfWork.Repository<Box>().UpdateRange(boxesChildrenWithFather);
         }
+
         private void AddBoxHasProduct(int rangeProductsItems, Box box)
         {
             var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
@@ -185,6 +187,24 @@ namespace CtrlBox.Application
         public Task<BoxVM> UpdateAsync(BoxVM updated)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<BoxVM> GetBoxesByDeliveryID(Guid deliveryID)
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryWithBoxType(deliveryID);
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesByDeliveryID), ex);
+            }
         }
     }
 }

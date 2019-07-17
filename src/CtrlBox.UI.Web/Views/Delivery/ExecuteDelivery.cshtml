@@ -134,7 +134,7 @@
 
                                 "aoColumns": [
                                                    {
-                                                       "mData": "Name",
+                                                       "mData": "BoxType",
                                                        "bSortable": false
                                                    },
                                                    {
@@ -144,10 +144,10 @@
                                                         "mRender": function (data, type, row) {
                                                             if (type === 'display') {
                                                                 var statusStock = "green-stripe";
-                                                                if (row.Amount <= 5) {
+                                                                if (row.TotalBox <= 5) {
                                                                     statusStock = "red-stripe"
                                                                 }
-                                                                return '<span class="btn mini ' + statusStock + '">Total: ' + row.Amount + ' ' + row.UnitMeasure + '</span>';
+                                                                return '<span class="btn mini ' + statusStock + '">Total: ' + row.TotalBox + '</span>';
                                                             }
                                                             return data;
                                                         }
@@ -293,36 +293,10 @@
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
-            <div class="span8">
+            <div class="span12">
                 <div class="alert alert-info">
                     <h3><strong>Route name:</strong> @ViewData["RouteName"]</h3>
                 </div>
-            </div>
-        </div>
-        <div class="row-fluid portfolio-block">
-            <div class="span5 portfolio-text">
-                <img src="~/img/profile/portfolio/logo_metronic.jpg" alt="">
-                <div class="portfolio-text-info">
-                    <h4>Metronic - Responsive Template</h4>
-                    <p>Lorem ipsum dolor sit consectetuer adipiscing elit.</p>
-                </div>
-            </div>
-            <div class="span5">
-                <div class="portfolio-info">
-                    Today Sold
-                    <span>187</span>
-                </div>
-                <div class="portfolio-info">
-                    Total Sold
-                    <span>1789</span>
-                </div>
-                <div class="portfolio-info">
-                    Earnings
-                    <span>$37.240</span>
-                </div>
-            </div>
-            <div class="span2 portfolio-btn">
-                <a href="#" class="btn bigicn-only"><span>View</span></a>
             </div>
         </div>
         <div class="row-fluid">
@@ -387,16 +361,11 @@
                         <table id="qtdeEntrega" class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Produto</th>
-                                    <th>Quantidade</th>
+                                    <th>Boxes Type</th>
+                                    <th>Quantity</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-                                <tr>
-                                    <td>10,80</td>
-                                    <td>Almoço</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>

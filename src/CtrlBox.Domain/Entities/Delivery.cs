@@ -25,9 +25,8 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Sale> Sales { get; set; }
 
         public Delivery()
+            :base()
         {
-            Init();
-
             this.Expenses = new HashSet<Expense>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
@@ -39,11 +38,14 @@ namespace CtrlBox.Domain.Entities
         /// </summary>
         public void Init()
         {
-            this.InitBase();
-            this.IsFinalized = false;
-            this.DtStart = DateTime.Now;
-            this.CreatedBy = "Juliano";
-            this.FinalizedBy = "Juliano";
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+                this.IsFinalized = false;
+                this.DtStart = DateTime.Now;
+                this.CreatedBy = "Juliano";
+                this.FinalizedBy = "Juliano";
+            }
         }
 
         public void FinalizeDelivery()
@@ -52,6 +54,18 @@ namespace CtrlBox.Domain.Entities
             this.DtEnd = DateTime.Now;
             this.DateModified = DateTime.Now;
             this.FinalizedBy = "Juliano";
+        }
+
+        public void LoadBox(IEnumerable<Box> boxesReadyToDelivery)
+        {
+            foreach (var item in boxesReadyToDelivery)
+            {
+                DeliveryBox deliveryBox = new DeliveryBox();
+                deliveryBox.BoxID = item.Id;
+                deliveryBox.DeliveryID = this.Id;
+
+                this.DeliveriesBoxes.Add(deliveryBox);
+            }
         }
     }
 }

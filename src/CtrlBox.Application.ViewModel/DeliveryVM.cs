@@ -22,11 +22,15 @@ namespace CtrlBox.Application.ViewModel
         public ICollection<SaleVM> Sales { get; set; }
 
         public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }
+        public ICollection<DeliveryBoxVM> DeliveriesBoxes { get; set; }
+        public ICollection<BoxTypeVM> BoxesTypes { get; set; }
 
         public DeliveryVM()
         {
+            this.BoxesTypes = new HashSet<BoxTypeVM>();
             this.DeliveriesProducts = new HashSet<DeliveryProductVM>();
             this.Sales = new HashSet<SaleVM>();
+            this.DeliveriesBoxes = new HashSet<DeliveryBoxVM>();
         }
     }
 }

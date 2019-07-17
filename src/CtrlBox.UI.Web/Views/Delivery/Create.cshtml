@@ -61,12 +61,11 @@
                                         "bSortable": false,
                                         "mRender": function (data, type, row) {
                                             if (type === 'display') {
-                                                //var statusStock = "green-stripe";
-                                                //if (row.StockTotal <= 0) {
-                                                //    statusStock = "red-stripe"
-                                                //}
-                                                //return '<div class="btn mini ' + statusStock + '">Total: ' + row.StockTotal + ' ' + row.UnitMeasure + '</div>';
-                                                return '<div class="btn mini green-stripe">Total: ' + row.TotalBox + '</div>';
+                                                var statusStock = "green-stripe";
+                                                if (row.TotalBox <= 0) {
+                                                    statusStock = "red-stripe"
+                                                }
+                                                return '<div class="btn mini ' + statusStock + '">Total: ' + row.TotalBox + '</div>';
                                             }
                                             return data;
                                         }
@@ -79,16 +78,14 @@
                                         "mData": null,
                                         "sType": "html",
                                         "bSortable": false,
-                                        "sClass": "calc",
                                         "mRender": function (data, type, row) {
                                             if (type === 'display') {
-                                                //var txtTotal = '<input type="text" placeholder="0" class="m-wrap small amount"><span class="bold"> ' + row.UnitMeasure + '</span>';
+                                                var txtTotal = '<input type="text" placeholder="0" class="m-wrap small quantityToDelivery">';
 
-                                                //if (row.StockTotal <= 0) {
-                                                //    txtTotal = '<span class="label label-important">Unavailable</span>'
-                                                //}
-                                                //return txtTotal;
-                                                return '<input type="text" placeholder="0" class="m-wrap small amount">';
+                                                if (row.TotalBox <= 0) {
+                                                    txtTotal = '<span class="label label-important">Unavailable</span>'
+                                                }
+                                                return txtTotal;                                               
                                             }
                                             return data;
                                         }
@@ -106,16 +103,16 @@
         });
 
         $("#btnSubmit").click(function () {
-            var oTable = $('#tbProducts').dataTable();
+            var oTable = $('#tbBox').dataTable();
             var tb = [];
             $.each(oTable.fnGetNodes(), function (index, value) {
-                if ($(value).find('input.amount').val() > 0) {
+                if ($(value).find('input.quantityToDelivery').val() > 0) {
                     var row = oTable.fnGetData(value);
 
-                    var valueAmount = $(value).find('input.amount').val();
-                    if (valueAmount !== undefined && valueAmount !== '') {
-                        row.Amount = valueAmount;
-                        row.ProductID = row.DT_RowId;
+                    var quantityToDelivery = $(value).find('input.quantityToDelivery').val();
+                    if (quantityToDelivery !== undefined && quantityToDelivery !== '') {
+                        row.QuantityToDelivery = quantityToDelivery;
+                        row.BoxTypeID = row.DT_RowId;
                         tb.push(row);
                     }             
                 }
@@ -128,7 +125,7 @@
                 url: '@Url.Content("~/Delivery/PostAjaxHandlerCreateDelivery")',
                 type: 'POST',
                 dataType: 'json',
-                data: { tbProducts: myJsonString, routeID: routeId, userID: userId },
+                data: { tbBoxesTypes: myJsonString, routeID: routeId, userID: userId },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');

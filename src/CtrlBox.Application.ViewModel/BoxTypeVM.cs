@@ -7,6 +7,8 @@ namespace CtrlBox.Application.ViewModel
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public int QuantityToDelivery { get; set; }
+
         public ICollection<BoxVM> Boxes { get; set; }
 
         public BoxTypeVM()

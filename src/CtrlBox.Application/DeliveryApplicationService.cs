@@ -7,6 +7,7 @@ using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Domain.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CtrlBox.Application
@@ -28,15 +29,12 @@ namespace CtrlBox.Application
             {
                 var delivery = _mapper.Map<Delivery>(entity);
 
-                delivery.Init();
-                foreach (var item in entity.DeliveriesProducts)
-                {
-                    item.DeliveryID = delivery.Id;
-                    var stockProduct = _unitOfWork.Repository<StockProduct>().Find(x => x.ProductID == item.ProductID);
-
-                    stockProduct.Amount -= item.Amount;
-                    _unitOfWork.Repository<StockProduct>().Update(stockProduct);
+                foreach (var item in entity.BoxesTypes)
+                {              
+                    var boxesReadyToDelivery = _unitOfWork.Repository<Box>().FindAll(x => x.BoxTypeID == new Guid(item.DT_RowId) && x.BoxParentID == null).OrderByDescending(x=>x.DateModified).Take(item.QuantityToDelivery).ToList();
+                    delivery.LoadBox(boxesReadyToDelivery);
                 }
+
                 _unitOfWork.Repository<Delivery>().Add(delivery);
                 _unitOfWork.Commit();
 

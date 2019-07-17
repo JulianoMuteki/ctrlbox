@@ -1,4 +1,5 @@
 ﻿using CtrlBox.Application.ViewModel;
+using System;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Application
@@ -8,5 +9,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<BoxTypeVM> GetAllBoxesType();
         void AddBoxType(BoxTypeVM boxTypeVM);
         ICollection<BoxVM> BoxesParents();
+        ICollection<BoxVM> GetBoxesByDeliveryID(Guid deliveryID);
     }
 }

@@ -29,7 +29,22 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<DeliveryRepository>("Unexpected error fetching GetAll", nameof(this.GetAllWithBoxTypeAndProduct), ex);
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetAllWithBoxTypeAndProduct), ex);
+            }
+        }
+
+        public ICollection<Box> GetBoxesParentsWithBoxType()
+        {
+            try
+            {
+                return _context.Set<Box>()
+                    .Include(x => x.BoxType)
+                    .Where(x=>x.BoxChildID == null)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetBoxesParentsWithBoxType), ex);
             }
         }
     }

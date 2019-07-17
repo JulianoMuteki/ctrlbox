@@ -7,5 +7,6 @@ namespace CtrlBox.Domain.Interfaces.Application
     {
         ICollection<BoxTypeVM> GetAllBoxesType();
         void AddBoxType(BoxTypeVM boxTypeVM);
+        ICollection<BoxVM> BoxesParents();
     }
 }

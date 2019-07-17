@@ -44,6 +44,33 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult GetAjaxHandlerBoxesParents()
+        {
+            try
+            {
+                var boxesVM = _boxApplicationService.BoxesParents();
+
+                return Json(new
+                {
+                    aaData = boxesVM.GroupBy(n => new { n.BoxTypeID, n })
+                                                .Select(g => new
+                                                {
+                                                    DT_RowId = g.Key.BoxTypeID,
+                                                    BoxType = g.Key.n.BoxType.Name,
+                                                    TotalBox = g.Count()
+                                                }),
+               
+
+                success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IActionResult Create()
         {
             var boxesType = _boxApplicationService.GetAllBoxesType()

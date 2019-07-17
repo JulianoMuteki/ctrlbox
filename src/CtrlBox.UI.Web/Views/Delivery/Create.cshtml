@@ -46,9 +46,9 @@
             dataType: "json",
             "success": function (data) {
                 if (data.aaData.length > 0) {
-                    var url = '@Url.Content("~/Delivery/GetAjaxHandlerProductsStock")';
+                    var url = '@Url.Content("~/Box/GetAjaxHandlerBoxesParents")';
 
-                    $('#tbProducts').dataTable({
+                    $('#tbBox').dataTable({
                         "bPaginate": false,
                         "bAutoWidth": false,
                         "sAjaxSource": url,
@@ -61,17 +61,18 @@
                                         "bSortable": false,
                                         "mRender": function (data, type, row) {
                                             if (type === 'display') {
-                                                var statusStock = "green-stripe";
-                                                if (row.StockTotal <= 0) {
-                                                    statusStock = "red-stripe"
-                                                }
-                                                return '<div class="btn mini ' + statusStock + '">Total: ' + row.StockTotal + ' ' + row.UnitMeasure + '</div>';
+                                                //var statusStock = "green-stripe";
+                                                //if (row.StockTotal <= 0) {
+                                                //    statusStock = "red-stripe"
+                                                //}
+                                                //return '<div class="btn mini ' + statusStock + '">Total: ' + row.StockTotal + ' ' + row.UnitMeasure + '</div>';
+                                                return '<div class="btn mini green-stripe">Total: ' + row.TotalBox + '</div>';
                                             }
                                             return data;
                                         }
                                     },
                                     {
-                                        "mData": "Name",
+                                        "mData": "BoxType",
                                         "bSortable": false
                                     },
                                     {
@@ -81,12 +82,13 @@
                                         "sClass": "calc",
                                         "mRender": function (data, type, row) {
                                             if (type === 'display') {
-                                                var txtTotal = '<input type="text" placeholder="0" class="m-wrap small amount"><span class="bold"> ' + row.UnitMeasure + '</span>';
+                                                //var txtTotal = '<input type="text" placeholder="0" class="m-wrap small amount"><span class="bold"> ' + row.UnitMeasure + '</span>';
 
-                                                if (row.StockTotal <= 0) {
-                                                    txtTotal = '<span class="label label-important">Unavailable</span>'
-                                                }
-                                                return txtTotal;
+                                                //if (row.StockTotal <= 0) {
+                                                //    txtTotal = '<span class="label label-important">Unavailable</span>'
+                                                //}
+                                                //return txtTotal;
+                                                return '<input type="text" placeholder="0" class="m-wrap small amount">';
                                             }
                                             return data;
                                         }
@@ -202,10 +204,10 @@
                 <!-- BEGIN SAMPLE TABLE PORTLET-->
                 <div class="portlet box red">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-cogs"></i>Produtos</div>
+                        <div class="caption"><i class="icon-cogs"></i>Boxes</div>
                     </div>
                     <div class="portlet-body">
-                        <table id="tbProducts" class="table table-hover">
+                        <table id="tbBox" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Ready Delivery</th>

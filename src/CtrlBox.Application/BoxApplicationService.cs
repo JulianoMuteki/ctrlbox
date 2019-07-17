@@ -81,6 +81,25 @@ namespace CtrlBox.Application
             }
         }
 
+        public ICollection<BoxVM> BoxesParents()
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsWithBoxType();
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetAll), ex);
+            }
+
+        }
+
         public void Delete(Guid id)
         {
             throw new NotImplementedException();

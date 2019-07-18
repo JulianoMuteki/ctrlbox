@@ -10,5 +10,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         void AddBoxType(BoxTypeVM boxTypeVM);
         ICollection<BoxVM> BoxesParents();
         ICollection<BoxVM> GetBoxesByDeliveryID(Guid deliveryID);
+        ICollection<BoxProductItemVM> GetBoxesBoxesProductItemsByDeliveryID(Guid guid);
     }
 }

@@ -2,6 +2,7 @@
 using CtrlBox.Domain.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -23,10 +24,12 @@ namespace CtrlBox.Domain.Entities
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
         public ICollection<Sale> Sales { get; set; }
+        public ICollection<BoxProductItem> BoxesProductItems { get; set; }
 
         public Delivery()
             :base()
         {
+            this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.Expenses = new HashSet<Expense>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
@@ -56,15 +59,23 @@ namespace CtrlBox.Domain.Entities
             this.FinalizedBy = "Juliano";
         }
 
-        public void LoadBox(IEnumerable<Box> boxesReadyToDelivery)
+        public void ShippingBoxes(IEnumerable<Box> boxesReadyToDelivery)
         {
-            foreach (var item in boxesReadyToDelivery)
+            foreach (var box in boxesReadyToDelivery)
             {
                 DeliveryBox deliveryBox = new DeliveryBox();
-                deliveryBox.BoxID = item.Id;
+                deliveryBox.BoxID = box.Id;
                 deliveryBox.DeliveryID = this.Id;
-
+                AddRangeBoxesProductItems(box.BoxesProductItems.Select(x => { x.DeliveryID = this.Id; return x; }).ToList());
                 this.DeliveriesBoxes.Add(deliveryBox);
+            }
+        }
+
+        private void AddRangeBoxesProductItems(ICollection<BoxProductItem> boxesProductItems)
+        {
+            foreach (var boxProductItem in boxesProductItems)
+            {
+                this.BoxesProductItems.Add(boxProductItem);
             }
         }
     }

@@ -19,10 +19,12 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly IProductApplicationService _productService;
         private readonly ISaleApplicationService _saleService;
         private readonly IPaymentApplicationService _paymentService;
+        private readonly IBoxApplicationService _boxService;
 
         public SaleController(IClientApplicationService clientService, IRouteApplicationService routeService,
                                    IDeliveryApplicationService deliveryService, IProductApplicationService productService,
-                                   ISaleApplicationService saleService, IPaymentApplicationService paymentService)
+                                   ISaleApplicationService saleService, IPaymentApplicationService paymentService,
+                                   IBoxApplicationService boxService)
         {
             _clientService = clientService;
             _routeService = routeService;
@@ -30,6 +32,7 @@ namespace CtrlBox.UI.Web.Controllers
             _productService = productService;
             _saleService = saleService;
             _paymentService = paymentService;
+            _boxService = boxService;
         }
         // GET: Sale
         public ActionResult Index(string linhaID, string clienteID, string entregaID)
@@ -60,22 +63,31 @@ namespace CtrlBox.UI.Web.Controllers
 
                 //Busca preço de produtos por clientes. Deve sempre existir preço para todos clientes
                 var clientsProductsVM = _productService.GetClientsProductsByClientID(clientID);
-                var productsDeliveryVM = _productService.GetDeliveryProducts(new Guid(deliveryID));
+                var boxesProductItemsVM = _boxService.GetBoxesBoxesProductItemsByDeliveryID(new Guid(deliveryID));
 
-                if (clientsProductsVM.Count == 0)
-                    throw CustomException.Create<SaleController>("There aren't products for this client.", nameof(this.GetAjaxHandlerExecuteSale));
+                //if (clientsProductsVM.Count == 0)
+                //    throw CustomException.Create<SaleController>("There aren't products for this client.", nameof(this.GetAjaxHandlerExecuteSale));
+
+                var boxesProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
+                                                                  (key, group) => new {
+                                                                      DT_RowId = key,
+                                                                      NomeProduto = group.Select(x=>x.ProductItem.Product.Name).FirstOrDefault(),
+                                                                      UnitMeasure = group.Select(x => x.ProductItem.Product.UnitMeasure).FirstOrDefault(),
+                                                                      TotalBox = group.Select(p=>p.ProductItem).Count()
+                                                                  })
+                                                         .ToList();
 
                 return Json(new
                 {
-                    aaData = productsDeliveryVM.Select(x => new
+                    aaData = boxesProductItemsGroup.Select(x => new
                     {
-                        DT_RowId = x.ProductID.ToString(),
-                        NomeProduto = x.Product.Name,
-                        ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID == x.ProductID select c.Price).FirstOrDefault()),
-                        x.Amount,
-                        x.Product.UnitMeasure,
-                        QtdeVenda = 0,
-                        QtdeRetorno = 0,
+                        DT_RowId = x.DT_RowId.ToString(),
+                        x.NomeProduto,
+                        ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
+                        x.TotalBox,
+                        x.UnitMeasure,
+                        //QtdeVenda = 0,
+                        //QtdeRetorno = 0,
                         Total = String.Format("{0:c}", 0)
                     }),
                     success = true,

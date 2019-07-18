@@ -176,10 +176,10 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     var statusStock = "green-stripe";
-                                    if (data.Amount <= 5) {
+                                    if (data.TotalBox <= 5) {
                                         statusStock = "red-stripe"
                                     }
-                                    return '<span class="btn mini ' + statusStock + '">Total: ' + data.Amount + ' ' + data.UnitMeasure + '</span>';
+                                    return '<span class="btn mini ' + statusStock + '">Total: ' + data.TotalBox + ' ' + data.UnitMeasure + '</span>';
                                 }
                                 return data;
                             }
@@ -192,7 +192,7 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     var link = '<input type="text" placeholder="0" class="m-wrap small qtdeVenda"> ' + '<span class="label label-danger">' + data.UnitMeasure + '</span>';
-                                    if (data.Amount == 0) {
+                                    if (data.TotalBox == 0) {
                                         link = '<span class="label label-important">finished products</span>'
                                     }
 
@@ -209,7 +209,7 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     var link = '<input type="text" placeholder="0" class="m-wrap small discountValueSale">';
-                                    if (data.Amount == 0) {
+                                    if (data.TotalBox == 0) {
                                         link = '<span class="label label-important">finished products</span>'
                                     }
                                     return link;

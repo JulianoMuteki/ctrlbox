@@ -29,13 +29,17 @@ namespace CtrlBox.Application
             {
                 var delivery = _mapper.Map<Delivery>(entity);
 
-                foreach (var item in entity.BoxesTypes)
-                {              
-                    var boxesReadyToDelivery = _unitOfWork.Repository<Box>().FindAll(x => x.BoxTypeID == new Guid(item.DT_RowId) && x.BoxParentID == null).OrderByDescending(x=>x.DateModified).Take(item.QuantityToDelivery).ToList();
-                    delivery.LoadBox(boxesReadyToDelivery);
-                }
+                foreach (BoxTypeVM boxType in entity.BoxesTypes)
+                {
+                    var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
 
+                    delivery.ShippingBoxes(boxesReadyToDelivery);
+                }
+                var lista = delivery.BoxesProductItems.ToList();
+                delivery.BoxesProductItems.Clear();
                 _unitOfWork.Repository<Delivery>().Add(delivery);
+                _unitOfWork.Repository<BoxProductItem>().UpdateRange(lista);
+               
                 _unitOfWork.Commit();
 
                 return entity;

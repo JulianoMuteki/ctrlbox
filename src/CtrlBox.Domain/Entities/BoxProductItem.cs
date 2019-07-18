@@ -12,6 +12,11 @@ namespace CtrlBox.Domain.Entities
         public Box Box { get; set; }
         public ProductItem ProductItem { get; set; }
 
+        public bool IsDelivered { get; set; }
+
+        public Guid? DeliveryID { get; set; }
+        public Delivery Delivery { get; set; }
+
         public BoxProductItem()
         {
            

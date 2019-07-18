@@ -68,5 +68,39 @@ namespace CtrlBox.Infra.Repository.Repositories
                 throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetBoxesParentsWithBoxType), ex);
             }
         }
+
+        public ICollection<Box> GetBoxesByBoxTypeIDWithProductItems(Guid boxTypeID, int quantity)
+        {
+            try
+            {
+                var query = _context.Set<Box>()
+                            .Where(x=>x.BoxTypeID == boxTypeID && x.BoxParentID == null)
+                            .OrderByDescending(x => x.DateModified)
+                            .Take(quantity)
+                            .Include(b => b.BoxesProductItems);
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching Get boxes with product items", nameof(this.GetBoxesByBoxTypeIDWithProductItems), ex);
+            }
+        }
+
+        public ICollection<BoxProductItem> GetBoxesBoxesProductItemsByDeliveryID(Guid deliveryID)
+        {
+            try
+            {
+                var query = _context.Set<BoxProductItem>()
+                            .Where(x => x.DeliveryID == deliveryID)
+                            .Include(b => b.ProductItem).ThenInclude(p => p.Product);
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching Get boxes with product items", nameof(this.GetBoxesByBoxTypeIDWithProductItems), ex);
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,31 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult Create(Guid productID)
         {
             var productVM = _productService.GetById(productID);
+
+            var optionsBoxMassUnit = CtrlBoxUnits.CtrlBoxMassUnit
+                                        .Select(unit => new SelectListItem
+                                        {
+                                            Value = unit,
+                                            Text = unit
+                                        }).ToList();
+            ViewData["OptionsBoxMassUnit"] = optionsBoxMassUnit;
+
+            var optionsBoxVolumeUnit = CtrlBoxUnits.CtrlBoxVolumeUnit
+                                        .Select(unit => new SelectListItem
+                                        {
+                                            Value = unit,
+                                            Text = unit
+                                        }).ToList();
+            ViewData["OptionsBoxVolumeUnit"] = optionsBoxVolumeUnit;
+
+            var optionsBoxUnitType = CtrlBoxUnits.CtrlBoxUnitType
+                            .Select(unit => new SelectListItem
+                            {
+                                Value = unit,
+                                Text = unit
+                            }).ToList();
+            ViewData["OptionsBoxUnitType"] = optionsBoxUnitType;
+
             return View(productVM);
         }
 

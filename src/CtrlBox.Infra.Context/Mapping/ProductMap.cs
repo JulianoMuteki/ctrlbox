@@ -22,13 +22,28 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                 .HasMaxLength(250);
 
-            builder.Property(e => e.Weight)
+            builder.Property(e => e.Package)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            builder.Property(e => e.Capacity)
                  .HasColumnType("float")
                 .IsRequired();
 
             builder.Property(e => e.UnitMeasure)
               .IsRequired()
               .HasMaxLength(50);
+
+            builder.Property(e => e.Weight)
+                 .HasColumnType("float")
+                .IsRequired();
+
+            builder.Property(e => e.MassUnitWeight)
+              .IsRequired()
+              .HasMaxLength(50);
+
+            builder.Ignore(x => x.OptionsMassUnit);
+            builder.Ignore(x => x.OptionsVolumeUnit);
         }
     }
 }

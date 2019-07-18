@@ -7,8 +7,16 @@ namespace CtrlBox.Application.ViewModel
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public float Weight { get; set; }
+
+        public string Package { get; set; }
+        public float Capacity { get; set; }
         public string UnitMeasure { get; set; }
+        public string UnitType { get; set; }
+        public float Weight { get; set; }
+        public string MassUnitWeight { get; set; }
+
+        public IList<string> OptionsMassUnit { get; set; }
+        public IList<string> OptionsVolumeUnit { get; set; }
 
         public int StockTotal
         {

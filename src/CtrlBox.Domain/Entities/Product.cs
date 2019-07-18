@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Common;
+﻿using CtrlBox.CrossCutting;
+using CtrlBox.Domain.Common;
 using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,16 @@ namespace CtrlBox.Domain.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public string Package { get; set; }
+        public float Capacity { get; set; }
+        public string UnitMeasure{ get; set; }
+        public string UnitType { get; set; }
         public float Weight { get; set; }
-        public string UnitMeasure { get; set; }
+        public string MassUnitWeight { get; set; }
+
+        public IList<string> OptionsMassUnit { get { return CtrlBoxUnits.CtrlBoxMassUnit; } }
+        public IList<string> OptionsVolumeUnit { get { return CtrlBoxUnits.CtrlBoxVolumeUnit; } }
 
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }

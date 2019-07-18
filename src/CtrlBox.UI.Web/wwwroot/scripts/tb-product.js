@@ -21,23 +21,29 @@
                         "mData": "Name"
                     },
                     {
-                        "mData": "Weight"
+                        "mData": "Description"
                     },
                     {
-                        "mData": "Description"
+                        "mData": "Package"
                     },
                     {
                         "mData": null,
                         "sType": "html",
                         "bSortable": false,
-                        "sClass": "calc",
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
-                                var statusStock = "green-stripe";
-                                if (data.StockTotal <= 0) {
-                                    statusStock = "red-stripe"
-                                }
-                                return '<a href="#" class="btn mini ' + statusStock + '">Total: ' + data.StockTotal + '</a> <span class="bold">' + data.UnitMeasure + '</span>';
+                                return '<span class="label label-danger"><span class="bold">' + data.Capacity + ' ' + data.UnitMeasure + '</span></span> ';
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "mData": null,
+                        "sType": "html",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            if (type === 'display') {
+                                return '<span class="label label-danger"><span class="bold">' + data.Weight + ' ' + data.MassUnitWeight + '</span></span> ';
                             }
                             return data;
                         }

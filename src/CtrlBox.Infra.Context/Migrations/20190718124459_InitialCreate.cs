@@ -486,7 +486,9 @@ namespace CtrlBox.Infra.Context.Migrations
                 columns: table => new
                 {
                     BoxID = table.Column<Guid>(nullable: false),
-                    ProductItemID = table.Column<Guid>(nullable: false)
+                    ProductItemID = table.Column<Guid>(nullable: false),
+                    IsDelivered = table.Column<bool>(nullable: false),
+                    DeliveryID = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -497,6 +499,12 @@ namespace CtrlBox.Infra.Context.Migrations
                         principalTable: "Boxes",
                         principalColumn: "BoxID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BoxesProductItems_Deliveries_DeliveryID",
+                        column: x => x.DeliveryID,
+                        principalTable: "Deliveries",
+                        principalColumn: "DeliveryID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_BoxesProductItems_ProductItems_ProductItemID",
                         column: x => x.ProductItemID,
@@ -783,6 +791,11 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "IX_Boxes_ProductID",
                 table: "Boxes",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxesProductItems_DeliveryID",
+                table: "BoxesProductItems",
+                column: "DeliveryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BoxesProductItems_ProductItemID",

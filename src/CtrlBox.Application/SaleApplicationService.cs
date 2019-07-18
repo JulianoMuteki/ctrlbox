@@ -28,14 +28,20 @@ namespace CtrlBox.Application
             try
             {
                 var sale = _mapper.Map<Sale>(entity);
+                var boxesProductsItems = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesBoxesProductItemsByDeliveryID(sale.DeliveryID);
 
-                var deliverysProducts = _unitOfWork.Repository<DeliveryProduct>().FindAll(x => x.DeliveryID == sale.DeliveryID);
-                foreach (var item in sale.SalesProducts)
+                foreach (var saleProduct in sale.SalesProducts)
                 {
-                    var deliveryProduct = deliverysProducts.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
-                    deliveryProduct.SubtractProductsDelivered(item.Quantity);
-                    item.CalcTotalValue();
-                    _unitOfWork.Repository<DeliveryProduct>().Update(deliveryProduct);
+                    var boxProductsItems = boxesProductsItems.Where(x => x.ProductItem.ProductID == saleProduct.ProductID && x.IsDelivered == false).Take(saleProduct.Quantity).ToList();
+
+                    foreach (var boxProductItem in boxProductsItems)
+                    {
+                        boxProductItem.Deliver();
+                        _unitOfWork.Repository<ProductItem>().Update(boxProductItem.ProductItem);
+                        _unitOfWork.Repository<BoxProductItem>().Update(boxProductItem);
+                    }
+
+                    saleProduct.CalcTotalValue();
                 }
 
                 sale.CalculatePayment();

@@ -26,5 +26,11 @@ namespace CtrlBox.Domain.Entities
         {
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
         }
+
+        public void Deliver()
+        {
+            this.IsDelivered = true;
+            this.ProductItem.InBox = false;
+        }
     }
 }

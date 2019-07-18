@@ -63,5 +63,6 @@ namespace CtrlBox.Domain.Entities
         {
             return boxesChildren.Select(x => { x.BoxParentID = this.Id; return x; }).ToList();        
         }
+
     }
 }

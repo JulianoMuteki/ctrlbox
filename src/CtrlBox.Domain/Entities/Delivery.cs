@@ -66,16 +66,30 @@ namespace CtrlBox.Domain.Entities
                 DeliveryBox deliveryBox = new DeliveryBox();
                 deliveryBox.BoxID = box.Id;
                 deliveryBox.DeliveryID = this.Id;
-                AddRangeBoxesProductItems(box.BoxesProductItems.Select(x => { x.DeliveryID = this.Id; return x; }).ToList());
+
+                PutInTheBoxBoxesProductItemsChildren(box);
                 this.DeliveriesBoxes.Add(deliveryBox);
             }
         }
 
-        private void AddRangeBoxesProductItems(ICollection<BoxProductItem> boxesProductItems)
+        private void PutInTheBoxBoxesProductItemsChildren(Box box)
         {
-            foreach (var boxProductItem in boxesProductItems)
+            if (box.BoxesProductItems.Count > 0)
             {
-                this.BoxesProductItems.Add(boxProductItem);
+                var boxesProductItems = box.BoxesProductItems.Select(x => { x.DeliveryID = this.Id; return x; }).ToList();
+
+                foreach (BoxProductItem boxProductItem in boxesProductItems)
+                {
+                    boxProductItem.ProductItem.PutInTheBox();
+                    this.BoxesProductItems.Add(boxProductItem);
+                }
+            }
+            else
+            {
+                foreach (var boxChild in box.BoxesChildren)
+                {
+                    PutInTheBoxBoxesProductItemsChildren(boxChild);
+                }
             }
         }
     }

@@ -74,10 +74,13 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<Box>()
-                            .Where(x=>x.BoxTypeID == boxTypeID && x.BoxParentID == null)
+
+                            .Include(x => x.BoxesChildren)
+                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                            .AsEnumerable() // <-- Force full execution (loading) of the above
+                            .Where(x => x.BoxTypeID == boxTypeID && x.BoxParent == null)
                             .OrderByDescending(x => x.DateModified)
-                            .Take(quantity)
-                            .Include(b => b.BoxesProductItems);
+                            .Take(quantity);
 
                 return query.ToList();
             }

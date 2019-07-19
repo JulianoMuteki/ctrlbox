@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.UI.WebMvc", "src\Ct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Application.ViewModel", "src\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj", "{0AC7E7CC-82D9-4CD8-A221-B596CA948504}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.CrossCutting", "CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj", "{DC65DCD0-5090-4112-814C-7EBC07769AF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting", "CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj", "{DC65DCD0-5090-4112-814C-7EBC07769AF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

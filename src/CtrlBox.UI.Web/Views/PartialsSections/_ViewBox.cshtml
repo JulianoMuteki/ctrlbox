@@ -2,7 +2,7 @@
 
 <li>
     <a href="#" class="tree-toggle closed" data-toggle="branch" data-value="Bootstrap_Tree" id="nut3">
-        @Model.Description
+        <img style="width:20px; height:20px;" src="data:'@Model.BoxType.Picture.ContentType';base64,@Model.BoxType.Picture.Base64Image" /> @Model.Description
     </a>
     <ul class="branch">
         @if (Model.BoxesProductItems.Count == 0)
@@ -16,7 +16,7 @@
         {
             foreach (var item in Model.BoxesProductItems)
             {
-                <li><a href="#" data-role="leaf"><i class="icon-suitcase"></i> @item.ProductItem.Barcode</a></li>
+                <li><a href="#" data-role="leaf"><img style="width:20px; height:20px;" src="data:'@Model.Product.Picture.ContentType';base64,@Model.Product.Picture.Base64Image" /> @item.ProductItem.Barcode</a></li>
             }
         }
     </ul>

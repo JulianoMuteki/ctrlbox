@@ -95,6 +95,8 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<Box>()
+                            .Include(x=>x.BoxType).ThenInclude(p=>p.Picture)
+                            .Include(x=>x.Product).ThenInclude(z=>z.Picture)
 
                             .Include(x => x.BoxesChildren)
                             .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)

@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace CtrlBox.Application.ViewModel
 {
     public class PictureVM : ViewModelBase
@@ -14,5 +16,13 @@ namespace CtrlBox.Application.ViewModel
         public int Height { get; set; }
 
         public string ContentType { get; set; }
+
+        public string Base64Image { get { return GetBase64StringForImage(this.Data); } }
+
+        private string GetBase64StringForImage(byte[] imageBytes)
+        {
+            string base64String = Convert.ToBase64String(imageBytes);
+            return base64String;
+        }
     }
 }

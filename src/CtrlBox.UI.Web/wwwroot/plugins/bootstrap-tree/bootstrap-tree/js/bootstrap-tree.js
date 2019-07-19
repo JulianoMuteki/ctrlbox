@@ -24,7 +24,7 @@
 
   "use strict"; // jshint ;_;
 
-  var loading = "<img src='assets/plugins/bootstrap-tree/bootstrap-tree/img/ajax-loader.gif' class='indicator' /> Loading ...";
+  var loading = "<img src='~/plugins/bootstrap-tree/bootstrap-tree/img/ajax-loader.gif' class='indicator' /> Loading ...";
 
   /* TREE CLASS DEFINITION
    * ========================= */
@@ -417,9 +417,10 @@
         target = $('<ul>').addClass('branch').append("<li>" + loading + "</li>").insertAfter($this)
       }
       
-      option.parent = $this
-      option.href = (href !== "#") ? href : undefined
-          
+      if (option !== 'toggle') {
+          option.parent = $this
+          option.href = (href !== "#") ? href : undefined
+      }
       $(target).tree(option)
       
       return false

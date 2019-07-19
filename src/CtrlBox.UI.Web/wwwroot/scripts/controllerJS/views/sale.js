@@ -170,9 +170,9 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     if (data.PictureID === '' || data.PictureID === null) {
-                                        return data.NomeProduto + ' <img style="width:15px; height: 15px;"  src="/../img/avatar.png" />';
+                                        return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.NomeProduto;
                                     }
-                                    return  data.NomeProduto + ' <img  src="/../Configuration/ViewImage/' + data.PictureID + '" />';
+                                    return '<img  src="/../Configuration/ViewImage/' + data.PictureID + '" /> ' + data.NomeProduto;
                                 }
                                 return data;
                             }

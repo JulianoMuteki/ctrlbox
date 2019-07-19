@@ -166,6 +166,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                   .Select(g => new
                                                   {
                                                       DT_RowId = g.Key.BoxTypeID,
+                                                      g.Key.n.BoxType.PictureID,
                                                       BoxType = g.Key.n.BoxType.Name,
                                                       TotalBox = g.Count()
                                                   });

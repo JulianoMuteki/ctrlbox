@@ -133,10 +133,20 @@
                                 bFilter: false, bInfo: false,
 
                                 "aoColumns": [
-                                                   {
-                                                       "mData": "BoxType",
-                                                       "bSortable": false
-                                                   },
+                                                    {
+                                                        "mData": null,
+                                                        "sType": "html",
+                                                        "bSortable": false,
+                                                        "mData": function (data, type, row) {
+                                                            if (type === 'display') {
+                                                                if (data.PictureID === '' || data.PictureID === null) {
+                                                                    return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.BoxType;
+                                                                }
+                                                                return '<img  src="/../Configuration/ViewImage/' + data.PictureID + '" /> ' + data.BoxType;
+                                                            }
+                                                            return data;
+                                                        }
+                                                    },
                                                    {
                                                         "mData": null,
                                                         "sType": "html",

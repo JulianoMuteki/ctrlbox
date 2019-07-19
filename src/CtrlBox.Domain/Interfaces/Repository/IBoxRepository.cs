@@ -12,5 +12,6 @@ namespace CtrlBox.Domain.Interfaces.Repository
         ICollection<Box> GetBoxesByDeliveryWithBoxType(Guid deliveryID);
         ICollection<Box> GetBoxesByBoxTypeIDWithProductItems(Guid boxTypeID, int quantity);
         ICollection<BoxProductItem> GetBoxesBoxesProductItemsByDeliveryID(Guid deliveryID);
+        ICollection<Box> GetBoxesByBoxWithChildren(Guid boxID);
     }
 }

@@ -20,16 +20,19 @@ namespace CtrlBox.Application.ViewModel
 
         public int RangeProductsItems { get; set; }
         
-        public ICollection<BoxVM> ChildrenBoxes { get; set; }
+        public ICollection<BoxVM> BoxesChildren { get; set; }
         public string[] ChildrenBoxesID { get; set; }
 
         public ICollection<BoxProductItemVM> BoxesProductItems { get; set; }
+        public ICollection<DeliveryBoxVM> DeliveriesBoxes { get; set; }
 
         public BoxVM()
             : base()
         {
-            this.ChildrenBoxes = new HashSet<BoxVM>();
+            this.BoxesChildren = new HashSet<BoxVM>();
             this.BoxesProductItems = new HashSet<BoxProductItemVM>();
+            this.DeliveriesBoxes = new HashSet<DeliveryBoxVM>();
         }
+
     }
 }

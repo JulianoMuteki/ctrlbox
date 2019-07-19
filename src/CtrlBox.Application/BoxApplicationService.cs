@@ -228,5 +228,23 @@ namespace CtrlBox.Application
                 throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesBoxesProductItemsByDeliveryID), ex);
             }
         }
+
+        public ICollection<BoxVM> GetBoxesByBoxWithChildren(Guid boxID)
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxWithChildren(boxID);
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesByBoxWithChildren), ex);
+            }
+        }
     }
 }

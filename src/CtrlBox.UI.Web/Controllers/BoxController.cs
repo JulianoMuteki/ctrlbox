@@ -170,5 +170,12 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
+
+        public IActionResult ViewBoxes(Guid boxFatherID)
+        {
+            var boxes = _boxApplicationService.GetBoxesByBoxWithChildren(boxFatherID);
+            return View(boxes);
+        }
+
     }
 }

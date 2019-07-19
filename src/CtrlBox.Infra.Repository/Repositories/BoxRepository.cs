@@ -90,6 +90,25 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
+        public ICollection<Box> GetBoxesByBoxWithChildren(Guid boxID)
+        {
+            try
+            {
+                var query = _context.Set<Box>()
+
+                            .Include(x => x.BoxesChildren)
+                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                            .AsEnumerable() // <-- Force full execution (loading) of the above
+                            .Where(x => x.Id == boxID && x.BoxParent == null);
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching Get boxes with product items", nameof(this.GetBoxesByBoxTypeIDWithProductItems), ex);
+            }
+        }
+
         public ICollection<BoxProductItem> GetBoxesBoxesProductItemsByDeliveryID(Guid deliveryID)
         {
             try

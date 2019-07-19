@@ -21,6 +21,12 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Description)
                 .IsRequired()
                  .HasMaxLength(250);
+
+
+            builder.HasOne(tk => tk.Picture)
+                    .WithMany(t => t.BoxesTypes)
+                    .HasForeignKey(tk => tk.PictureID)
+                    .IsRequired(false);
         }
     }
 }

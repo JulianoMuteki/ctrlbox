@@ -85,7 +85,11 @@ namespace CtrlBox.Application
                 {
                     throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
                 }
-
+                if (entity.Picture != null)
+                {
+                    var picture = _mapper.Map<Picture>(entity.Picture);
+                    _unitOfWork.Repository<Picture>().Add(picture);
+                }
                 _unitOfWork.Repository<BoxType>().Add(boxType);
                 _unitOfWork.Commit();
             }

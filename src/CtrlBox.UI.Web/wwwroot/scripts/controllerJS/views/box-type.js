@@ -12,8 +12,18 @@
             "bDestroy": true,
             "aoColumns": [
                         {
-                            "mData": "Name",
-                            "bSortable": false
+                            "mData": null,
+                            "sType": "html",
+                            "bSortable": false,
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    if (data.PictureID === '' || data.PictureID === null) {
+                                        return '<img style="width:25px; height: 25px;" src="/../img/avatar.png" />  ' + data.Name;
+                                    }
+                                    return '<img style="width:25px; height: 25px;" src="/../Configuration/ViewImage/' + data.PictureID + '" />  ' + data.Name;
+                                }
+                                return data;
+                            }
                         },
                         {
                             "mData": "Description",

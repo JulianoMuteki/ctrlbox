@@ -40,8 +40,7 @@ namespace CtrlBox.UI.Web.Controllers
 
                 PictureVM imageEntity = new PictureVM()
                 {
-                  //  DT_RowId = Guid.NewGuid(),
-                    Name = uploadedImage.Name,
+                    Name = uploadedImage.FileName.Substring(0, uploadedImage.FileName.LastIndexOf(".")),
                     Data = ms.ToArray(),
                     Width = image.Width,
                     Height = image.Height,

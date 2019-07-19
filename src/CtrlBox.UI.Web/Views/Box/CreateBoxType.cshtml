@@ -4,7 +4,12 @@
     ViewData["Title"] = "CreateBoxType";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section cssViews{
+    <link href="~/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+}
+@section scriptsViews{
+    <script type="text/javascript" src="~/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+}
 <div class="page-content">
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
@@ -35,7 +40,7 @@
                     </div>
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
-                        <form asp-action="CreateBoxType" asp-controller="Box" class="form-horizontal">
+                        <form asp-action="CreateBoxType" asp-controller="Box" enctype="multipart/form-data"  class="form-horizontal">
                             <div class="control-group">
                                 <label class="control-label">Name</label>
                                 <div class="controls">
@@ -50,6 +55,7 @@
                                     <span class="help-inline">Description</span>
                                 </div>
                             </div>
+                            <partial name="~/Views/PartialsSections/_ViewUploadPicture.cshtml" />
                             <div class="form-actions">
                                 <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
                                 <button type="button" class="btn">Cancel</button>

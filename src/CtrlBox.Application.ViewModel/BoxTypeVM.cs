@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CtrlBox.Application.ViewModel
 {
@@ -8,6 +9,9 @@ namespace CtrlBox.Application.ViewModel
         public string Description { get; set; }
 
         public int QuantityToDelivery { get; set; }
+
+        public Guid? PictureID { get; set; }
+        public PictureVM Picture { get; set; }
 
         public ICollection<BoxVM> Boxes { get; set; }
 

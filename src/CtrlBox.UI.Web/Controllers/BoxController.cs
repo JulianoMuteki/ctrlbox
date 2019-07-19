@@ -1,6 +1,8 @@
 ﻿using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
+using CtrlBox.UI.Web.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -148,10 +150,13 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateBoxType(BoxTypeVM boxTypeVM)
+        public IActionResult CreateBoxType(BoxTypeVM boxTypeVM, IFormFile FilePicture)
         {
             try
             {
+                PictureVM imageEntity = GeneratePicture.CreatePicture(FilePicture, $"{boxTypeVM.Name} - {boxTypeVM.Description}");
+                boxTypeVM.Picture = imageEntity;
+
                 _boxApplicationService.AddBoxType(boxTypeVM);
 
                 return RedirectToAction("BoxesType");

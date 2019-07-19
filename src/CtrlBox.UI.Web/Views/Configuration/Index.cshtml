@@ -1,4 +1,4 @@
-﻿@model IList<Guid>
+﻿@model IList<string>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -44,7 +44,7 @@
 
                         @foreach (var item in Model)
                         {
-                            <img src="ViewImage/@item" />
+                            <img src="~/Configuration/ViewImage/@item" />
                         }
                         <!-- END FORM-->
                     </div>

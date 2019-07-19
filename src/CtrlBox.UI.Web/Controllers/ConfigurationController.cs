@@ -6,25 +6,25 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.Domain.Interfaces.Application;
 
 namespace CtrlBox.UI.Web.Controllers
 {
     public class ConfigurationController : Controller
     {
-        IList<PictureVM> _images = new List<PictureVM>();
-        public ConfigurationController()
-        {
+        private readonly IConfigurationApplicationService _configurationApplicationService;
 
+        IList<PictureVM> _images = new List<PictureVM>();
+        public ConfigurationController(IConfigurationApplicationService configurationApplicationService)
+        {
+            _configurationApplicationService = configurationApplicationService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            //using (ImageDBContext dbContext = new ImageDBContext())
-            //{
-           // List<Guid> iamgeIds = _images.Select(m => m.Id).ToList();
-            return View();
-            //}
+            List<string> iamgeIds = _configurationApplicationService.GetAll().Select(x => x.DT_RowId).ToList();
+            return View(iamgeIds);
         }
 
         [HttpPost]
@@ -48,10 +48,7 @@ namespace CtrlBox.UI.Web.Controllers
                     ContentType = uploadedImage.ContentType
                 };
 
-                _images.Add(imageEntity);
-
-
-
+                _configurationApplicationService.Add(imageEntity);
             }
 
             return RedirectToAction("Index");
@@ -61,7 +58,7 @@ namespace CtrlBox.UI.Web.Controllers
         public FileStreamResult ViewImage(Guid id)
         {
 
-                PictureVM image = _images.FirstOrDefault(m => m.DT_RowId == id.ToString());
+                PictureVM image = _configurationApplicationService.GetById(id);
 
                 MemoryStream ms = new MemoryStream(image.Data);
 

@@ -24,15 +24,12 @@
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
                                 if (data.PictureID === '' || data.PictureID === null) {
-                                    return '<div class="fileupload-new thumbnail" style="width:15px; height: 15px;"><img  src="/../img/avatar.png" /></div>';
+                                    return '<img style="width:25px; height: 25px;" src="/../img/avatar.png" />  ' + data.Name;
                                 }
-                                return '<div class="fileupload-new thumbnail" style="width:15px; height: 15px;"><img  src="/../Configuration/ViewImage/' + data.PictureID + '" /></div>';
+                                return '<img style="width:25px; height: 25px;" src="/../Configuration/ViewImage/' + data.PictureID + '" />  ' + data.Name;
                             }
                             return data;
                         }
-                    },
-                    {
-                        "mData": "Name"
                     },
                     {
                         "mData": "Description"

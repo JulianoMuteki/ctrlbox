@@ -164,8 +164,18 @@ var SaleComponents = function () {
             "bDestroy": true,
             "aoColumns": [
                         {
-                            "mData": "NomeProduto",
-                            "bSortable": false
+                            "mData": null,
+                            "sType": "html",
+                            "bSortable": false,
+                            "mData": function (data, type, row) {
+                                if (type === 'display') {
+                                    if (data.PictureID === '' || data.PictureID === null) {
+                                        return data.NomeProduto + ' <img style="width:15px; height: 15px;"  src="/../img/avatar.png" />';
+                                    }
+                                    return  data.NomeProduto + ' <img  src="/../Configuration/ViewImage/' + data.PictureID + '" />';
+                                }
+                                return data;
+                            }
                         },
                         {
                             "mData": null,

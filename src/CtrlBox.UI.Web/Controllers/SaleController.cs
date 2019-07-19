@@ -72,6 +72,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                                   (key, group) => new {
                                                                       DT_RowId = key,
                                                                       NomeProduto = group.Select(x=>x.ProductItem.Product.Name).FirstOrDefault(),
+                                                                      PictureID = group.Select(x => x.ProductItem.Product.PictureID).FirstOrDefault(),
                                                                       UnitMeasure = group.Select(x => x.ProductItem.Product.UnitMeasure).FirstOrDefault(),
                                                                       TotalBox = group.Select(p=>p.ProductItem).Count()
                                                                   })
@@ -83,6 +84,7 @@ namespace CtrlBox.UI.Web.Controllers
                     {
                         DT_RowId = x.DT_RowId.ToString(),
                         x.NomeProduto,
+                        x.PictureID,
                         ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
                         x.TotalBox,
                         x.UnitMeasure,

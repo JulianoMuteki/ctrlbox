@@ -19,10 +19,12 @@ namespace CtrlBox.Domain.Entities
 
         public string ContentType { get; set; }
 
+        public ICollection<Product> Products { get; set; }
+
         public Picture()
             :base()
         {
-
+            this.Products = new HashSet<Product>();
         }
         public void Init()
         {

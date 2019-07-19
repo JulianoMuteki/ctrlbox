@@ -18,6 +18,9 @@ namespace CtrlBox.Domain.Entities
         public float Weight { get; set; }
         public string MassUnitWeight { get; set; }
 
+        public Guid? PictureID { get; set; }
+        public Picture Picture { get; set; }
+
         public IList<string> OptionsMassUnit { get { return CtrlBoxUnits.CtrlBoxMassUnit; } }
         public IList<string> OptionsVolumeUnit { get { return CtrlBoxUnits.CtrlBoxVolumeUnit; } }
 

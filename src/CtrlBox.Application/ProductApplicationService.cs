@@ -83,7 +83,11 @@ namespace CtrlBox.Application
             try
             {
                 var product = _mapper.Map<Product>(entity);
-
+                if(entity.Picture != null)
+                {
+                    var picture = _mapper.Map<Picture>(entity.Picture);
+                    _unitOfWork.Repository<Picture>().Add(picture);
+                }
                 _unitOfWork.Repository<Product>().Add(product);
                 _unitOfWork.Commit();
 

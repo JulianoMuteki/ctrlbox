@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -70,14 +73,40 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ProductVM productVM)
+        public ActionResult Create(ProductVM productVM, IFormFile FilePicture)
         {
+            PictureVM imageEntity = CreatePicture(FilePicture);
+            productVM.Picture = imageEntity;
+
             if (string.IsNullOrEmpty(productVM.DT_RowId))
                 _productService.Add(productVM);
             else
                 _productService.Update(productVM);
 
             return RedirectToAction("Index");
+        }
+
+        private PictureVM CreatePicture(IFormFile FilePicture)
+        {
+            if (FilePicture == null || FilePicture.ContentType.ToLower().StartsWith("image/"))
+            {
+                MemoryStream ms = new MemoryStream();
+                FilePicture.OpenReadStream().CopyTo(ms);
+
+                Image image = Image.FromStream(ms);
+
+                PictureVM imageEntity = new PictureVM()
+                {
+                    Name = FilePicture.Name,
+                    Data = ms.ToArray(),
+                    Width = image.Width,
+                    Height = image.Height,
+                    ContentType = FilePicture.ContentType
+                };
+
+                return imageEntity;
+            }
+            return null;
         }
 
         [HttpPost]

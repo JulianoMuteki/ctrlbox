@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace CtrlBox.Application.ViewModel
 {
@@ -14,6 +15,9 @@ namespace CtrlBox.Application.ViewModel
         public string UnitType { get; set; }
         public float Weight { get; set; }
         public string MassUnitWeight { get; set; }
+
+        public Guid? PictureID { get; set; }
+        public PictureVM Picture { get; set; }
 
         public IList<string> OptionsMassUnit { get; set; }
         public IList<string> OptionsVolumeUnit { get; set; }

@@ -18,6 +18,20 @@
                 "bDestroy": true,
                 "aoColumns": [
                     {
+                        "mData": null,
+                        "sType": "html",
+                        "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            if (type === 'display') {
+                                if (data.PictureID === '' || data.PictureID === null) {
+                                    return '<div class="fileupload-new thumbnail" style="width:15px; height: 15px;"><img  src="/../img/avatar.png" /></div>';
+                                }
+                                return '<div class="fileupload-new thumbnail" style="width:15px; height: 15px;"><img  src="/../Configuration/ViewImage/' + data.PictureID + '" /></div>';
+                            }
+                            return data;
+                        }
+                    },
+                    {
                         "mData": "Name"
                     },
                     {

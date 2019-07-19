@@ -42,6 +42,11 @@ namespace CtrlBox.Infra.Context.Mapping
               .IsRequired()
               .HasMaxLength(50);
 
+            builder.HasOne(tk => tk.Picture)
+                    .WithMany(t => t.Products)
+                    .HasForeignKey(tk => tk.PictureID)
+                    .IsRequired(false);
+
             builder.Ignore(x => x.OptionsMassUnit);
             builder.Ignore(x => x.OptionsVolumeUnit);
         }

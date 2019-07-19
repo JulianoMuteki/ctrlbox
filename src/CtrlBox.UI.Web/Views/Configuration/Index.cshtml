@@ -1,0 +1,60 @@
+﻿@model IList<Guid>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content" style="min-height:988px !important">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Security</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Role</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Create</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span6">
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Create role</div>
+                    </div>
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+
+
+                        <form asp-action="UploadImage" enctype="multipart/form-data" method="post">
+                            <input type="file" name="files" />
+                            <button>post</button>
+                        </form>
+
+                        @foreach (var item in Model)
+                        {
+                            <img src="ViewImage/@item" />
+                        }
+                        <!-- END FORM-->
+                    </div>
+                </div>
+                <!-- END SAMPLE FORM PORTLET-->
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+
+

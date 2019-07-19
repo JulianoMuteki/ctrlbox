@@ -34,7 +34,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<Box> Boxes { get; set; }
         public DbSet<BoxProductItem> BoxesProductItems { get; set; }
         public DbSet<DeliveryBox> DeliveriesBoxes { get; set; }
-
+        public DbSet<Picture> Pictures { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PaymentSchedule> PaymentSchedules { get; set; }
@@ -78,6 +78,7 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new BoxTypeMap());
             modelBuilder.ApplyConfiguration(new BoxProductItemMap());
             modelBuilder.ApplyConfiguration(new DeliveryBoxMap());
+            modelBuilder.ApplyConfiguration(new PictureMap());
 
             modelBuilder.ApplyConfiguration(new PaymentMap());
             modelBuilder.ApplyConfiguration(new PaymentMethodMap());

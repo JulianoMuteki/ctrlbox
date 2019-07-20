@@ -38,7 +38,6 @@ namespace CtrlBox.Infra.Context.Mapping
                 .WithOne(x=>x.BoxParent)
                 .HasForeignKey(x => x.BoxParentID)
                 .IsRequired(false);
-
         }
     }
 }

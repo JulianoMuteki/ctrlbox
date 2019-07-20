@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Common;
+﻿using CtrlBox.CrossCutting.Barcode;
+using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace CtrlBox.Domain.Entities
         public Guid? ProductID { get; set; }
         public Product Product { get; set; }
 
+        public BoxCode BoxCode { get; set; }
+
         public ICollection<Box> BoxesChildren { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
@@ -34,7 +37,8 @@ namespace CtrlBox.Domain.Entities
 
         public void SetBarcode(int i)
         {
-            this.Barcode = $"{DateTime.Now.Date.ToString("yyyyMMddHHmm")}{i.ToString("D2")}";
+            this.Barcode = BarcodeGenerator.GetBarCodeNumber();
+            this.BoxCode = new BoxCode();
         }
 
         public void Init()
@@ -42,7 +46,8 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                this.Barcode = $"{DateTime.Now.Date.ToString("yyyyMMdd")}";
+                this.Barcode = BarcodeGenerator.GetBarCodeNumber();
+                this.BoxCode = new BoxCode();
             }
         }
 

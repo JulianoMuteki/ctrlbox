@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190720135416_InitialCreate")]
+    [Migration("20190720145818_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,6 +109,41 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("ProductID");
 
                     b.ToTable("Boxes");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnName("BoxCodeID");
+
+                    b.Property<Guid>("BoxID");
+
+                    b.Property<string>("BarcodeEAN13")
+                        .IsRequired()
+                        .HasMaxLength(13);
+
+                    b.Property<string>("BarcodeGS1_128")
+                        .IsRequired()
+                        .HasMaxLength(48);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("RFID")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id", "BoxID");
+
+                    b.HasIndex("BoxID")
+                        .IsUnique();
+
+                    b.ToTable("BoxesCodes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItem", b =>
@@ -922,6 +957,14 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
                         .WithMany("Boxes")
                         .HasForeignKey("ProductID");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxCode", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithOne("BoxCode")
+                        .HasForeignKey("CtrlBox.Domain.Entities.BoxCode", "BoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItem", b =>

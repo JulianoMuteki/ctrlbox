@@ -577,6 +577,31 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BoxesCodes",
+                columns: table => new
+                {
+                    BoxCodeID = table.Column<Guid>(nullable: false),
+                    BoxID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    BarcodeEAN13 = table.Column<string>(maxLength: 13, nullable: false),
+                    BarcodeGS1_128 = table.Column<string>(maxLength: 48, nullable: false),
+                    RFID = table.Column<string>(maxLength: 250, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoxesCodes", x => new { x.BoxCodeID, x.BoxID });
+                    table.ForeignKey(
+                        name: "FK_BoxesCodes_Boxes_BoxID",
+                        column: x => x.BoxID,
+                        principalTable: "Boxes",
+                        principalColumn: "BoxID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DeliveriesBoxes",
                 columns: table => new
                 {
@@ -832,6 +857,12 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "ProductID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BoxesCodes_BoxID",
+                table: "BoxesCodes",
+                column: "BoxID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BoxesProductItems_DeliveryID",
                 table: "BoxesProductItems",
                 column: "DeliveryID");
@@ -959,6 +990,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BoxesCodes");
 
             migrationBuilder.DropTable(
                 name: "BoxesProductItems");

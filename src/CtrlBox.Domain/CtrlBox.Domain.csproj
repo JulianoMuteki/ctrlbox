@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CtrlBox.CrossCutting.Barcode\CtrlBox.CrossCutting.Barcode.csproj" />
     <ProjectReference Include="..\..\CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj" />
     <ProjectReference Include="..\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj" />
   </ItemGroup>

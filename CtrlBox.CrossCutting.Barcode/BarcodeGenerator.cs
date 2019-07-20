@@ -3,29 +3,29 @@ using System.Linq;
 
 namespace CtrlBox.CrossCutting.Barcode
 {
-    public class Class1
+    public class BarcodeGenerator
     {
-        Random _random = new Random();
+        static Random _random;
+        //public BarcodeGenerator()
+        //{
+        //    _random = new Random();
 
-        public Class1()
+        //   // Barcode = Criar_EAN("789", "001", RandomNumber(0, 999999).ToString("D6"));
+        //}
+
+        public static string GetBarCodeNumber()
         {
-            //Install-Package BarcodeLib -Version 2.2.2
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            _random = new Random();
 
-            var L = "789100031550".Split();//  'Converte string em Array de Caracteres
-                                           //For i = 0 to L.Ubound
-                                           //    RE = RE + L(i).Val * ((i MOD 2) *2 + 1)  ' soma todos multiplicando apenas os pares por 3
-                                           //Next
-
-           var barCodeBox = Criar_EAN("789", "001", RandomNumber(0, 999999).ToString("D9"));
+            return Criar_EAN("789", "001", RandomNumber(0, 999999).ToString("D6"));
         }
 
-        public int RandomNumber(int min, int max)
+        private static int RandomNumber(int min, int max)
         {
             return _random.Next(min, max);
         }
 
-        public static string Criar_EAN(string sPais, string sEmpresa, string sCodigo)
+        private static string Criar_EAN(string sCountry, string SCompany, string sCode)
 
         {
 
@@ -34,7 +34,7 @@ namespace CtrlBox.CrossCutting.Barcode
             int[] vResult = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             int iDigito, iSoma, iMultiplo = 0;
 
-            sParte = sPais + sEmpresa + sCodigo;
+            sParte = sCountry + SCompany + sCode;
 
             for (int i = 0; i < sParte.Length; i++)
             {

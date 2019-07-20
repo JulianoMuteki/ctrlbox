@@ -50,9 +50,11 @@ namespace CtrlBox.Domain.Entities
         {
             foreach (var item in productItems)
             {
-                BoxProductItem boxProductItem = new BoxProductItem();
-                boxProductItem.BoxID = this.Id;
-                boxProductItem.ProductItemID = item.Id;
+                BoxProductItem boxProductItem = new BoxProductItem
+                {
+                    BoxID = this.Id,
+                    ProductItemID = item.Id
+                };
                 item.PutInTheBox();
 
                 this.BoxesProductItems.Add(boxProductItem);

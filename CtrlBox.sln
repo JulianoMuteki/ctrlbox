@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Application.ViewMod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting", "CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj", "{DC65DCD0-5090-4112-814C-7EBC07769AF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.CrossCutting.Barcode", "CtrlBox.CrossCutting.Barcode\CtrlBox.CrossCutting.Barcode.csproj", "{59B0C138-08B0-4D49-9297-FCD2B7776B13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{DC65DCD0-5090-4112-814C-7EBC07769AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC65DCD0-5090-4112-814C-7EBC07769AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC65DCD0-5090-4112-814C-7EBC07769AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B0C138-08B0-4D49-9297-FCD2B7776B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B0C138-08B0-4D49-9297-FCD2B7776B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B0C138-08B0-4D49-9297-FCD2B7776B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B0C138-08B0-4D49-9297-FCD2B7776B13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +106,7 @@ Global
 		{88D575CE-9CB2-4F71-91B3-F9DB6C6C3C31} = {E4265AE8-C489-4795-9595-22D806BCD227}
 		{0AC7E7CC-82D9-4CD8-A221-B596CA948504} = {5B480AE6-3293-4831-86FC-3134BC612C5C}
 		{DC65DCD0-5090-4112-814C-7EBC07769AF2} = {C4E4C9A3-DC13-41BF-B99D-80C015A8EB4B}
+		{59B0C138-08B0-4D49-9297-FCD2B7776B13} = {C4E4C9A3-DC13-41BF-B99D-80C015A8EB4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {596B5757-71F3-4F30-92FA-D05D56830A44}

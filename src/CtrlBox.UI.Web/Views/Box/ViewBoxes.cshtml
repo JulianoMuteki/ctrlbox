@@ -1,0 +1,99 @@
+﻿@model IEnumerable<CtrlBox.Application.ViewModel.BoxVM>
+@{
+    ViewData["Title"] = "ViewBoxes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section cssViews{
+    <link rel="stylesheet" type="text/css" href="~/plugins/bootstrap-tree/bootstrap-tree/css/bootstrap-tree.css" />
+}
+@section scriptsViews{
+    <script src="~/plugins/bootstrap-tree/bootstrap-tree/js/bootstrap-tree.js"></script>
+    <script src="~/scripts/ui-tree.js"></script>
+}
+<script>
+		jQuery(document).ready(function() {
+
+		    $('#tree_1_collapse').click(function () {
+		        $('.tree-toggle', $('#tree_1 > li > ul')).addClass("closed");
+		        $('.branch', $('#tree_1 > li > ul')).removeClass("in");
+		    });
+
+		    $('#tree_1_expand').click(function () {
+		        $('.tree-toggle', $('#tree_1 > li > ul')).removeClass("closed");
+		        $('.branch', $('#tree_1 > li > ul')).addClass("in");
+		    });
+
+		    //Listening for the 'openbranch' event. Look for e.node, which is the actual node the user opens
+
+		    //$("#tree_1").on("openbranch.tree", "[data-toggle=branch]", function (e) {
+
+		    //    var output = "Node openbranch event fired:\n" + "Node Type: branch\n" + "Value: " + ((e.node.value) ? e.node.value : e.node.el.text()) + "\n" + "Parentage: " + e.node.parentage.join("/") + "\n"
+
+		    //   // alert(output);
+		    //});
+
+		    ////Listening for the 'closebranch' event. Look for e.node, which is the actual node the user closed
+
+		    //$("#tree_1").on("closebranch.tree", "[data-toggle=branch]", function (e) {
+		    //    console.log(e);
+		    //    //var output = "Node closebranch event fired:\n" + "Node Type: branch\n" + "Value: " + ((e.node.value) ? e.node.value : e.node.el.text()) + "\n" + "Parentage: " + e.node.parentage.join("/") + "\n"
+
+		    //    //alert(output);
+		    //});
+		});
+</script>
+
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Box</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Boxes children</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li><a href="#">Produts items</a></li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="portlet box grey">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-comments"></i>Boxes children</div>
+                        <div class="actions">
+                            <a href="javascript:;" id="tree_1_collapse" class="btn green"> Collapse All</a>
+                            <a href="javascript:;" id="tree_1_expand" class="btn yellow"> Expand All</a>
+                        </div>
+                    </div>
+                    <div class="portlet-body fuelux">
+                        <ul class="tree" id="tree_1">
+                            @foreach (var item in Model)
+                            {
+                                <partial name="~/Views/PartialsSections/_ViewBox.cshtml" model="item" />
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="space6">
+                <div id="tree"></div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>

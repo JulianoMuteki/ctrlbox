@@ -164,8 +164,18 @@ var SaleComponents = function () {
             "bDestroy": true,
             "aoColumns": [
                         {
-                            "mData": "NomeProduto",
-                            "bSortable": false
+                            "mData": null,
+                            "sType": "html",
+                            "bSortable": false,
+                            "mData": function (data, type, row) {
+                                if (type === 'display') {
+                                    if (data.PictureID === '' || data.PictureID === null) {
+                                        return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.NomeProduto;
+                                    }
+                                    return '<img  src="/../Configuration/ViewImage/' + data.PictureID + '" /> ' + data.NomeProduto;
+                                }
+                                return data;
+                            }
                         },
                         {
                             "mData": null,
@@ -176,10 +186,10 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     var statusStock = "green-stripe";
-                                    if (data.Amount <= 5) {
+                                    if (data.TotalBox <= 5) {
                                         statusStock = "red-stripe"
                                     }
-                                    return '<span class="btn mini ' + statusStock + '">Total: ' + data.Amount + ' ' + data.UnitMeasure + '</span>';
+                                    return '<span class="btn mini ' + statusStock + '">Total: ' + data.TotalBox + ' ' + data.UnitMeasure + '</span>';
                                 }
                                 return data;
                             }
@@ -192,7 +202,7 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     var link = '<input type="text" placeholder="0" class="m-wrap small qtdeVenda"> ' + '<span class="label label-danger">' + data.UnitMeasure + '</span>';
-                                    if (data.Amount == 0) {
+                                    if (data.TotalBox == 0) {
                                         link = '<span class="label label-important">finished products</span>'
                                     }
 
@@ -209,7 +219,7 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     var link = '<input type="text" placeholder="0" class="m-wrap small discountValueSale">';
-                                    if (data.Amount == 0) {
+                                    if (data.TotalBox == 0) {
                                         link = '<span class="label label-important">finished products</span>'
                                     }
                                     return link;

@@ -89,22 +89,24 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Pictures",
                 columns: table => new
                 {
-                    ProductID = table.Column<Guid>(nullable: false),
+                    PictureID = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
                     IsDelete = table.Column<bool>(nullable: false),
                     IsDisable = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: false),
-                    Description = table.Column<string>(maxLength: 250, nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    UnitMeasure = table.Column<string>(maxLength: 50, nullable: false)
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Length = table.Column<int>(nullable: false),
+                    Width = table.Column<int>(nullable: false),
+                    Height = table.Column<int>(nullable: false),
+                    ContentType = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("ProductID", x => x.ProductID);
+                    table.PrimaryKey("PictureID", x => x.PictureID);
                 });
 
             migrationBuilder.CreateTable(
@@ -293,6 +295,60 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BoxesTypes",
+                columns: table => new
+                {
+                    BoxTypeID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    Description = table.Column<string>(maxLength: 250, nullable: false),
+                    PictureID = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("BoxTypeID", x => x.BoxTypeID);
+                    table.ForeignKey(
+                        name: "FK_BoxesTypes_Pictures_PictureID",
+                        column: x => x.PictureID,
+                        principalTable: "Pictures",
+                        principalColumn: "PictureID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(maxLength: 250, nullable: false),
+                    Description = table.Column<string>(maxLength: 250, nullable: false),
+                    Package = table.Column<string>(maxLength: 150, nullable: false),
+                    Capacity = table.Column<double>(type: "float", nullable: false),
+                    UnitMeasure = table.Column<string>(maxLength: 50, nullable: false),
+                    UnitType = table.Column<string>(nullable: true),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    MassUnitWeight = table.Column<string>(maxLength: 50, nullable: false),
+                    PictureID = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("ProductID", x => x.ProductID);
+                    table.ForeignKey(
+                        name: "FK_Products_Pictures_PictureID",
+                        column: x => x.PictureID,
+                        principalTable: "Pictures",
+                        principalColumn: "PictureID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Deliveries",
                 columns: table => new
                 {
@@ -327,28 +383,66 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StocksProducts",
+                name: "RoutesClients",
                 columns: table => new
                 {
-                    StockID = table.Column<Guid>(nullable: false),
-                    ProductID = table.Column<Guid>(nullable: false),
-                    Amount = table.Column<int>(nullable: false)
+                    RouteID = table.Column<Guid>(nullable: false),
+                    ClientID = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StocksProducts", x => new { x.ProductID, x.StockID });
+                    table.PrimaryKey("PK_RoutesClients", x => new { x.ClientID, x.RouteID });
                     table.ForeignKey(
-                        name: "FK_StocksProducts_Products_ProductID",
+                        name: "FK_RoutesClients_Clients_ClientID",
+                        column: x => x.ClientID,
+                        principalTable: "Clients",
+                        principalColumn: "ClientID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoutesClients_Routes_RouteID",
+                        column: x => x.RouteID,
+                        principalTable: "Routes",
+                        principalColumn: "RouteID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Boxes",
+                columns: table => new
+                {
+                    BoxID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Barcode = table.Column<string>(maxLength: 14, nullable: false),
+                    Description = table.Column<string>(maxLength: 250, nullable: false),
+                    StatusBox = table.Column<int>(nullable: false),
+                    BoxTypeID = table.Column<Guid>(nullable: false),
+                    BoxParentID = table.Column<Guid>(nullable: true),
+                    ProductID = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("BoxID", x => x.BoxID);
+                    table.ForeignKey(
+                        name: "FK_Boxes_Boxes_BoxParentID",
+                        column: x => x.BoxParentID,
+                        principalTable: "Boxes",
+                        principalColumn: "BoxID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Boxes_BoxesTypes_BoxTypeID",
+                        column: x => x.BoxTypeID,
+                        principalTable: "BoxesTypes",
+                        principalColumn: "BoxTypeID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Boxes_Products_ProductID",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StocksProducts_Stocks_StockID",
-                        column: x => x.StockID,
-                        principalTable: "Stocks",
-                        principalColumn: "StockID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -377,26 +471,52 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoutesClients",
+                name: "ProductItems",
                 columns: table => new
                 {
-                    RouteID = table.Column<Guid>(nullable: false),
-                    ClientID = table.Column<Guid>(nullable: false)
+                    ProductItemID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Barcode = table.Column<string>(maxLength: 14, nullable: false),
+                    Weight = table.Column<string>(maxLength: 50, nullable: false),
+                    ProductID = table.Column<Guid>(nullable: false),
+                    InBox = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoutesClients", x => new { x.ClientID, x.RouteID });
+                    table.PrimaryKey("ProductItemID", x => x.ProductItemID);
                     table.ForeignKey(
-                        name: "FK_RoutesClients_Clients_ClientID",
-                        column: x => x.ClientID,
-                        principalTable: "Clients",
-                        principalColumn: "ClientID",
+                        name: "FK_ProductItems_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StocksProducts",
+                columns: table => new
+                {
+                    StockID = table.Column<Guid>(nullable: false),
+                    ProductID = table.Column<Guid>(nullable: false),
+                    Amount = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StocksProducts", x => new { x.ProductID, x.StockID });
+                    table.ForeignKey(
+                        name: "FK_StocksProducts_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoutesClients_Routes_RouteID",
-                        column: x => x.RouteID,
-                        principalTable: "Routes",
-                        principalColumn: "RouteID",
+                        name: "FK_StocksProducts_Stocks_StockID",
+                        column: x => x.StockID,
+                        principalTable: "Stocks",
+                        principalColumn: "StockID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -453,6 +573,87 @@ namespace CtrlBox.Infra.Context.Migrations
                         column: x => x.DeliveryID,
                         principalTable: "Deliveries",
                         principalColumn: "DeliveryID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BoxesCodes",
+                columns: table => new
+                {
+                    BoxCodeID = table.Column<Guid>(nullable: false),
+                    BoxID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    BarcodeEAN13 = table.Column<string>(maxLength: 13, nullable: false),
+                    BarcodeGS1_128 = table.Column<string>(maxLength: 48, nullable: false),
+                    RFID = table.Column<string>(maxLength: 250, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoxesCodes", x => new { x.BoxCodeID, x.BoxID });
+                    table.ForeignKey(
+                        name: "FK_BoxesCodes_Boxes_BoxID",
+                        column: x => x.BoxID,
+                        principalTable: "Boxes",
+                        principalColumn: "BoxID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveriesBoxes",
+                columns: table => new
+                {
+                    BoxID = table.Column<Guid>(nullable: false),
+                    DeliveryID = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveriesBoxes", x => new { x.DeliveryID, x.BoxID });
+                    table.ForeignKey(
+                        name: "FK_DeliveriesBoxes_Boxes_BoxID",
+                        column: x => x.BoxID,
+                        principalTable: "Boxes",
+                        principalColumn: "BoxID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeliveriesBoxes_Deliveries_DeliveryID",
+                        column: x => x.DeliveryID,
+                        principalTable: "Deliveries",
+                        principalColumn: "DeliveryID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BoxesProductItems",
+                columns: table => new
+                {
+                    BoxID = table.Column<Guid>(nullable: false),
+                    ProductItemID = table.Column<Guid>(nullable: false),
+                    IsDelivered = table.Column<bool>(nullable: false),
+                    DeliveryID = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoxesProductItems", x => new { x.BoxID, x.ProductItemID });
+                    table.ForeignKey(
+                        name: "FK_BoxesProductItems_Boxes_BoxID",
+                        column: x => x.BoxID,
+                        principalTable: "Boxes",
+                        principalColumn: "BoxID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BoxesProductItems_Deliveries_DeliveryID",
+                        column: x => x.DeliveryID,
+                        principalTable: "Deliveries",
+                        principalColumn: "DeliveryID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BoxesProductItems_ProductItems_ProductItemID",
+                        column: x => x.ProductItemID,
+                        principalTable: "ProductItems",
+                        principalColumn: "ProductItemID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -641,6 +842,42 @@ namespace CtrlBox.Infra.Context.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Boxes_BoxParentID",
+                table: "Boxes",
+                column: "BoxParentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Boxes_BoxTypeID",
+                table: "Boxes",
+                column: "BoxTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Boxes_ProductID",
+                table: "Boxes",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxesCodes_BoxID",
+                table: "BoxesCodes",
+                column: "BoxID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxesProductItems_DeliveryID",
+                table: "BoxesProductItems",
+                column: "DeliveryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxesProductItems_ProductItemID",
+                table: "BoxesProductItems",
+                column: "ProductItemID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxesTypes_PictureID",
+                table: "BoxesTypes",
+                column: "PictureID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Checks_SaleID",
                 table: "Checks",
                 column: "SaleID");
@@ -664,6 +901,11 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "IX_Deliveries_UserID",
                 table: "Deliveries",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveriesBoxes_BoxID",
+                table: "DeliveriesBoxes",
+                column: "BoxID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeliveriesProducts_ProductID",
@@ -695,6 +937,16 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "IX_PaymentSchedules_PaymentMethodID",
                 table: "PaymentSchedules",
                 column: "PaymentMethodID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductItems_ProductID",
+                table: "ProductItems",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_PictureID",
+                table: "Products",
+                column: "PictureID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoutesClients_RouteID",
@@ -740,10 +992,19 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BoxesCodes");
+
+            migrationBuilder.DropTable(
+                name: "BoxesProductItems");
+
+            migrationBuilder.DropTable(
                 name: "Checks");
 
             migrationBuilder.DropTable(
                 name: "ClientsProducts");
+
+            migrationBuilder.DropTable(
+                name: "DeliveriesBoxes");
 
             migrationBuilder.DropTable(
                 name: "DeliveriesProducts");
@@ -770,19 +1031,31 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "ProductItems");
+
+            migrationBuilder.DropTable(
+                name: "Boxes");
+
+            migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "PaymentsMethods");
 
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
                 name: "Stocks");
 
             migrationBuilder.DropTable(
+                name: "BoxesTypes");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "Sales");
+
+            migrationBuilder.DropTable(
+                name: "Pictures");
 
             migrationBuilder.DropTable(
                 name: "Clients");

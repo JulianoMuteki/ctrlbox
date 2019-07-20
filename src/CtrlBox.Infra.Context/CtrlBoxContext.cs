@@ -29,6 +29,14 @@ namespace CtrlBox.Infra.Context
         public DbSet<SaleProduct> SalesProducts { get; set; }
         public DbSet<RouteClient> RoutesClients { get; set; }
 
+        public DbSet<BoxType> BoxesTypes { get; set; }
+        public DbSet<ProductItem> ProductItems { get; set; }
+        public DbSet<Box> Boxes { get; set; }
+        public DbSet<BoxProductItem> BoxesProductItems { get; set; }
+        public DbSet<BoxCode> BoxesCodes { get; set; }
+
+        public DbSet<DeliveryBox> DeliveriesBoxes { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PaymentSchedule> PaymentSchedules { get; set; }
@@ -43,7 +51,7 @@ namespace CtrlBox.Infra.Context
         public CtrlBoxContext(DbContextOptions<CtrlBoxContext> options)
              : base(options)
         {
-              ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -66,6 +74,14 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new RouteMap());
             modelBuilder.ApplyConfiguration(new SaleMap());
             modelBuilder.ApplyConfiguration(new StockProductMap());
+
+            modelBuilder.ApplyConfiguration(new BoxCodeMap());
+            modelBuilder.ApplyConfiguration(new BoxMap());
+            modelBuilder.ApplyConfiguration(new ProductItemMap());
+            modelBuilder.ApplyConfiguration(new BoxTypeMap());
+            modelBuilder.ApplyConfiguration(new BoxProductItemMap());
+            modelBuilder.ApplyConfiguration(new DeliveryBoxMap());
+            modelBuilder.ApplyConfiguration(new PictureMap());
 
             modelBuilder.ApplyConfiguration(new PaymentMap());
             modelBuilder.ApplyConfiguration(new PaymentMethodMap());

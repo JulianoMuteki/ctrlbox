@@ -21,11 +21,14 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly IProductApplicationService _productService;
         private readonly ISaleApplicationService _saleService;
         private readonly ISecurityApplicationService _securityService;
+        private readonly IBoxApplicationService _boxService;
 
         public DeliveryController(IClientApplicationService clientService, IRouteApplicationService routeService,
                                    IDeliveryApplicationService deliveryService, IProductApplicationService productService,
-                                   ISaleApplicationService saleService, ISecurityApplicationService securityService)
+                                   ISaleApplicationService saleService, ISecurityApplicationService securityService,
+                                   IBoxApplicationService boxService)
         {
+            _boxService = boxService;
             _clientService = clientService;
             _routeService = routeService;
             _deliveryService = deliveryService;
@@ -104,17 +107,17 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostAjaxHandlerCreateDelivery(string[] tbProducts, string routeID, string userID)
+        public ActionResult PostAjaxHandlerCreateDelivery(string[] tbBoxesTypes, string routeID, string userID)
         {
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var deliveryProductsVMs = jsonS.JsonDeserialize<DeliveryProductVM>(tbProducts[0]);
+                var deliveryBoxTypeVMs = jsonS.JsonDeserialize<BoxTypeVM>(tbBoxesTypes[0]);
 
                 DeliveryVM deliveryVM = new DeliveryVM();
                 deliveryVM.RouteID = new Guid(routeID);
                 deliveryVM.UserID = new Guid(userID);
-                deliveryVM.DeliveriesProducts = deliveryProductsVMs;
+                deliveryVM.BoxesTypes = deliveryBoxTypeVMs;
 
                 _deliveryService.Add(deliveryVM);
                 return Json(new
@@ -143,12 +146,11 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                Guid idEntrega = new Guid(entregaID);
-                var deliveryVM = _deliveryService.GetById(idEntrega);
+                Guid deliveryID = new Guid(entregaID);
+                var deliveryVM = _deliveryService.GetById(deliveryID);
                 var routeVM = _routeService.GetById(deliveryVM.RouteID);
                 var clientsVM = _clientService.GetByRouteID(new Guid(routeVM.DT_RowId));
-                var productsDeliveryVM = _productService.GetDeliveryProducts(new Guid(deliveryVM.DT_RowId));
-
+               
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
                 var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
                 var clientsVMs = clientsVM.Select(c =>
@@ -158,10 +160,22 @@ namespace CtrlBox.UI.Web.Controllers
                                                          where x.ClientID.ToString() == c.DT_RowId
                                                          select x).FirstOrDefault() ?? new SaleVM()); return c;
                                             }).ToList();
+
+
+                var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(deliveryID).GroupBy(n => new { n.BoxTypeID, n })
+                                                  .Select(g => new
+                                                  {
+                                                      DT_RowId = g.Key.BoxTypeID,
+                                                      g.Key.n.BoxType.PictureID,
+                                                      BoxType = g.Key.n.BoxType.Name,
+                                                      TotalBox = g.Count()
+                                                  });
+
+
                 return Json(new
                 {
                     aaData = clientsVM,
-                    xaData = productsDeliveryVM.Select(x => new { x.Product.Name, x.Product.DT_RowId, x.DeliveryID, x.Amount, x.Product.UnitMeasure }).ToList(),
+                    xaData = boxesLoadInRoute.ToList(),
                     xbData = despesasVM,
                     success = true
                 });

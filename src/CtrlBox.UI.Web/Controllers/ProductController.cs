@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using CtrlBox.Application.ViewModel;
-using CtrlBox.Domain.Entities;
+using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -41,12 +42,40 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult Create(Guid productID)
         {
             var productVM = _productService.GetById(productID);
+
+            var optionsBoxMassUnit = CtrlBoxUnits.CtrlBoxMassUnit
+                                        .Select(unit => new SelectListItem
+                                        {
+                                            Value = unit,
+                                            Text = unit
+                                        }).ToList();
+            ViewData["OptionsBoxMassUnit"] = optionsBoxMassUnit;
+
+            var optionsBoxVolumeUnit = CtrlBoxUnits.CtrlBoxVolumeUnit
+                                        .Select(unit => new SelectListItem
+                                        {
+                                            Value = unit,
+                                            Text = unit
+                                        }).ToList();
+            ViewData["OptionsBoxVolumeUnit"] = optionsBoxVolumeUnit;
+
+            var optionsBoxUnitType = CtrlBoxUnits.CtrlBoxUnitType
+                            .Select(unit => new SelectListItem
+                            {
+                                Value = unit,
+                                Text = unit
+                            }).ToList();
+            ViewData["OptionsBoxUnitType"] = optionsBoxUnitType;
+
             return View(productVM);
         }
 
         [HttpPost]
-        public ActionResult Create(ProductVM productVM)
+        public ActionResult Create(ProductVM productVM, IFormFile FilePicture)
         {
+            PictureVM imageEntity = GeneratePicture.CreatePicture(FilePicture, $"{productVM.Name} - {productVM.Description}");
+            productVM.Picture = imageEntity;
+
             if (string.IsNullOrEmpty(productVM.DT_RowId))
                 _productService.Add(productVM);
             else
@@ -156,5 +185,65 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
         #endregion
+
+        public ActionResult ProductItem()
+        {
+            var products = _productService.GetAll()
+                               .Select(prod => new SelectListItem
+                               {
+                                   Value = prod.DT_RowId,
+                                   Text = $"{prod.Name} {prod.UnitMeasure}"
+                               }).ToList();
+            ViewData["Products"] = products;
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerProductItem()
+        {
+            try
+            {
+                var productsItems = _productService.GetProductsItems();
+                return Json(new
+                {
+                    aaData = productsItems,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ActionResult GenerateProductItem()
+        {
+            var products = _productService.GetAll()
+                               .Select(prod => new SelectListItem
+                               {
+                                   Value = prod.DT_RowId,
+                                   Text = $"{prod.Name} {prod.UnitMeasure}"
+                               }).ToList();
+            ViewData["Products"] = products;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult PutAjaxHandlerProductItem(Guid productID, int quantity)
+        {
+            JsonSerialize jsonS = new JsonSerialize();
+            _productService.GenerateProductItem(productID, quantity);
+
+            return Json(new
+            {
+                success = true,
+                Message = "OK"
+            });
+        }
+
+
+
     }
 }

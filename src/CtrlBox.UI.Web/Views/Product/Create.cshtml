@@ -1,86 +1,153 @@
 ﻿@model CtrlBox.Application.ViewModel.ProductVM
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Product";
+}
+@section cssViews{
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
+    <link href="~/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+
+    <!-- END PAGE LEVEL STYLES -->
+}
+@section scriptsViews{
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="~/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
 }
 
-<div class="page-content">
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-        <div class="modal-header">
-            <button data-dismiss="modal" class="close" type="button"></button>
-            <h3>portlet Settings</h3>
-        </div>
-        <div class="modal-body">
-            <p>Here will be a configuration form</p>
-        </div>
-    </div>
-    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $('.select2_option').select2({
+            allowClear: true
+        });
+
+        $('#UnitMeasure').val('Milliliter');
+        $('#UnitMeasure').trigger('change');
+        $('#MassUnitWeight').val('Milligram');
+        $('#MassUnitWeight').trigger('change');
+    });
+</script>
+
+<div class="page-content" style="min-height:988px !important">
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <!-- BEGIN PAGE HEADER-->
         <div class="row-fluid">
             <div class="span12">
-                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.html">Home</a>
-                        <i class="icon-angle-right"></i>
+                        <a href="index.html">Product</a>
+                        <span class="icon-angle-right"></span>
                     </li>
                     <li>
-                        <a href="#">Layouts</a>
-                        <i class="icon-angle-right"></i>
+                        <a href="#">Index</a>
+                        <span class="icon-angle-right"></span>
                     </li>
-                    <li><a href="#">Blank Page</a></li>
+                    <li><a href="#">Create</a></li>
                 </ul>
-                <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
         </div>
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
             <div class="span12">
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true)
-                    @Html.HiddenFor(model => model.DT_RowId)
-                <fieldset>
-                    <legend>Produto</legend>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Name)
+                <!-- BEGIN SAMPLE FORM PORTLET-->
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Create product</div>
                     </div>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Name)
-                        @Html.ValidationMessageFor(model => model.Name)
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <form asp-action="Create" asp-controller="Product" enctype="multipart/form-data"  class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label">Name</label>
+                                <div class="controls">
+                                    <input asp-for="Name" type="text" class="span6 m-wrap">
+                                    <span asp-for="Name" class="help-inline">enter with name rule</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Description</label>
+                                <div class="controls">
+                                    <input asp-for="Description" type="text" class="span6 m-wrap">
+                                    <span asp-for="Description" class="help-inline">enter with Description rule</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Package</label>
+                                <div class="controls">
+                                    <input asp-for="Package" type="text" class="span6 m-wrap">
+                                    <span asp-for="Package" class="help-inline">enter with Package rule</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Capacity</label>
+                                <div class="controls">
+                                    <input asp-for="Capacity" type="text" class="span6 m-wrap">
+                                    <span asp-for="Capacity" class="help-inline">enter with Capacity rule</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">UnitType</label>
+                                <div class="controls">
+                                    <select class="span6 select2_option" data-placeholder="Choose a product" name="UnitType" asp-for="UnitType" asp-items="@((List<SelectListItem>)ViewData["OptionsBoxUnitType"])"></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">UnitMeasure</label>
+                                <div class="controls">
+                                    <select class="span6 select2_option" data-placeholder="Choose a product" id="UnitMeasure" name="UnitMeasure" asp-for="UnitMeasure" asp-items="@((List<SelectListItem>)ViewData["OptionsBoxVolumeUnit"])"></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Weight</label>
+                                <div class="controls">
+                                    <input asp-for="Weight" type="text" class="span6 m-wrap">
+                                    <span asp-for="Weight" class="help-inline">enter with Weight rule</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">UnitMeasure</label>
+                                <div class="controls">
+                                    <select class="span6 select2_option" data-placeholder="Choose a product" name="MassUnitWeight" asp-for="MassUnitWeight" asp-items="@((List<SelectListItem>)ViewData["OptionsBoxMassUnit"])"></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Image Upload</label>
+                                <div class="controls">
+                                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                                        <div class="fileupload-new thumbnail" style="width:45px; height: 45px;">
+                                           
+                                            <img src="~/img/avatar.png" />
+                                        </div>
+                                        <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+                                        <div>
+                                            <span class="btn btn-file">
+                                                <span class="fileupload-new">Select image</span>
+                                                <span class="fileupload-exists">Change</span>
+                                                <input type="file" class="default" name="FilePicture" />
+                                            </span>
+                                            <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                        </div>
+                                    </div>
+                                    <span class="label label-important">NOTE!</span>
+                                    <span>
+                                        Attached image thumbnail 45px X 45px
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn blue">Submit</button>
+                                <button type="button" class="btn">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
                     </div>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Weight)
-                    </div>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Weight)
-                        @Html.ValidationMessageFor(model => model.Weight)
-                    </div>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Description)
-                    </div>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Description)
-                        @Html.ValidationMessageFor(model => model.Description)
-                    </div>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.UnitMeasure)
-                    </div>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.UnitMeasure)
-                        @Html.ValidationMessageFor(model => model.UnitMeasure)
-                    </div>
-                    <p>
-                        <input type="submit" value="Save" />
-                    </p>
-                </fieldset>
-                }
+                </div>
+                <!-- END SAMPLE FORM PORTLET-->
             </div>
         </div>
         <!-- END PAGE CONTENT-->

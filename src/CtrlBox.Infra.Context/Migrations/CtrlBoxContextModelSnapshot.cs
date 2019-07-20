@@ -67,6 +67,134 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Box", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("BoxID");
+
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasMaxLength(14);
+
+                    b.Property<Guid?>("BoxParentID");
+
+                    b.Property<Guid>("BoxTypeID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<Guid?>("ProductID");
+
+                    b.Property<int>("StatusBox");
+
+                    b.HasKey("Id")
+                        .HasName("BoxID");
+
+                    b.HasIndex("BoxParentID");
+
+                    b.HasIndex("BoxTypeID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("Boxes");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnName("BoxCodeID");
+
+                    b.Property<Guid>("BoxID");
+
+                    b.Property<string>("BarcodeEAN13")
+                        .IsRequired()
+                        .HasMaxLength(13);
+
+                    b.Property<string>("BarcodeGS1_128")
+                        .IsRequired()
+                        .HasMaxLength(48);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("RFID")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id", "BoxID");
+
+                    b.HasIndex("BoxID")
+                        .IsUnique();
+
+                    b.ToTable("BoxesCodes");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItem", b =>
+                {
+                    b.Property<Guid>("BoxID");
+
+                    b.Property<Guid>("ProductItemID");
+
+                    b.Property<Guid?>("DeliveryID");
+
+                    b.Property<bool>("IsDelivered");
+
+                    b.HasKey("BoxID", "ProductItemID");
+
+                    b.HasIndex("DeliveryID");
+
+                    b.HasIndex("ProductItemID");
+
+                    b.ToTable("BoxesProductItems");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("BoxTypeID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<Guid?>("PictureID");
+
+                    b.HasKey("Id")
+                        .HasName("BoxTypeID");
+
+                    b.HasIndex("PictureID");
+
+                    b.ToTable("BoxesTypes");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.Property<Guid>("Id")
@@ -193,6 +321,19 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Deliveries");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.DeliveryBox", b =>
+                {
+                    b.Property<Guid>("DeliveryID");
+
+                    b.Property<Guid>("BoxID");
+
+                    b.HasKey("DeliveryID", "BoxID");
+
+                    b.HasIndex("BoxID");
+
+                    b.ToTable("DeliveriesBoxes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.DeliveryProduct", b =>
@@ -346,11 +487,51 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("PaymentSchedules");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Picture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("PictureID");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<int>("Height");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<int>("Length");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Width");
+
+                    b.HasKey("Id")
+                        .HasName("PictureID");
+
+                    b.ToTable("Pictures");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ProductID");
+
+                    b.Property<double>("Capacity")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -364,13 +545,25 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsDisable");
 
+                    b.Property<string>("MassUnitWeight")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(250);
 
+                    b.Property<string>("Package")
+                        .IsRequired()
+                        .HasMaxLength(150);
+
+                    b.Property<Guid?>("PictureID");
+
                     b.Property<string>("UnitMeasure")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<string>("UnitType");
 
                     b.Property<double>("Weight")
                         .HasColumnType("float");
@@ -378,7 +571,43 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasKey("Id")
                         .HasName("ProductID");
 
+                    b.HasIndex("PictureID");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ProductItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ProductItemID");
+
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasMaxLength(14);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("InBox");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<Guid>("ProductID");
+
+                    b.Property<string>("Weight")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id")
+                        .HasName("ProductItemID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductItems");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Route", b =>
@@ -712,6 +941,54 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Box", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "BoxParent")
+                        .WithMany("BoxesChildren")
+                        .HasForeignKey("BoxParentID");
+
+                    b.HasOne("CtrlBox.Domain.Entities.BoxType", "BoxType")
+                        .WithMany("Boxes")
+                        .HasForeignKey("BoxTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
+                        .WithMany("Boxes")
+                        .HasForeignKey("ProductID");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxCode", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithOne("BoxCode")
+                        .HasForeignKey("CtrlBox.Domain.Entities.BoxCode", "BoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItem", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithMany("BoxesProductItems")
+                        .HasForeignKey("BoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Delivery", "Delivery")
+                        .WithMany("BoxesProductItems")
+                        .HasForeignKey("DeliveryID");
+
+                    b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
+                        .WithMany("LoadBoxesProductItems")
+                        .HasForeignKey("ProductItemID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxType", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Picture", "Picture")
+                        .WithMany("BoxesTypes")
+                        .HasForeignKey("PictureID");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
@@ -751,6 +1028,19 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Identity.ApplicationUser", "User")
                         .WithMany("Deliveries")
                         .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.DeliveryBox", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithMany("DeliveriesBoxes")
+                        .HasForeignKey("BoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Delivery", "Delivery")
+                        .WithMany("DeliveriesBoxes")
+                        .HasForeignKey("DeliveryID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -797,6 +1087,21 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.PaymentMethod", "PaymentMethod")
                         .WithMany("PaymentsSchedules")
                         .HasForeignKey("PaymentMethodID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Product", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Picture", "Picture")
+                        .WithMany("Products")
+                        .HasForeignKey("PictureID");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ProductItem", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -101,40 +101,40 @@ namespace CtrlBox.Infra.Context
 
                 string unitMeasure = "Caixa(s)";
 
-                for (int i = 0; i < 1; i++)
-                {
-                    ProductVM product = new ProductVM();
-                    product.Description = $"Descrição nanica {i}";
-                    product.Name = $"Banana nanica - {i}";
-                    product.Weight = i;
-                    product.UnitMeasure = unitMeasure;
-                    productService.Add(product);
-                }
-                for (int i = 0; i < 1; i++)
-                {
-                    ProductVM product = new ProductVM();
-                    product.Description = $"Descrição maçã {i}";
-                    product.Name = $"Banana maçã - {i}";
-                    product.Weight = i;
-                    product.UnitMeasure = unitMeasure;
-                    productService.Add(product);
-                }
-                for (int i = 0; i < 1; i++)
-                {
-                    ProductVM product = new ProductVM();
-                    product.Description = $"Descrição prata {i}";
-                    product.Name = $"Banana prata - {i}";
-                    product.Weight = i;
-                    product.UnitMeasure = unitMeasure;
-                    productService.Add(product);
-                }
+                //for (int i = 0; i < 1; i++)
+                //{
+                //    ProductVM product = new ProductVM();
+                //    product.Description = $"Descrição nanica {i}";
+                //    product.Name = $"Banana nanica - {i}";
+                //    product.Weight = i;
+                //    product.UnitMeasure = unitMeasure;
+                //    productService.Add(product);
+                //}
+                //for (int i = 0; i < 1; i++)
+                //{
+                //    ProductVM product = new ProductVM();
+                //    product.Description = $"Descrição maçã {i}";
+                //    product.Name = $"Banana maçã - {i}";
+                //    product.Weight = i;
+                //    product.UnitMeasure = unitMeasure;
+                //    productService.Add(product);
+                //}
+                //for (int i = 0; i < 1; i++)
+                //{
+                //    ProductVM product = new ProductVM();
+                //    product.Description = $"Descrição prata {i}";
+                //    product.Name = $"Banana prata - {i}";
+                //    product.Weight = i;
+                //    product.UnitMeasure = unitMeasure;
+                //    productService.Add(product);
+                //}
 
-                ProductVM productBat = new ProductVM();
-                productBat.Description = $"Descrição batata";
-                productBat.Name = $"Batata";
-                productBat.Weight = 100;
-                productBat.UnitMeasure = "saco(s)";
-                productService.Add(productBat);
+                //ProductVM productBat = new ProductVM();
+                //productBat.Description = $"Descrição batata";
+                //productBat.Name = $"Batata";
+                //productBat.Weight = 100;
+                //productBat.UnitMeasure = "saco(s)";
+                //productService.Add(productBat);
 
                 var routeService = serviceProvider.GetRequiredService<IRouteApplicationService>();
                 for (int i = 0; i < 10; i++)

@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "ProductItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scriptsViews
+    {
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+       
+        $('#tbProductItem').dataTable({
+            "sAjaxSource": '/../Product/GetAjaxHandlerProductItem',
+            "bProcessing": true,
+            "bDestroy": true,
+            "aoColumns": [
+                        {
+                            "mData": "Barcode",
+                            "bSortable": false
+                        },
+                        {
+                            "mData": "Weight",
+                            "bSortable": false
+                        },
+                        {
+                            "mData": "Product.Name",
+                            "bSortable": false
+                        },
+                        {
+                            "mData": "InBox",
+                            "bSortable": false
+                        }
+            ]
+        });
+    });
+</script>
+
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Form Stuff</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Form Layouts</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box purple">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-bookmark"></i>Products Items</div>
+                        <div class="actions">
+                            <a asp-action="GenerateProductItem" asp-controller="Product" class="btn green"><i class="icon-plus"></i> Add</a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <table id="tbProductItem" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Weight</th>
+                                    <th>Product</th>
+                                    <th>In the box</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>

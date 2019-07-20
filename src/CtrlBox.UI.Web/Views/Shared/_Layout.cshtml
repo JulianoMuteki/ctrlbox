@@ -115,6 +115,24 @@
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-dropbox"></i>
+                            <span class="title">Boxes</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Boxes", "Index", "Box")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Boxes Type", "BoxesType", "Box")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Picture", "Index", "Configuration")
+                            </li>
+                        </ul>
+                    </li>
                     @if (User.IsInRole(CtrlBox.Domain.Security.RoleAuthorize.Admin.ToString()))
                     {
 

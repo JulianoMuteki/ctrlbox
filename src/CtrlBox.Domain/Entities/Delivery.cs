@@ -2,6 +2,7 @@
 using CtrlBox.Domain.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -21,14 +22,17 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Expense> Expenses { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
+        public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
         public ICollection<Sale> Sales { get; set; }
+        public ICollection<BoxProductItem> BoxesProductItems { get; set; }
 
         public Delivery()
+            :base()
         {
-            Init();
-
+            this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.Expenses = new HashSet<Expense>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
+            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
             this.Sales = new HashSet<Sale>();
         }
 
@@ -37,11 +41,14 @@ namespace CtrlBox.Domain.Entities
         /// </summary>
         public void Init()
         {
-            this.InitBase();
-            this.IsFinalized = false;
-            this.DtStart = DateTime.Now;
-            this.CreatedBy = "Juliano";
-            this.FinalizedBy = "Juliano";
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+                this.IsFinalized = false;
+                this.DtStart = DateTime.Now;
+                this.CreatedBy = "Juliano";
+                this.FinalizedBy = "Juliano";
+            }
         }
 
         public void FinalizeDelivery()
@@ -50,6 +57,40 @@ namespace CtrlBox.Domain.Entities
             this.DtEnd = DateTime.Now;
             this.DateModified = DateTime.Now;
             this.FinalizedBy = "Juliano";
+        }
+
+        public void ShippingBoxes(IEnumerable<Box> boxesReadyToDelivery)
+        {
+            foreach (var box in boxesReadyToDelivery)
+            {
+                DeliveryBox deliveryBox = new DeliveryBox();
+                deliveryBox.BoxID = box.Id;
+                deliveryBox.DeliveryID = this.Id;
+
+                PutInTheBoxBoxesProductItemsChildren(box);
+                this.DeliveriesBoxes.Add(deliveryBox);
+            }
+        }
+
+        private void PutInTheBoxBoxesProductItemsChildren(Box box)
+        {
+            if (box.BoxesProductItems.Count > 0)
+            {
+                var boxesProductItems = box.BoxesProductItems.Select(x => { x.DeliveryID = this.Id; return x; }).ToList();
+
+                foreach (BoxProductItem boxProductItem in boxesProductItems)
+                {
+                    boxProductItem.ProductItem.PutInTheBox();
+                    this.BoxesProductItems.Add(boxProductItem);
+                }
+            }
+            else
+            {
+                foreach (var boxChild in box.BoxesChildren)
+                {
+                    PutInTheBoxBoxesProductItemsChildren(boxChild);
+                }
+            }
         }
     }
 }

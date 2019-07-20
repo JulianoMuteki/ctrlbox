@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewData["Title"] = "GenerateProductItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section cssViews{
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
+
+    <!-- END PAGE LEVEL STYLES -->
+}
+@section scriptsViews{
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $('.select2_option').select2({
+            allowClear: true
+        });
+
+        $("#btnSubmitItems").click(function (event) {
+
+            var quantity = $("#idQuantity").val();
+          var productID =  $("#ddlProduct").val()
+
+            $.ajax({
+                url: '/../Product/PutAjaxHandlerProductItem',
+                type: 'POST',
+                dataType: 'json',
+                data: { productID: productID, quantity: quantity },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        window.history.back();
+                    }
+                },
+                "error": handleAjaxError
+            });
+        });
+    });
+</script>
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Address</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Index</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Create</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-plus"></i>New BoxType</div>
+                    </div>
+                    <div class="portlet-body">
+                        <!-- BEGIN FORM-->
+                        <form class="form-horizontal">
+                            <div id="grpProducts" class="control-group">
+                                <label class="control-label">Product</label>
+                                <div class="controls">
+                                    <select id="ddlProduct" class="span6 select2_option" data-placeholder="Choose a product" tabindex="1" name="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"><option value="0">Please select Product</option></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Quantity</label>
+                                <div class="controls">
+                                    <input id="idQuantity" type="text" name="Quantity" placeholder="Quantity" class="m-wrap medium" />
+                                    <span class="help-inline">Barcode generate auto</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button id="btnSubmitItems" type="button" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                <button type="button" class="btn">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>

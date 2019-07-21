@@ -14,7 +14,7 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(x => x.Id).HasColumnName("TraceTypeID");
             builder.HasKey(b => b.Id).HasName("TraceTypeID");
 
-            builder.Property(x=>x.Desciption)
+            builder.Property(x=>x.Description)
                 .IsRequired()
                 .HasMaxLength(250);
 

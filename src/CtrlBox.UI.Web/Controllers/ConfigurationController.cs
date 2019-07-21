@@ -14,7 +14,6 @@ namespace CtrlBox.UI.Web.Controllers
     {
         private readonly IConfigurationApplicationService _configurationApplicationService;
 
-        IList<PictureVM> _images = new List<PictureVM>();
         public ConfigurationController(IConfigurationApplicationService configurationApplicationService)
         {
             _configurationApplicationService = configurationApplicationService;

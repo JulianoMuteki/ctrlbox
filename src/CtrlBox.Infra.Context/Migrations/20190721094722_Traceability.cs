@@ -17,7 +17,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDelete = table.Column<bool>(nullable: false),
                     IsDisable = table.Column<bool>(nullable: false),
                     TypeTrace = table.Column<int>(nullable: false),
-                    Desciption = table.Column<string>(maxLength: 250, nullable: false)
+                    Description = table.Column<string>(maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {

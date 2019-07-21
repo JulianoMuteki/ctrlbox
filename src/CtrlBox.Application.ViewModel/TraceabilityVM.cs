@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Application.ViewModel
 {
@@ -15,6 +14,6 @@ namespace CtrlBox.Application.ViewModel
         public Guid TraceTypeID { get; set; }
         public TraceTypeVM TraceType { get; set; }
 
-        public ICollection<TraceabilityClient> TraceabilitiesClients { get; set; }
+        public ICollection<TraceabilityClientVM> TraceabilitiesClients { get; set; }
     }
 }

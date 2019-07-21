@@ -26,7 +26,7 @@ namespace CtrlBox.UI.Web.Controllers
         public IActionResult Index(Guid boxID)
         {
             var boxVM = _boxApplicationService.GetBoxesByIDWithBoxTypeAndProductItems(boxID);
-            ViewData["BoxDescription"] = $"{boxVM.Barcode} - {boxVM.Description} - {boxVM.BoxType.Name}";
+            ViewData["BoxViewData"] = boxVM;//$"{boxVM.Barcode} - {boxVM.Description} - {boxVM.BoxType.Name}";
 
             var traces = _traceabilityApplicationService.GetByBoxID(boxID);
             return View(traces);

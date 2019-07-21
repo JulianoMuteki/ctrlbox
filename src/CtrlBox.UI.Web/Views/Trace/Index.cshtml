@@ -6,7 +6,9 @@
 }
 @section cssViews{
     <link href="~/css/pages/timeline.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/pages/profile.css" rel="stylesheet" />
 }
+
 <div class="page-content">
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
@@ -33,9 +35,15 @@
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
             <div class="span12">
-                <h3 class="page-title">
-                     @ViewData["BoxDescription"]
-                </h3>
+                <div class="row-fluid portfolio-block">
+                    <div class="span5 portfolio-text">
+                        <img src="data:'@(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Picture.ContentType)';base64,@(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Picture.Base64Image)" />
+                        <div class="portfolio-text-info">
+                            <h4> <a href="#" data-role="leaf"> @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Name) - @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).Description)</a></h4>
+                            <p>Barcode:  @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).Barcode)</p>
+                        </div>
+                    </div>
+                </div>
                 <ul class="timeline">
                     @foreach (var traceability in Model)
                     {
@@ -47,16 +55,7 @@
                             <div class="timeline-icon"><i class="icon-trophy"></i></div>
                             <div class="timeline-body">
                                 <h2>@traceability.TraceType.Description - @traceability.TraceType.TypeTrace</h2>
-                                <div class="timeline-content">
 
-                                    Ricebean black-eyed pea maize scallion green bean spinach cabbage jicama bell pepper carrot onion corn plantain garbanzo. Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress.
-                                    Parsley amaranth tigernut silver beet maize fennel spinach. Ricebean black-eyed pea maize scallion green bean spinach cabbage jicama bell pepper carrot onion corn plantain garbanzo.
-                                </div>
-                                <div class="timeline-footer">
-                                    <a href="#" class="nav-link pull-right">
-                                        Read more <i class="m-icon-swapright m-icon-white"></i>
-                                    </a>
-                                </div>
                             </div>
                         </li>
                     }

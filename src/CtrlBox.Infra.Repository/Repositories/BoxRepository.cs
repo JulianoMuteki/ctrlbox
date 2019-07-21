@@ -133,7 +133,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 return _context.Set<Box>()                   
                     //.Include(x => x.BoxesProductItems)
-                    //.Include(x => x.Product)
+                    .Include(x => x.BoxType).ThenInclude(x=>x.Picture)
                     .Include(x => x.BoxType)
                     .Where(x => x.Id == boxID)
                     .FirstOrDefault();

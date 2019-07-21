@@ -11,6 +11,8 @@ namespace CtrlBox.Application.ViewModel
         public Guid? BoxID { get; set; }
         public BoxVM Box { get; set; }
 
+        public Guid ClientID { get; set; }
+
         public Guid TraceTypeID { get; set; }
         public TraceTypeVM TraceType { get; set; }
 

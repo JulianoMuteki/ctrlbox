@@ -74,6 +74,12 @@
                                 </div>
                             </div>
                             <div class="control-group">
+                                <label class="control-label">Box </label>
+                                <div class="controls">
+                                    <select id="ddlClient" class="span6 select2_option" data-placeholder="Choose a box" name="ClientID" asp-for="ClientID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"><option value="0">Please select client</option></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
                                 <label class="control-label">Which box</label>
                                 <div class="controls">
                                     <label class="radio">

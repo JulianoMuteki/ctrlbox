@@ -14,10 +14,12 @@ namespace CtrlBox.Domain.Entities
         public bool InBox { get; set; }
 
         public ICollection<BoxProductItem> LoadBoxesProductItems { get; set; }
+        public ICollection<Traceability> Traceabilities { get; set; }
 
         public ProductItem()
             :base()
         {
+            this.Traceabilities = new HashSet<Traceability>();
             this.LoadBoxesProductItems = new HashSet<BoxProductItem>();
         }
 

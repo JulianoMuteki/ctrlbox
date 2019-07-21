@@ -41,7 +41,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Reference)
                 .IsRequired()
                 .HasMaxLength(50);
-
         }
     }
 }

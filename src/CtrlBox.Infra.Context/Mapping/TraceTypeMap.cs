@@ -1,0 +1,25 @@
+﻿using CtrlBox.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace CtrlBox.Infra.Context.Mapping
+{
+    public class TraceTypeMap : EntityConfiguration<TraceType>
+    {
+        protected override void Initialize(EntityTypeBuilder<TraceType> builder)
+        {
+            base.Initialize(builder);
+
+            builder.ToTable("TracesTypes");
+            builder.Property(x => x.Id).HasColumnName("TraceTypeID");
+            builder.HasKey(b => b.Id).HasName("TraceTypeID");
+
+            builder.Property(x=>x.Desciption)
+                .IsRequired()
+                .HasMaxLength(250);
+
+            builder.Property(x => x.TypeTrace)
+                .HasConversion<int>();
+        }
+    }
+}

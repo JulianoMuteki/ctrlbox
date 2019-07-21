@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CtrlBox.Application.ViewModel.TraceabilityVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section cssViews{
+    <link href="~/css/pages/timeline.css" rel="stylesheet" type="text/css" />
+}
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Pages</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li><a href="#">Timeline</a></li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                     @ViewData["BoxDescription"]
+                </h3>
+                <ul class="timeline">
+                    @foreach (var traceability in Model)
+                    {
+                        <li class="timeline-yellow">
+                            <div class="timeline-time">
+                                <span class="date">@traceability.CreationDate.ToString("dd/MM/yyyy")</span>
+                                <span class="time">@traceability.CreationDate.ToString("hh:mm")</span>
+                            </div>
+                            <div class="timeline-icon"><i class="icon-trophy"></i></div>
+                            <div class="timeline-body">
+                                <h2>@traceability.TraceType.Description - @traceability.TraceType.TypeTrace</h2>
+                                <div class="timeline-content">
+
+                                    Ricebean black-eyed pea maize scallion green bean spinach cabbage jicama bell pepper carrot onion corn plantain garbanzo. Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress.
+                                    Parsley amaranth tigernut silver beet maize fennel spinach. Ricebean black-eyed pea maize scallion green bean spinach cabbage jicama bell pepper carrot onion corn plantain garbanzo.
+                                </div>
+                                <div class="timeline-footer">
+                                    <a href="#" class="nav-link pull-right">
+                                        Read more <i class="m-icon-swapright m-icon-white"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+

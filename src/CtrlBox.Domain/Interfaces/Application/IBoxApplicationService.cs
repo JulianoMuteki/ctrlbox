@@ -12,5 +12,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<BoxVM> GetBoxesByDeliveryID(Guid deliveryID);
         ICollection<BoxProductItemVM> GetBoxesBoxesProductItemsByDeliveryID(Guid guid);
         ICollection<BoxVM> GetBoxesByBoxWithChildren(Guid boxID);
+        BoxVM GetBoxesByIDWithBoxTypeAndProductItems(Guid boxID);
     }
 }

@@ -7,6 +7,7 @@ using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
+using CtrlBox.Domain.Interfaces.Repository;
 
 namespace CtrlBox.Application
 {
@@ -23,7 +24,28 @@ namespace CtrlBox.Application
 
         public TraceabilityVM Add(TraceabilityVM entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var traceability = _mapper.Map<Traceability>(entity);
+
+                //if (!boxType.ComponentValidator.Validate(boxType, new BoxTypeValidator()))
+                //{
+                //    throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+                //}
+
+                _unitOfWork.Repository<Traceability>().Add(traceability);
+                _unitOfWork.Commit();
+
+                return entity;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<TraceabilityApplicationService>("Unexpected error fetching add trace", nameof(this.Add), ex);
+            }
         }
 
         public Task<TraceabilityVM> AddAsync(TraceabilityVM entity)
@@ -90,6 +112,24 @@ namespace CtrlBox.Application
             catch (Exception ex)
             {
                 throw CustomException.Create<TraceabilityApplicationService>("Unexpected error fetching GetAllTracesTypes", nameof(this.GetAllTracesTypes), ex);
+            }
+        }
+
+        public ICollection<TraceabilityVM> GetByBoxID(Guid boxID)
+        {
+            try
+            {
+                var tracesTypes = _unitOfWork.RepositoryCustom<ITraceabilityRepository>().GetByBoxIDWithTraceType(boxID);
+                var tracesTypesVMs = _mapper.Map<IList<TraceabilityVM>>(tracesTypes);
+                return tracesTypesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<TraceabilityApplicationService>("Unexpected error fetching GetAll TraceabilityVM", nameof(this.GetByBoxID), ex);
             }
         }
 

@@ -126,5 +126,22 @@ namespace CtrlBox.Infra.Repository.Repositories
                 throw CustomException.Create<BoxRepository>("Unexpected error fetching Get boxes with product items", nameof(this.GetBoxesByBoxTypeIDWithProductItems), ex);
             }
         }
+
+        public Box GetBoxesByIDWithBoxTypeAndProductItems(Guid boxID)
+        {
+            try
+            {
+                return _context.Set<Box>()                   
+                    //.Include(x => x.BoxesProductItems)
+                    //.Include(x => x.Product)
+                    .Include(x => x.BoxType)
+                    .Where(x => x.Id == boxID)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetBoxesByIDWithBoxTypeAndProductItems", nameof(this.GetBoxesByIDWithBoxTypeAndProductItems), ex);
+            }
+        }
     }
 }

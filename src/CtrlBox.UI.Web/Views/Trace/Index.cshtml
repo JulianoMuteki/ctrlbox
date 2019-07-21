@@ -37,7 +37,7 @@
             <div class="span12">
                 <div class="row-fluid portfolio-block">
                     <div class="span5 portfolio-text">
-                        <img src="data:'@(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Picture.ContentType)';base64,@(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Picture.Base64Image)" />
+                        <img src="@(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Picture.SrcBase64Image)" />
                         <div class="portfolio-text-info">
                             <h4> <a href="#" data-role="leaf"> @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Name) - @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).Description)</a></h4>
                             <p>Barcode:  @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).Barcode)</p>
@@ -52,7 +52,15 @@
                                 <span class="date">@traceability.CreationDate.ToString("dd/MM/yyyy")</span>
                                 <span class="time">@traceability.CreationDate.ToString("hh:mm")</span>
                             </div>
-                            <div class="timeline-icon"><i class="icon-trophy"></i></div>
+                            <div class="timeline-icon">
+                                @if (traceability.TraceType.Picture == null)
+                                {
+                                    <i class="icon-trophy"></i> }
+                                else
+                                {
+                                    <img src="@traceability.TraceType.Picture.SrcBase64Image" />
+                                }
+                            </div>
                             <div class="timeline-body">
                                 <h2>@traceability.TraceType.Description - @traceability.TraceType.TypeTrace</h2>
 

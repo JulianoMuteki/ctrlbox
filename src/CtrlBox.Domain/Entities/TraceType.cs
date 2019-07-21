@@ -9,6 +9,9 @@ namespace CtrlBox.Domain.Entities
         public TypeTrace TypeTrace { get; set; }
         public string Description { get; set; }
 
+        public Guid? PictureID { get; set; }
+        public Picture Picture { get; set; }
+
         public ICollection<Traceability> Traceabilities { get; set; }
 
         public TraceType()

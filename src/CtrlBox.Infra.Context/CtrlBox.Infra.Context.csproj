@@ -8,6 +8,8 @@
     <Compile Remove="Migrations\20190720135416_InitialCreate.cs" />
     <Compile Remove="Migrations\20190720144442_InitialCreate.cs" />
     <Compile Remove="Migrations\20190721094211_Traceability.cs" />
+    <Compile Remove="Migrations\20190721180451_TracyTypePicture.cs" />
+    <Compile Remove="Migrations\20190721180943_ChangeNameColumn.cs" />
   </ItemGroup>
 
   <ItemGroup>

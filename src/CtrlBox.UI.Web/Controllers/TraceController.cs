@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
+using CtrlBox.UI.Web.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -110,10 +112,13 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateTraceType(TraceTypeVM traceTypeVM)
+        public IActionResult CreateTraceType(TraceTypeVM traceTypeVM, IFormFile FilePicture)
         {
             try
             {
+                PictureVM imageEntity = GeneratePicture.CreatePicture(FilePicture, $"{traceTypeVM.Description}");
+                traceTypeVM.Picture = imageEntity;
+
                 _traceabilityApplicationService.AddTraceType(traceTypeVM);
                 return RedirectToAction("TracesTypes");
             }

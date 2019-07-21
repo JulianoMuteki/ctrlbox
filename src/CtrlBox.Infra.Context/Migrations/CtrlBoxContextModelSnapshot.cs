@@ -789,7 +789,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DateModified");
 
-                    b.Property<string>("Desciption")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(250);
 
@@ -797,10 +797,14 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsDisable");
 
+                    b.Property<Guid?>("PictureID");
+
                     b.Property<int>("TypeTrace");
 
                     b.HasKey("Id")
                         .HasName("TraceTypeID");
+
+                    b.HasIndex("PictureID");
 
                     b.ToTable("TracesTypes");
                 });
@@ -1226,6 +1230,13 @@ namespace CtrlBox.Infra.Context.Migrations
                         .WithMany("StocksProducts")
                         .HasForeignKey("StockID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.TraceType", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Picture", "Picture")
+                        .WithMany("TracesTypes")
+                        .HasForeignKey("PictureID");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Traceability", b =>

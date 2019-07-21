@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190721094722_Traceability")]
-    partial class Traceability
+    [Migration("20190721181202_TracyTypePicture")]
+    partial class TracyTypePicture
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -799,10 +799,14 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsDisable");
 
+                    b.Property<Guid?>("PictureID");
+
                     b.Property<int>("TypeTrace");
 
                     b.HasKey("Id")
                         .HasName("TraceTypeID");
+
+                    b.HasIndex("PictureID");
 
                     b.ToTable("TracesTypes");
                 });
@@ -1228,6 +1232,13 @@ namespace CtrlBox.Infra.Context.Migrations
                         .WithMany("StocksProducts")
                         .HasForeignKey("StockID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.TraceType", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Picture", "Picture")
+                        .WithMany("TracesTypes")
+                        .HasForeignKey("PictureID");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Traceability", b =>

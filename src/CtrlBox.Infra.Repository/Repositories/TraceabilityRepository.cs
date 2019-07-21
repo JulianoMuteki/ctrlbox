@@ -23,7 +23,8 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Traceability>()
-                    .Include(x => x.TraceType)
+                    .Include(x => x.TraceType).ThenInclude(x=>x.Picture)
+
                     .Where(x => x.BoxID != null && x.BoxID.Value == boxID)
                     .OrderBy(x=>x.CreationDate)
                     .ToList();

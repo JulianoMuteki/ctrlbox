@@ -20,6 +20,11 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(x => x.TypeTrace)
                 .HasConversion<int>();
+
+            builder.HasOne(tk => tk.Picture)
+                .WithMany(t => t.TracesTypes)
+                .HasForeignKey(tk => tk.PictureID)
+                .IsRequired(false);
         }
     }
 }

@@ -26,7 +26,7 @@
                                 if (data.PictureID === '' || data.PictureID === null) {
                                     return '<img style="width:25px; height: 25px;" src="/../img/avatar.png" />  ' + data.Name;
                                 }
-                                return '<img style="width:25px; height: 25px;" src="/../Configuration/ViewImage/' + data.PictureID + '" />  ' + data.Name;
+                                return '<img style="max-width:25px; max-height: 25px;" src="/../Configuration/ViewImage/' + data.PictureID + '" />  ' + data.Name;
                             }
                             return data;
                         }

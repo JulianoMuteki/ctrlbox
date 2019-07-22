@@ -8,5 +8,6 @@ namespace CtrlBox.Domain.Interfaces.Repository
     public interface ITraceabilityRepository: IGenericRepository<Traceability>
     {
         ICollection<Traceability> GetByBoxIDWithTraceType(Guid boxID);
+        ICollection<TraceType> GetTracesTypesWithPictures();
     }
 }

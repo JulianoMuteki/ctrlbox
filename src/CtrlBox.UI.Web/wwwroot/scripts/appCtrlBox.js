@@ -31,8 +31,11 @@ var AppCtrlBox = function () {
             dataType: 'json',
             data: { addressID: id },
             "success": function (json) {
-                if (!json.NotAuthorized) {
+                if (json.success) {
                     setModalAddress(json.aaData);
+                }
+                else {
+                    alert("Address not found!");
                 }
             },
             "error": handleAjaxError

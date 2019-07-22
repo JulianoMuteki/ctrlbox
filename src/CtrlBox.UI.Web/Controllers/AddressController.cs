@@ -42,7 +42,7 @@ namespace CtrlBox.UI.Web.Controllers
             return Json(new
             {
                 aaData = adrressesVMs,
-                success = true
+                success = (adrressesVMs != null)
             });
         }
 

@@ -8,6 +8,8 @@
     <link href="~/css/pages/timeline.css" rel="stylesheet" type="text/css" />
     <link href="~/css/pages/profile.css" rel="stylesheet" />
 }
+<script src="~/scripts/appCtrlBox.js"></script>
+<partial name="~/Views/PartialsSections/_ViewModalAddress.cshtml" />
 
 <div class="page-content">
     <!-- BEGIN PAGE CONTAINER-->
@@ -63,6 +65,16 @@
                             </div>
                             <div class="timeline-body">
                                 <h2>@traceability.TraceType.Description - @traceability.TraceType.TypeTrace</h2>
+                                @if (traceability.TraceabilitiesClients.Count > 0)
+                                {
+                                    <div class="timeline-content">
+                                        <i class="icon-map-marker"></i>
+                                        @traceability.TraceabilitiesClients.First().Client.Name
+                                        - <a onClick="AppCtrlBox.callModalAddress('@traceability.TraceabilitiesClients.First().Client.DT_RowId')" href="#" class="nav-link">
+                                            Address <i class="m-icon-swapright m-icon-white"></i>
+                                        </a>                                      
+                                    </div>
+                                }
 
                             </div>
                         </li>

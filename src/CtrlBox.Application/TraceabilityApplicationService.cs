@@ -28,7 +28,7 @@ namespace CtrlBox.Application
             {
                 var traceability = _mapper.Map<Traceability>(entity);
 
-                if(entity.ClientID != null)
+                if(entity.ClientID != null && entity.ClientID != Guid.Empty)
                 {
                     traceability.PutClient(entity.ClientID);
                 }
@@ -105,7 +105,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var tracesTypes = _unitOfWork.Repository<TraceType>().GetAll();
+                var tracesTypes = _unitOfWork.RepositoryCustom<ITraceabilityRepository>().GetTracesTypesWithPictures();
                 var tracesTypesVMs = _mapper.Map<IList<TraceTypeVM>>(tracesTypes);
                 return tracesTypesVMs;
             }

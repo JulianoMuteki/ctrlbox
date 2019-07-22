@@ -23,15 +23,30 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Traceability>()
-                    .Include(x => x.TraceType).ThenInclude(x=>x.Picture)
-
+                    .Include(x => x.TraceType).ThenInclude(x => x.Picture)
+                    .Include(x => x.TraceabilitiesClients).ThenInclude(c => c.Client)
                     .Where(x => x.BoxID != null && x.BoxID.Value == boxID)
-                    .OrderBy(x=>x.CreationDate)
+                    .OrderBy(x => x.CreationDate)
                     .ToList();
             }
             catch (Exception ex)
             {
                 throw CustomException.Create<TraceabilityRepository>("Unexpected error fetching get Traceability", nameof(this.GetByBoxIDWithTraceType), ex);
+            }
+        }
+
+        public ICollection<TraceType> GetTracesTypesWithPictures()
+        {
+            try
+            {
+                return _context.Set<TraceType>()
+                    .Include(x => x.Picture)
+                    .OrderBy(x => x.CreationDate)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<TraceabilityRepository>("Unexpected error fetching get TraceType", nameof(this.GetTracesTypesWithPictures), ex);
             }
         }
     }

@@ -5,14 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190720135416_InitialCreate.cs" />
-    <Compile Remove="Migrations\20190720144442_InitialCreate.cs" />
-    <Compile Remove="Migrations\20190721094211_Traceability.cs" />
-    <Compile Remove="Migrations\20190721180451_TracyTypePicture.cs" />
-    <Compile Remove="Migrations\20190721180943_ChangeNameColumn.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />

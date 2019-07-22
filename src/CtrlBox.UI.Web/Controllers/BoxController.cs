@@ -91,7 +91,7 @@ namespace CtrlBox.UI.Web.Controllers
                                         }).ToList();
             ViewData["Products"] = products;
 
-            var boxes = _boxApplicationService.GetAll()
+            var boxes = _boxApplicationService.GetBoxesParentsWithBoxTypeEndProduct()
                             .Select(box => new SelectListItem
                             {
                                 Value = box.DT_RowId,

@@ -33,6 +33,22 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
+        public ICollection<Box> GetBoxesParentsWithBoxTypeEndProduct()
+        {
+            try
+            {
+                return _context.Set<Box>()
+                    .Where(x => x.BoxParentID == null)
+                    .Include(x => x.Product)
+                    .Include(x => x.BoxType)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetAllWithBoxTypeAndProduct), ex);
+            }
+        }
+
         public ICollection<Box> GetBoxesParentsWithBoxType()
         {
             try

@@ -61,24 +61,26 @@ var SaleComponents = function () {
             sale.ClientID = _clientID;
             sale.DeliveryID = _deliveryID;
 
-            var tbVenda = [];
+            var tbSalesProducts = [];
             $.each(oTableSale.fnGetNodes(), function (index, value) {
                 var row = oTableSale.fnGetData(value);
+                var saleProductItem = {};
+
                 var qtdeVenda = $(value).find('input.qtdeVenda').val();
                 var discountValueSale = $(value).find('input.discountValueSale').val();
 
                 qtdeVenda = qtdeVenda || 0;
                 discountValueSale = discountValueSale || 0;
 
-                row.Quantity = qtdeVenda;
-                row.DiscountValueSale = discountValueSale;
+                saleProductItem.Quantity = qtdeVenda;
+                saleProductItem.DiscountValueSale = discountValueSale;
 
-                row.ValueProductSale = parseFloat(row.ValorProduto.replace(/[^0-9\,]+/g, "").replace(",", "."));
-                row.TotalValue = parseFloat(row.Total.replace(/[^0-9\,]+/g, "").replace(",", "."));
-                row.ProductID = row.DT_RowId;
-                tbVenda.push(row);
+                saleProductItem.ValueProductSale = parseFloat(row.ValorProduto.replace(/[^0-9\,]+/g, "").replace(",", "."));
+                saleProductItem.TotalValue = parseFloat(row.Total.replace(/[^0-9\,]+/g, "").replace(",", "."));
+                saleProductItem.ProductID = row.DT_RowId;
+                tbSalesProducts.push(saleProductItem);
             });
-            sale.SalesProducts = tbVenda;
+            sale.SalesProducts = tbSalesProducts;
 
             var myJsonString = JSON.stringify(sale);
 
@@ -170,9 +172,9 @@ var SaleComponents = function () {
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     if (data.PictureID === '' || data.PictureID === null) {
-                                        return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.NomeProduto;
+                                        return '</span><img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.NomeProduto;
                                     }
-                                    return '<img  src="/../Configuration/ViewImage/' + data.PictureID + '" /> ' + data.NomeProduto;
+                                    return '<div><img  src="/../Configuration/ViewImage/' + data.PictureID + '" /><a class="showDetails row-details-close" style="display: inline-block;margin-left: 20%;">' + data.NomeProduto + ' <i id="iconDetails" class="m-icon-swapdown m-icon-black"></i></a></div>';
                                 }
                                 return data;
                             }
@@ -189,7 +191,7 @@ var SaleComponents = function () {
                                     if (data.TotalBox <= 5) {
                                         statusStock = "red-stripe"
                                     }
-                                    return '<span class="btn mini ' + statusStock + '">Total: ' + data.TotalBox + ' ' + data.UnitMeasure + '</span>';
+                                    return '<span class="btn mini ' + statusStock + '">Total loaded: ' + data.TotalBox + '</span>';
                                 }
                                 return data;
                             }
@@ -201,7 +203,7 @@ var SaleComponents = function () {
                             "sClass": "calc",
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeVenda"> ' + '<span class="label label-danger">' + data.UnitMeasure + '</span>';
+                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeVenda"> ' + '<span class="label label-danger"> product Items</span>';
                                     if (data.TotalBox == 0) {
                                         link = '<span class="label label-important">finished products</span>'
                                     }
@@ -238,6 +240,20 @@ var SaleComponents = function () {
 
         });
 
+        $('#tbSale').on('click', ' tbody td .showDetails', function () {
+            var nTr = $(this).parents('tr')[0];
+            if (oTableSale.fnIsOpen(nTr)) {
+                /* This row is already open - close it */
+                $(this).find("#iconDetails").addClass("m-icon-swapdown").removeClass("m-icon-swapup");
+                oTableSale.fnClose(nTr);
+            }
+            else {
+                /* Open this row */
+                $(this).find("#iconDetails").addClass("m-icon-swapup").removeClass("m-icon-swapdown");
+                oTableSale.fnOpen(nTr, fnFormatDetails(oTableSale, nTr), 'details');
+            }
+        });
+
         $('.radio input[type=radio][name=IsCashPayment]').change(function () {           
             sale.Payment.IsCashPayment = $(".radio input[type=radio][id=IsCashRadio]").is(":checked");
             
@@ -247,6 +263,20 @@ var SaleComponents = function () {
                 $(".isCashPayment").show();
             }
         });
+    }
+
+    /* Formatting function for row details */
+    function fnFormatDetails(oTable, nTr) {
+        var aData = oTable.fnGetData(nTr);
+        console.log(aData);
+        var sOut = '<table>';
+        sOut += '<tr><td>Description:</td><td>' + aData.Product.Description + '</td></tr>';
+        sOut += '<tr><td>Package:</td><td>' + aData.Product.Package + '</td></tr>';
+        sOut += '<tr><td>Capacity:</td><td>' + aData.Product.Capacity + '</td></tr>';
+        sOut += '<tr><td>Weight:</td><td>' + aData.Product.Weight + '</td></tr>';
+        sOut += '</table>';
+
+        return sOut;
     }
 
     function initialPayment() {

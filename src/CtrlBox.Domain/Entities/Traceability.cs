@@ -23,12 +23,21 @@ namespace CtrlBox.Domain.Entities
             this.TraceabilitiesClients = new HashSet<TraceabilityClient>();
         }
 
-                public void Init()
+        public void Init()
         {
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
             }
+        }
+
+        public void PutClient(Guid clientID)
+        {
+            this.TraceabilitiesClients.Add(new TraceabilityClient()
+            {
+                ClientID = clientID,
+                TraceID = this.Id
+            });
         }
     }
 }

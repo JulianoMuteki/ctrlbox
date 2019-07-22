@@ -28,6 +28,10 @@ namespace CtrlBox.Application
             {
                 var traceability = _mapper.Map<Traceability>(entity);
 
+                if(entity.ClientID != null)
+                {
+                    traceability.PutClient(entity.ClientID);
+                }
                 //if (!boxType.ComponentValidator.Validate(boxType, new BoxTypeValidator()))
                 //{
                 //    throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));

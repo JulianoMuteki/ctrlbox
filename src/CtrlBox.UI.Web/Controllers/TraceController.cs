@@ -17,12 +17,15 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly ITraceabilityApplicationService _traceabilityApplicationService;
         private readonly IBoxApplicationService _boxApplicationService;
         private readonly IProductApplicationService _productApplicationService;
+        private readonly IClientApplicationService _clientApplicationService;
 
-        public TraceController(ITraceabilityApplicationService traceabilityApplicationService, IBoxApplicationService boxApplicationService, IProductApplicationService productApplicationService)
+        public TraceController(ITraceabilityApplicationService traceabilityApplicationService, IBoxApplicationService boxApplicationService, 
+                                IProductApplicationService productApplicationService, IClientApplicationService clientApplicationService)
         {
             _boxApplicationService = boxApplicationService;
             _productApplicationService = productApplicationService;
             _traceabilityApplicationService = traceabilityApplicationService;
+            _clientApplicationService = clientApplicationService;
         }
 
         public IActionResult Index(Guid boxID)
@@ -57,6 +60,14 @@ namespace CtrlBox.UI.Web.Controllers
                                 Text = trace.Description
                             }).ToList();
 
+            var clients = _clientApplicationService.GetAll()
+                .Select(client => new SelectListItem
+                {
+                    Value = client.DT_RowId,
+                    Text = client.Name
+                }).ToList();
+
+            ViewData["Clients"] = clients;
             ViewData["Boxes"] = boxes;
             ViewData["ProductsItems"] = productsItems;
             ViewData["TracesTypes"] = tracesTypes;
@@ -70,7 +81,7 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 _traceabilityApplicationService.Add(traceabilityVM);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Box");
             }
             catch (CustomException exc)
             {

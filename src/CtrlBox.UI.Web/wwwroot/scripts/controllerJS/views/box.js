@@ -31,7 +31,8 @@ var BoxComponents = function () {
                             }
                         },
                         {
-                            "mData": "Barcode",
+                            "mData": "BoxBarcode.BarcodeEAN13",
+                            "defaultContent": "<i>not found</i>",
                             "bSortable": false
                         },
                         {

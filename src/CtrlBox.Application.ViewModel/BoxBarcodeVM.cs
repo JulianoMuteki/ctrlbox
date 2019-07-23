@@ -16,6 +16,5 @@ namespace CtrlBox.Application.ViewModel
         public string RFID { get; set; }
 
         public Guid BoxID { get; set; }
-        public BoxVM Box { get; set; }
     }
 }

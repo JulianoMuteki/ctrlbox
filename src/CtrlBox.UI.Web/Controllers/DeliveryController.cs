@@ -132,7 +132,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        [AuthorizePolicyEnum(CRUD.Create)]
+        //[AuthorizePolicyEnum(CRUD.Create)]
         public ActionResult ExecuteDelivery(string entregaID, string linhaID)
         {
             ViewData["entregaID"] = entregaID;

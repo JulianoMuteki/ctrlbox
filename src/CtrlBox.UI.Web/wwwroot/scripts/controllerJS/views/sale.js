@@ -174,7 +174,7 @@ var SaleComponents = function () {
                                     if (data.PictureID === '' || data.PictureID === null) {
                                         return '</span><img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.NomeProduto;
                                     }
-                                    return '<div><img  src="/../Configuration/ViewImage/' + data.PictureID + '" /><a class="showDetails row-details-close" style="display: inline-block;margin-left: 20%;">' + data.NomeProduto + ' <i id="iconDetails" class="m-icon-swapdown m-icon-black"></i></a></div>';
+                                    return '<div><img  src="/../Configuration/ViewImage/' + data.PictureID + '" /><a class="showDetails row-details-close" style="display: inline-block;margin-left: 10%;">' + data.NomeProduto + ' <i id="iconDetails" class="m-icon-swapdown m-icon-black"></i></a></div>';
                                 }
                                 return data;
                             }

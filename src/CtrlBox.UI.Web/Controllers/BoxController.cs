@@ -79,7 +79,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                     .Select(boxType => new SelectListItem
                                                     {
                                                         Value = boxType.DT_RowId,
-                                                        Text = boxType.Name
+                                                        Text = $"{boxType.Name} - {boxType.Description}"
                                                     }).ToList();
             ViewData["BoxesType"] = boxesType;
 
@@ -87,7 +87,7 @@ namespace CtrlBox.UI.Web.Controllers
                                         .Select(prod => new SelectListItem
                                         {
                                             Value = prod.DT_RowId,
-                                            Text = $"{prod.Name} {prod.UnitMeasure}"
+                                            Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
                                         }).ToList();
             ViewData["Products"] = products;
 

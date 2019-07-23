@@ -60,8 +60,8 @@ var AppCtrlBox = function () {
                 data: { deliveryID: deliveryID },
                 "success": function (json) {
                     if (json.success) {
-                        $("#totalSale").html("<i class=\"icon-money\"></i> Total sale: " + json.aaData.TotalSale.formatMoney());
-                        $("#totalProduct").html("<i class=\"icon-list\"></i> Products total: " + json.aaData.TotalProducts);
+                        $("#totalSale").html("<i class=\"icon-money\"></i> Total value sale: " + json.aaData.TotalSale.formatMoney());
+                        $("#totalProduct").html("<i class=\"icon-list\"></i> Total Products Items: " + json.aaData.TotalProducts);
                         $("#startDate").html("Start delivery: " + json.aaData.StartDate);
                     }
                 },

@@ -71,9 +71,9 @@ namespace CtrlBox.UI.Web.Controllers
                 var boxesProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
                                                                   (key, group) => new {
                                                                       DT_RowId = key,
+                                                                      Product = group.Select(x => x.ProductItem.Product).FirstOrDefault(),
                                                                       NomeProduto = group.Select(x=>x.ProductItem.Product.Name).FirstOrDefault(),
                                                                       PictureID = group.Select(x => x.ProductItem.Product.PictureID).FirstOrDefault(),
-                                                                      UnitMeasure = group.Select(x => x.ProductItem.Product.UnitMeasure).FirstOrDefault(),
                                                                       TotalBox = group.Select(p=>p.ProductItem).Count()
                                                                   })
                                                          .ToList();
@@ -84,12 +84,16 @@ namespace CtrlBox.UI.Web.Controllers
                     {
                         DT_RowId = x.DT_RowId.ToString(),
                         x.NomeProduto,
+                        Product = new
+                        {
+                            x.Product.Description,
+                            x.Product.Package,
+                            Capacity = $"{x.Product.Capacity} {x.Product.UnitMeasure}",
+                            Weight = $"{x.Product.Weight} {x.Product.MassUnitWeight}"
+                        },
                         x.PictureID,
                         ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
                         x.TotalBox,
-                        x.UnitMeasure,
-                        //QtdeVenda = 0,
-                        //QtdeRetorno = 0,
                         Total = String.Format("{0:c}", 0)
                     }),
                     success = true,

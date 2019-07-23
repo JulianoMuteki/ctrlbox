@@ -4,17 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class BoxCodeMap : EntityConfiguration<BoxCode>
+    public class BoxBarcodeMap : EntityConfiguration<BoxBarcode>
     {
-        protected override void Initialize(EntityTypeBuilder<BoxCode> builder)
+        protected override void Initialize(EntityTypeBuilder<BoxBarcode> builder)
         {
             base.Initialize(builder);
 
-            builder.ToTable("BoxesCodes");
+            builder.ToTable("BoxesBarcodes");
          
-            //builder.HasKey(b => b.Id).HasName("BoxCodeID");
             builder.HasKey(t => new { t.Id, t.BoxID });
-            builder.Property(x => x.Id).HasColumnName("BoxCodeID");
+            builder.Property(x => x.Id).HasColumnName("BoxBarcodeID");
 
             builder.Property(e => e.BarcodeEAN13)
                     .IsRequired()
@@ -29,8 +28,8 @@ namespace CtrlBox.Infra.Context.Mapping
                      .HasMaxLength(250);
 
             builder.HasOne(x => x.Box)
-                    .WithOne(ad => ad.BoxCode)
-                    .HasForeignKey<BoxCode>(ad => ad.BoxID);
+                    .WithOne(ad => ad.BoxBarcode)
+                    .HasForeignKey<BoxBarcode>(ad => ad.BoxID);
         }
     }
 }

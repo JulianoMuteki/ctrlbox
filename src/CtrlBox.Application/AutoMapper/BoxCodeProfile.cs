@@ -8,11 +8,11 @@ namespace CtrlBox.Application.AutoMapper
     {
         public BoxCodeProfile()
         {
-            CreateMap<BoxCode, BoxCodeVM>()
+            CreateMap<BoxBarcode, BoxBarcodeVM>()
                  .ForMember(dest => dest.DT_RowId,
                            opts => opts.MapFrom(src => src.Id));
 
-            CreateMap<BoxCodeVM, BoxCode>()
+            CreateMap<BoxBarcodeVM, BoxBarcode>()
                    .ForMember(dest => dest.Id,
                              opts => opts.MapFrom(src => src.DT_RowId));
         }

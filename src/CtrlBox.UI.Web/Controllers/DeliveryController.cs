@@ -132,7 +132,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        [AuthorizePolicyEnum(CRUD.Create)]
+        //[AuthorizePolicyEnum(CRUD.Create)]
         public ActionResult ExecuteDelivery(string entregaID, string linhaID)
         {
             ViewData["entregaID"] = entregaID;
@@ -150,7 +150,7 @@ namespace CtrlBox.UI.Web.Controllers
                 var deliveryVM = _deliveryService.GetById(deliveryID);
                 var routeVM = _routeService.GetById(deliveryVM.RouteID);
                 var clientsVM = _clientService.GetByRouteID(new Guid(routeVM.DT_RowId));
-               
+
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
                 var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
                 var clientsVMs = clientsVM.Select(c =>
@@ -168,9 +168,9 @@ namespace CtrlBox.UI.Web.Controllers
                                                       DT_RowId = g.Key.BoxTypeID,
                                                       g.Key.n.BoxType.PictureID,
                                                       BoxType = g.Key.n.BoxType.Name,
-                                                      TotalBox = g.Count()
+                                                      TotalBox = g.Count(),
+                                                      TotalProductItems = g.Sum(x => x.TotalProductsItemsChildren)
                                                   });
-
 
                 return Json(new
                 {
@@ -234,9 +234,12 @@ namespace CtrlBox.UI.Web.Controllers
 
                 return Json(new
                 {
-                    aaData = new { TotalSale = deliveryVM.Sales.Sum(x => x.SalesProducts.Sum(s => s.TotalValue)),
+                    aaData = new
+                    {
+                        TotalSale = deliveryVM.Sales.Sum(x => x.SalesProducts.Sum(s => s.TotalValue)),
                         TotalProducts = deliveryVM.Sales.Sum(x => x.SalesProducts.Sum(p => p.Quantity)),
-                        StartDate = deliveryVM.DtStart.ToString("dd/MM/yyyy hh:mm")},
+                        StartDate = deliveryVM.DtStart.ToString("dd/MM/yyyy hh:mm")
+                    },
 
                     success = true
                 });

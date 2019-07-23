@@ -8,7 +8,6 @@ namespace CtrlBox.Domain.Entities
 {
     public class Box : EntityBase
     {
-        public string Barcode { get; set; }
         public string Description { get; set; }
         public int StatusBox { get; set; }
 
@@ -21,15 +20,17 @@ namespace CtrlBox.Domain.Entities
         public Guid? ProductID { get; set; }
         public Product Product { get; set; }
 
-        public BoxCode BoxCode { get; set; }
+        public BoxBarcode BoxBarcode { get; set; }
 
         public ICollection<Box> BoxesChildren { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
+        public ICollection<Traceability> Traceabilities { get; set; }
 
         public Box()
             : base()
         {
+            this.Traceabilities = new HashSet<Traceability>();
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
@@ -37,8 +38,7 @@ namespace CtrlBox.Domain.Entities
 
         public void SetBarcode(int i)
         {
-            this.Barcode = BarcodeGenerator.GetBarCodeNumber();
-            this.BoxCode = new BoxCode();
+            this.BoxBarcode = new BoxBarcode();
         }
 
         public void Init()
@@ -46,8 +46,7 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                this.Barcode = BarcodeGenerator.GetBarCodeNumber();
-                this.BoxCode = new BoxCode();
+                this.BoxBarcode = new BoxBarcode();
             }
         }
 

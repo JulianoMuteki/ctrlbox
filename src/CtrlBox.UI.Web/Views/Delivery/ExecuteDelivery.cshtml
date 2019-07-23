@@ -161,7 +161,18 @@
                                                             }
                                                             return data;
                                                         }
-                                                    },
+                                                   },
+                                                    {
+                                                        "mData": null,
+                                                        "sType": "html",
+                                                        "bSortable": false,
+                                                        "mRender": function (data, type, row) {
+                                                            if (type === 'display') {
+                                                                return '<span class="btn mini">Total: ' + row.TotalProductItems + '</span>';
+                                                            }
+                                                            return data;
+                                                        }
+                                                    }
                                               ]
                             });
 
@@ -373,6 +384,7 @@
                                 <tr>
                                     <th>Boxes Type</th>
                                     <th>Quantity</th>
+                                    <th>Product Items</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -1,7 +1,7 @@
 ﻿using System;
 namespace CtrlBox.Application.ViewModel
 {
-    public class BoxCodeVM : ViewModelBase
+    public class BoxBarcodeVM : ViewModelBase
     {
         /// <summary>
         /// 13 digits
@@ -16,6 +16,5 @@ namespace CtrlBox.Application.ViewModel
         public string RFID { get; set; }
 
         public Guid BoxID { get; set; }
-        public BoxVM Box { get; set; }
     }
 }

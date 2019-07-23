@@ -17,6 +17,8 @@ namespace CtrlBox.Application.ViewModel
 
         public string ContentType { get; set; }
 
+        public string SrcBase64Image { get { return $"data:'{ContentType}';base64,{Base64Image}"; } }
+
         public string Base64Image { get { return GetBase64StringForImage(this.Data); } }
 
         private string GetBase64StringForImage(byte[] imageBytes)

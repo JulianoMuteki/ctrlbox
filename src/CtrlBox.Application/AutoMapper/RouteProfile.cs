@@ -14,7 +14,8 @@ namespace CtrlBox.Application.AutoMapper
 
             CreateMap<RouteVM, Route>()
                 .ForMember(dest => dest.Id,
-                          opts => opts.MapFrom(src => src.DT_RowId));
+                          opts => opts.MapFrom(src => src.DT_RowId))
+                          .AfterMap((src, dest) => dest.Init());
         }
     }
 }

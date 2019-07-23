@@ -85,11 +85,7 @@ namespace CtrlBox.Application
                 {
                     throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
                 }
-                if (entity.Picture != null)
-                {
-                    var picture = _mapper.Map<Picture>(entity.Picture);
-                    _unitOfWork.Repository<Picture>().Add(picture);
-                }
+
                 _unitOfWork.Repository<BoxType>().Add(boxType);
                 _unitOfWork.Commit();
             }
@@ -244,6 +240,42 @@ namespace CtrlBox.Application
             catch (Exception ex)
             {
                 throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesByBoxWithChildren), ex);
+            }
+        }
+
+        public BoxVM GetBoxesByIDWithBoxTypeAndProductItems(Guid boxID)
+        {
+            try
+            {
+                var box = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByIDWithBoxTypeAndProductItems(boxID);
+                var boxVM = _mapper.Map<BoxVM>(box);
+                return boxVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesByIDWithBoxTypeAndProductItems), ex);
+            }
+        }
+
+        public IEnumerable<BoxVM> GetBoxesParentsWithBoxTypeEndProduct()
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsWithBoxTypeEndProduct();
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesParentsWithBoxTypeEndProduct), ex);
             }
         }
     }

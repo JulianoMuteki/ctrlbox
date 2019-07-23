@@ -16,9 +16,18 @@ namespace CtrlBox.Domain.Entities
         public ICollection<RouteClient> RoutesClients { get; set; }
 
         public Route()
+            :base()
         {
             this.Deliveries = new HashSet<Delivery>();
             this.RoutesClients = new HashSet<RouteClient>();
+        }
+
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+            }
         }
 
         public void UpdateData(Route updated)

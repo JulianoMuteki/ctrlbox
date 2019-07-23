@@ -131,6 +131,9 @@
                             <li>
                                 @Html.ActionLink("Picture", "Index", "Configuration")
                             </li>
+                            <li>
+                                @Html.ActionLink("Traces Types", "TracesTypes", "Trace")
+                            </li>
                         </ul>
                     </li>
                     @if (User.IsInRole(CtrlBox.Domain.Security.RoleAuthorize.Admin.ToString()))
@@ -163,6 +166,9 @@
                             <span class="arrow "></span>
                         </a>
                         <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Addresses", "Index", "Address")
+                            </li>
                             <li>
                                 @Html.ActionLink("Clients", "Index", "Client")
                             </li>

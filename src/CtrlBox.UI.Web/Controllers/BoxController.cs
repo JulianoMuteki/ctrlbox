@@ -91,11 +91,11 @@ namespace CtrlBox.UI.Web.Controllers
                                         }).ToList();
             ViewData["Products"] = products;
 
-            var boxes = _boxApplicationService.GetAll()
+            var boxes = _boxApplicationService.GetBoxesParentsWithBoxTypeEndProduct()
                             .Select(box => new SelectListItem
                             {
                                 Value = box.DT_RowId,
-                                Text = $"{box.Barcode} {box.Description}"
+                                Text = $"{box.BoxBarcode.BarcodeEAN13} {box.Description}"
                             }).ToList();
 
             ViewData["Boxes"] = boxes;

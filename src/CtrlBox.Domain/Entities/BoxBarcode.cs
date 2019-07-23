@@ -4,7 +4,7 @@ using System;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class BoxCode : EntityBase
+    public class BoxBarcode : EntityBase
     {
         /// <summary>
         /// 13 digits
@@ -21,7 +21,7 @@ namespace CtrlBox.Domain.Entities
         public Guid BoxID { get; set; }
         public Box Box { get; set; }
 
-        public BoxCode()
+        public BoxBarcode()
             : base()
         {
             this.BarcodeEAN13 = BarcodeGenerator.GetBarCodeNumber();

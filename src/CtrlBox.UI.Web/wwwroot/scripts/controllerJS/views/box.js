@@ -31,7 +31,8 @@ var BoxComponents = function () {
                             }
                         },
                         {
-                            "mData": "Barcode",
+                            "mData": "BoxBarcode.BarcodeEAN13",
+                            "defaultContent": "<i>not found</i>",
                             "bSortable": false
                         },
                         {
@@ -40,6 +41,26 @@ var BoxComponents = function () {
                         {
                             "mData": "Product.Name",
                             "defaultContent": "<i>not applicable</i>",
+                        },
+                        {
+                            "mData": null,
+                            "sType": "html",
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    return '<a href="/Box/ViewBoxes?boxFatherID=' + data.DT_RowId + '" class="edit"><i class="icon-external-link"></i> Children</a>';
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "mData": null,
+                            "sType": "html",
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    return '<a href="/Trace/Index?boxID=' + data.DT_RowId + '" class="edit"><i class="icon-external-link"></i> Trace</a>';
+                                }
+                                return data;
+                            }
                         }
             ]
 

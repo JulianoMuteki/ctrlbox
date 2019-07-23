@@ -1,7 +1,6 @@
 ﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -21,10 +20,12 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Product> Products { get; set; }
         public ICollection<BoxType> BoxesTypes { get; set; }
+        public ICollection<TraceType> TracesTypes { get; set; }
 
         public Picture()
             :base()
         {
+            this.TracesTypes = new HashSet<TraceType>();
             this.Products = new HashSet<Product>();
             this.BoxesTypes = new HashSet<BoxType>();
 

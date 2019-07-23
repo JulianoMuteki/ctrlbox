@@ -99,6 +99,14 @@ namespace CtrlBox.UI.Web.Controllers
                             }).ToList();
 
             ViewData["Boxes"] = boxes;
+
+            var optionsBoxLengthUnit = CtrlBoxUnits.CtrlBoxLengthUnit
+                            .Select(unit => new SelectListItem
+                            {
+                                Value = unit,
+                                Text = unit
+                            }).ToList();
+            ViewData["OptionsBoxLengthUnit"] = optionsBoxLengthUnit;
             return View();
         }
 

@@ -12,6 +12,7 @@ namespace CtrlBox.CrossCutting
         public static IList<string> CtrlBoxMassUnit { get { return GetMassUnit(); } }
         public static IList<string> CtrlBoxVolumeUnit { get { return GetVolumeUnit(); } }
         public static IList<string> CtrlBoxUnitType { get { return GetTypesUnit(); } }
+        public static IList<string> CtrlBoxLengthUnit { get { return GetLengthUnit(); } }
 
 
         private static IList<String> GetMassUnit()

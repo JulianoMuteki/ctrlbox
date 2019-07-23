@@ -79,7 +79,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                     .Select(boxType => new SelectListItem
                                                     {
                                                         Value = boxType.DT_RowId,
-                                                        Text = boxType.Name
+                                                        Text = $"{boxType.Name} - {boxType.Description}"
                                                     }).ToList();
             ViewData["BoxesType"] = boxesType;
 

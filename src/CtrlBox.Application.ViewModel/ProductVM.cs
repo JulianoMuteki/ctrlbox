@@ -22,6 +22,14 @@ namespace CtrlBox.Application.ViewModel
         public IList<string> OptionsMassUnit { get; set; }
         public IList<string> OptionsVolumeUnit { get; set; }
 
+        public string FormattedProduct
+        {
+            get
+            {
+                return $"{this.Name} - {this.Description} - {this.Package} - {this.Capacity}{this.UnitMeasure}";
+            }
+        }
+
         public int StockTotal
         {
             get

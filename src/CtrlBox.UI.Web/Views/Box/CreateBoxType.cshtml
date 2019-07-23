@@ -40,7 +40,7 @@
                     </div>
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
-                        <form asp-action="CreateBoxType" asp-controller="Box" enctype="multipart/form-data"  class="form-horizontal">
+                        <form asp-action="CreateBoxType" asp-controller="Box" enctype="multipart/form-data" class="form-horizontal">
                             <div class="control-group">
                                 <label class="control-label">Name</label>
                                 <div class="controls">
@@ -53,6 +53,40 @@
                                 <div class="controls">
                                     <input id="rua" type="text" name="Description" placeholder="Description" class="m-wrap large" />
                                     <span class="help-inline">Description</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Lenght</label>
+                                <div class="controls">
+                                    <input type="text" name="Lenght" placeholder="Lenght" class="m-wrap large" />
+                                    <span class="help-inline">Lenght</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Height</label>
+                                <div class="controls">
+                                    <input type="text" name="Height" placeholder="Height" class="m-wrap large" />
+                                    <span class="help-inline">Height</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Width</label>
+                                <div class="controls">
+                                    <input type="text" name="Width" placeholder="Width" class="m-wrap large" />
+                                    <span class="help-inline">Width</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">LengthUnit</label>
+                                <div class="controls">
+                                    <select class="span6 select2_option" data-placeholder="Choose a Length" id="LengthUnit" name="LengthUnit" asp-for="LengthUnit" asp-items="@((List<SelectListItem>)ViewData["OptionsBoxLengthUnit"])"></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">MaxProductsItems</label>
+                                <div class="controls">
+                                    <input type="text" name="MaxProductsItems" placeholder="MaxProductsItems" class="m-wrap large" />
+                                    <span class="help-inline">MaxProductsItems</span>
                                 </div>
                             </div>
                             <partial name="~/Views/PartialsSections/_ViewUploadPicture.cshtml" />

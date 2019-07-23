@@ -8,6 +8,13 @@ namespace CtrlBox.Application.ViewModel
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public float Lenght { get; set; }
+        public float Height { get; set; }
+        public float Width { get; set; }
+        public string LengthUnit { get; set; }
+
+        public int MaxProductsItems { get; set; }
+
         public int QuantityToDelivery { get; set; }
 
         public Guid? PictureID { get; set; }

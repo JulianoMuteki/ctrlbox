@@ -9,12 +9,6 @@ namespace CtrlBox.Application.ViewModel
         public string Description { get; set; }
         public int StatusBox { get; set; }
 
-        public float Lenght { get; set; }
-        public float Height { get; set; }
-        public float Width { get; set; }
-        public string LengthUnit { get; set; }
-
-        public int MaxProductsItems { get; set; }
         public int PorcentFull { get; set; }
 
         public Guid BoxTypeID { get; set; }

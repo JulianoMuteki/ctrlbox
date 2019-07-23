@@ -8,67 +8,67 @@ namespace CtrlBox.Infra.Context.Migrations
         {
             migrationBuilder.AddColumn<decimal>(
                 name: "Height",
-                table: "Boxes",
+                table: "BoxesTypes",
                 type: "numeric(18,3)",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "Lenght",
-                table: "Boxes",
+                table: "BoxesTypes",
                 type: "numeric(18,3)",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<string>(
                 name: "LengthUnit",
-                table: "Boxes",
+                table: "BoxesTypes",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "MaxProductsItems",
-                table: "Boxes",
+                table: "BoxesTypes",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.AddColumn<decimal>(
+                name: "Width",
+                table: "BoxesTypes",
+                type: "numeric(18,3)",
+                nullable: false,
+                defaultValue: 0m);
 
             migrationBuilder.AddColumn<int>(
                 name: "PorcentFull",
                 table: "Boxes",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.AddColumn<decimal>(
-                name: "Width",
-                table: "Boxes",
-                type: "numeric(18,3)",
-                nullable: false,
-                defaultValue: 0m);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
                 name: "Height",
-                table: "Boxes");
+                table: "BoxesTypes");
 
             migrationBuilder.DropColumn(
                 name: "Lenght",
-                table: "Boxes");
+                table: "BoxesTypes");
 
             migrationBuilder.DropColumn(
                 name: "LengthUnit",
-                table: "Boxes");
+                table: "BoxesTypes");
 
             migrationBuilder.DropColumn(
                 name: "MaxProductsItems",
-                table: "Boxes");
-
-            migrationBuilder.DropColumn(
-                name: "PorcentFull",
-                table: "Boxes");
+                table: "BoxesTypes");
 
             migrationBuilder.DropColumn(
                 name: "Width",
+                table: "BoxesTypes");
+
+            migrationBuilder.DropColumn(
+                name: "PorcentFull",
                 table: "Boxes");
         }
     }

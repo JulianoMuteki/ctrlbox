@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Common;
+﻿using CtrlBox.CrossCutting;
+using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,16 @@ namespace CtrlBox.Domain.Entities
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
         }
 
+        public void RemoveBoxType()
+        {
+            this.BoxType = null;
+        }
+
+        public void SetBoxType(BoxType boxType)
+        {
+            this.BoxType = boxType;
+        }
+
         public void SetBarcode(int i)
         {
             this.BoxBarcode = new BoxBarcode();
@@ -52,8 +63,11 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
-        public void LoadProductItems(IEnumerable<ProductItem> productItems)
+        public void LoadProductItems(ICollection<ProductItem> productItems)
         {
+            if (productItems.Count > this.BoxType.MaxProductsItems)
+                throw CustomException.Create<Box>("Unexpected error MaxProductsItems ", nameof(this.LoadProductItems));
+
             foreach (var item in productItems)
             {
                 BoxProductItem boxProductItem = new BoxProductItem
@@ -65,6 +79,13 @@ namespace CtrlBox.Domain.Entities
 
                 this.BoxesProductItems.Add(boxProductItem);
             }
+
+            LoadFullBoxCompleted();
+        }
+
+        private void LoadFullBoxCompleted()
+        {
+            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Count) / this.BoxType.MaxProductsItems);
         }
 
         public List<Box> AddChildren(List<Box> boxesChildren)

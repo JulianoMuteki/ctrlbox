@@ -29,6 +29,8 @@ namespace CtrlBox.Application
             try
             {
                 var box = _mapper.Map<Box>(entity);
+                var boxType = _unitOfWork.Repository<BoxType>().GetById(box.BoxTypeID);
+                box.SetBoxType(boxType);
 
                 if (box.ProductID != null && box.ProductID != Guid.Empty)
                     AddBoxHasProduct(entity.RangeProductsItems, box);
@@ -53,6 +55,7 @@ namespace CtrlBox.Application
             var boxesChildren = _unitOfWork.Repository<Box>().FindAll(x => boxesChildrenID.Any(id => new Guid(id) == x.Id)).ToList();
             var boxesChildrenWithFather = box.AddChildren(boxesChildren);
 
+            box.RemoveBoxType();
             _unitOfWork.Repository<Box>().Add(box);
             _unitOfWork.Repository<Box>().UpdateRange(boxesChildrenWithFather);
         }
@@ -66,6 +69,8 @@ namespace CtrlBox.Application
             {
                 throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
             }
+
+            box.RemoveBoxType();
             _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
             _unitOfWork.Repository<Box>().Add(box);
         }

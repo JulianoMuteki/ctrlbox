@@ -14,10 +14,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(x => x.Id).HasColumnName("BoxID");
             builder.HasKey(b => b.Id).HasName("BoxID");
 
-            builder.Property(e => e.Barcode)
-                    .IsRequired()
-                     .HasMaxLength(14);
-
             builder.Property(e => e.StatusBox)
                   .IsRequired();
 

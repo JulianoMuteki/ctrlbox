@@ -25,6 +25,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                 return _context.Set<Box>()
                     .Include(x => x.Product)
                     .Include(x => x.BoxType)
+                    .Include(x => x.BoxBarcode)
                     .ToList();
             }
             catch (Exception ex)
@@ -41,6 +42,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                     .Where(x => x.BoxParentID == null)
                     .Include(x => x.Product)
                     .Include(x => x.BoxType)
+                    .Include(x=>x.BoxBarcode)
                     .ToList();
             }
             catch (Exception ex)

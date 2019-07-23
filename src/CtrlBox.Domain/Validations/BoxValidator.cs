@@ -11,7 +11,6 @@ namespace CtrlBox.Domain.Validations
         public BoxValidator()
         {
             RuleFor(x => x.Id).NotNull().NotEmpty().NotEqual(Guid.Empty);
-            RuleFor(x => x.Barcode).NotNull().Length(0, 14);
             RuleFor(x => x.Description).NotNull().Length(0, 250);
         }
     }

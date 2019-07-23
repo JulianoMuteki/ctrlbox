@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190722120141_InitialCreate")]
+    [Migration("20190723123526_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,10 +75,6 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("BoxID");
 
-                    b.Property<string>("Barcode")
-                        .IsRequired()
-                        .HasMaxLength(14);
-
                     b.Property<Guid?>("BoxParentID");
 
                     b.Property<Guid>("BoxTypeID");
@@ -111,10 +107,10 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("Boxes");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxCode", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxBarcode", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnName("BoxCodeID");
+                        .HasColumnName("BoxBarcodeID");
 
                     b.Property<Guid>("BoxID");
 
@@ -143,7 +139,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("BoxID")
                         .IsUnique();
 
-                    b.ToTable("BoxesCodes");
+                    b.ToTable("BoxesBarcodes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItem", b =>
@@ -1034,11 +1030,11 @@ namespace CtrlBox.Infra.Context.Migrations
                         .HasForeignKey("ProductID");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxCode", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxBarcode", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
-                        .WithOne("BoxCode")
-                        .HasForeignKey("CtrlBox.Domain.Entities.BoxCode", "BoxID")
+                        .WithOne("BoxBarcode")
+                        .HasForeignKey("CtrlBox.Domain.Entities.BoxBarcode", "BoxID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

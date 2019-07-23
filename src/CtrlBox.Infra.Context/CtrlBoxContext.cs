@@ -37,7 +37,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<ProductItem> ProductItems { get; set; }
         public DbSet<Box> Boxes { get; set; }
         public DbSet<BoxProductItem> BoxesProductItems { get; set; }
-        public DbSet<BoxCode> BoxesCodes { get; set; }
+        public DbSet<BoxBarcode> BoxesCodes { get; set; }
 
         public DbSet<DeliveryBox> DeliveriesBoxes { get; set; }
         public DbSet<Picture> Pictures { get; set; }
@@ -83,7 +83,7 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new TraceabilityMap());
             modelBuilder.ApplyConfiguration(new TraceabilityClientMap());
 
-            modelBuilder.ApplyConfiguration(new BoxCodeMap());
+            modelBuilder.ApplyConfiguration(new BoxBarcodeMap());
             modelBuilder.ApplyConfiguration(new BoxMap());
             modelBuilder.ApplyConfiguration(new ProductItemMap());
             modelBuilder.ApplyConfiguration(new BoxTypeMap());

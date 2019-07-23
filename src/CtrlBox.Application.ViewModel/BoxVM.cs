@@ -6,7 +6,6 @@ namespace CtrlBox.Application.ViewModel
 {
     public class BoxVM: ViewModelBase
     {
-        public string Barcode { get; set; }
         public string Description { get; set; }
         public int StatusBox { get; set; }
 
@@ -20,7 +19,8 @@ namespace CtrlBox.Application.ViewModel
         public ProductVM Product { get; set; }
 
         public int RangeProductsItems { get; set; }
-        
+        public BoxBarcodeVM BoxBarcode { get; set; }
+
         public ICollection<BoxVM> BoxesChildren { get; set; }
         public string[] ChildrenBoxesID { get; set; }
 

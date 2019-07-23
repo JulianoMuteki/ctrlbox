@@ -42,7 +42,7 @@
                         <img src="@(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Picture.SrcBase64Image)" />
                         <div class="portfolio-text-info">
                             <h4> <a href="#" data-role="leaf"> @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxType.Name) - @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).Description)</a></h4>
-                            <p>Barcode:  @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).Barcode)</p>
+                            <p>Barcode:  @(((CtrlBox.Application.ViewModel.BoxVM)ViewData["BoxViewData"]).BoxBarcode.BarcodeEAN13)</p>
                         </div>
                     </div>
                 </div>

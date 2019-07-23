@@ -1,7 +1,7 @@
 ﻿using System;
 namespace CtrlBox.Application.ViewModel
 {
-    public class BoxCodeVM : ViewModelBase
+    public class BoxBarcodeVM : ViewModelBase
     {
         /// <summary>
         /// 13 digits

@@ -95,7 +95,7 @@ namespace CtrlBox.UI.Web.Controllers
                             .Select(box => new SelectListItem
                             {
                                 Value = box.DT_RowId,
-                                Text = $"{box.Barcode} {box.Description}"
+                                Text = $"{box.BoxBarcode.BarcodeEAN13} {box.Description}"
                             }).ToList();
 
             ViewData["Boxes"] = boxes;

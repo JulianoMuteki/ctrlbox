@@ -1,5 +1,4 @@
-﻿using CtrlBox.CrossCutting.Barcode;
-using CtrlBox.Domain.Common;
+﻿using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,14 @@ namespace CtrlBox.Domain.Entities
     {
         public string Description { get; set; }
         public int StatusBox { get; set; }
+
+        public float Lenght { get; set; }
+        public float Height { get; set; }
+        public float Width { get; set; }
+        public string LengthUnit { get; set; }
+
+        public int MaxProductsItems { get; set; }
+        public int PorcentFull { get; set; }
 
         public Guid BoxTypeID { get; set; }
         public BoxType BoxType { get; set; }
@@ -47,6 +54,7 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.BoxBarcode = new BoxBarcode();
+
             }
         }
 

@@ -22,7 +22,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<string> iamgeIds = _configurationApplicationService.GetAll().Select(x => x.DT_RowId).ToList();
+            List<string> iamgeIds = _configurationApplicationService.GetAll().OrderBy(x => x.CreationDate).Select(x => x.DT_RowId).ToList();
             return View(iamgeIds);
         }
 

@@ -168,9 +168,9 @@ namespace CtrlBox.UI.Web.Controllers
                                                       DT_RowId = g.Key.BoxTypeID,
                                                       g.Key.n.BoxType.PictureID,
                                                       BoxType = g.Key.n.BoxType.Name,
-                                                      TotalBox = g.Count()
+                                                      TotalBox = g.Count(),
+                                                      TotalProductItems = g.Sum(x=>x.TotalProductsItemsChildren)
                                                   });
-
 
                 return Json(new
                 {

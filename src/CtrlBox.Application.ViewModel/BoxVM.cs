@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CtrlBox.Application.ViewModel
 {
@@ -23,6 +24,17 @@ namespace CtrlBox.Application.ViewModel
         public ICollection<BoxVM> BoxesChildren { get; set; }
         public string[] ChildrenBoxesID { get; set; }
 
+        private int _totalProductsItemsChildren;
+
+        public int TotalProductsItemsChildren
+        {
+            get
+            {
+                return SumTotalProductItemsChildren();
+            }
+        }
+
+
         public ICollection<BoxProductItemVM> BoxesProductItems { get; set; }
         public ICollection<DeliveryBoxVM> DeliveriesBoxes { get; set; }
 
@@ -32,6 +44,16 @@ namespace CtrlBox.Application.ViewModel
             this.BoxesChildren = new HashSet<BoxVM>();
             this.BoxesProductItems = new HashSet<BoxProductItemVM>();
             this.DeliveriesBoxes = new HashSet<DeliveryBoxVM>();
+        }
+
+        private int SumTotalProductItemsChildren()
+        {
+            if (BoxesProductItems.Count > 0)
+                _totalProductsItemsChildren = BoxesProductItems.Where(p => p.IsDelivered == false).Count();
+            else
+                _totalProductsItemsChildren += this.BoxesChildren.Sum(x => x.TotalProductsItemsChildren);
+
+            return _totalProductsItemsChildren;
         }
 
     }

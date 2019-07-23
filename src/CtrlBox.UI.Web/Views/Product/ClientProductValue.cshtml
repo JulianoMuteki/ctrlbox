@@ -57,7 +57,6 @@
                             "mData": null,
                             "sType": "html",
                             "bSortable": false,
-                            sClass: "calc",
                             "mRender": function (data, type, row) {
                                 if (type === 'display') {
                                     return '<input class="PriceProduct" type="text" placeholder="' + row.Price + '" class="m-wrap small" name="' + row.Product.DT_RowId + '" />'
@@ -65,10 +64,26 @@
                                 return data;
                             }
                         },
-                {                    
-                    "mData": "Product.UnitMeasure",
-                    "bSortable": false
-                }
+                        {
+                            "mData": "Product.Description"
+                            , "defaultContent": "<i>not found</i>"
+                        },
+                        {
+                            "mData": "Product.Package",
+                            "defaultContent": "<i>not found</i>"
+                        },
+                        {
+                            "mData": null,
+                            "sType": "html",
+                            "bSortable": false,
+                            "defaultContent": "<i>not found</i>",
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    return '<span class="label label-danger"><span class="bold">' + data.Product.Capacity + ' ' + data.Product.UnitMeasure + '</span></span> ';
+                                }
+                                return data;
+                            }
+                        }
             ]
         });
     });
@@ -118,27 +133,16 @@
                         <form action="#" class="form-horizontal">
                             <div class="control-group">
                                 <table id="tbProductValue" class="table-bordered table-striped table-condensed cf">
-                            <thead class="cf">
+                                    <thead class="cf">
                                         <tr>
-                                            <th>Produto</th>
-                                            <th>valor</th>
-                                            <th>Unit Measure</th>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Description</th>
+                                            <th>Package</th>
+                                            <th>Capacity</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Nanica</td>
-                                            <td><input type="text" placeholder="0" class="m-wrap small" name="row-1-age" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Prata</td>
-                                            <td><input type="text" placeholder="0" class="m-wrap small" name="row-2-age" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Maçã</td>
-                                            <td><input type="text" placeholder="0" class="m-wrap small" name="row-3-age" /></td>
-                                        </tr>
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                             <div class="form-actions">

@@ -52,7 +52,7 @@ var BoxComponents = function () {
                         },
                         {
                             "mData": "Product.Name",
-                            "defaultContent": "<i>hasn't products</i>",
+                            "defaultContent": "<i>--</i>",
                         },
                         {
                             "mData": null,

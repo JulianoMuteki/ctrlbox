@@ -41,6 +41,7 @@ namespace CtrlBox.Domain.Entities
         public void RemoveBoxType()
         {
             this.BoxType = null;
+            this.BoxesChildren = new HashSet<Box>();
         }
 
         public void SetBoxType(BoxType boxType)
@@ -80,17 +81,25 @@ namespace CtrlBox.Domain.Entities
                 this.BoxesProductItems.Add(boxProductItem);
             }
 
-            LoadFullBoxCompleted();
+            LoadFullBoxCompletedProductItems();
         }
 
-        private void LoadFullBoxCompleted()
+        private void LoadFullBoxCompletedProductItems()
         {
             this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Count) / this.BoxType.MaxProductsItems);
         }
 
+        private void LoadFullBoxCompletedChildrem()
+        {
+            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesChildren.Count) / this.BoxType.MaxProductsItems);
+        }
+
         public List<Box> AddChildren(List<Box> boxesChildren)
         {
-            return boxesChildren.Select(x => { x.BoxParentID = this.Id; return x; }).ToList();        
+            this.BoxesChildren = boxesChildren.Select(x => { x.BoxParentID = this.Id; return x; }).ToList();
+            LoadFullBoxCompletedChildrem();
+
+            return this.BoxesChildren.ToList();
         }
 
     }

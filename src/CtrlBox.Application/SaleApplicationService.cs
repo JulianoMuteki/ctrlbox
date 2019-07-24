@@ -45,7 +45,8 @@ namespace CtrlBox.Application
                 _unitOfWork.Repository<ProductItem>().UpdateRange(boxesProductsItems.Select(x => x.ProductItem).ToList());
                 _unitOfWork.Repository<BoxProductItem>().UpdateRange(boxesProductsItems);               
                 _unitOfWork.Repository<Sale>().Add(sale);
-                _unitOfWork.Commit();
+
+                _unitOfWork.CommitSync();
 
                 return entity;
             }

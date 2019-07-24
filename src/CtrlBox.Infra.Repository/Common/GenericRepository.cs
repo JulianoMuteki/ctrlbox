@@ -13,12 +13,10 @@ namespace CtrlBox.Infra.Repository.Common
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly CtrlBoxContext _context;
-        protected readonly IUnitOfWork _unitOfWork;
 
         public GenericRepository(CtrlBoxContext context)
         {
             _context = context;
-            _unitOfWork = new UnitOfWork(context);
         }
 
         public IQueryable<T> Query()
@@ -134,7 +132,6 @@ namespace CtrlBox.Infra.Repository.Common
             try
             {
                 _context.Set<T>().Add(entity);
-                _context.SaveChanges();
                 return entity;
             }
             catch (Exception ex)
@@ -148,8 +145,8 @@ namespace CtrlBox.Infra.Repository.Common
             try
             {
                 _context.Set<T>().AddRange(entity);
-                var result = _context.SaveChanges();
-                return result;
+              //  var result = _context.SaveChanges();
+                return 1;
             }
             catch (Exception ex)
             {
@@ -162,7 +159,7 @@ namespace CtrlBox.Infra.Repository.Common
             try
             {
                 _context.Set<T>().Add(entity);
-                await _unitOfWork.Commit();
+               
                 return entity;
             }
             catch (Exception ex)
@@ -182,7 +179,7 @@ namespace CtrlBox.Infra.Repository.Common
 
                 _context.Set<T>().Attach(updated);
                 _context.Entry(updated).State = EntityState.Modified;
-                _context.SaveChanges();
+             //   _context.SaveChanges();
 
                 return updated;
             }
@@ -202,7 +199,6 @@ namespace CtrlBox.Infra.Repository.Common
                 }
 
                 _context.Set<T>().UpdateRange(updateds);
-                _context.SaveChanges();
 
                 return updateds;
             }
@@ -223,7 +219,7 @@ namespace CtrlBox.Infra.Repository.Common
 
                 _context.Set<T>().Attach(updated);
                 _context.Entry(updated).State = EntityState.Modified;
-                await _unitOfWork.Commit();
+              //  await _unitOfWork.Commit();
 
                 return updated;
             }
@@ -238,7 +234,7 @@ namespace CtrlBox.Infra.Repository.Common
             try
             {
                 _context.Set<T>().Remove(t);
-                _context.SaveChanges();
+              //  _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -246,18 +242,6 @@ namespace CtrlBox.Infra.Repository.Common
             }
         }
 
-        public async Task<int> DeleteAsync(T t)
-        {
-            try
-            {
-                _context.Set<T>().Remove(t);
-                return await _unitOfWork.Commit();
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<T>("Unexpected error fetching delete", nameof(this.DeleteAsync), ex);
-            }
-        }
 
         public int Count()
         {
@@ -352,6 +336,11 @@ namespace CtrlBox.Infra.Repository.Common
         {
             _context.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        public Task<int> DeleteAsync(T t)
+        {
+            throw new NotImplementedException();
         }
     }
 }

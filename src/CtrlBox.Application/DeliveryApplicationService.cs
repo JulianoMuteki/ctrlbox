@@ -39,8 +39,8 @@ namespace CtrlBox.Application
                 delivery.BoxesProductItems.Clear();
                 _unitOfWork.Repository<Delivery>().Add(delivery);
                 _unitOfWork.Repository<BoxProductItem>().UpdateRange(lista);
-               
-                _unitOfWork.Commit();
+
+                _unitOfWork.CommitSync();
 
                 return entity;
             }

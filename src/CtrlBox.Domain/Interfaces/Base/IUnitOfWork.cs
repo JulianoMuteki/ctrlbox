@@ -9,7 +9,7 @@ namespace CtrlBox.Domain.Interfaces.Base
 
         T RepositoryCustom<T>() where T : class;
         Task<int> Commit();
-
+        void CommitSync();
         void Rollback();
     }
 }

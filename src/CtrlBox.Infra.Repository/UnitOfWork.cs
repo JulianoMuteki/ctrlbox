@@ -104,6 +104,11 @@ namespace CtrlBox.Infra.Repository
             return await _dbContext.SaveChangesAsync();
         }
 
+        public void CommitSync()
+        {
+             _dbContext.SaveChanges();
+        }
+
         public void Rollback()
         {
             _dbContext.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());

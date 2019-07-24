@@ -139,8 +139,9 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<BoxProductItem>()
-                            .Include(b => b.ProductItem).ThenInclude(p => p.Product)
-                            .Where(x => x.DeliveryID == deliveryID && x.IsDelivered == false);
+
+                            .Where(x => x.DeliveryID == deliveryID && x.IsDelivered == false)
+                            .Include(b => b.ProductItem).ThenInclude(p => p.Product);
 
                 return query.ToList();
             }

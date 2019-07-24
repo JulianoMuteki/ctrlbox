@@ -223,7 +223,7 @@ namespace CtrlBox.UI.Web.Controllers
                                .Select(prod => new SelectListItem
                                {
                                    Value = prod.DT_RowId,
-                                   Text = $"{prod.Name} {prod.UnitMeasure}"
+                                   Text = prod.FormattedProduct
                                }).ToList();
             ViewData["Products"] = products;
 

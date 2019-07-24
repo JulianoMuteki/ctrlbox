@@ -32,19 +32,18 @@ namespace CtrlBox.Application
 
                 foreach (var saleProduct in sale.SalesProducts)
                 {
-                    var boxProductsItems = boxesProductsItems.Where(x => x.ProductItem.ProductID == saleProduct.ProductID && x.IsDelivered == false).Take(saleProduct.Quantity).ToList();
+                    var boxProductsItems = boxesProductsItems.Where(x => x.ProductItem.ProductID == saleProduct.ProductID && x.IsDelivered == false).Take(saleProduct.Quantity);
 
                     foreach (var boxProductItem in boxProductsItems)
                     {
-                        boxProductItem.Deliver();
-                        _unitOfWork.Repository<ProductItem>().Update(boxProductItem.ProductItem);
-                        _unitOfWork.Repository<BoxProductItem>().Update(boxProductItem);
+                        boxProductItem.Deliver();                       
                     }
 
                     saleProduct.CalcTotalValue();
                 }
-
                 sale.CalculatePayment();
+                _unitOfWork.Repository<ProductItem>().UpdateRange(boxesProductsItems.Select(x => x.ProductItem).ToList());
+                _unitOfWork.Repository<BoxProductItem>().UpdateRange(boxesProductsItems);               
                 _unitOfWork.Repository<Sale>().Add(sale);
                 _unitOfWork.Commit();
 
@@ -52,10 +51,12 @@ namespace CtrlBox.Application
             }
             catch (CustomException exc)
             {
+                _unitOfWork.Rollback();
                 throw exc;
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.Add), ex);
             }
         }

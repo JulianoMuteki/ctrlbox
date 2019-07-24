@@ -189,13 +189,13 @@ namespace CtrlBox.UI.Web.Controllers
         public IActionResult GenerateBoxes(int nivel)
         {
             _boxApplicationService.GenarateBoxes(nivel);
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public IActionResult GenerateProductItems()
         {
             _productApplicationService.GenerateProductItem(new Guid("45458722-5D7C-48F9-AE8D-96CDC4B31CE8"), 5040);
-            return View("Index");
+            return RedirectToAction("Index");
         }
     }
 }

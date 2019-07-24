@@ -390,5 +390,24 @@ namespace CtrlBox.Application
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItems), ex);
             }
         }
+
+        public ICollection<ProductItemVM> GetProductsItemsAvailable(int quantity)
+        {
+            try
+            {
+                var productsItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.InBox == false).Take(quantity);
+                
+                var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
+                return productsItemsVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace CtrlBox.Application
 
         private void AddBoxHasProduct(int rangeProductsItems, Box box)
         {
-            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
+            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID == x.InBox == false).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
             box.LoadProductItems(productItems);
 
             if (!box.ComponentValidator.Validate(box, new BoxValidator()))
@@ -282,6 +282,174 @@ namespace CtrlBox.Application
             {
                 throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesParentsWithBoxTypeEndProduct), ex);
             }
+        }
+
+        public ICollection<BoxVM> FindBoxesAvailableWithProducts()
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().FindAll(x => x.BoxParentID == null && x.ProductID != null);
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesParentsWithBoxTypeEndProduct), ex);
+            }
+        }
+
+        public ICollection<BoxVM> FindBoxesAvailableByBoxType(Guid guid)
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().FindAll(x => x.BoxParentID == null && x.BoxTypeID == guid);
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.FindBoxesAvailableByBoxType), ex);
+            }
+        }
+
+        public void GenarateBoxes(int nivel)
+        {
+            if (nivel == 1)
+            {
+                try
+                {
+                    var boxType = _unitOfWork.Repository<BoxType>().GetById(new Guid("4FF493D4-118C-4925-A68C-BDC029D67F36"));
+                    for (int c = 0; c < 210; c++)
+                    {
+                        BoxVM boxEngradado = new BoxVM()
+                        {
+                            BoxTypeID = boxType.Id,
+                            Description = $"{c} - With 24 Coca-Cola",
+                            StatusBox = 0,
+                            ProductID = new Guid("45458722-5D7C-48F9-AE8D-96CDC4B31CE8"),
+                            RangeProductsItems = 24
+                        };
+
+                        var box = _mapper.Map<Box>(boxEngradado);
+
+                        box.SetBoxType(boxType);
+
+                        if (box.ProductID != null && box.ProductID != Guid.Empty)
+                            AddBoxHasProduct(boxEngradado.RangeProductsItems, box);
+                        else
+                            AddBoxWithoutProduct(boxEngradado.ChildrenBoxesID, box);
+                    }
+
+                    _unitOfWork.Commit();
+
+                }
+                catch (CustomException exc)
+                {
+                    throw exc;
+                }
+                catch (Exception ex)
+                {
+                    throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+                }
+            }
+            else if (nivel == 2)
+            {
+                try
+                {
+                    ICollection<BoxVM> boxesEngradados = FindBoxesAvailableWithProducts();
+                    var boxType = _unitOfWork.Repository<BoxType>().GetById(new Guid("BDDE455A-7BC0-499F-A41E-E67399A46901"));
+
+                    for (int p = 0; p < 5; p++)
+                    {
+                        BoxVM boxPallet = new BoxVM()
+                        {
+                            BoxTypeID = boxType.Id,
+                            Description = $"{p} - With 42 engrado Coca-Cola",
+                            StatusBox = 0,
+                            BoxesChildren = boxesEngradados.Take(42).ToList()
+                        };
+                        boxPallet.ChildrenBoxesID = boxPallet.BoxesChildren.Select(x => x.DT_RowId).ToArray();
+
+                        foreach (var item in boxPallet.BoxesChildren)
+                        {
+                            boxesEngradados.Remove(item);
+                        }
+
+                        var box = _mapper.Map<Box>(boxPallet);
+
+                        box.SetBoxType(boxType);
+
+                        if (box.ProductID != null && box.ProductID != Guid.Empty)
+                            AddBoxHasProduct(boxPallet.RangeProductsItems, box);
+                        else
+                            AddBoxWithoutProduct(boxPallet.ChildrenBoxesID, box);
+                    }
+
+                    _unitOfWork.Commit();
+                }
+                catch (CustomException exc)
+                {
+                    throw exc;
+                }
+                catch (Exception ex)
+                {
+                    throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+                }
+            }
+            else
+            {
+                try
+                {
+                    ICollection<BoxVM> boxesPallets = FindBoxesAvailableByBoxType(new Guid("BDDE455A-7BC0-499F-A41E-E67399A46901"));
+                    var boxType = _unitOfWork.Repository<BoxType>().GetById(new Guid("31C60A03-DF38-4391-9ECF-AA29D9529255"));
+
+
+                    for (int i = 0; i < 1; i++)
+                    {
+                        BoxVM boxContainer = new BoxVM()
+                        {
+                            BoxTypeID = boxType.Id,
+                            Description = $"{i} - With 5 pallets Coca-Cola",
+                            StatusBox = 0,
+                            BoxesChildren = boxesPallets.Take(5).ToList(),
+                        };
+                        boxContainer.ChildrenBoxesID = boxContainer.BoxesChildren.Select(x => x.DT_RowId).ToArray();
+
+                        foreach (var item in boxContainer.BoxesChildren)
+                        {
+                            boxesPallets.Remove(item);
+                        }
+
+                        var box = _mapper.Map<Box>(boxContainer);
+
+                        box.SetBoxType(boxType);
+
+                        if (box.ProductID != null && box.ProductID != Guid.Empty)
+                            AddBoxHasProduct(boxContainer.RangeProductsItems, box);
+                        else
+                            AddBoxWithoutProduct(boxContainer.ChildrenBoxesID, box);
+                    }
+
+                    _unitOfWork.Commit();
+                }
+                catch (CustomException exc)
+                {
+                    throw exc;
+                }
+                catch (Exception ex)
+                {
+                    throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add product", nameof(this.Add), ex);
+                }
+            }
+
         }
     }
 }

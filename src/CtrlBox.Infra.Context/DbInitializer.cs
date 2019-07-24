@@ -5,6 +5,8 @@ using CtrlBox.Domain.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CtrlBox.Infra.Context
 {
@@ -19,6 +21,7 @@ namespace CtrlBox.Infra.Context
 
                 SeedData(userManager, roleManager);
                 SeedData(serviceProvider);
+               // SeedDataBox(serviceProvider);
             }
             catch (Exception ex)
             {

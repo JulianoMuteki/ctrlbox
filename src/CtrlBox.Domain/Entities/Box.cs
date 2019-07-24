@@ -60,7 +60,6 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.BoxBarcode = new BoxBarcode();
-
             }
         }
 

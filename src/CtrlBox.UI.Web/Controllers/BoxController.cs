@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CtrlBox.UI.Web.Controllers
@@ -62,9 +63,9 @@ namespace CtrlBox.UI.Web.Controllers
                                                     BoxType = g.Key.n.BoxType.Name,
                                                     TotalBox = g.Count()
                                                 }),
-               
 
-                success = true
+
+                    success = true
                 });
             }
             catch (Exception ex)
@@ -185,5 +186,16 @@ namespace CtrlBox.UI.Web.Controllers
             return View(boxes);
         }
 
+        public IActionResult GenerateBoxes(int nivel)
+        {
+            _boxApplicationService.GenarateBoxes(nivel);
+            return View("Index");
+        }
+
+        public IActionResult GenerateProductItems()
+        {
+            _productApplicationService.GenerateProductItem(new Guid("45458722-5D7C-48F9-AE8D-96CDC4B31CE8"), 5040);
+            return View("Index");
+        }
     }
 }

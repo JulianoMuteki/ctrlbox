@@ -305,6 +305,11 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDisable = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 250, nullable: false),
+                    Lenght = table.Column<decimal>(type: "numeric(18,3)", nullable: false),
+                    Height = table.Column<decimal>(type: "numeric(18,3)", nullable: false),
+                    Width = table.Column<decimal>(type: "numeric(18,3)", nullable: false),
+                    LengthUnit = table.Column<string>(nullable: true),
+                    MaxProductsItems = table.Column<int>(nullable: false),
                     PictureID = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -441,6 +446,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDisable = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(maxLength: 250, nullable: false),
                     StatusBox = table.Column<int>(nullable: false),
+                    PorcentFull = table.Column<int>(nullable: false),
                     BoxTypeID = table.Column<Guid>(nullable: false),
                     BoxParentID = table.Column<Guid>(nullable: true),
                     ProductID = table.Column<Guid>(nullable: true)

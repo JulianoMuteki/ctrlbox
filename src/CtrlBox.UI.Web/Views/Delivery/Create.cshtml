@@ -59,6 +59,20 @@
                                         "mData": null,
                                         "sType": "html",
                                         "bSortable": false,
+                                        "mData": function (data, type, row) {
+                                            if (type === 'display') {
+                                                if (data.SrcPicture === '' || data.SrcPicture === null) {
+                                                    return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.BoxType;
+                                                }
+                                                return '<img  src="' + data.SrcPicture + '" /> ' + data.BoxType;
+                                            }
+                                            return data;
+                                        }
+                                    },
+                                    {
+                                        "mData": null,
+                                        "sType": "html",
+                                        "bSortable": false,
                                         "mRender": function (data, type, row) {
                                             if (type === 'display') {
                                                 var statusStock = "green-stripe";
@@ -69,10 +83,6 @@
                                             }
                                             return data;
                                         }
-                                    },
-                                    {
-                                        "mData": "BoxType",
-                                        "bSortable": false
                                     },
                                     {
                                         "mData": null,

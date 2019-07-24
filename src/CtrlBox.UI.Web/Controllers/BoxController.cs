@@ -61,6 +61,7 @@ namespace CtrlBox.UI.Web.Controllers
                                                 {
                                                     DT_RowId = g.Key.BoxTypeID,
                                                     BoxType = g.Key.n.BoxType.Name,
+                                                    SrcPicture = g.Key.n.BoxType.Picture.SrcBase64Image,
                                                     TotalBox = g.Count()
                                                 }),
 

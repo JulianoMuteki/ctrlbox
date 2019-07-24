@@ -56,7 +56,8 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Box>()
-                    .Include(x => x.BoxType)
+                    .Include(x => x.BoxType).ThenInclude(p=>p.Picture)
+                    
                     .Where(x => x.BoxParentID == null)
                     .ToList();
             }

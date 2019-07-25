@@ -28,7 +28,7 @@ namespace CtrlBox.Application
             {
                 var picture = _mapper.Map<Picture>(entity);
                 _unitOfWork.Repository<Picture>().Add(picture);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return _mapper.Map<PictureVM>(picture); ;
             }

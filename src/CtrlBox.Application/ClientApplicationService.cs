@@ -30,7 +30,7 @@ namespace CtrlBox.Application
                 var client = _mapper.Map<Client>(entity);
 
                 _unitOfWork.Repository<Client>().Add(client);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return entity;
             }

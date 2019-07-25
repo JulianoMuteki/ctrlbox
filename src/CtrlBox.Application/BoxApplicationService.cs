@@ -37,7 +37,7 @@ namespace CtrlBox.Application
                 else
                     AddBoxWithoutProduct(entity.ChildrenBoxesID, box);
 
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
                 return entity;
             }
             catch (CustomException exc)
@@ -55,7 +55,7 @@ namespace CtrlBox.Application
             var boxesChildren = _unitOfWork.Repository<Box>().FindAll(x => boxesChildrenID.Any(id => new Guid(id) == x.Id)).ToList();
             var boxesChildrenWithFather = box.AddChildren(boxesChildren);
 
-            box.RemoveBoxType();
+            box.Destructor();
             _unitOfWork.Repository<Box>().Add(box);
             _unitOfWork.Repository<Box>().UpdateRange(boxesChildrenWithFather);
         }
@@ -69,10 +69,12 @@ namespace CtrlBox.Application
             {
                 throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
             }
+            var list = box.BoxesProductItems.ToList();
+            box.Destructor();
 
-            box.RemoveBoxType();
             _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
             _unitOfWork.Repository<Box>().Add(box);
+            _unitOfWork.Repository<BoxProductItem>().AddRange(list);   
         }
 
         public Task<BoxVM> AddAsync(BoxVM entity)
@@ -92,7 +94,7 @@ namespace CtrlBox.Application
                 }
 
                 _unitOfWork.Repository<BoxType>().Add(boxType);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -346,10 +348,9 @@ namespace CtrlBox.Application
                             AddBoxHasProduct(boxEngradado.RangeProductsItems, box);
                         else
                             AddBoxWithoutProduct(boxEngradado.ChildrenBoxesID, box);
-                    }
 
-                    _unitOfWork.Commit();
-
+                        _unitOfWork.CommitSync();
+                    }                                     
                 }
                 catch (CustomException exc)
                 {
@@ -391,9 +392,9 @@ namespace CtrlBox.Application
                             AddBoxHasProduct(boxPallet.RangeProductsItems, box);
                         else
                             AddBoxWithoutProduct(boxPallet.ChildrenBoxesID, box);
-                    }
 
-                    _unitOfWork.Commit();
+                        _unitOfWork.CommitSync();
+                    }
                 }
                 catch (CustomException exc)
                 {
@@ -436,9 +437,9 @@ namespace CtrlBox.Application
                             AddBoxHasProduct(boxContainer.RangeProductsItems, box);
                         else
                             AddBoxWithoutProduct(boxContainer.ChildrenBoxesID, box);
-                    }
 
-                    _unitOfWork.Commit();
+                        _unitOfWork.CommitSync();
+                    }
                 }
                 catch (CustomException exc)
                 {

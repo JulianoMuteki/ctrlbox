@@ -76,7 +76,7 @@ namespace CtrlBox.Application
                 var delivery = _unitOfWork.Repository<Delivery>().GetById(deliveryID);
                 delivery.FinalizeDelivery();
                 _unitOfWork.Repository<Delivery>().Update(delivery);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {

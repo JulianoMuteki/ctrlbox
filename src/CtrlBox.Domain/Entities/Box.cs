@@ -38,10 +38,13 @@ namespace CtrlBox.Domain.Entities
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
         }
 
-        public void RemoveBoxType()
+        public void Destructor()
         {
             this.BoxType = null;
+            this.Traceabilities = new HashSet<Traceability>();
             this.BoxesChildren = new HashSet<Box>();
+            this.BoxesProductItems = new HashSet<BoxProductItem>();
+            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
         }
 
         public void SetBoxType(BoxType boxType)

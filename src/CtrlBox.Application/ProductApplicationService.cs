@@ -89,7 +89,7 @@ namespace CtrlBox.Application
                     _unitOfWork.Repository<Picture>().Add(picture);
                 }
                 _unitOfWork.Repository<Product>().Add(product);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return entity;
             }
@@ -110,7 +110,7 @@ namespace CtrlBox.Application
                 var product = _mapper.Map<Product>(entity);
 
                 _unitOfWork.Repository<Product>().AddAsync(product);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return Task.FromResult(entity);
             }
@@ -135,7 +135,7 @@ namespace CtrlBox.Application
                 {
                     productUpdate.UpdateData(product);
                     _unitOfWork.Repository<Product>().Update(productUpdate);
-                    _unitOfWork.Commit();
+                   _unitOfWork.CommitSync();
                 }
                 return updated;
             }
@@ -164,7 +164,7 @@ namespace CtrlBox.Application
                 {
 
                     _unitOfWork.Repository<Product>().Delete(product);
-                    _unitOfWork.Commit();
+                   _unitOfWork.CommitSync();
                 }
             }
             catch (CustomException exc)
@@ -188,7 +188,7 @@ namespace CtrlBox.Application
             {
                 var clientsProducts = _mapper.Map<IList<ClientProductValue>>(clientsProductsVMs);
                 _unitOfWork.Repository<ClientProductValue>().AddRange(clientsProducts);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return clientsProductsVMs;
             }
@@ -218,7 +218,7 @@ namespace CtrlBox.Application
                 _unitOfWork.Repository<StockProduct>().UpdateRange(stocksProducts);
                 _unitOfWork.Repository<StockProduct>().AddRange(stocksProductsAdd);
 
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return 1;
             }
@@ -329,7 +329,7 @@ namespace CtrlBox.Application
                 stock.AmountBoxes = stockTotal;
 
                 _unitOfWork.Repository<Stock>().Add(stock);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -357,7 +357,7 @@ namespace CtrlBox.Application
                 }
 
                 _unitOfWork.Repository<ProductItem>().AddRange(productsItems);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {

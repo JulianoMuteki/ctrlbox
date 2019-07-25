@@ -28,24 +28,22 @@ namespace CtrlBox.Application
             try
             {
                 var sale = _mapper.Map<Sale>(entity);
-                var boxesProductsItems = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesBoxesProductItemsByDeliveryID(sale.DeliveryID);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(sale.DeliveryID);
 
                 foreach (var saleProduct in sale.SalesProducts)
-                {
-                    var boxProductsItems = boxesProductsItems.Where(x => x.ProductItem.ProductID == saleProduct.ProductID && x.IsDelivered == false).Take(saleProduct.Quantity);
-
-                    foreach (var boxProductItem in boxProductsItems)
+                {                  
+                    foreach (var box in boxes)
                     {
-                        boxProductItem.Deliver();                       
+                        box.TakeOutOfTheBoxProductItems(saleProduct.ProductID, saleProduct.Quantity);
                     }
 
                     saleProduct.CalcTotalValue();
                 }
-                sale.CalculatePayment();
-                _unitOfWork.Repository<ProductItem>().UpdateRange(boxesProductsItems.Select(x => x.ProductItem).ToList());
-                _unitOfWork.Repository<BoxProductItem>().UpdateRange(boxesProductsItems);               
-                _unitOfWork.Repository<Sale>().Add(sale);
 
+                sale.CalculatePayment();
+
+                _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                _unitOfWork.Repository<Sale>().Add(sale);
                 _unitOfWork.CommitSync();
 
                 return entity;

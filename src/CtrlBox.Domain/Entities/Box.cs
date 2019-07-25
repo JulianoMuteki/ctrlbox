@@ -83,9 +83,31 @@ namespace CtrlBox.Domain.Entities
             LoadFullBoxCompletedProductItems();
         }
 
+        public void TakeOutOfTheBoxProductItems(Guid productID, int quantity)
+        {
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            {
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == productID && x.IsDelivered == false).Take(quantity);
+
+                foreach (var boxProductItem in boxProductsItems)
+                {
+                    boxProductItem.Deliver();
+                }
+            }
+            else
+            {
+                foreach (var boxChild in this.BoxesChildren)
+                {
+                    boxChild.TakeOutOfTheBoxProductItems(productID, quantity);
+                }
+            }
+
+            LoadFullBoxCompletedProductItems();
+        }
+
         private void LoadFullBoxCompletedProductItems()
         {
-            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Count) / this.BoxType.MaxProductsItems);
+            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x=>x.IsDelivered == false).ToList().Count) / this.BoxType.MaxProductsItems);
         }
 
         private void LoadFullBoxCompletedChildrem()

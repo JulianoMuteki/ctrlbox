@@ -11,5 +11,8 @@ namespace CtrlBox.Domain.Interfaces.Base
        // Task<int> Commit();
         void CommitSync();
         void Rollback();
+
+        void SetTrackAll();
+
     }
 }

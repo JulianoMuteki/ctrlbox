@@ -113,5 +113,10 @@ namespace CtrlBox.Infra.Repository
         {
             _dbContext.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
         }
+
+        public void SetTrackAll()
+        {
+            _dbContext.SetTrackAll();
+        }
     }
 }

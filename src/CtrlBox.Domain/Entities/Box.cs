@@ -86,31 +86,44 @@ namespace CtrlBox.Domain.Entities
             LoadFullBoxCompletedProductItems();
         }
 
+        public int CountQuantityProductItems { get; set; }
+
         public void TakeOutOfTheBoxProductItems(Guid productID, int quantity)
         {
             if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == productID && x.IsDelivered == false).Take(quantity);
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == productID && x.IsDelivered == false).Take(quantity).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {
                     boxProductItem.Deliver();
                 }
+
+                this.BoxParent.CountQuantityProductItems -= boxProductsItems.Count;
+                LoadFullBoxCompletedProductItems();
             }
             else
             {
+                this.CountQuantityProductItems = quantity;
+
                 foreach (var boxChild in this.BoxesChildren)
                 {
-                    boxChild.TakeOutOfTheBoxProductItems(productID, quantity);
-                }
-            }
+                    if (this.CountQuantityProductItems == 0)
+                        break;
 
-            LoadFullBoxCompletedProductItems();
+                    boxChild.TakeOutOfTheBoxProductItems(productID, this.CountQuantityProductItems);
+                }
+
+                if (this.BoxParentID != null && this.BoxParentID != Guid.Empty)
+                    this.BoxParent.CountQuantityProductItems = this.CountQuantityProductItems;
+
+                LoadFullBoxCompletedChildrem();
+            }
         }
 
         private void LoadFullBoxCompletedProductItems()
         {
-            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x=>x.IsDelivered == false).ToList().Count) / this.BoxType.MaxProductsItems);
+            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x => x.IsDelivered == false).ToList().Count) / this.BoxType.MaxProductsItems);
         }
 
         private void LoadFullBoxCompletedChildrem()

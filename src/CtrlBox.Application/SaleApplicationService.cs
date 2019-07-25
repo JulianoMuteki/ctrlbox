@@ -28,6 +28,7 @@ namespace CtrlBox.Application
             try
             {
                 var sale = _mapper.Map<Sale>(entity);
+                _unitOfWork.SetTrackAll();
                 var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(sale.DeliveryID);
 
                 foreach (var saleProduct in sale.SalesProducts)

@@ -7,7 +7,7 @@ namespace CtrlBox.Application.ViewModel
     public class BoxVM: ViewModelBase
     {
         public string Description { get; set; }
-        public int StatusBox { get; set; }
+        public string Status { get; set; }
 
         public int PorcentFull { get; set; }
 

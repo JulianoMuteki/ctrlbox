@@ -445,7 +445,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDelete = table.Column<bool>(nullable: false),
                     IsDisable = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(maxLength: 250, nullable: false),
-                    StatusBox = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     PorcentFull = table.Column<int>(nullable: false),
                     BoxTypeID = table.Column<Guid>(nullable: false),
                     BoxParentID = table.Column<Guid>(nullable: true),
@@ -509,9 +509,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDelete = table.Column<bool>(nullable: false),
                     IsDisable = table.Column<bool>(nullable: false),
                     Barcode = table.Column<string>(maxLength: 14, nullable: false),
-                    Weight = table.Column<string>(maxLength: 50, nullable: false),
                     ProductID = table.Column<Guid>(nullable: false),
-                    InBox = table.Column<bool>(nullable: false)
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

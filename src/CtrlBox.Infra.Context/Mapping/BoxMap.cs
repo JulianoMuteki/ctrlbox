@@ -14,8 +14,8 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(x => x.Id).HasColumnName("BoxID");
             builder.HasKey(b => b.Id).HasName("BoxID");
 
-            builder.Property(e => e.StatusBox)
-                  .IsRequired();
+            builder.Property(e => e.Status)
+                .HasConversion<int>();
 
             builder.Property(e => e.Description)
                     .IsRequired()

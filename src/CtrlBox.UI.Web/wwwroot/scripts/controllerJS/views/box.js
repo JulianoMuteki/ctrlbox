@@ -51,6 +51,10 @@ var BoxComponents = function () {
                             }                         
                         },
                         {
+                            "mData": "Status",
+                            "defaultContent": "<i>--</i>",
+                        },
+                        {
                             "mData": "Product.Name",
                             "defaultContent": "<i>--</i>",
                         },

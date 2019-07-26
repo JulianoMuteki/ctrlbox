@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Application.AutoMapper
 {
@@ -13,7 +12,9 @@ namespace CtrlBox.Application.AutoMapper
         {
             CreateMap<ProductItem, ProductItemVM>()
                 .ForMember(dest => dest.DT_RowId,
-                          opts => opts.MapFrom(src => src.Id));
+                          opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Status, opts => opts.MapFrom(src =>
+                   Enum.GetName(typeof(ProductItemStatus), src.Status)));
 
             CreateMap<ProductItemVM, ProductItem>()
                 .ForMember(dest => dest.Id,

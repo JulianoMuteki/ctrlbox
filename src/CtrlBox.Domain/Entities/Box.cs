@@ -129,6 +129,7 @@ namespace CtrlBox.Domain.Entities
         private void LoadFullBoxCompletedChildrem()
         {
             this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesChildren.Count) / this.BoxType.MaxProductsItems);
+            this.DateModified = DateTime.Now;
         }
 
         public List<Box> AddChildren(List<Box> boxesChildren)

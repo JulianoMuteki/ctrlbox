@@ -9,13 +9,13 @@ namespace CtrlBox.Application.AutoMapper
     {
         public TraceTypeProfile()
         {
-            CreateMap<TraceType, TraceTypeVM>()
+            CreateMap<TrackingType, TraceTypeVM>()
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id))
              .ForMember(dest => dest.TypeTrace, opts => opts.MapFrom(src =>
                    Enum.GetName(typeof(TypeTrace), src.TypeTrace)));
 
-            CreateMap<TraceTypeVM, TraceType>()
+            CreateMap<TraceTypeVM, TrackingType>()
                 .ForMember(dest => dest.Id,
                           opts => opts.MapFrom(src => src.DT_RowId))
 

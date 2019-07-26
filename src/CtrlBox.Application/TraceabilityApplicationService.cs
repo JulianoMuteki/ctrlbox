@@ -26,18 +26,18 @@ namespace CtrlBox.Application
         {
             try
             {
-                var traceability = _mapper.Map<Traceability>(entity);
+                var traceability = _mapper.Map<BoxTracking>(entity);
 
                 if(entity.ClientID != null && entity.ClientID != Guid.Empty)
                 {
-                    traceability.PutClient(entity.ClientID);
+                    traceability.AddClient(entity.ClientID);
                 }
                 //if (!boxType.ComponentValidator.Validate(boxType, new BoxTypeValidator()))
                 //{
                 //    throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
                 //}
 
-                _unitOfWork.Repository<Traceability>().Add(traceability);
+                _unitOfWork.Repository<BoxTracking>().Add(traceability);
                _unitOfWork.CommitSync();
 
                 return entity;
@@ -61,14 +61,14 @@ namespace CtrlBox.Application
         {
             try
             {
-                var traceType = _mapper.Map<TraceType>(entity);
+                var traceType = _mapper.Map<TrackingType>(entity);
 
                 //if (!boxType.ComponentValidator.Validate(boxType, new BoxTypeValidator()))
                 //{
                 //    throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
                 //}
 
-                _unitOfWork.Repository<TraceType>().Add(traceType);
+                _unitOfWork.Repository<TrackingType>().Add(traceType);
                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)

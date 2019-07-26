@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class TraceType : EntityBase
+    public class TrackingType : EntityBase
     {
         public TypeTrace TypeTrace { get; set; }
         public string Description { get; set; }
@@ -12,12 +12,12 @@ namespace CtrlBox.Domain.Entities
         public Guid? PictureID { get; set; }
         public Picture Picture { get; set; }
 
-        public ICollection<Traceability> Traceabilities { get; set; }
+        public ICollection<BoxTracking> BoxesTrackings { get; set; }
 
-        public TraceType()
+        public TrackingType()
             : base()
         {
-            this.Traceabilities = new HashSet<Traceability>();
+            this.BoxesTrackings = new HashSet<BoxTracking>();
         }
 
         public void Init()

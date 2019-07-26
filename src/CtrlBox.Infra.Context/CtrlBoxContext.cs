@@ -29,9 +29,9 @@ namespace CtrlBox.Infra.Context
         public DbSet<SaleProduct> SalesProducts { get; set; }
         public DbSet<RouteClient> RoutesClients { get; set; }
 
-        public DbSet<Traceability> Traceabilities { get; set; }
-        public DbSet<TraceType> TracesTypes { get; set; }
-        public DbSet<TraceabilityClient> TraceabilitiesClients { get; set; }
+        public DbSet<BoxTracking> Traceabilities { get; set; }
+        public DbSet<TrackingType> TracesTypes { get; set; }
+        public DbSet<BoxTrackingClient> TraceabilitiesClients { get; set; }
 
         public DbSet<BoxType> BoxesTypes { get; set; }
         public DbSet<ProductItem> ProductItems { get; set; }
@@ -84,9 +84,9 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new SaleMap());
             modelBuilder.ApplyConfiguration(new StockProductMap());
 
-            modelBuilder.ApplyConfiguration(new TraceTypeMap());
-            modelBuilder.ApplyConfiguration(new TraceabilityMap());
-            modelBuilder.ApplyConfiguration(new TraceabilityClientMap());
+            modelBuilder.ApplyConfiguration(new TrackingTypeMap());
+            modelBuilder.ApplyConfiguration(new BoxTrackingMap());
+            modelBuilder.ApplyConfiguration(new BoxTrackingClientMap());
 
             modelBuilder.ApplyConfiguration(new BoxBarcodeMap());
             modelBuilder.ApplyConfiguration(new BoxMap());

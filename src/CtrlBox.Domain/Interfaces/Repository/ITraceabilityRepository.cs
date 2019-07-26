@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Repository
 {
-    public interface ITraceabilityRepository: IGenericRepository<Traceability>
+    public interface ITraceabilityRepository: IGenericRepository<BoxTracking>
     {
-        ICollection<Traceability> GetByBoxIDWithTraceType(Guid boxID);
-        ICollection<TraceType> GetTracesTypesWithPictures();
+        ICollection<BoxTracking> GetByBoxIDWithTraceType(Guid boxID);
+        ICollection<TrackingType> GetTracesTypesWithPictures();
     }
 }

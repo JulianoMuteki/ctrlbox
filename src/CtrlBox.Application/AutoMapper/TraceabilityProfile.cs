@@ -8,11 +8,11 @@ namespace CtrlBox.Application.AutoMapper
     {
         public TraceabilityProfile()
         {
-            CreateMap<Traceability, TraceabilityVM>()
+            CreateMap<BoxTracking, TraceabilityVM>()
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id));
 
-            CreateMap<TraceabilityVM, Traceability>()
+            CreateMap<TraceabilityVM, BoxTracking>()
                 .ForMember(dest => dest.Id,
                           opts => opts.MapFrom(src => src.DT_RowId))
                 .AfterMap((src, dest) => dest.Init());

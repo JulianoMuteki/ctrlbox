@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CtrlBox.Infra.Repository.Repositories
 {
-    public class TraceabilityRepository : GenericRepository<Traceability>, ITraceabilityRepository
+    public class TraceabilityRepository : GenericRepository<BoxTracking>, ITraceabilityRepository
     {
         public TraceabilityRepository(CtrlBoxContext context)
             : base(context)
@@ -18,13 +18,13 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         }
 
-        public ICollection<Traceability> GetByBoxIDWithTraceType(Guid boxID)
+        public ICollection<BoxTracking> GetByBoxIDWithTraceType(Guid boxID)
         {
             try
             {
-                return _context.Set<Traceability>()
-                    .Include(x => x.TraceType).ThenInclude(x => x.Picture)
-                    .Include(x => x.TraceabilitiesClients).ThenInclude(c => c.Client)
+                return _context.Set<BoxTracking>()
+                    .Include(x => x.TrackingType).ThenInclude(x => x.Picture)
+                    .Include(x => x.BoxesTrackingClients).ThenInclude(c => c.Client)
                     .Where(x => x.BoxID != null && x.BoxID.Value == boxID)
                     .OrderBy(x => x.CreationDate)
                     .ToList();
@@ -35,11 +35,11 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
-        public ICollection<TraceType> GetTracesTypesWithPictures()
+        public ICollection<TrackingType> GetTracesTypesWithPictures()
         {
             try
             {
-                return _context.Set<TraceType>()
+                return _context.Set<TrackingType>()
                     .Include(x => x.Picture)
                     .OrderBy(x => x.CreationDate)
                     .ToList();

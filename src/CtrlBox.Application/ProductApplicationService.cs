@@ -351,7 +351,6 @@ namespace CtrlBox.Application
                 {
                     ProductItem productItem = new ProductItem();
                     productItem.Barcode = $"{i}{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14);
-                    productItem.Weight = "10";
                     productItem.ProductID = productID;
                     productsItems.Add(productItem);
                 }
@@ -395,7 +394,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var productsItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.InBox == false).Take(quantity);
+                var productsItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.Status == ProductItemStatus.AvailableStock).Take(quantity);
                 
                 var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
                 return productsItemsVMs;

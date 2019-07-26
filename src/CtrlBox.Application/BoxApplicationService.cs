@@ -62,7 +62,7 @@ namespace CtrlBox.Application
 
         private void AddBoxHasProduct(int rangeProductsItems, Box box)
         {
-            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID == x.InBox == false).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
+            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID && x.Status == ProductItemStatus.AvailableStock).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
             box.LoadProductItems(productItems);
 
             if (!box.ComponentValidator.Validate(box, new BoxValidator()))

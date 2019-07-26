@@ -9,7 +9,7 @@ namespace CtrlBox.Domain.Entities
     public class Box : EntityBase
     {
         public string Description { get; set; }
-        public int StatusBox { get; set; }
+        public BoxStatus Status { get; set; }
 
         public int PorcentFull { get; set; }
 

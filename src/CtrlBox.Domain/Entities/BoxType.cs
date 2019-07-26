@@ -8,7 +8,13 @@ namespace CtrlBox.Domain.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        // public bool HasProducts { get; set; }
+
+        public float Lenght { get; set; }
+        public float Height { get; set; }
+        public float Width { get; set; }
+        public string LengthUnit { get; set; }
+
+        public int MaxProductsItems { get; set; }
 
         public Guid? PictureID { get; set; }
         public Picture Picture { get; set; }

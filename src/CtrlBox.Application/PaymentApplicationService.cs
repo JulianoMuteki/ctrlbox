@@ -39,7 +39,7 @@ namespace CtrlBox.Application
                 var paymentMethod = _mapper.Map<PaymentMethod>(paymentMethodVM);
 
                 _unitOfWork.Repository<PaymentMethod>().Add(paymentMethod);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {

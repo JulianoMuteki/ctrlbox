@@ -17,7 +17,7 @@ namespace CtrlBox.CrossCutting.Barcode
         {
             _random = new Random();
 
-            return Criar_EAN("789", "001", RandomNumber(0, 999999).ToString("D6"));
+            return Criar_EAN("789", RandomNumber(0, 999).ToString("D3"), RandomNumber(0, 999999).ToString("D6"));
         }
 
         private static int RandomNumber(int min, int max)

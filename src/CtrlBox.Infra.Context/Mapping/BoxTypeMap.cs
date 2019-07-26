@@ -22,6 +22,20 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                  .HasMaxLength(250);
 
+            builder.Property(e => e.Lenght)
+                    .HasColumnType("numeric(18,3)")
+                    .IsRequired();
+
+            builder.Property(e => e.Height)
+                    .HasColumnType("numeric(18,3)")
+                    .IsRequired();
+
+            builder.Property(e => e.Width)
+                    .HasColumnType("numeric(18,3)")
+                    .IsRequired();
+
+            builder.Property(e => e.MaxProductsItems)
+                    .IsRequired();
 
             builder.HasOne(tk => tk.Picture)
                     .WithMany(t => t.BoxesTypes)

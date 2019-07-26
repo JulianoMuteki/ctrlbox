@@ -99,14 +99,24 @@ namespace CtrlBox.Infra.Repository
             }
         }
 
-        public async Task<int> Commit()
+        //public async Task<int> Commit()
+        //{
+        //    return await _dbContext.SaveChangesAsync();
+        //}
+
+        public void CommitSync()
         {
-            return await _dbContext.SaveChangesAsync();
+             _dbContext.SaveChanges();
         }
 
         public void Rollback()
         {
             _dbContext.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+        }
+
+        public void SetTrackAll()
+        {
+            _dbContext.SetTrackAll();
         }
     }
 }

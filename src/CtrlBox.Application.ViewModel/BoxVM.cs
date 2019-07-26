@@ -9,6 +9,8 @@ namespace CtrlBox.Application.ViewModel
         public string Description { get; set; }
         public int StatusBox { get; set; }
 
+        public int PorcentFull { get; set; }
+
         public Guid BoxTypeID { get; set; }
         public BoxTypeVM BoxType { get; set; }
 

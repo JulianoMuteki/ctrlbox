@@ -39,8 +39,8 @@ namespace CtrlBox.Application
                 delivery.BoxesProductItems.Clear();
                 _unitOfWork.Repository<Delivery>().Add(delivery);
                 _unitOfWork.Repository<BoxProductItem>().UpdateRange(lista);
-               
-                _unitOfWork.Commit();
+
+                _unitOfWork.CommitSync();
 
                 return entity;
             }
@@ -76,7 +76,7 @@ namespace CtrlBox.Application
                 var delivery = _unitOfWork.Repository<Delivery>().GetById(deliveryID);
                 delivery.FinalizeDelivery();
                 _unitOfWork.Repository<Delivery>().Update(delivery);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {

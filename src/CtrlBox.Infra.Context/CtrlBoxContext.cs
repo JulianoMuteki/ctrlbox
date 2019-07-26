@@ -58,6 +58,11 @@ namespace CtrlBox.Infra.Context
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
+        public void SetTrackAll()
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<ValidationFailure>();

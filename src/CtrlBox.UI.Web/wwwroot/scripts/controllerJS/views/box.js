@@ -36,11 +36,23 @@ var BoxComponents = function () {
                             "bSortable": false
                         },
                         {
-                            "mData": "Description"
+                            "mData": "Description",
+                            "defaultContent": "<i>not found</i>",
+                        },
+                        {
+                            "mData": null,
+                            "sType": "html",
+                            "width": "8%",
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    return '  <div class="progress progress-striped"><div style="width: ' + data.PorcentFull + '%;" class="bar"></div></div>';
+                                }
+                                return data;
+                            }                         
                         },
                         {
                             "mData": "Product.Name",
-                            "defaultContent": "<i>not applicable</i>",
+                            "defaultContent": "<i>--</i>",
                         },
                         {
                             "mData": null,

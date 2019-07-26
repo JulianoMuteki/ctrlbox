@@ -38,7 +38,7 @@ namespace CtrlBox.Application
                 //}
 
                 _unitOfWork.Repository<Traceability>().Add(traceability);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return entity;
             }
@@ -69,7 +69,7 @@ namespace CtrlBox.Application
                 //}
 
                 _unitOfWork.Repository<TraceType>().Add(traceType);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {

@@ -21,6 +21,9 @@ namespace CtrlBox.Infra.Context.Mapping
                     .IsRequired()
                      .HasMaxLength(250);
 
+            builder.Property(e => e.PorcentFull)
+                    .IsRequired();
+
             builder.HasOne(x => x.BoxType)
                 .WithMany(x => x.Boxes)
                 .HasForeignKey(x => x.BoxTypeID);
@@ -34,6 +37,8 @@ namespace CtrlBox.Infra.Context.Mapping
                 .WithOne(x=>x.BoxParent)
                 .HasForeignKey(x => x.BoxParentID)
                 .IsRequired(false);
+
+            builder.Ignore(x => x.CountQuantityProductItems);
         }
     }
 }

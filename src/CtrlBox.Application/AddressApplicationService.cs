@@ -27,7 +27,7 @@ namespace CtrlBox.Application
             {
                 var address = _mapper.Map<Address>(entity);
                 _unitOfWork.Repository<Address>().Add(address);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return _mapper.Map<AddressVM>(address); ;
             }

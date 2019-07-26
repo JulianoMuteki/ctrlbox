@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CtrlBox.UI.Web.Controllers
@@ -60,11 +61,12 @@ namespace CtrlBox.UI.Web.Controllers
                                                 {
                                                     DT_RowId = g.Key.BoxTypeID,
                                                     BoxType = g.Key.n.BoxType.Name,
+                                                    SrcPicture = g.Key.n.BoxType.Picture.SrcBase64Image,
                                                     TotalBox = g.Count()
                                                 }),
-               
 
-                success = true
+
+                    success = true
                 });
             }
             catch (Exception ex)
@@ -99,6 +101,7 @@ namespace CtrlBox.UI.Web.Controllers
                             }).ToList();
 
             ViewData["Boxes"] = boxes;
+
             return View();
         }
 
@@ -146,6 +149,13 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult CreateBoxType()
         {
+            var optionsBoxLengthUnit = CtrlBoxUnits.CtrlBoxLengthUnit
+                   .Select(unit => new SelectListItem
+                   {
+                       Value = unit,
+                       Text = unit
+                   }).ToList();
+            ViewData["OptionsBoxLengthUnit"] = optionsBoxLengthUnit;
             return View();
         }
 
@@ -177,5 +187,16 @@ namespace CtrlBox.UI.Web.Controllers
             return View(boxes);
         }
 
+        public IActionResult GenerateBoxes(int nivel)
+        {
+            _boxApplicationService.GenarateBoxes(nivel);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult GenerateProductItems()
+        {
+            _productApplicationService.GenerateProductItem(new Guid("45458722-5D7C-48F9-AE8D-96CDC4B31CE8"), 5040);
+            return RedirectToAction("Index");
+        }
     }
 }

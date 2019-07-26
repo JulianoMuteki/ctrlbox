@@ -14,5 +14,8 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<BoxVM> GetBoxesByBoxWithChildren(Guid boxID);
         BoxVM GetBoxesByIDWithBoxTypeAndProductItems(Guid boxID);
         IEnumerable<BoxVM> GetBoxesParentsWithBoxTypeEndProduct();
+        ICollection<BoxVM> FindBoxesAvailableWithProducts();
+        ICollection<BoxVM> FindBoxesAvailableByBoxType(Guid guid);
+        void GenarateBoxes(int nivel);
     }
 }

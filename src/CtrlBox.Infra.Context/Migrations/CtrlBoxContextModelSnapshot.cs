@@ -89,6 +89,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsDisable");
 
+                    b.Property<int>("PorcentFull");
+
                     b.Property<Guid?>("ProductID");
 
                     b.Property<int>("StatusBox");
@@ -173,15 +175,31 @@ namespace CtrlBox.Infra.Context.Migrations
                         .IsRequired()
                         .HasMaxLength(250);
 
+                    b.Property<decimal>("Height")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("numeric(18,3)");
+
                     b.Property<bool>("IsDelete");
 
                     b.Property<bool>("IsDisable");
+
+                    b.Property<decimal>("Lenght")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<string>("LengthUnit");
+
+                    b.Property<int>("MaxProductsItems");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<Guid?>("PictureID");
+
+                    b.Property<decimal>("Width")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("numeric(18,3)");
 
                     b.HasKey("Id")
                         .HasName("BoxTypeID");

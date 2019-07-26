@@ -8,8 +8,11 @@ namespace CtrlBox.Domain.Interfaces.Base
         IGenericRepository<T> Repository<T>() where T : class;
 
         T RepositoryCustom<T>() where T : class;
-        Task<int> Commit();
-
+       // Task<int> Commit();
+        void CommitSync();
         void Rollback();
+
+        void SetTrackAll();
+
     }
 }

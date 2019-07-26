@@ -28,7 +28,7 @@ namespace CtrlBox.Application
                 var route = _mapper.Map<Route>(entity);
 
                 _unitOfWork.Repository<Route>().Add(route);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return entity;
             }
@@ -54,7 +54,7 @@ namespace CtrlBox.Application
                 var routesClients = _mapper.Map<List<RouteClient>>(routesClientsVM);
 
                 var routeClientReturn = _unitOfWork.Repository<RouteClient>().AddRange(routesClients);
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return routesClientsVM;
             }
@@ -78,7 +78,7 @@ namespace CtrlBox.Application
                 {
                     _unitOfWork.Repository<RouteClient>().Delete(item);
                 }
-                _unitOfWork.Commit();
+               _unitOfWork.CommitSync();
 
                 return routesClientsVM;
             }
@@ -102,7 +102,7 @@ namespace CtrlBox.Application
                 {
 
                     _unitOfWork.Repository<Route>().Delete(Route);
-                    _unitOfWork.Commit();
+                   _unitOfWork.CommitSync();
                 }
             }
             catch (CustomException exc)
@@ -178,7 +178,7 @@ namespace CtrlBox.Application
                 {
                     routeUpdate.UpdateData(route);
                     _unitOfWork.Repository<Route>().Update(routeUpdate);
-                    _unitOfWork.Commit();
+                   _unitOfWork.CommitSync();
                 }
                 return updated;
             }

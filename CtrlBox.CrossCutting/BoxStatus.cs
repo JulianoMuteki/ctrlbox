@@ -4,11 +4,12 @@ namespace CtrlBox.CrossCutting
    public enum BoxStatus
     {
         Empty = 0,
-        Full = 1,
-        IsClosed = 2,
-        ReadyDelivery = 3,
-        LoadRoute = 4,
-        Delivered = 5,
-        LoadRouteBack = 6
+        Loading = 1,
+        Full = 2,
+        IsClosed = 3,
+        ReadyDelivery = 4,
+        InTraffic = 5,
+        Delivered = 6,
+        LoadRouteBack = 7
     }
 }

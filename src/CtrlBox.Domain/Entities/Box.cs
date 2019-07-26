@@ -124,6 +124,15 @@ namespace CtrlBox.Domain.Entities
         private void LoadFullBoxCompletedProductItems()
         {
             this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x => x.IsDelivered == false).ToList().Count) / this.BoxType.MaxProductsItems);
+            SetBoxStatus();
+        }
+
+        private void SetBoxStatus()
+        {
+            if (this.BoxesProductItems.Count > 0 && this.PorcentFull < 100)
+                this.Status = BoxStatus.Loading;
+            else if (this.PorcentFull == 100)
+                this.Status = BoxStatus.Full;
         }
 
         private void LoadFullBoxCompletedChildrem()

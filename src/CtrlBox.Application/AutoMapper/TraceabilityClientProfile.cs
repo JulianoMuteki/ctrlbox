@@ -8,9 +8,9 @@ namespace CtrlBox.Application.AutoMapper
     {
         public TraceabilityClientProfile()
         {
-            CreateMap<BoxTrackingClient, TraceabilityClientVM>();
+            CreateMap<BoxTrackingClient, BoxTrackingClientVM>();
 
-            CreateMap<TraceabilityClientVM, BoxTrackingClient>();
+            CreateMap<BoxTrackingClientVM, BoxTrackingClient>();
         }
     }
 }

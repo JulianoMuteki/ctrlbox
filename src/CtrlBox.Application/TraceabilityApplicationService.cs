@@ -22,7 +22,7 @@ namespace CtrlBox.Application
             _mapper = mapper;
         }
 
-        public TraceabilityVM Add(TraceabilityVM entity)
+        public BoxTrackingVM Add(BoxTrackingVM entity)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace CtrlBox.Application
             }
         }
 
-        public Task<TraceabilityVM> AddAsync(TraceabilityVM entity)
+        public Task<BoxTrackingVM> AddAsync(BoxTrackingVM entity)
         {
             throw new NotImplementedException();
         }
@@ -91,12 +91,12 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public ICollection<TraceabilityVM> GetAll()
+        public ICollection<BoxTrackingVM> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<TraceabilityVM>> GetAllAsync()
+        public Task<ICollection<BoxTrackingVM>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
@@ -119,12 +119,12 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<TraceabilityVM> GetByBoxID(Guid boxID)
+        public ICollection<BoxTrackingVM> GetByBoxID(Guid boxID)
         {
             try
             {
                 var tracesTypes = _unitOfWork.RepositoryCustom<ITraceabilityRepository>().GetByBoxIDWithTraceType(boxID);
-                var tracesTypesVMs = _mapper.Map<IList<TraceabilityVM>>(tracesTypes);
+                var tracesTypesVMs = _mapper.Map<IList<BoxTrackingVM>>(tracesTypes);
                 return tracesTypesVMs;
             }
             catch (CustomException exc)
@@ -137,22 +137,22 @@ namespace CtrlBox.Application
             }
         }
 
-        public TraceabilityVM GetById(Guid id)
+        public BoxTrackingVM GetById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TraceabilityVM> GetByIdAsync(Guid id)
+        public Task<BoxTrackingVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public TraceabilityVM Update(TraceabilityVM updated)
+        public BoxTrackingVM Update(BoxTrackingVM updated)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TraceabilityVM> UpdateAsync(TraceabilityVM updated)
+        public Task<BoxTrackingVM> UpdateAsync(BoxTrackingVM updated)
         {
             throw new NotImplementedException();
         }

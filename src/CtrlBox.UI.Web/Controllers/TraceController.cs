@@ -76,7 +76,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TraceabilityVM traceabilityVM)
+        public IActionResult Create(BoxTrackingVM traceabilityVM)
         {
             try
             {

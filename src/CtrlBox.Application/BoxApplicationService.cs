@@ -335,7 +335,7 @@ namespace CtrlBox.Application
                         {
                             BoxTypeID = boxType.Id,
                             Description = $"{c} - With 24 Coca-Cola",
-                            Status = Enum.GetName(typeof(ProductItemStatus), ProductItemStatus.AvailableStock),
+                            Status = Enum.GetName(typeof(BoxStatus), BoxStatus.Empty),
                             ProductID = new Guid("45458722-5D7C-48F9-AE8D-96CDC4B31CE8"),
                             RangeProductsItems = 24
                         };

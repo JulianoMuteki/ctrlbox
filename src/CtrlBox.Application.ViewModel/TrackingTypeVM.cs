@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Application.ViewModel
 {
-    public class TraceTypeVM: ViewModelBase
+    public class TrackingTypeVM : ViewModelBase
     {
-        public string TypeTrace { get; set; }
+        public string TrackType { get; set; }
         public string Description { get; set; }
 
         public Guid? PictureID { get; set; }
         public PictureVM Picture { get; set; }
 
-        public ICollection<TraceabilityVM> Traceabilities { get; set; }
+        public ICollection<BoxTrackingVM> BoxesTrackings { get; set; }
     }
 }

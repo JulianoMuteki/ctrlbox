@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class Traceability : EntityBase
+    public class BoxTracking : EntityBase
     {
         public Guid? ProductItemID { get; set; }
         public ProductItem ProductItem { get; set; }
@@ -12,15 +12,15 @@ namespace CtrlBox.Domain.Entities
         public Guid? BoxID { get; set; }
         public Box Box { get; set; }
 
-        public Guid TraceTypeID { get; set; }
-        public TraceType TraceType { get; set; }
+        public Guid TrackingTypeID { get; set; }
+        public TrackingType TrackingType { get; set; }
 
-        public ICollection<TraceabilityClient> TraceabilitiesClients { get; set; }
+        public ICollection<BoxTrackingClient> BoxesTrackingClients { get; set; }
 
-        public Traceability()
+        public BoxTracking()
             : base()
         {
-            this.TraceabilitiesClients = new HashSet<TraceabilityClient>();
+            this.BoxesTrackingClients = new HashSet<BoxTrackingClient>();
         }
 
         public void Init()
@@ -31,12 +31,12 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
-        public void PutClient(Guid clientID)
+        public void AddClient(Guid clientID)
         {
-            this.TraceabilitiesClients.Add(new TraceabilityClient()
+            this.BoxesTrackingClients.Add(new BoxTrackingClient()
             {
                 ClientID = clientID,
-                TraceID = this.Id
+                BoxTrackingID = this.Id
             });
         }
     }

@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class TraceabilityMap : EntityConfiguration<Traceability>
+    public class BoxTrackingMap : EntityConfiguration<BoxTracking>
     {
-        protected override void Initialize(EntityTypeBuilder<Traceability> builder)
+        protected override void Initialize(EntityTypeBuilder<BoxTracking> builder)
         {
             base.Initialize(builder);
 
-            builder.ToTable("Traceabilities");
-            builder.Property(x => x.Id).HasColumnName("TraceabilityID");
-            builder.HasKey(b => b.Id).HasName("TraceabilityID");
+            builder.ToTable("BoxesTrackings");
+            builder.Property(x => x.Id).HasColumnName("BoxTrackingID");
+            builder.HasKey(b => b.Id).HasName("BoxTrackingID");
 
             builder.HasOne(x => x.Box)
                 .WithMany(x => x.Traceabilities)
@@ -22,9 +22,9 @@ namespace CtrlBox.Infra.Context.Mapping
                 .WithMany(x => x.Traceabilities)
                 .HasForeignKey(x => x.ProductItemID);
 
-            builder.HasOne(x => x.TraceType)
-                .WithMany(x => x.Traceabilities)
-                .HasForeignKey(x => x.TraceTypeID);
+            builder.HasOne(x => x.TrackingType)
+                .WithMany(x => x.BoxesTrackings)
+                .HasForeignKey(x => x.TrackingTypeID);
         }
     }
 }

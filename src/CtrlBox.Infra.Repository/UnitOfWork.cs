@@ -92,9 +92,9 @@ namespace CtrlBox.Infra.Repository
                 IBoxRepository repository = new BoxRepository(_dbContext);
                 RepositoriesCustom.Add(typeof(T), repository);
             }
-            else if (typeof(ITraceabilityRepository).Equals((typeof(T))) && !RepositoriesCustom.Keys.Contains(typeof(T)))
+            else if (typeof(IBoxTrackingRepository).Equals((typeof(T))) && !RepositoriesCustom.Keys.Contains(typeof(T)))
             {
-                ITraceabilityRepository repository = new TraceabilityRepository(_dbContext);
+                IBoxTrackingRepository repository = new BoxTrackingRepository(_dbContext);
                 RepositoriesCustom.Add(typeof(T), repository);
             }
         }

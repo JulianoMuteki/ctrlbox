@@ -20,12 +20,12 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Product> Products { get; set; }
         public ICollection<BoxType> BoxesTypes { get; set; }
-        public ICollection<TraceType> TracesTypes { get; set; }
+        public ICollection<TrackingType> TracesTypes { get; set; }
 
         public Picture()
             :base()
         {
-            this.TracesTypes = new HashSet<TraceType>();
+            this.TracesTypes = new HashSet<TrackingType>();
             this.Products = new HashSet<Product>();
             this.BoxesTypes = new HashSet<BoxType>();
 

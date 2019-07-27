@@ -5,17 +5,17 @@ using System;
 
 namespace CtrlBox.Application.AutoMapper
 {
-   public class TraceTypeProfile : Profile
+   public class TrackingTypeProfile : Profile
     {
-        public TraceTypeProfile()
+        public TrackingTypeProfile()
         {
-            CreateMap<TraceType, TraceTypeVM>()
+            CreateMap<TrackingType, TrackingTypeVM>()
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id))
-             .ForMember(dest => dest.TypeTrace, opts => opts.MapFrom(src =>
-                   Enum.GetName(typeof(TypeTrace), src.TypeTrace)));
+             .ForMember(dest => dest.TrackType, opts => opts.MapFrom(src =>
+                   Enum.GetName(typeof(TrackType), src.TrackType)));
 
-            CreateMap<TraceTypeVM, TraceType>()
+            CreateMap<TrackingTypeVM, TrackingType>()
                 .ForMember(dest => dest.Id,
                           opts => opts.MapFrom(src => src.DT_RowId))
 

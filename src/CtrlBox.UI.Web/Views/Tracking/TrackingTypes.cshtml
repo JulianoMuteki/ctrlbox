@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "TracesTypes";
+    ViewData["Title"] = "TrackingTypes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,12 +8,12 @@
 @section scriptsViews
     {
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
-    <script src="~/scripts/controllerJS/views/trace-type.js"></script>
+    <script src="~/scripts/controllerJS/views/tracking-type.js"></script>
 }
 
 <script type="text/javascript">
     jQuery(document).ready(function () {
-        TraceTypeComponents.init();
+        TrackingTypeComponents.init();
     });
 </script>
 
@@ -45,14 +45,14 @@
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-edit"></i>List all Traces Types</div>
+                        <div class="caption"><i class="icon-edit"></i>List all tracking Types</div>
                         <div class="actions">
-                            <a asp-action="CreateTraceType" class="btn green"><i class="icon-plus"></i> New Trace Type</a>
-                            <a asp-action="Create" class="btn purple"><i class="icon-plus"></i> Data load trace</a>
+                            <a asp-action="CreateTrackingType" class="btn green"><i class="icon-plus"></i> New tracking type</a>
+                            <a asp-action="Create" class="btn purple"><i class="icon-plus"></i> Data load trackings</a>
                         </div>
                     </div>
                     <div class="portlet-body no-more-tables">
-                        <table id="tbTracesTypes" class="table-bordered table-striped table-condensed cf">
+                        <table id="tbTrackingTypes" class="table-bordered table-striped table-condensed cf">
                             <thead class="cf">
                                 <tr>
                                     <th>Description</th>

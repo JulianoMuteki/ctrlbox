@@ -354,23 +354,23 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TracesTypes",
+                name: "TrackingsTypes",
                 columns: table => new
                 {
-                    TraceTypeID = table.Column<Guid>(nullable: false),
+                    TrackingTypeID = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
                     IsDelete = table.Column<bool>(nullable: false),
                     IsDisable = table.Column<bool>(nullable: false),
-                    TypeTrace = table.Column<int>(nullable: false),
+                    TrackType = table.Column<int>(nullable: false),
                     Description = table.Column<string>(maxLength: 250, nullable: false),
                     PictureID = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("TraceTypeID", x => x.TraceTypeID);
+                    table.PrimaryKey("TrackingTypeID", x => x.TrackingTypeID);
                     table.ForeignKey(
-                        name: "FK_TracesTypes_Pictures_PictureID",
+                        name: "FK_TrackingsTypes_Pictures_PictureID",
                         column: x => x.PictureID,
                         principalTable: "Pictures",
                         principalColumn: "PictureID",
@@ -686,38 +686,38 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Traceabilities",
+                name: "BoxesTrackings",
                 columns: table => new
                 {
-                    TraceabilityID = table.Column<Guid>(nullable: false),
+                    BoxTrackingID = table.Column<Guid>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: false),
                     IsDelete = table.Column<bool>(nullable: false),
                     IsDisable = table.Column<bool>(nullable: false),
                     ProductItemID = table.Column<Guid>(nullable: true),
                     BoxID = table.Column<Guid>(nullable: true),
-                    TraceTypeID = table.Column<Guid>(nullable: false)
+                    TrackingTypeID = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("TraceabilityID", x => x.TraceabilityID);
+                    table.PrimaryKey("BoxTrackingID", x => x.BoxTrackingID);
                     table.ForeignKey(
-                        name: "FK_Traceabilities_Boxes_BoxID",
+                        name: "FK_BoxesTrackings_Boxes_BoxID",
                         column: x => x.BoxID,
                         principalTable: "Boxes",
                         principalColumn: "BoxID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Traceabilities_ProductItems_ProductItemID",
+                        name: "FK_BoxesTrackings_ProductItems_ProductItemID",
                         column: x => x.ProductItemID,
                         principalTable: "ProductItems",
                         principalColumn: "ProductItemID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Traceabilities_TracesTypes_TraceTypeID",
-                        column: x => x.TraceTypeID,
-                        principalTable: "TracesTypes",
-                        principalColumn: "TraceTypeID",
+                        name: "FK_BoxesTrackings_TrackingsTypes_TrackingTypeID",
+                        column: x => x.TrackingTypeID,
+                        principalTable: "TrackingsTypes",
+                        principalColumn: "TrackingTypeID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -835,26 +835,26 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TracesClients",
+                name: "BoxsTrackingsClients",
                 columns: table => new
                 {
-                    TraceID = table.Column<Guid>(nullable: false),
+                    BoxTrackingID = table.Column<Guid>(nullable: false),
                     ClientID = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TracesClients", x => new { x.ClientID, x.TraceID });
+                    table.PrimaryKey("PK_BoxsTrackingsClients", x => new { x.ClientID, x.BoxTrackingID });
                     table.ForeignKey(
-                        name: "FK_TracesClients_Clients_ClientID",
+                        name: "FK_BoxsTrackingsClients_BoxesTrackings_BoxTrackingID",
+                        column: x => x.BoxTrackingID,
+                        principalTable: "BoxesTrackings",
+                        principalColumn: "BoxTrackingID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BoxsTrackingsClients_Clients_ClientID",
                         column: x => x.ClientID,
                         principalTable: "Clients",
                         principalColumn: "ClientID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TracesClients_Traceabilities_TraceID",
-                        column: x => x.TraceID,
-                        principalTable: "Traceabilities",
-                        principalColumn: "TraceabilityID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -961,9 +961,29 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "ProductItemID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BoxesTrackings_BoxID",
+                table: "BoxesTrackings",
+                column: "BoxID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxesTrackings_ProductItemID",
+                table: "BoxesTrackings",
+                column: "ProductItemID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxesTrackings_TrackingTypeID",
+                table: "BoxesTrackings",
+                column: "TrackingTypeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BoxesTypes_PictureID",
                 table: "BoxesTypes",
                 column: "PictureID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoxsTrackingsClients_BoxTrackingID",
+                table: "BoxsTrackingsClients",
+                column: "BoxTrackingID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Checks_SaleID",
@@ -1062,28 +1082,8 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "StockID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Traceabilities_BoxID",
-                table: "Traceabilities",
-                column: "BoxID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Traceabilities_ProductItemID",
-                table: "Traceabilities",
-                column: "ProductItemID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Traceabilities_TraceTypeID",
-                table: "Traceabilities",
-                column: "TraceTypeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TracesClients_TraceID",
-                table: "TracesClients",
-                column: "TraceID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TracesTypes_PictureID",
-                table: "TracesTypes",
+                name: "IX_TrackingsTypes_PictureID",
+                table: "TrackingsTypes",
                 column: "PictureID");
         }
 
@@ -1109,6 +1109,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "BoxesProductItems");
+
+            migrationBuilder.DropTable(
+                name: "BoxsTrackingsClients");
 
             migrationBuilder.DropTable(
                 name: "Checks");
@@ -1141,10 +1144,10 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "SystemConfigurations");
 
             migrationBuilder.DropTable(
-                name: "TracesClients");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "BoxesTrackings");
 
             migrationBuilder.DropTable(
                 name: "Payments");
@@ -1156,19 +1159,22 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "Stocks");
 
             migrationBuilder.DropTable(
-                name: "Traceabilities");
-
-            migrationBuilder.DropTable(
-                name: "Sales");
-
-            migrationBuilder.DropTable(
                 name: "Boxes");
 
             migrationBuilder.DropTable(
                 name: "ProductItems");
 
             migrationBuilder.DropTable(
-                name: "TracesTypes");
+                name: "TrackingsTypes");
+
+            migrationBuilder.DropTable(
+                name: "Sales");
+
+            migrationBuilder.DropTable(
+                name: "BoxesTypes");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Clients");
@@ -1177,10 +1183,7 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "Deliveries");
 
             migrationBuilder.DropTable(
-                name: "BoxesTypes");
-
-            migrationBuilder.DropTable(
-                name: "Products");
+                name: "Pictures");
 
             migrationBuilder.DropTable(
                 name: "Addresses");
@@ -1190,9 +1193,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Pictures");
         }
     }
 }

@@ -5,9 +5,9 @@ using System;
 
 namespace CtrlBox.Application.AutoMapper
 {
-   public class TraceTypeProfile : Profile
+   public class TrackingTypeProfile : Profile
     {
-        public TraceTypeProfile()
+        public TrackingTypeProfile()
         {
             CreateMap<TrackingType, TrackingTypeVM>()
                 .ForMember(dest => dest.DT_RowId,

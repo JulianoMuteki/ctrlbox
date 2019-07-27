@@ -4,9 +4,9 @@ using CtrlBox.Domain.Entities;
 
 namespace CtrlBox.Application.AutoMapper
 {
-    public class TraceabilityProfile : Profile
+    public class BoxTrackingProfile : Profile
     {
-        public TraceabilityProfile()
+        public BoxTrackingProfile()
         {
             CreateMap<BoxTracking, BoxTrackingVM>()
                 .ForMember(dest => dest.DT_RowId,

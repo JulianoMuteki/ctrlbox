@@ -9,6 +9,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         void AddTraceType(TrackingTypeVM entity);
         ICollection<TrackingTypeVM> GetAllTrackingsTypes();
         ICollection<BoxTrackingVM> GetByBoxID(Guid boxID);
-
+        TrackingTypeVM GetTrackTypeById(Guid guid);
     }
 }

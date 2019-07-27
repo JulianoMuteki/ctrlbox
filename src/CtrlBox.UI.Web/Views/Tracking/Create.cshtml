@@ -23,6 +23,25 @@
             allowClear: true
         });
 
+        $("#ddlTrackingTypes").change(function (event) {
+            if ($(this).val() !== '0') {
+                var url = '@Url.Content("~/Tracking/GetAjaxHandlerTrackingType")'
+                $.getJSON(url, { trackingTypeID: $(this).val() }, function (data) {
+                    
+                    if(data.aaData.TrackType !== 'State')                    {
+                        $("#grpClient").show(); 
+                    }
+                    else {
+                        $("#grpClient").hide();
+                    }
+                    //$.each(data, function (index, obj) {
+                    //    var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
+                    //    $(slt2RolesToUser).append(newOption).trigger('change');
+                    //});
+                });
+            }
+        });
+
         $('.radio input[type=radio][name=HasProduct]').change(function () {
             var hasProduct = $(".radio input[type=radio][id=idHasProduct]").is(":checked");
 
@@ -73,7 +92,7 @@
                                     <select id="ddlTrackingTypes" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-for="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"><option value="0">Please select Tracking Types</option></select>
                                 </div>
                             </div>
-                            <div class="control-group">
+                            <div id="grpClient" style="display:none;" class="control-group">
                                 <label class="control-label">Client </label>
                                 <div class="controls">
                                     <select id="ddlClient" class="span6 select2_option" data-placeholder="Choose a box" name="ClientID" asp-for="ClientID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"><option value="0">Please select client</option></select>

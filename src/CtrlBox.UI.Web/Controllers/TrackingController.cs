@@ -140,5 +140,24 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet]
+        public IActionResult GetAjaxHandlerTrackingType(string trackingTypeID)
+        {
+            try
+            {
+                var trackingTypes = _boxTrackingApplicationService.GetTrackTypeById(new Guid(trackingTypeID));
+
+                return Json(new
+                {
+                    aaData = trackingTypes,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

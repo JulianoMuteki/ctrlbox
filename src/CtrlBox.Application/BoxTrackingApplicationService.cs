@@ -147,6 +147,24 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
+        public TrackingTypeVM GetTrackTypeById(Guid guid)
+        {
+            try
+            {
+                var trackingType = _unitOfWork.Repository<TrackingType>().GetById(guid);
+                var trackingTypeVM = _mapper.Map<TrackingTypeVM>(trackingType);
+                return trackingTypeVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching GetAllTraceType", nameof(this.GetTrackTypeById), ex);
+            }
+        }
+
         public BoxTrackingVM Update(BoxTrackingVM updated)
         {
             throw new NotImplementedException();

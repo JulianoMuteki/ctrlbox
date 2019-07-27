@@ -53,5 +53,32 @@ namespace CtrlBox.UI.Web.Controllers
                 Message = "OK"
             });
         }
+
+        public ActionResult CreateCategory()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateCategory(CategoryVM categoryVM)
+        {
+            _clientApplicationService.AddCategory(categoryVM);
+            return View();
+        }
+
+        public ActionResult IndexCategories()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerCategories()
+        {
+            var categories = _clientApplicationService.GetAllCategories();
+            return Json(new
+            {
+                aaData = categories
+            });
+        }      
     }
 }

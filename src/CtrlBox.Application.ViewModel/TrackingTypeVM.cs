@@ -5,7 +5,7 @@ namespace CtrlBox.Application.ViewModel
 {
     public class TrackingTypeVM : ViewModelBase
     {
-        public string TrackingType { get; set; }
+        public string TrackType { get; set; }
         public string Description { get; set; }
 
         public Guid? PictureID { get; set; }

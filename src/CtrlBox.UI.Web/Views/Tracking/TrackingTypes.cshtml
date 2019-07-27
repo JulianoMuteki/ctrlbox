@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "TrackingTypes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section scriptsViews
+    {
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <script src="~/scripts/controllerJS/views/tracking-type.js"></script>
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        TrackingTypeComponents.init();
+    });
+</script>
+
+<!-- BEGIN PAGE -->
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Traces</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Index</a>
+                    </li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-edit"></i>List all tracking Types</div>
+                        <div class="actions">
+                            <a asp-action="CreateTrackingType" class="btn green"><i class="icon-plus"></i> New tracking type</a>
+                            <a asp-action="Create" class="btn purple"><i class="icon-plus"></i> Data load trackings</a>
+                        </div>
+                    </div>
+                    <div class="portlet-body no-more-tables">
+                        <table id="tbTrackingTypes" class="table-bordered table-striped table-condensed cf">
+                            <thead class="cf">
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
+        </div>
+        <!-- END PAGE CONTENT -->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+<!-- END PAGE -->

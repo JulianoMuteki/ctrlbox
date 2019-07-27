@@ -6,7 +6,7 @@ namespace CtrlBox.Domain.Entities
 {
     public class TrackingType : EntityBase
     {
-        public TypeTrace TypeTrace { get; set; }
+        public TrackType TrackType { get; set; }
         public string Description { get; set; }
 
         public Guid? PictureID { get; set; }
@@ -29,7 +29,7 @@ namespace CtrlBox.Domain.Entities
         }
     }
 
-    public enum TypeTrace
+    public enum TrackType
     {
         Place = 1,
         State = 2

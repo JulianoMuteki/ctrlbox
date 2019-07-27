@@ -18,7 +18,7 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                 .HasMaxLength(250);
 
-            builder.Property(x => x.TypeTrace)
+            builder.Property(x => x.TrackType)
                 .HasConversion<int>();
 
             builder.HasOne(tk => tk.Picture)

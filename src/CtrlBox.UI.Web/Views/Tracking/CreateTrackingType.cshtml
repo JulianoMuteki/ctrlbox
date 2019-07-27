@@ -1,9 +1,10 @@
 ﻿@model CtrlBox.Application.ViewModel.TrackingTypeVM
 
 @{
-    ViewData["Title"] = "CreateTraceType";
+    ViewData["Title"] = "Create Tracking Type";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section cssViews{
     <link href="~/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
 }
@@ -40,7 +41,7 @@
                     </div>
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
-                        <form asp-action="CreateTraceType" enctype="multipart/form-data" asp-controller="Trace" class="form-horizontal">
+                        <form asp-action="CreateTrackingTypes" enctype="multipart/form-data" asp-controller="Tracking" class="form-horizontal">
                             <div class="control-group">
                                 <label class="control-label">Description</label>
                                 <div class="controls">
@@ -51,7 +52,7 @@
                             <div class="control-group">
                                 <label class="control-label">Type Trace</label>
                                 <div class="controls">
-                                    <select id="ddlTypeTrace" class="span6 select2_option" data-placeholder="Choose a TrackType" name="TrackType" asp-for=TrackType"><option value="1">TrackType</option><option value="2">State</option></select>
+                                    <select id="ddlTypeTrace" class="span6 select2_option" data-placeholder="Choose a TrackType" name="TrackType" asp-for="TrackType"><option value="1">Place</option><option value="2">State</option></select>
                                 </div>
                             </div>
                             <partial name="~/Views/PartialsSections/_ViewUploadPicture.cshtml" />
@@ -69,5 +70,7 @@
     </div>
     <!-- END PAGE CONTAINER-->
 </div>
+
+
 
 

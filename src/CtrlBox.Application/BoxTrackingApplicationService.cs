@@ -11,12 +11,12 @@ using CtrlBox.Domain.Interfaces.Repository;
 
 namespace CtrlBox.Application
 {
-    public class TraceabilityApplicationService : ITraceabilityApplicationService
+    public class BoxTrackingApplicationService : IBoxTrackingApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public TraceabilityApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
+        public BoxTrackingApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -48,7 +48,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<TraceabilityApplicationService>("Unexpected error fetching add trace", nameof(this.Add), ex);
+                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching add trace", nameof(this.Add), ex);
             }
         }
 
@@ -57,7 +57,7 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public void AddTraceType(TraceTypeVM entity)
+        public void AddTraceType(TrackingTypeVM entity)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<TraceabilityApplicationService>("Unexpected error fetching add trace type", nameof(this.AddTraceType), ex);
+                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching add trace type", nameof(this.AddTraceType), ex);
             }
         }
 
@@ -101,12 +101,12 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public ICollection<TraceTypeVM> GetAllTracesTypes()
+        public ICollection<TrackingTypeVM> GetAllTrackingsTypes()
         {
             try
             {
-                var tracesTypes = _unitOfWork.RepositoryCustom<ITraceabilityRepository>().GetTracesTypesWithPictures();
-                var tracesTypesVMs = _mapper.Map<IList<TraceTypeVM>>(tracesTypes);
+                var tracesTypes = _unitOfWork.RepositoryCustom<IBoxTrackingRepository>().GetTrackingsTypesWithPictures();
+                var tracesTypesVMs = _mapper.Map<IList<TrackingTypeVM>>(tracesTypes);
                 return tracesTypesVMs;
             }
             catch (CustomException exc)
@@ -115,7 +115,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<TraceabilityApplicationService>("Unexpected error fetching GetAllTracesTypes", nameof(this.GetAllTracesTypes), ex);
+                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching GetAllTracesTypes", nameof(this.GetAllTrackingsTypes), ex);
             }
         }
 
@@ -123,7 +123,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var tracesTypes = _unitOfWork.RepositoryCustom<ITraceabilityRepository>().GetByBoxIDWithTraceType(boxID);
+                var tracesTypes = _unitOfWork.RepositoryCustom<IBoxTrackingRepository>().GetByBoxIDWithTrackingType(boxID);
                 var tracesTypesVMs = _mapper.Map<IList<BoxTrackingVM>>(tracesTypes);
                 return tracesTypesVMs;
             }
@@ -133,7 +133,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<TraceabilityApplicationService>("Unexpected error fetching GetAll TraceabilityVM", nameof(this.GetByBoxID), ex);
+                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching GetAll TraceabilityVM", nameof(this.GetByBoxID), ex);
             }
         }
 

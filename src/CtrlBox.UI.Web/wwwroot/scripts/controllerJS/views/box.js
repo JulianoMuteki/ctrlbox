@@ -73,7 +73,7 @@ var BoxComponents = function () {
                             "sType": "html",
                             "mRender": function (data, type, row) {
                                 if (type === 'display') {
-                                    return '<a href="/Trace/Index?boxID=' + data.DT_RowId + '" class="edit"><i class="icon-external-link"></i> Trace</a>';
+                                    return '<a href="/Tracking/Index?boxID=' + data.DT_RowId + '" class="edit"><i class="icon-external-link"></i> Tracking</a>';
                                 }
                                 return data;
                             }

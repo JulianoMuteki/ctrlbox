@@ -47,32 +47,32 @@
                     </div>
                 </div>
                 <ul class="timeline">
-                    @foreach (var traceability in Model)
+                    @foreach (var boxTracking in Model)
                     {
                         <li class="timeline-yellow">
                             <div class="timeline-time">
-                                <span class="date">@traceability.CreationDate.ToString("dd/MM/yyyy")</span>
-                                <span class="time">@traceability.CreationDate.ToString("hh:mm")</span>
+                                <span class="date">@boxTracking.CreationDate.ToString("dd/MM/yyyy")</span>
+                                <span class="time">@boxTracking.CreationDate.ToString("hh:mm")</span>
                             </div>
                             <div class="timeline-icon">
-                                @if (traceability.TrackingType.Picture == null)
+                                @if (boxTracking.TrackingType.Picture == null)
                                 {
                                     <i class="icon-trophy"></i> }
                                 else
                                 {
-                                    <img src="@traceability.TrackingType.Picture.SrcBase64Image" />
+                                    <img src="@boxTracking.TrackingType.Picture.SrcBase64Image" />
                                 }
                             </div>
                             <div class="timeline-body">
-                                <h2>@traceability.TrackingType.Description - @traceability.TrackingType.TrackType</h2>
-                                @if (traceability.BoxesTrackingClients.Count > 0)
+                                <h2>@boxTracking.TrackingType.Description - @boxTracking.TrackingType.TrackType</h2>
+                                @if (boxTracking.BoxesTrackingClients.Count > 0)
                                 {
                                     <div class="timeline-content">
                                         <i class="icon-map-marker"></i>
-                                        @traceability.BoxesTrackingClients.First().Client.Name
-                                        - <a onClick="AppCtrlBox.callModalAddress('@traceability.BoxesTrackingClients.First().Client.AddressID')" href="#" class="nav-link">
+                                        @boxTracking.BoxesTrackingClients.First().Client.Name
+                                        - <a onClick="AppCtrlBox.callModalAddress('@boxTracking.BoxesTrackingClients.First().Client.AddressID')" href="#" class="nav-link">
                                             Address <i class="m-icon-swapright m-icon-white"></i>
-                                        </a>                                      
+                                        </a>
                                     </div>
                                 }
 

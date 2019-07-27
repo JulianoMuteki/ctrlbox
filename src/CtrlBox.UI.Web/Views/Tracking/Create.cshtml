@@ -45,7 +45,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.html">Traceability</a>
+                        <a href="index.html">Tracking Box</a>
                         <span class="icon-angle-right"></span>
                     </li>
                     <li>
@@ -62,15 +62,15 @@
             <div class="span12">
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-plus"></i>Data load Traceability</div>
+                        <div class="caption"><i class="icon-plus"></i>Data load tracking</div>
                     </div>
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
-                        <form asp-action="Create" asp-controller="Trace" class="form-horizontal">
+                        <form asp-action="Create" asp-controller="Tracking" class="form-horizontal">
                             <div class="control-group">
-                                <label class="control-label">TracesTypes</label>
+                                <label class="control-label">Tracking Types</label>
                                 <div class="controls">
-                                    <select id="ddlTracesTypes" class="span6 select2_option" data-placeholder="Choose a Traces Types" name="TraceTypeID" asp-for="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TracesTypes"])"><option value="0">Please select TracesTypes</option></select>
+                                    <select id="ddlTrackingTypes" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-for="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"><option value="0">Please select Tracking Types</option></select>
                                 </div>
                             </div>
                             <div class="control-group">

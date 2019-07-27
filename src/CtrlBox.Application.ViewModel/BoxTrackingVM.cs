@@ -16,6 +16,6 @@ namespace CtrlBox.Application.ViewModel
         public Guid TrackingTypeID { get; set; }
         public TrackingTypeVM TrackingType { get; set; }
 
-        public ICollection<BoxTrackingClientVM> BoxsTrackingsClients { get; set; }
+        public ICollection<BoxTrackingClientVM> BoxesTrackingClients { get; set; }
     }
 }

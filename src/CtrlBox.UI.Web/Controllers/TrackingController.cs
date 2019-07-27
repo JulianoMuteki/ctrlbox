@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
@@ -12,14 +10,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
-    public class TraceController : Controller
+    public class TrackingController : Controller
     {
         private readonly IBoxTrackingApplicationService _boxTrackingApplicationService;
         private readonly IBoxApplicationService _boxApplicationService;
         private readonly IProductApplicationService _productApplicationService;
         private readonly IClientApplicationService _clientApplicationService;
 
-        public TraceController(IBoxTrackingApplicationService boxTrackingApplicationService, IBoxApplicationService boxApplicationService, 
+        public TrackingController(IBoxTrackingApplicationService boxTrackingApplicationService, IBoxApplicationService boxApplicationService,
                                 IProductApplicationService productApplicationService, IClientApplicationService clientApplicationService)
         {
             _boxApplicationService = boxApplicationService;
@@ -31,7 +29,7 @@ namespace CtrlBox.UI.Web.Controllers
         public IActionResult Index(Guid boxID)
         {
             var boxVM = _boxApplicationService.GetBoxesByIDWithBoxTypeAndProductItems(boxID);
-            ViewData["BoxViewData"] = boxVM;//$"{boxVM.Barcode} - {boxVM.Description} - {boxVM.BoxType.Name}";
+            ViewData["BoxViewData"] = boxVM;
 
             var traces = _boxTrackingApplicationService.GetByBoxID(boxID);
             return View(traces);
@@ -53,7 +51,7 @@ namespace CtrlBox.UI.Web.Controllers
                                             Text = $"{prod.Barcode} - {prod.Product.Name }"
                                         }).ToList();
 
-            var tracesTypes = _boxTrackingApplicationService.GetAllTrackingsTypes()
+            var trackingsTypes = _boxTrackingApplicationService.GetAllTrackingsTypes()
                             .Select(trace => new SelectListItem
                             {
                                 Value = trace.DT_RowId,
@@ -70,7 +68,7 @@ namespace CtrlBox.UI.Web.Controllers
             ViewData["Clients"] = clients;
             ViewData["Boxes"] = boxes;
             ViewData["ProductsItems"] = productsItems;
-            ViewData["TracesTypes"] = tracesTypes;
+            ViewData["TrackingTypes"] = trackingsTypes;
 
             return View();
         }
@@ -93,13 +91,13 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        public IActionResult TracesTypes()
+        public IActionResult TrackingTypes()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult GetAjaxHandlerTracesTypes()
+        public IActionResult GetAjaxHandlerTrackingTypes()
         {
             try
             {
@@ -117,13 +115,13 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        public IActionResult CreateTraceType()
+        public IActionResult CreateTrackingType()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreateTraceType(TrackingTypeVM trackingTypeVM, IFormFile FilePicture)
+        public IActionResult CreateTrackingTypes(TrackingTypeVM trackingTypeVM, IFormFile FilePicture)
         {
             try
             {
@@ -131,7 +129,7 @@ namespace CtrlBox.UI.Web.Controllers
                 trackingTypeVM.Picture = imageEntity;
 
                 _boxTrackingApplicationService.AddTraceType(trackingTypeVM);
-                return RedirectToAction("TracesTypes");
+                return RedirectToAction("TrackingTypes");
             }
             catch (CustomException exc)
             {
@@ -142,6 +140,5 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
-
     }
 }

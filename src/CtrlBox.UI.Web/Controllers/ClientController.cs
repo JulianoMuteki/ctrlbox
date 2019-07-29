@@ -2,16 +2,21 @@
 using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace CtrlBox.UI.Web.Controllers
 {
     public class ClientController : Controller
     {
         private readonly IClientApplicationService _clientApplicationService;
+        private readonly IAddressApplicationService _addressApplicationService;
+        private object categories;
 
-        public ClientController(IClientApplicationService clientService)
+        public ClientController(IClientApplicationService clientService, IAddressApplicationService addressApplicationService)
         {
             _clientApplicationService = clientService;
+            _addressApplicationService = addressApplicationService;
         }
 
         public ActionResult Index()
@@ -31,6 +36,22 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult Create()
         {
+            var addresses = _addressApplicationService.GetAll()
+                                        .Select(address => new SelectListItem
+                                        {
+                                            Value = address.DT_RowId,
+                                            Text = $"{address.Street} - {address.Number} - {address.City} - {address.CEP}"
+                                        }).ToList();
+            ViewData["Addresses"] = addresses;
+
+            var categories = _clientApplicationService.GetAllCategories()
+                            .Select(category => new SelectListItem
+                            {
+                                Value = category.DT_RowId,
+                                Text = category.Name
+                            }).ToList();
+            ViewData["Categories"] = categories;
+
             return View();
         }
 
@@ -38,8 +59,7 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult Create(ClientVM clientVM)
         {
             _clientApplicationService.Add(clientVM);
-            var clients = _clientApplicationService.GetAll();
-            return View("Index", clients);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

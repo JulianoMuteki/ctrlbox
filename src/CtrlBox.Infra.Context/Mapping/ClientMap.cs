@@ -18,13 +18,6 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                 .HasMaxLength(250);
 
-            builder.Property(e => e.QuantityBoxes)
-                .IsRequired();
-
-            builder.Property(e => e.BalanceDue)
-                 .HasColumnType("float")
-                .IsRequired();
-
             builder.Property(e => e.Contact)
                 .IsRequired()
                 .HasMaxLength(250);

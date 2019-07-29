@@ -28,7 +28,7 @@ namespace CtrlBox.Application
             try
             {
                 var client = _mapper.Map<Client>(entity);
-
+                client.SetCategories(entity.ClientsCategoriesID);
                 _unitOfWork.Repository<Client>().Add(client);
                _unitOfWork.CommitSync();
 

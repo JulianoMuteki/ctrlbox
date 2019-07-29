@@ -91,11 +91,9 @@ namespace CtrlBox.Infra.Context
                 {
                     ClientVM client = new ClientVM();
                     client.Name = $"Cliente - {i}";
-                    client.BalanceDue = 0;
                     client.Contact = $"Contanto - {i}";
                     client.SaleIsFinished = false;
                     client.Phone = "19-99999-9999";
-                    client.QuantityBoxes = 0;
                     client.Address = addressVM;
                     clientService.Add(client);
                 }

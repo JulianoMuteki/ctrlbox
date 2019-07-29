@@ -8,8 +8,6 @@ namespace CtrlBox.Domain.Entities
     public class Client : EntityBase
     {
         public string Name { get; set; }
-        public int QuantityBoxes { get; set; }
-        public float BalanceDue { get; set; }
         public string Phone { get; set; }
         public string Contact { get; set; }
 
@@ -30,6 +28,20 @@ namespace CtrlBox.Domain.Entities
             this.RoutesClients = new HashSet<RouteClient>();
             this.Sales = new HashSet<Sale>();         
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
+        }
+
+        public void SetCategories(string[] clientsCategoriesID)
+        {
+            foreach (var categoryID in clientsCategoriesID)
+            {
+                ClientCategory clientCategor = new ClientCategory()
+                {
+                    ClientID = this.Id,
+                    CategoryID = new Guid(categoryID)
+                };
+
+                this.ClientsCategories.Add(clientCategor);
+            }
         }
 
         public void Init()

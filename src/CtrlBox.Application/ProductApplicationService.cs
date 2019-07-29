@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
+using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
@@ -394,7 +395,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var productsItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.Status == ProductItemStatus.AvailableStock).Take(quantity);
+                var productsItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.Status == EProductItemStatus.AvailableStock).Take(quantity);
                 
                 var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
                 return productsItemsVMs;

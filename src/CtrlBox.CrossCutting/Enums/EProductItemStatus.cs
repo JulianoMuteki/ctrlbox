@@ -1,7 +1,7 @@
 ﻿
-namespace CtrlBox.CrossCutting
+namespace CtrlBox.CrossCutting.Enums
 {
-    public enum ProductItemStatus
+    public enum EProductItemStatus
     {
         AvailableStock = 0,
         InBox = 1,

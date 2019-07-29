@@ -1,4 +1,4 @@
-﻿using CtrlBox.CrossCutting;
+﻿using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace CtrlBox.Domain.Entities
 
         public Guid ProductID { get; set; }
         public Product Product { get; set; }
-        public ProductItemStatus Status { get; set; }
+        public EProductItemStatus Status { get; set; }
 
         public ICollection<BoxProductItem> LoadBoxesProductItems { get; set; }
         public ICollection<BoxTracking> Traceabilities { get; set; }
@@ -28,13 +28,13 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                this.Status = ProductItemStatus.AvailableStock;
+                this.Status = EProductItemStatus.AvailableStock;
             }
         }
 
         internal void PutInTheBox()
         {
-            this.Status = ProductItemStatus.InBox;
+            this.Status = EProductItemStatus.InBox;
         }
     }
 }

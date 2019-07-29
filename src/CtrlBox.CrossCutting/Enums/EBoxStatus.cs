@@ -1,7 +1,7 @@
 ﻿
-namespace CtrlBox.CrossCutting
+namespace CtrlBox.CrossCutting.Enums
 {
-   public enum BoxStatus
+    public enum EBoxStatus
     {
         Empty = 0,
         Loading = 1,

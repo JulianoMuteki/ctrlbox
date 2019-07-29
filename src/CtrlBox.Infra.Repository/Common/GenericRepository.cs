@@ -342,5 +342,17 @@ namespace CtrlBox.Infra.Repository.Common
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteRange(ICollection<T> deleted)
+        {
+            try
+            {
+                _context.Set<T>().RemoveRange(deleted);
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching delete range", nameof(this.DeleteRange), ex);
+            }
+        }
     }
 }

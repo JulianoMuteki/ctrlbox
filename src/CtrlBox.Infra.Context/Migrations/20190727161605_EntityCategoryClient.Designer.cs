@@ -4,14 +4,16 @@ using CtrlBox.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    partial class CtrlBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20190727161605_EntityCategoryClient")]
+    partial class EntityCategoryClient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,6 +322,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("AddressID");
 
+                    b.Property<double>("BalanceDue")
+                        .HasColumnType("float");
+
                     b.Property<string>("Contact")
                         .IsRequired()
                         .HasMaxLength(250);
@@ -339,6 +344,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(250);
+
+                    b.Property<int>("QuantityBoxes");
 
                     b.HasKey("Id")
                         .HasName("ClientID");

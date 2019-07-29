@@ -28,7 +28,7 @@ namespace CtrlBox.Application
             try
             {
                 var client = _mapper.Map<Client>(entity);
-
+                client.SetCategories(entity.ClientsCategoriesID);
                 _unitOfWork.Repository<Client>().Add(client);
                _unitOfWork.CommitSync();
 
@@ -105,7 +105,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var client = _unitOfWork.Repository<Client>().GetById(id);
+                var client = _unitOfWork.RepositoryCustom<IClientRepository>().GetByIDWithCategories(id);
 
                 var clientVM = _mapper.Map<ClientVM>(client);
                 return clientVM;
@@ -127,7 +127,29 @@ namespace CtrlBox.Application
 
         public ClientVM Update(ClientVM updated)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var client = _mapper.Map<Client>(updated);
+                client.SetCategories(updated.ClientsCategoriesID);
+                var clientsCategories = _unitOfWork.Repository<ClientCategory>().FindAll(x => x.ClientID == client.Id);
+                var clientsCategoriesRemove = clientsCategories.Where(x => !client.ClientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                var clientsCategoriesAdd = client.ClientsCategories.Where(x => !clientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
+
+                _unitOfWork.Repository<Client>().Update(client);
+                _unitOfWork.Repository<ClientCategory>().AddRange(clientsCategoriesAdd);
+                _unitOfWork.Repository<ClientCategory>().DeleteRange(clientsCategoriesRemove);
+                _unitOfWork.CommitSync();
+
+                return updated;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching Update client", nameof(this.Update), ex);
+            }
         }
 
         public Task<ClientVM> UpdateAsync(ClientVM updated)
@@ -170,6 +192,44 @@ namespace CtrlBox.Application
             catch (Exception ex)
             {
                 throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get client", nameof(this.GetByRouteID), ex);
+            }
+        }
+
+        public void AddCategory(CategoryVM categoryVM)
+        {
+            try
+            {
+                var category = _mapper.Map<Category>(categoryVM);
+
+                _unitOfWork.Repository<Category>().Add(category);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all Add Category", nameof(this.AddCategory), ex);
+            }
+        }
+
+        public ICollection<CategoryVM> GetAllCategories()
+        {
+            try
+            {
+                var categories = _unitOfWork.Repository<Category>().GetAll();
+
+                var categoriesVMs = _mapper.Map<IList<CategoryVM>>(categories);
+                return categoriesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get Categories", nameof(this.GetAllCategories), ex);
             }
         }
     }

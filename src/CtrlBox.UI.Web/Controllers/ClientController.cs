@@ -2,16 +2,21 @@
 using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Linq;
 
 namespace CtrlBox.UI.Web.Controllers
 {
     public class ClientController : Controller
     {
         private readonly IClientApplicationService _clientApplicationService;
+        private readonly IAddressApplicationService _addressApplicationService;
 
-        public ClientController(IClientApplicationService clientService)
+        public ClientController(IClientApplicationService clientService, IAddressApplicationService addressApplicationService)
         {
             _clientApplicationService = clientService;
+            _addressApplicationService = addressApplicationService;
         }
 
         public ActionResult Index()
@@ -29,17 +34,39 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
 
-        public ActionResult Create()
+        public ActionResult Create(Guid clientID)
         {
-            return View();
+            var clientVM = _clientApplicationService.GetById(clientID);
+            clientVM.SetClientsCategoriesID();
+
+            var addresses = _addressApplicationService.GetAll()
+                                        .Select(address => new SelectListItem
+                                        {
+                                            Value = address.DT_RowId,
+                                            Text = $"{address.Street} - {address.Number} - {address.City} - {address.CEP}"
+                                        }).ToList();
+            ViewData["Addresses"] = addresses;
+
+            var categories = _clientApplicationService.GetAllCategories()
+                            .Select(category => new SelectListItem
+                            {
+                                Value = category.DT_RowId,
+                                Text = category.Name
+                            }).ToList();
+            ViewData["Categories"] = categories;
+
+            return View(clientVM);
         }
 
         [HttpPost]
         public ActionResult Create(ClientVM clientVM)
         {
-            _clientApplicationService.Add(clientVM);
-            var clients = _clientApplicationService.GetAll();
-            return View("Index", clients);
+            if (string.IsNullOrEmpty(clientVM.DT_RowId))
+                _clientApplicationService.Add(clientVM);
+            else
+                _clientApplicationService.Update(clientVM);
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -51,6 +78,33 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 success = true,
                 Message = "OK"
+            });
+        }
+
+        public ActionResult CreateCategory()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateCategory(CategoryVM categoryVM)
+        {
+            _clientApplicationService.AddCategory(categoryVM);
+            return View();
+        }
+
+        public ActionResult IndexCategories()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerCategories()
+        {
+            var categories = _clientApplicationService.GetAllCategories();
+            return Json(new
+            {
+                aaData = categories
             });
         }
     }

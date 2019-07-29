@@ -3,6 +3,7 @@ using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Infra.Context;
 using CtrlBox.Infra.Repository.Common;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,22 @@ namespace CtrlBox.Infra.Repository.Repositories
             catch (Exception ex)
             {
                 throw CustomException.Create<ClientRepository>("Unexpected error fetching all available clients", nameof(this.GetAvailable), ex);
+            }
+        }
+
+        public Client GetByIDWithCategories(Guid id)
+        {
+            try
+            {
+                var query = _context.Set<Client>()
+                     .Include(x => x.ClientsCategories).ThenInclude(c => c.Category)
+                     .Where(x => x.Id == id);
+                    
+                return query.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientRepository>("Unexpected error fetching GetByIDWithCategories", nameof(this.GetByIDWithCategories), ex);
             }
         }
 

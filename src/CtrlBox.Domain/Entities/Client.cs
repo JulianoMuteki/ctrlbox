@@ -8,8 +8,6 @@ namespace CtrlBox.Domain.Entities
     public class Client : EntityBase
     {
         public string Name { get; set; }
-        public int QuantityBoxes { get; set; }
-        public float BalanceDue { get; set; }
         public string Phone { get; set; }
         public string Contact { get; set; }
 
@@ -20,14 +18,30 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Sale> Sales { get; set; }
         public ICollection<RouteClient> RoutesClients { get; set; }
         public ICollection<BoxTrackingClient> TracesClients { get; set; }
+        public ICollection<ClientCategory> ClientsCategories { get; set; }
 
         public Client()
             :base()
         {
+            this.ClientsCategories = new HashSet<ClientCategory>();
             this.TracesClients = new HashSet<BoxTrackingClient>();
             this.RoutesClients = new HashSet<RouteClient>();
             this.Sales = new HashSet<Sale>();         
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
+        }
+
+        public void SetCategories(string[] clientsCategoriesID)
+        {
+            foreach (var categoryID in clientsCategoriesID)
+            {
+                ClientCategory clientCategor = new ClientCategory()
+                {
+                    ClientID = this.Id,
+                    CategoryID = new Guid(categoryID)
+                };
+
+                this.ClientsCategories.Add(clientCategor);
+            }
         }
 
         public void Init()
@@ -35,7 +49,8 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                base.ComponentValidator.Validate(this, new ClientValidator());               
+                base.ComponentValidator.Validate(this, new ClientValidator());
+                this.Contact = "Juliano";
             }
         }
     }

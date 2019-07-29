@@ -1,0 +1,67 @@
+﻿@model CtrlBox.Application.ViewModel.CategoryVM
+
+@{
+    ViewData["Title"] = "CreateCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Client</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Index</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Create Category</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-plus"></i>New Category</div>
+                    </div>
+                    <div class="portlet-body">
+                        <!-- BEGIN FORM-->
+                        <form asp-action="CreateCategory" asp-controller="Client" class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label">Name</label>
+                                <div class="controls">
+                                    <input id="cep" type="text" name="Name" placeholder="Name" class="m-wrap medium" />
+                                    <span class="help-inline">Name</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Description</label>
+                                <div class="controls">
+                                    <input id="rua" type="text" name="Description" placeholder="Description" class="m-wrap large" />
+                                    <span class="help-inline">Description</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
+                                <button type="button" class="btn">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+
+

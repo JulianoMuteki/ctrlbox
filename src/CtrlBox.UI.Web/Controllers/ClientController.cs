@@ -37,7 +37,9 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult Create(Guid clientID)
         {
             var clientVM = _clientApplicationService.GetById(clientID);
-            clientVM.SetClientsCategoriesID();
+
+            if (clientVM != null)
+                clientVM.SetClientsCategoriesID();
 
             var addresses = _addressApplicationService.GetAll()
                                         .Select(address => new SelectListItem

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CtrlBox.Application.ViewModel
@@ -29,6 +30,11 @@ namespace CtrlBox.Application.ViewModel
             this.RoutesClients = new HashSet<RouteClientVM>();
             this.Sales = new HashSet<SaleVM>();
             this.CustomersProductsValues = new HashSet<ClientProductValueVM>();
+        }
+
+        public void SetClientsCategoriesID()
+        {
+            this.ClientsCategoriesID = ClientsCategories.Select(x => x.CategoryID.ToString()).ToArray();
         }
     }
 }

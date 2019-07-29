@@ -9,5 +9,6 @@ namespace CtrlBox.Domain.Interfaces.Repository
     {
         ICollection<Client> GetAvailable(Guid routeID);
         ICollection<Client> GetNotAvailable(Guid routeID);
+        Client GetByIDWithCategories(Guid id);
     }
 }

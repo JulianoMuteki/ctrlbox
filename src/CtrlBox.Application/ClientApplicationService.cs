@@ -105,7 +105,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var client = _unitOfWork.Repository<Client>().GetById(id);
+                var client = _unitOfWork.RepositoryCustom<IClientRepository>().GetByIDWithCategories(id);
 
                 var clientVM = _mapper.Map<ClientVM>(client);
                 return clientVM;

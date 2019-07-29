@@ -3,6 +3,7 @@ using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Linq;
 
 namespace CtrlBox.UI.Web.Controllers
@@ -11,7 +12,6 @@ namespace CtrlBox.UI.Web.Controllers
     {
         private readonly IClientApplicationService _clientApplicationService;
         private readonly IAddressApplicationService _addressApplicationService;
-        private object categories;
 
         public ClientController(IClientApplicationService clientService, IAddressApplicationService addressApplicationService)
         {
@@ -34,8 +34,11 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
 
-        public ActionResult Create()
+        public ActionResult Create(Guid clientID)
         {
+            var clientVM = _clientApplicationService.GetById(clientID);
+            clientVM.SetClientsCategoriesID();
+
             var addresses = _addressApplicationService.GetAll()
                                         .Select(address => new SelectListItem
                                         {
@@ -52,7 +55,7 @@ namespace CtrlBox.UI.Web.Controllers
                             }).ToList();
             ViewData["Categories"] = categories;
 
-            return View();
+            return View(clientVM);
         }
 
         [HttpPost]

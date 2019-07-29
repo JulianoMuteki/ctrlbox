@@ -1,3 +1,0 @@
-﻿# CtrlBox.UI.VuejsApp
-
-

@@ -40,6 +40,8 @@ namespace CtrlBox.Domain.Interfaces.Base
 
         void Delete(T t);
 
+        void DeleteRange(ICollection<T> deleted);
+
         Task<int> DeleteAsync(T t);
 
         int Count();

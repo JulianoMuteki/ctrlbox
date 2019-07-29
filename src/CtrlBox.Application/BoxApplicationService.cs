@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
+using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
@@ -62,7 +63,7 @@ namespace CtrlBox.Application
 
         private void AddBoxHasProduct(int rangeProductsItems, Box box)
         {
-            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID && x.Status == ProductItemStatus.AvailableStock).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
+            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID && x.Status == EProductItemStatus.AvailableStock).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
             box.LoadProductItems(productItems);
 
             if (!box.ComponentValidator.Validate(box, new BoxValidator()))
@@ -335,7 +336,7 @@ namespace CtrlBox.Application
                         {
                             BoxTypeID = boxType.Id,
                             Description = $"{c} - With 24 Coca-Cola",
-                            Status = Enum.GetName(typeof(BoxStatus), BoxStatus.Empty),
+                            Status = Enum.GetName(typeof(EBoxStatus), EBoxStatus.Empty),
                             ProductID = new Guid("45458722-5D7C-48F9-AE8D-96CDC4B31CE8"),
                             RangeProductsItems = 24
                         };
@@ -374,7 +375,7 @@ namespace CtrlBox.Application
                         {
                             BoxTypeID = boxType.Id,
                             Description = $"{p} - With 42 engrado Coca-Cola",
-                            Status = Enum.GetName(typeof(BoxStatus), BoxStatus.Empty),
+                            Status = Enum.GetName(typeof(EBoxStatus), EBoxStatus.Empty),
                             BoxesChildren = boxesEngradados.Take(42).ToList()
                         };
                         boxPallet.ChildrenBoxesID = boxPallet.BoxesChildren.Select(x => x.DT_RowId).ToArray();
@@ -419,7 +420,7 @@ namespace CtrlBox.Application
                         {
                             BoxTypeID = boxType.Id,
                             Description = $"{i} - With 5 pallets Coca-Cola",
-                            Status = Enum.GetName(typeof(BoxStatus), BoxStatus.Empty),
+                            Status = Enum.GetName(typeof(EBoxStatus), EBoxStatus.Empty),
                             BoxesChildren = boxesPallets.Take(5).ToList(),
                         };
                         boxContainer.ChildrenBoxesID = boxContainer.BoxesChildren.Select(x => x.DT_RowId).ToArray();

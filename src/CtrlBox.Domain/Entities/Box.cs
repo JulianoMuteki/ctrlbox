@@ -1,4 +1,5 @@
 ﻿using CtrlBox.CrossCutting;
+using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace CtrlBox.Domain.Entities
     public class Box : EntityBase
     {
         public string Description { get; set; }
-        public BoxStatus Status { get; set; }
+        public EBoxStatus Status { get; set; }
 
         public int PorcentFull { get; set; }
 
@@ -130,9 +131,9 @@ namespace CtrlBox.Domain.Entities
         private void SetBoxStatus()
         {
             if (this.BoxesProductItems.Count > 0 && this.PorcentFull < 100)
-                this.Status = BoxStatus.Loading;
+                this.Status = EBoxStatus.Loading;
             else if (this.PorcentFull == 100)
-                this.Status = BoxStatus.Full;
+                this.Status = EBoxStatus.Full;
         }
 
         private void LoadFullBoxCompletedChildrem()

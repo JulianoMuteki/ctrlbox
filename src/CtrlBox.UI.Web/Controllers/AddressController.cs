@@ -9,12 +9,10 @@ namespace CtrlBox.UI.Web.Controllers
     public class AddressController : Controller
     {
         private readonly IAddressApplicationService _addressApplicationService;
-        private readonly IMapper _mapper;
 
-        public AddressController(IAddressApplicationService clientService, IMapper mapper)
+        public AddressController(IAddressApplicationService clientService)
         {
             _addressApplicationService = clientService;
-            _mapper = mapper;
         }
 
         public IActionResult Index()

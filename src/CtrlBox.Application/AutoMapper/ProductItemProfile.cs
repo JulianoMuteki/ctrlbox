@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
-using CtrlBox.CrossCutting;
+using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Entities;
 using System;
 
@@ -14,7 +14,7 @@ namespace CtrlBox.Application.AutoMapper
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Status, opts => opts.MapFrom(src =>
-                   Enum.GetName(typeof(ProductItemStatus), src.Status)));
+                   Enum.GetName(typeof(EProductItemStatus), src.Status)));
 
             CreateMap<ProductItemVM, ProductItem>()
                 .ForMember(dest => dest.Id,

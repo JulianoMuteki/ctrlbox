@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CtrlBox.Application.ViewModel
 {
-   public class ClientVM: ViewModelBase
+    public class ClientVM : ViewModelBase
     {
         public string Name { get; set; }
         public string Phone { get; set; }
@@ -22,10 +22,12 @@ namespace CtrlBox.Application.ViewModel
         public ICollection<RouteClientVM> RoutesClients { get; set; }
 
         public ICollection<ClientCategoryVM> ClientsCategories { get; set; }
-        public string[] ClientsCategoriesID { get; set; }
+        public ICollection<string> ClientsCategoriesID { get; set; }
 
         public ClientVM()
         {
+            this.ClientsCategoriesID = new List<string>();
+
             this.ClientsCategories = new HashSet<ClientCategoryVM>();
             this.RoutesClients = new HashSet<RouteClientVM>();
             this.Sales = new HashSet<SaleVM>();
@@ -34,7 +36,8 @@ namespace CtrlBox.Application.ViewModel
 
         public void SetClientsCategoriesID()
         {
-            this.ClientsCategoriesID = ClientsCategories.Select(x => x.CategoryID.ToString()).ToArray();
+            if (this.ClientsCategories.Count > 0)
+                this.ClientsCategoriesID = ClientsCategories.Select(x => x.CategoryID.ToString()).ToArray();
         }
     }
 }

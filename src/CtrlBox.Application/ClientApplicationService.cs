@@ -127,7 +127,29 @@ namespace CtrlBox.Application
 
         public ClientVM Update(ClientVM updated)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var client = _mapper.Map<Client>(updated);
+                client.SetCategories(updated.ClientsCategoriesID);
+                var clientsCategories = _unitOfWork.Repository<ClientCategory>().FindAll(x => x.ClientID == client.Id);
+                var clientsCategoriesRemove = clientsCategories.Where(x => !client.ClientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                var clientsCategoriesAdd = client.ClientsCategories.Where(x => !clientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
+
+                _unitOfWork.Repository<Client>().Update(client);
+                _unitOfWork.Repository<ClientCategory>().AddRange(clientsCategoriesAdd);
+                _unitOfWork.Repository<ClientCategory>().DeleteRange(clientsCategoriesRemove);
+                _unitOfWork.CommitSync();
+
+                return updated;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching Update client", nameof(this.Update), ex);
+            }
         }
 
         public Task<ClientVM> UpdateAsync(ClientVM updated)

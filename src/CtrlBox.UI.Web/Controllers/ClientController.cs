@@ -61,7 +61,11 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult Create(ClientVM clientVM)
         {
-            _clientApplicationService.Add(clientVM);
+            if (string.IsNullOrEmpty(clientVM.DT_RowId))
+                _clientApplicationService.Add(clientVM);
+            else
+                _clientApplicationService.Update(clientVM);
+
             return RedirectToAction("Index");
         }
 
@@ -102,6 +106,6 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 aaData = categories
             });
-        }      
+        }
     }
 }

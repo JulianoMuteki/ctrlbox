@@ -57,6 +57,7 @@
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
                         <form asp-action="Create" asp-controller="Client" class="form-horizontal">
+                            <input type="hidden" asp-for="DT_RowId" />
                             <div class="control-group">
                                 <label class="control-label">Name</label>
                                 <div class="controls">
@@ -69,6 +70,13 @@
                                 <div class="controls">
                                     <input type="text" name="Phone" placeholder="Phone" asp-for="Phone" class="m-wrap large" />
                                     <span class="help-inline">Phone</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Contact</label>
+                                <div class="controls">
+                                    <input type="text" name="Contact" placeholder="Phone" asp-for="Contact" class="m-wrap large" />
+                                    <span class="help-inline">Contact</span>
                                 </div>
                             </div>
                             <div class="control-group">

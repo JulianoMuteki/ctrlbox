@@ -33,9 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Services.Api", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.Application.ViewModel", "src\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj", "{0AC7E7CC-82D9-4CD8-A221-B596CA948504}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting", "CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj", "{DC65DCD0-5090-4112-814C-7EBC07769AF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting", "src\CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj", "{DC65DCD0-5090-4112-814C-7EBC07769AF2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting.Barcode", "CtrlBox.CrossCutting.Barcode\CtrlBox.CrossCutting.Barcode.csproj", "{59B0C138-08B0-4D49-9297-FCD2B7776B13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting.Barcode", "src\CtrlBox.CrossCutting.Barcode\CtrlBox.CrossCutting.Barcode.csproj", "{59B0C138-08B0-4D49-9297-FCD2B7776B13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

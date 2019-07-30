@@ -1,4 +1,5 @@
-﻿using CtrlBox.Domain.Common;
+﻿using CtrlBox.CrossCutting.Enums;
+using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
 
@@ -6,7 +7,7 @@ namespace CtrlBox.Domain.Entities
 {
     public class TrackingType : EntityBase
     {
-        public TrackType TrackType { get; set; }
+        public ETrackType TrackType { get; set; }
         public string Description { get; set; }
 
         public Guid? PictureID { get; set; }
@@ -27,11 +28,5 @@ namespace CtrlBox.Domain.Entities
                 base.InitBase();
             }
         }
-    }
-
-    public enum TrackType
-    {
-        Place = 1,
-        State = 2
     }
 }

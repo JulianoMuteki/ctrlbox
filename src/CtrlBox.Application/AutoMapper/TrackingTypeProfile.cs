@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Entities;
 using System;
 
@@ -13,7 +14,7 @@ namespace CtrlBox.Application.AutoMapper
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id))
              .ForMember(dest => dest.TrackType, opts => opts.MapFrom(src =>
-                   Enum.GetName(typeof(TrackType), src.TrackType)));
+                   Enum.GetName(typeof(ETrackType), src.TrackType)));
 
             CreateMap<TrackingTypeVM, TrackingType>()
                 .ForMember(dest => dest.Id,

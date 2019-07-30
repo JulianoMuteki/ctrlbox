@@ -232,5 +232,24 @@ namespace CtrlBox.Application
                 throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get Categories", nameof(this.GetAllCategories), ex);
             }
         }
+
+        public ICollection<OptiontTypeVM> GetAllOptionsTypes()
+        {
+            try
+            {
+                var optionsTypes = _unitOfWork.Repository<OptiontType>().GetAll();
+
+                var optionsTypesVMs = _mapper.Map<IList<OptiontTypeVM>>(optionsTypes);
+                return optionsTypesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get options types", nameof(this.GetAllOptionsTypes), ex);
+            }
+        }
     }
 }

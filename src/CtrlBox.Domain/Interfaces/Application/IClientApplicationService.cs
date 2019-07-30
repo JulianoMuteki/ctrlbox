@@ -11,5 +11,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<ClientVM> GetByRouteID(Guid routeID);
         void AddCategory(CategoryVM categoryVM);
         ICollection<CategoryVM> GetAllCategories();
+        ICollection<OptiontTypeVM> GetAllOptionsTypes();
     }
 }

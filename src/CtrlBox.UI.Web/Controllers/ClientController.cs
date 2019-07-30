@@ -109,5 +109,20 @@ namespace CtrlBox.UI.Web.Controllers
                 aaData = categories
             });
         }
+
+        public ActionResult OptionsTypes()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerOptionsTypes()
+        {
+            var optionsTypes = _clientApplicationService.GetAllOptionsTypes();
+            return Json(new
+            {
+                aaData = optionsTypes
+            });
+        }
     }
 }

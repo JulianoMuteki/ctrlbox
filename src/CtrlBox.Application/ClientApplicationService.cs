@@ -28,7 +28,7 @@ namespace CtrlBox.Application
             try
             {
                 var client = _mapper.Map<Client>(entity);
-                client.SetCategories(entity.ClientsCategoriesID);
+                client.SetOptionsTypes(entity.OptionsTypesID);
                 _unitOfWork.Repository<Client>().Add(client);
                _unitOfWork.CommitSync();
 
@@ -130,7 +130,7 @@ namespace CtrlBox.Application
             try
             {
                 var client = _mapper.Map<Client>(updated);
-                client.SetCategories(updated.ClientsCategoriesID);
+                client.SetOptionsTypes(updated.OptionsTypesID);
                 var clientsCategories = _unitOfWork.Repository<ClientCategory>().FindAll(x => x.ClientID == client.Id);
                 var clientsCategoriesRemove = clientsCategories.Where(x => !client.ClientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
                 var clientsCategoriesAdd = client.ClientsCategories.Where(x => !clientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();

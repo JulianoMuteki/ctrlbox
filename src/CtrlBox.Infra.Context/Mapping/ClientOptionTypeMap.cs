@@ -18,7 +18,7 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.HasOne(tk => tk.Client)
                 .WithMany(k => k.ClientsOptionsTypes)
-                .HasForeignKey(tk => tk.OptiontTypeID);
+                .HasForeignKey(tk => tk.ClientID);
         }
     }
 }

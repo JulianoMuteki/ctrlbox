@@ -32,19 +32,19 @@ namespace CtrlBox.Domain.Entities
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
         }
 
-        public void SetCategories(ICollection<string> clientsCategoriesID)
+        public void SetOptionsTypes(ICollection<string> optionsTypesID)
         {
-            if (clientsCategoriesID.Count > 0)
+            if (optionsTypesID.Count > 0)
             {
-                foreach (var categoryID in clientsCategoriesID)
+                foreach (var optionTypeID in optionsTypesID)
                 {
-                    ClientCategory clientCategor = new ClientCategory()
+                    ClientOptionType clientOptionType = new ClientOptionType()
                     {
                         ClientID = this.Id,
-                        CategoryID = new Guid(categoryID)
+                        OptiontTypeID = new Guid(optionTypeID)
                     };
 
-                    this.ClientsCategories.Add(clientCategor);
+                    this.ClientsOptionsTypes.Add(clientOptionType);
                 }
             }
         }

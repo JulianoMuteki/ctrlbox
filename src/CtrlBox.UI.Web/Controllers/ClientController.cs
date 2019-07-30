@@ -50,13 +50,13 @@ namespace CtrlBox.UI.Web.Controllers
                                         }).ToList();
             ViewData["Addresses"] = addresses;
 
-            var categories = _clientApplicationService.GetAllCategories()
-                            .Select(category => new SelectListItem
+            var optionsTypes = _clientApplicationService.GetAllOptionsTypes()
+                            .Select(option => new SelectListItem
                             {
-                                Value = category.DT_RowId,
-                                Text = category.Name
+                                Value = option.DT_RowId,
+                                Text =  $"{option.Name} - {option.EClientType}"
                             }).ToList();
-            ViewData["Categories"] = categories;
+            ViewData["OptionsTypes"] = optionsTypes;
 
             return View(clientVM);
         }

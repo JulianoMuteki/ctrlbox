@@ -22,6 +22,9 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                  .HasMaxLength(250);
 
+            builder.Property(e => e.IsReturnable)
+                .IsRequired();
+
             builder.Property(e => e.Lenght)
                     .HasColumnType("numeric(18,3)")
                     .IsRequired();

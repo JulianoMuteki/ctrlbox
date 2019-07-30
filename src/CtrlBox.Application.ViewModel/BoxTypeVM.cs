@@ -7,6 +7,7 @@ namespace CtrlBox.Application.ViewModel
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool IsReturnable { get; set; }
 
         public float Lenght { get; set; }
         public float Height { get; set; }

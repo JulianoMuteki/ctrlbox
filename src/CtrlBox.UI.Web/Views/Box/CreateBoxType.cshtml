@@ -6,10 +6,25 @@
 }
 @section cssViews{
     <link href="~/plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
 }
 @section scriptsViews{
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
     <script type="text/javascript" src="~/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 }
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $('.select2_option').select2({
+            allowClear: true
+        });
+
+        $('#ddlLengthUnit').val('Centimeter');
+        $('#ddlLengthUnit').trigger('change');
+    });
+</script>
+
+
 <div class="page-content">
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
@@ -79,7 +94,20 @@
                             <div class="control-group">
                                 <label class="control-label">LengthUnit</label>
                                 <div class="controls">
-                                    <select class="span6 select2_option" data-placeholder="Choose a Length" id="LengthUnit" name="LengthUnit" asp-for="LengthUnit" asp-items="@((List<SelectListItem>)ViewData["OptionsBoxLengthUnit"])"></select>
+                                    <select class="span6 select2_option" data-placeholder="Choose a Length" id="ddlLengthUnit" name="LengthUnit" asp-for="LengthUnit" asp-items="@((List<SelectListItem>)ViewData["OptionsBoxLengthUnit"])"></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Is Returnable</label>
+                                <div id="rdCashPayment" class="controls">
+                                    <label class="radio">
+                                        <input type="radio" name="IsReturnable" asp-for="IsReturnable" value="True" />
+                                        Yes
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="IsReturnable" asp-for="IsReturnable" value="False" checked />
+                                        No
+                                    </label>
                                 </div>
                             </div>
                             <div class="control-group">

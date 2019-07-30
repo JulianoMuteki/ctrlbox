@@ -16,6 +16,8 @@ namespace CtrlBox.Domain.Entities
 
         public int MaxProductsItems { get; set; }
 
+        public bool IsReturnable { get; set; }
+        
         public Guid? PictureID { get; set; }
         public Picture Picture { get; set; }
 

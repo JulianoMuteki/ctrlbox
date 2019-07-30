@@ -30,6 +30,9 @@
                             "bSortable": false
                         },
                         {
+                            "mData": "IsReturnable"
+                        },
+                        {
                             "bSortable": false,
                             "defaultContent": "<i>Edit Not set</i>",
                         }

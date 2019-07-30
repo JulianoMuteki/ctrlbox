@@ -20,10 +20,6 @@ namespace CtrlBox.Application.AutoMapper
                           opts => opts.MapFrom(src => src.DT_RowId))
 
                  .AfterMap((src, dest) => dest.Init());
-
-
         }
     }
-
- 
 }

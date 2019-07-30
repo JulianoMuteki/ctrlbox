@@ -195,44 +195,6 @@ namespace CtrlBox.Application
             }
         }
 
-        public void AddCategory(CategoryVM categoryVM)
-        {
-            try
-            {
-                var category = _mapper.Map<Category>(categoryVM);
-
-                _unitOfWork.Repository<Category>().Add(category);
-                _unitOfWork.CommitSync();
-            }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all Add Category", nameof(this.AddCategory), ex);
-            }
-        }
-
-        public ICollection<CategoryVM> GetAllCategories()
-        {
-            try
-            {
-                var categories = _unitOfWork.Repository<Category>().GetAll();
-
-                var categoriesVMs = _mapper.Map<IList<CategoryVM>>(categories);
-                return categoriesVMs;
-            }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get Categories", nameof(this.GetAllCategories), ex);
-            }
-        }
-
         public ICollection<OptiontTypeVM> GetAllOptionsTypes()
         {
             try

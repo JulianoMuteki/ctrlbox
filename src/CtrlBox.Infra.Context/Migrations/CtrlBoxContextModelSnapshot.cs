@@ -254,34 +254,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("BoxesTypes");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("CategoryID");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250);
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<bool>("IsDisable");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id")
-                        .HasName("CategoryID");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.Property<Guid>("Id")
@@ -346,19 +318,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("AddressID");
 
                     b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientCategory", b =>
-                {
-                    b.Property<Guid>("ClientID");
-
-                    b.Property<Guid>("CategoryID");
-
-                    b.HasKey("ClientID", "CategoryID");
-
-                    b.HasIndex("CategoryID");
-
-                    b.ToTable("ClientsCategories");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.ClientOptionType", b =>
@@ -1195,19 +1154,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Address", "Address")
                         .WithMany("Clients")
                         .HasForeignKey("AddressID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientCategory", b =>
-                {
-                    b.HasOne("CtrlBox.Domain.Entities.Category", "Category")
-                        .WithMany("ClientsCategories")
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
-                        .WithMany("ClientsCategories")
-                        .HasForeignKey("ClientID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

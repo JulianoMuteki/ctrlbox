@@ -9,8 +9,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<ClientVM> GetAvailable(Guid routeID);
         ICollection<ClientVM> GetNotAvailable(Guid idRoute);
         ICollection<ClientVM> GetByRouteID(Guid routeID);
-        void AddCategory(CategoryVM categoryVM);
-        ICollection<CategoryVM> GetAllCategories();
         ICollection<OptiontTypeVM> GetAllOptionsTypes();
         void AddOptionType(OptiontTypeVM optiontTypeVM);
     }

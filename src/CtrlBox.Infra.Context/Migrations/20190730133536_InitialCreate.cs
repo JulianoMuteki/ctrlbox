@@ -72,23 +72,6 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    CategoryID = table.Column<Guid>(nullable: false),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    DateModified = table.Column<DateTime>(nullable: false),
-                    IsDelete = table.Column<bool>(nullable: false),
-                    IsDisable = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    Description = table.Column<string>(maxLength: 250, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("CategoryID", x => x.CategoryID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OptiontsTypes",
                 columns: table => new
                 {
@@ -445,30 +428,6 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClientsCategories",
-                columns: table => new
-                {
-                    ClientID = table.Column<Guid>(nullable: false),
-                    CategoryID = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClientsCategories", x => new { x.ClientID, x.CategoryID });
-                    table.ForeignKey(
-                        name: "FK_ClientsCategories_Categories_CategoryID",
-                        column: x => x.CategoryID,
-                        principalTable: "Categories",
-                        principalColumn: "CategoryID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ClientsCategories_Clients_ClientID",
-                        column: x => x.ClientID,
-                        principalTable: "Clients",
-                        principalColumn: "ClientID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ClientsOptionsTypes",
                 columns: table => new
                 {
@@ -479,8 +438,8 @@ namespace CtrlBox.Infra.Context.Migrations
                 {
                     table.PrimaryKey("PK_ClientsOptionsTypes", x => new { x.ClientID, x.OptiontTypeID });
                     table.ForeignKey(
-                        name: "FK_ClientsOptionsTypes_Clients_OptiontTypeID",
-                        column: x => x.OptiontTypeID,
+                        name: "FK_ClientsOptionsTypes_Clients_ClientID",
+                        column: x => x.ClientID,
                         principalTable: "Clients",
                         principalColumn: "ClientID",
                         onDelete: ReferentialAction.Cascade);
@@ -1077,11 +1036,6 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "AddressID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientsCategories_CategoryID",
-                table: "ClientsCategories",
-                column: "CategoryID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ClientsOptionsTypes_OptiontTypeID",
                 table: "ClientsOptionsTypes",
                 column: "OptiontTypeID");
@@ -1208,9 +1162,6 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "Checks");
 
             migrationBuilder.DropTable(
-                name: "ClientsCategories");
-
-            migrationBuilder.DropTable(
                 name: "ClientsOptionsTypes");
 
             migrationBuilder.DropTable(
@@ -1245,9 +1196,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "BoxesTrackings");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "OptiontsTypes");

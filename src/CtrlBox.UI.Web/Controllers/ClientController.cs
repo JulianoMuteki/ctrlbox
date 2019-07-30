@@ -84,33 +84,6 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
 
-        public ActionResult CreateCategory()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult CreateCategory(CategoryVM categoryVM)
-        {
-            _clientApplicationService.AddCategory(categoryVM);
-            return View();
-        }
-
-        public ActionResult IndexCategories()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult GetAjaxHandlerCategories()
-        {
-            var categories = _clientApplicationService.GetAllCategories();
-            return Json(new
-            {
-                aaData = categories
-            });
-        }
-
         public ActionResult OptionsTypes()
         {
             return View();

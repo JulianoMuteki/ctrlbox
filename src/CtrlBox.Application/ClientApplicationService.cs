@@ -251,5 +251,24 @@ namespace CtrlBox.Application
                 throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get options types", nameof(this.GetAllOptionsTypes), ex);
             }
         }
+
+        public void AddOptionType(OptiontTypeVM optiontTypeVM)
+        {
+            try
+            {
+                var optiontType = _mapper.Map<OptiontType>(optiontTypeVM);
+
+                _unitOfWork.Repository<OptiontType>().Add(optiontType);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all Add OptionType", nameof(this.AddOptionType), ex);
+            }
+        }
     }
 }

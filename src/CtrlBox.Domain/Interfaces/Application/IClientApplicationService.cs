@@ -12,5 +12,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         void AddCategory(CategoryVM categoryVM);
         ICollection<CategoryVM> GetAllCategories();
         ICollection<OptiontTypeVM> GetAllOptionsTypes();
+        void AddOptionType(OptiontTypeVM optiontTypeVM);
     }
 }

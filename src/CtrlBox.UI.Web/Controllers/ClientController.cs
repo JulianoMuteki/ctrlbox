@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -124,5 +125,26 @@ namespace CtrlBox.UI.Web.Controllers
                 aaData = optionsTypes
             });
         }
+
+        public ActionResult CreateOptionType()
+        {
+            var clientsTypes = Enum.GetNames(typeof(EClientType))
+                                        .Select(name => new SelectListItem
+                                        {
+                                            Value = name,
+                                            Text = name
+                                        }).ToList();
+            ViewData["ClientsTypes"] = clientsTypes;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateOptionType(OptiontTypeVM optiontTypeVM)
+        {
+            _clientApplicationService.AddOptionType(optiontTypeVM);
+            return RedirectToAction("OptionsTypes");
+        }
+
     }
 }

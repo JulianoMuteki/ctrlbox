@@ -35,7 +35,7 @@ namespace CtrlBox.Application
                 {                  
                     foreach (var box in boxes)
                     {
-                        box.TakeOutOfTheBoxProductItems(saleProduct.ProductID, saleProduct.Quantity);
+                        box.DoDelivery(saleProduct.ProductID, saleProduct.Quantity);
                     }
 
                     saleProduct.CalcTotalValue();

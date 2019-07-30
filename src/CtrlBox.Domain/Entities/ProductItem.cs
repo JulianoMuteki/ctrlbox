@@ -32,6 +32,12 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
+        internal void Deliver()
+        {
+            this.IsDisable = true;
+            this.Status = EProductItemStatus.Sold_Delivered;
+        }
+
         internal void PutInTheBox()
         {
             this.Status = EProductItemStatus.InBox;

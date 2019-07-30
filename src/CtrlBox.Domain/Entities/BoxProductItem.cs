@@ -30,7 +30,7 @@ namespace CtrlBox.Domain.Entities
         public void Deliver()
         {
             this.IsDelivered = true;
-            this.ProductItem.PutInTheBox();
+            this.ProductItem.Deliver();
         }
     }
 }

@@ -89,9 +89,14 @@ namespace CtrlBox.Domain.Entities
 
         public int CountQuantityProductItems { get; set; }
 
-        public void TakeOutOfTheBoxProductItems(Guid productID, int quantity)
+        public void DoDelivery(Guid productID, int quantity)
         {
-            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            if (!this.BoxType.IsReturnable)
+            {
+                this.Status = EBoxStatus.Delivered;
+                this.IsDisable = true;
+            }
+            else if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
                 var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == productID && x.IsDelivered == false).Take(quantity).ToList();
 
@@ -112,7 +117,7 @@ namespace CtrlBox.Domain.Entities
                     if (this.CountQuantityProductItems == 0)
                         break;
 
-                    boxChild.TakeOutOfTheBoxProductItems(productID, this.CountQuantityProductItems);
+                    boxChild.DoDelivery(productID, this.CountQuantityProductItems);
                 }
 
                 if (this.BoxParentID != null && this.BoxParentID != Guid.Empty)

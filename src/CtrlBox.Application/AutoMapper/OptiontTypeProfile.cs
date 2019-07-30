@@ -6,21 +6,20 @@ using System;
 
 namespace CtrlBox.Application.AutoMapper
 {
-   public class TrackingTypeProfile : Profile
+   public class OptiontTypeProfile : Profile
     {
-        public TrackingTypeProfile()
+        public OptiontTypeProfile()
         {
-            CreateMap<TrackingType, TrackingTypeVM>()
+            CreateMap<OptiontType, OptiontTypeVM>()
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id))
-             .ForMember(dest => dest.TrackType, opts => opts.MapFrom(src =>
-                   Enum.GetName(typeof(ETrackType), src.TrackType)));
+                 .ForMember(dest => dest.EClientType, opts => opts.MapFrom(src =>
+                                   Enum.GetName(typeof(EClientType), src.EClientType)));
 
-            CreateMap<TrackingTypeVM, TrackingType>()
+            CreateMap<OptiontTypeVM, OptiontType>()
                 .ForMember(dest => dest.Id,
                           opts => opts.MapFrom(src => src.DT_RowId))
-
-                 .AfterMap((src, dest) => dest.Init());
+                .AfterMap((src, dest) => dest.Init());
         }
     }
 }

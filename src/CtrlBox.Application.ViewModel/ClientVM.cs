@@ -21,14 +21,14 @@ namespace CtrlBox.Application.ViewModel
         public ICollection<SaleVM> Sales { get; set; }
         public ICollection<RouteClientVM> RoutesClients { get; set; }
 
-        public ICollection<ClientCategoryVM> ClientsCategories { get; set; }
-        public ICollection<string> ClientsCategoriesID { get; set; }
+        public ICollection<ClientOptionTypeVM> ClientsOptionsTypes { get; set; }
+        public ICollection<string> OptionsTypesID { get; set; }
 
         public ClientVM()
         {
-            this.ClientsCategoriesID = new List<string>();
+            this.OptionsTypesID = new List<string>();
 
-            this.ClientsCategories = new HashSet<ClientCategoryVM>();
+            this.ClientsOptionsTypes = new HashSet<ClientOptionTypeVM>();
             this.RoutesClients = new HashSet<RouteClientVM>();
             this.Sales = new HashSet<SaleVM>();
             this.CustomersProductsValues = new HashSet<ClientProductValueVM>();
@@ -36,8 +36,8 @@ namespace CtrlBox.Application.ViewModel
 
         public void SetClientsCategoriesID()
         {
-            if (this.ClientsCategories.Count > 0)
-                this.ClientsCategoriesID = ClientsCategories.Select(x => x.CategoryID.ToString()).ToArray();
+            if (this.ClientsOptionsTypes.Count > 0)
+                this.OptionsTypesID = ClientsOptionsTypes.Select(x => x.OptiontTypeID.ToString()).ToArray();
         }
     }
 }

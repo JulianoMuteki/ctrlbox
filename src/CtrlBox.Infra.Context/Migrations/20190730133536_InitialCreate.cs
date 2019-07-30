@@ -72,6 +72,24 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OptiontsTypes",
+                columns: table => new
+                {
+                    OptiontTypeMapID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    Description = table.Column<string>(maxLength: 250, nullable: false),
+                    EClientType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("OptiontTypeMapID", x => x.OptiontTypeMapID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PaymentsMethods",
                 columns: table => new
                 {
@@ -171,8 +189,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDelete = table.Column<bool>(nullable: false),
                     IsDisable = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
-                    QuantityBoxes = table.Column<int>(nullable: false),
-                    BalanceDue = table.Column<double>(type: "float", nullable: false),
                     Phone = table.Column<string>(maxLength: 250, nullable: false),
                     Contact = table.Column<string>(maxLength: 250, nullable: false),
                     AddressID = table.Column<Guid>(nullable: false)
@@ -408,6 +424,30 @@ namespace CtrlBox.Infra.Context.Migrations
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClientsOptionsTypes",
+                columns: table => new
+                {
+                    ClientID = table.Column<Guid>(nullable: false),
+                    OptiontTypeID = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientsOptionsTypes", x => new { x.ClientID, x.OptiontTypeID });
+                    table.ForeignKey(
+                        name: "FK_ClientsOptionsTypes_Clients_ClientID",
+                        column: x => x.ClientID,
+                        principalTable: "Clients",
+                        principalColumn: "ClientID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClientsOptionsTypes_OptiontsTypes_OptiontTypeID",
+                        column: x => x.OptiontTypeID,
+                        principalTable: "OptiontsTypes",
+                        principalColumn: "OptiontTypeMapID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -996,6 +1036,11 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "AddressID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ClientsOptionsTypes_OptiontTypeID",
+                table: "ClientsOptionsTypes",
+                column: "OptiontTypeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ClientsProducts_ProductID",
                 table: "ClientsProducts",
                 column: "ProductID");
@@ -1117,6 +1162,9 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "Checks");
 
             migrationBuilder.DropTable(
+                name: "ClientsOptionsTypes");
+
+            migrationBuilder.DropTable(
                 name: "ClientsProducts");
 
             migrationBuilder.DropTable(
@@ -1148,6 +1196,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "BoxesTrackings");
+
+            migrationBuilder.DropTable(
+                name: "OptiontsTypes");
 
             migrationBuilder.DropTable(
                 name: "Payments");

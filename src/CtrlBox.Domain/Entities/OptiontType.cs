@@ -1,20 +1,23 @@
-﻿using CtrlBox.Domain.Common;
+﻿using CtrlBox.CrossCutting.Enums;
+using CtrlBox.Domain.Common;
 using System;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class Category: EntityBase
+    public class OptiontType : EntityBase
     {
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public ICollection<ClientCategory> ClientsCategories { get; set; }
+        public EClientType EClientType { get; set; }
 
-        public Category()
+        public ICollection<ClientOptionType> ClientsOptionsTypes { get; set; }
+
+        public OptiontType()
         : base()
         {
-            this.ClientsCategories = new HashSet<ClientCategory>();
+            this.ClientsOptionsTypes = new HashSet<ClientOptionType>();
         }
 
         public void Init()

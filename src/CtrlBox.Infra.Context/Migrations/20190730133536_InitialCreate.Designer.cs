@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190727161605_EntityCategoryClient")]
-    partial class EntityCategoryClient
+    [Migration("20190730133536_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -256,34 +256,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("BoxesTypes");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("CategoryID");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250);
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<bool>("IsDisable");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id")
-                        .HasName("CategoryID");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
                 {
                     b.Property<Guid>("Id")
@@ -322,9 +294,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("AddressID");
 
-                    b.Property<double>("BalanceDue")
-                        .HasColumnType("float");
-
                     b.Property<string>("Contact")
                         .IsRequired()
                         .HasMaxLength(250);
@@ -345,8 +314,6 @@ namespace CtrlBox.Infra.Context.Migrations
                         .IsRequired()
                         .HasMaxLength(250);
 
-                    b.Property<int>("QuantityBoxes");
-
                     b.HasKey("Id")
                         .HasName("ClientID");
 
@@ -355,17 +322,17 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientCategory", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientOptionType", b =>
                 {
                     b.Property<Guid>("ClientID");
 
-                    b.Property<Guid>("CategoryID");
+                    b.Property<Guid>("OptiontTypeID");
 
-                    b.HasKey("ClientID", "CategoryID");
+                    b.HasKey("ClientID", "OptiontTypeID");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("OptiontTypeID");
 
-                    b.ToTable("ClientsCategories");
+                    b.ToTable("ClientsOptionsTypes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.ClientProductValue", b =>
@@ -485,6 +452,36 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("DeliveryID");
 
                     b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.OptiontType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("OptiontTypeMapID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<int>("EClientType");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id")
+                        .HasName("OptiontTypeMapID");
+
+                    b.ToTable("OptiontsTypes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
@@ -1162,16 +1159,16 @@ namespace CtrlBox.Infra.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientCategory", b =>
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientOptionType", b =>
                 {
-                    b.HasOne("CtrlBox.Domain.Entities.Category", "Category")
-                        .WithMany("ClientsCategories")
-                        .HasForeignKey("CategoryID")
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
+                        .WithMany("ClientsOptionsTypes")
+                        .HasForeignKey("ClientID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
-                        .WithMany("ClientsCategories")
-                        .HasForeignKey("ClientID")
+                    b.HasOne("CtrlBox.Domain.Entities.OptiontType", "OptiontType")
+                        .WithMany("ClientsOptionsTypes")
+                        .HasForeignKey("OptiontTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -49,13 +50,13 @@ namespace CtrlBox.UI.Web.Controllers
                                         }).ToList();
             ViewData["Addresses"] = addresses;
 
-            var categories = _clientApplicationService.GetAllCategories()
-                            .Select(category => new SelectListItem
+            var optionsTypes = _clientApplicationService.GetAllOptionsTypes()
+                            .Select(option => new SelectListItem
                             {
-                                Value = category.DT_RowId,
-                                Text = category.Name
+                                Value = option.DT_RowId,
+                                Text =  $"{option.Name} - {option.EClientType}"
                             }).ToList();
-            ViewData["Categories"] = categories;
+            ViewData["OptionsTypes"] = optionsTypes;
 
             return View(clientVM);
         }
@@ -83,31 +84,40 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
 
-        public ActionResult CreateCategory()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult CreateCategory(CategoryVM categoryVM)
-        {
-            _clientApplicationService.AddCategory(categoryVM);
-            return View();
-        }
-
-        public ActionResult IndexCategories()
+        public ActionResult OptionsTypes()
         {
             return View();
         }
 
         [HttpGet]
-        public ActionResult GetAjaxHandlerCategories()
+        public ActionResult GetAjaxHandlerOptionsTypes()
         {
-            var categories = _clientApplicationService.GetAllCategories();
+            var optionsTypes = _clientApplicationService.GetAllOptionsTypes();
             return Json(new
             {
-                aaData = categories
+                aaData = optionsTypes
             });
         }
+
+        public ActionResult CreateOptionType()
+        {
+            var clientsTypes = Enum.GetNames(typeof(EClientType))
+                                        .Select(name => new SelectListItem
+                                        {
+                                            Value = name,
+                                            Text = name
+                                        }).ToList();
+            ViewData["ClientsTypes"] = clientsTypes;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateOptionType(OptiontTypeVM optiontTypeVM)
+        {
+            _clientApplicationService.AddOptionType(optiontTypeVM);
+            return RedirectToAction("OptionsTypes");
+        }
+
     }
 }

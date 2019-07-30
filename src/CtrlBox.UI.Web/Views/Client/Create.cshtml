@@ -75,20 +75,20 @@
                             <div class="control-group">
                                 <label class="control-label">Contact</label>
                                 <div class="controls">
-                                    <input type="text" name="Contact" placeholder="Phone" asp-for="Contact" class="m-wrap large" />
+                                    <input type="text" name="Contact" placeholder="Contact" asp-for="Contact" class="m-wrap large" />
                                     <span class="help-inline">Contact</span>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Address</label>
                                 <div class="controls">
-                                    <select id="ddlAddress" class="span6 select2_option" data-placeholder="Choose a Address" name="AddressID" asp-for="AddressID" asp-items="@((List<SelectListItem>)ViewData["Addresses"])"><option value="0">Please select Address</option></select>
+                                    <select id="ddlAddress" class="span6 select2_option" data-placeholder="Choose a Address" name="AddressID" asp-for="AddressID" asp-items="@((List<SelectListItem>)ViewData["Addresses"])"></select>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Category</label>
+                                <label class="control-label">Optionts Types</label>
                                 <div class="controls">
-                                    <select id="ddlCategory" data-placeholder="Category" class="span6 select2_option" multiple="multiple" name="ClientsCategoriesID" asp-for="ClientsCategoriesID" asp-items="@((List<SelectListItem>)ViewData["Categories"])"><option value="0">Please select Categories</option></select>
+                                    <select id="ddlOptiontsTypes" data-placeholder="Choose Optionts Types" class="span6 select2_option" multiple="multiple" name="OptionsTypesID" asp-for="OptionsTypesID" asp-items="@((List<SelectListItem>)ViewData["OptionsTypes"])"></select>
                                 </div>
                             </div>
 

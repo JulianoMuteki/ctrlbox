@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class CategoryMap : EntityConfiguration<Category>
+    public class OptiontTypeMap : EntityConfiguration<OptiontType>
     {
-        protected override void Initialize(EntityTypeBuilder<Category> builder)
+        protected override void Initialize(EntityTypeBuilder<OptiontType> builder)
         {
             base.Initialize(builder);
 
-            builder.ToTable("Categories");
-            builder.Property(x => x.Id).HasColumnName("CategoryID");
-            builder.HasKey(b => b.Id).HasName("CategoryID");
+            builder.ToTable("OptiontsTypes");
+            builder.Property(x => x.Id).HasColumnName("OptiontTypeMapID");
+            builder.HasKey(b => b.Id).HasName("OptiontTypeMapID");
 
             builder.Property(e => e.Name)
                 .IsRequired()
@@ -21,6 +21,9 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Description)
                 .IsRequired()
                  .HasMaxLength(250);
+
+            builder.Property(x => x.EClientType)
+                .HasConversion<int>();
         }
     }
 }

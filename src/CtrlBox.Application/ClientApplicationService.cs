@@ -28,7 +28,7 @@ namespace CtrlBox.Application
             try
             {
                 var client = _mapper.Map<Client>(entity);
-                client.SetCategories(entity.ClientsCategoriesID);
+                client.SetOptionsTypes(entity.OptionsTypesID);
                 _unitOfWork.Repository<Client>().Add(client);
                _unitOfWork.CommitSync();
 
@@ -105,7 +105,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var client = _unitOfWork.RepositoryCustom<IClientRepository>().GetByIDWithCategories(id);
+                var client = _unitOfWork.RepositoryCustom<IClientRepository>().GetByIDWithOptionsTypes(id);
 
                 var clientVM = _mapper.Map<ClientVM>(client);
                 return clientVM;
@@ -130,14 +130,14 @@ namespace CtrlBox.Application
             try
             {
                 var client = _mapper.Map<Client>(updated);
-                client.SetCategories(updated.ClientsCategoriesID);
-                var clientsCategories = _unitOfWork.Repository<ClientCategory>().FindAll(x => x.ClientID == client.Id);
-                var clientsCategoriesRemove = clientsCategories.Where(x => !client.ClientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
-                var clientsCategoriesAdd = client.ClientsCategories.Where(x => !clientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                client.SetOptionsTypes(updated.OptionsTypesID);
+                var clientsOptionsTypes = _unitOfWork.Repository<ClientOptionType>().FindAll(x => x.ClientID == client.Id);
+                var clientsOptionsTypesRemove = clientsOptionsTypes.Where(x => !client.ClientsOptionsTypes.Any(c => c.OptiontTypeID == x.OptiontTypeID)).ToList();
+                var clientsOptionsTypesAdd = client.ClientsOptionsTypes.Where(x => !clientsOptionsTypes.Any(c => c.OptiontTypeID == x.OptiontTypeID)).ToList();
 
                 _unitOfWork.Repository<Client>().Update(client);
-                _unitOfWork.Repository<ClientCategory>().AddRange(clientsCategoriesAdd);
-                _unitOfWork.Repository<ClientCategory>().DeleteRange(clientsCategoriesRemove);
+                _unitOfWork.Repository<ClientOptionType>().AddRange(clientsOptionsTypesAdd);
+                _unitOfWork.Repository<ClientOptionType>().DeleteRange(clientsOptionsTypesRemove);
                 _unitOfWork.CommitSync();
 
                 return updated;
@@ -195,13 +195,32 @@ namespace CtrlBox.Application
             }
         }
 
-        public void AddCategory(CategoryVM categoryVM)
+        public ICollection<OptiontTypeVM> GetAllOptionsTypes()
         {
             try
             {
-                var category = _mapper.Map<Category>(categoryVM);
+                var optionsTypes = _unitOfWork.Repository<OptiontType>().GetAll();
 
-                _unitOfWork.Repository<Category>().Add(category);
+                var optionsTypesVMs = _mapper.Map<IList<OptiontTypeVM>>(optionsTypes);
+                return optionsTypesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get options types", nameof(this.GetAllOptionsTypes), ex);
+            }
+        }
+
+        public void AddOptionType(OptiontTypeVM optiontTypeVM)
+        {
+            try
+            {
+                var optiontType = _mapper.Map<OptiontType>(optiontTypeVM);
+
+                _unitOfWork.Repository<OptiontType>().Add(optiontType);
                 _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
@@ -210,26 +229,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all Add Category", nameof(this.AddCategory), ex);
-            }
-        }
-
-        public ICollection<CategoryVM> GetAllCategories()
-        {
-            try
-            {
-                var categories = _unitOfWork.Repository<Category>().GetAll();
-
-                var categoriesVMs = _mapper.Map<IList<CategoryVM>>(categories);
-                return categoriesVMs;
-            }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get Categories", nameof(this.GetAllCategories), ex);
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching all Add OptionType", nameof(this.AddOptionType), ex);
             }
         }
     }

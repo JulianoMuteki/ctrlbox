@@ -18,31 +18,31 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Sale> Sales { get; set; }
         public ICollection<RouteClient> RoutesClients { get; set; }
         public ICollection<BoxTrackingClient> TracesClients { get; set; }
-        public ICollection<ClientCategory> ClientsCategories { get; set; }
+        public ICollection<ClientOptionType> ClientsOptionsTypes { get; set; }
 
         public Client()
             :base()
         {
-            this.ClientsCategories = new HashSet<ClientCategory>();
+            this.ClientsOptionsTypes = new HashSet<ClientOptionType>();
             this.TracesClients = new HashSet<BoxTrackingClient>();
             this.RoutesClients = new HashSet<RouteClient>();
             this.Sales = new HashSet<Sale>();         
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
         }
 
-        public void SetCategories(ICollection<string> clientsCategoriesID)
+        public void SetOptionsTypes(ICollection<string> optionsTypesID)
         {
-            if (clientsCategoriesID.Count > 0)
+            if (optionsTypesID.Count > 0)
             {
-                foreach (var categoryID in clientsCategoriesID)
+                foreach (var optionTypeID in optionsTypesID)
                 {
-                    ClientCategory clientCategor = new ClientCategory()
+                    ClientOptionType clientOptionType = new ClientOptionType()
                     {
                         ClientID = this.Id,
-                        CategoryID = new Guid(categoryID)
+                        OptiontTypeID = new Guid(optionTypeID)
                     };
 
-                    this.ClientsCategories.Add(clientCategor);
+                    this.ClientsOptionsTypes.Add(clientOptionType);
                 }
             }
         }

@@ -34,7 +34,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<BoxTrackingClient> TraceabilitiesClients { get; set; }
 
         public DbSet<OptiontType> OptiontsTypes { get; set; }
-        public DbSet<ClientProductMap> ClientsProductsMaps { get; set; }
+        public DbSet<ClientOptionType> ClientsOptionsTypes { get; set; }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<ClientCategory> ClientsCategories { get; set; }

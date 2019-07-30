@@ -361,6 +361,19 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("ClientsCategories");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientOptionType", b =>
+                {
+                    b.Property<Guid>("ClientID");
+
+                    b.Property<Guid>("OptiontTypeID");
+
+                    b.HasKey("ClientID", "OptiontTypeID");
+
+                    b.HasIndex("OptiontTypeID");
+
+                    b.ToTable("ClientsOptionsTypes");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.ClientProductValue", b =>
                 {
                     b.Property<Guid>("ClientID");
@@ -478,6 +491,36 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("DeliveryID");
 
                     b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.OptiontType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("OptiontTypeMapID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<int>("EClientType");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id")
+                        .HasName("OptiontTypeMapID");
+
+                    b.ToTable("OptiontsTypes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
@@ -1165,6 +1208,19 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
                         .WithMany("ClientsCategories")
                         .HasForeignKey("ClientID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.ClientOptionType", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
+                        .WithMany("ClientsOptionsTypes")
+                        .HasForeignKey("OptiontTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.OptiontType", "OptiontType")
+                        .WithMany("ClientsOptionsTypes")
+                        .HasForeignKey("OptiontTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

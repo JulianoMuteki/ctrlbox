@@ -33,6 +33,9 @@ namespace CtrlBox.Infra.Context
         public DbSet<TrackingType> TracesTypes { get; set; }
         public DbSet<BoxTrackingClient> TraceabilitiesClients { get; set; }
 
+        public DbSet<OptiontType> OptiontsTypes { get; set; }
+        public DbSet<ClientProductMap> ClientsProductsMaps { get; set; }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<ClientCategory> ClientsCategories { get; set; }
 
@@ -92,6 +95,9 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new BoxTrackingClientMap());
             modelBuilder.ApplyConfiguration(new CategoryMap());
             modelBuilder.ApplyConfiguration(new ClientCategoryMap());
+
+            modelBuilder.ApplyConfiguration(new OptiontTypeMap());
+            modelBuilder.ApplyConfiguration(new ClientOptionTypeMap());
 
             modelBuilder.ApplyConfiguration(new BoxBarcodeMap());
             modelBuilder.ApplyConfiguration(new BoxMap());

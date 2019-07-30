@@ -33,19 +33,19 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
-        public Client GetByIDWithCategories(Guid id)
+        public Client GetByIDWithOptionsTypes(Guid id)
         {
             try
             {
                 var query = _context.Set<Client>()
-                     .Include(x => x.ClientsCategories).ThenInclude(c => c.Category)
+                     .Include(x => x.ClientsOptionsTypes).ThenInclude(c => c.OptiontType)
                      .Where(x => x.Id == id);
                     
                 return query.FirstOrDefault();
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientRepository>("Unexpected error fetching GetByIDWithCategories", nameof(this.GetByIDWithCategories), ex);
+                throw CustomException.Create<ClientRepository>("Unexpected error fetching GetByIDWithCategories", nameof(this.GetByIDWithOptionsTypes), ex);
             }
         }
 

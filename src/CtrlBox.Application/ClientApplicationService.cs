@@ -105,7 +105,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var client = _unitOfWork.RepositoryCustom<IClientRepository>().GetByIDWithCategories(id);
+                var client = _unitOfWork.RepositoryCustom<IClientRepository>().GetByIDWithOptionsTypes(id);
 
                 var clientVM = _mapper.Map<ClientVM>(client);
                 return clientVM;
@@ -131,13 +131,13 @@ namespace CtrlBox.Application
             {
                 var client = _mapper.Map<Client>(updated);
                 client.SetOptionsTypes(updated.OptionsTypesID);
-                var clientsCategories = _unitOfWork.Repository<ClientCategory>().FindAll(x => x.ClientID == client.Id);
-                var clientsCategoriesRemove = clientsCategories.Where(x => !client.ClientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
-                var clientsCategoriesAdd = client.ClientsCategories.Where(x => !clientsCategories.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                var clientsOptionsTypes = _unitOfWork.Repository<ClientOptionType>().FindAll(x => x.ClientID == client.Id);
+                var clientsOptionsTypesRemove = clientsOptionsTypes.Where(x => !client.ClientsOptionsTypes.Any(c => c.OptiontTypeID == x.OptiontTypeID)).ToList();
+                var clientsOptionsTypesAdd = client.ClientsOptionsTypes.Where(x => !clientsOptionsTypes.Any(c => c.OptiontTypeID == x.OptiontTypeID)).ToList();
 
                 _unitOfWork.Repository<Client>().Update(client);
-                _unitOfWork.Repository<ClientCategory>().AddRange(clientsCategoriesAdd);
-                _unitOfWork.Repository<ClientCategory>().DeleteRange(clientsCategoriesRemove);
+                _unitOfWork.Repository<ClientOptionType>().AddRange(clientsOptionsTypesAdd);
+                _unitOfWork.Repository<ClientOptionType>().DeleteRange(clientsOptionsTypesRemove);
                 _unitOfWork.CommitSync();
 
                 return updated;

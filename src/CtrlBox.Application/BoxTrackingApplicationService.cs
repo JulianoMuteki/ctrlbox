@@ -105,7 +105,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var tracesTypes = _unitOfWork.RepositoryCustom<IBoxTrackingRepository>().GetTrackingsTypesWithPictures();
+                var tracesTypes = _unitOfWork.RepositoryCustom<ITrackingRepository>().GetTrackingsTypesWithPictures();
                 var tracesTypesVMs = _mapper.Map<IList<TrackingTypeVM>>(tracesTypes);
                 return tracesTypesVMs;
             }
@@ -123,7 +123,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var tracesTypes = _unitOfWork.RepositoryCustom<IBoxTrackingRepository>().GetByBoxIDWithTrackingType(boxID);
+                var tracesTypes = _unitOfWork.RepositoryCustom<ITrackingRepository>().GetByBoxIDWithTrackingType(boxID);
                 var tracesTypesVMs = _mapper.Map<IList<BoxTrackingVM>>(tracesTypes);
                 return tracesTypesVMs;
             }

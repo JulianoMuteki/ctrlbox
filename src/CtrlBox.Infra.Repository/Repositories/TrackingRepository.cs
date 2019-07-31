@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CtrlBox.Infra.Repository.Repositories
 {
-    public class BoxTrackingRepository : GenericRepository<Tracking>, IBoxTrackingRepository
+    public class TrackingRepository : GenericRepository<Tracking>, ITrackingRepository
     {
-        public BoxTrackingRepository(CtrlBoxContext context)
+        public TrackingRepository(CtrlBoxContext context)
             : base(context)
         {
 
@@ -31,7 +31,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingRepository>("Unexpected error fetching get Traceability", nameof(this.GetByBoxIDWithTrackingType), ex);
+                throw CustomException.Create<TrackingRepository>("Unexpected error fetching get Traceability", nameof(this.GetByBoxIDWithTrackingType), ex);
             }
         }
 
@@ -46,7 +46,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingRepository>("Unexpected error fetching get TraceType", nameof(this.GetTrackingsTypesWithPictures), ex);
+                throw CustomException.Create<TrackingRepository>("Unexpected error fetching get TraceType", nameof(this.GetTrackingsTypesWithPictures), ex);
             }
         }
     }

@@ -16,7 +16,7 @@ namespace CtrlBox.Infra.Context.Mapping
                 .HasForeignKey(tk => tk.ClientID);
 
             builder.HasOne(tk => tk.Tracking)
-                .WithMany(k => k.BoxesTrackingClients)
+                .WithMany(k => k.TrackingsClients)
                 .HasForeignKey(tk => tk.TrackingID);
         }
     }

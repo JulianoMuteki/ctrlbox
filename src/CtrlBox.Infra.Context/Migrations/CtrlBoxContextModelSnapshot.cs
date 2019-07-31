@@ -161,51 +161,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("BoxesProductItems");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxTracking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("BoxTrackingID");
-
-                    b.Property<Guid?>("BoxID");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<bool>("IsDisable");
-
-                    b.Property<Guid?>("ProductItemID");
-
-                    b.Property<Guid>("TrackingTypeID");
-
-                    b.HasKey("Id")
-                        .HasName("BoxTrackingID");
-
-                    b.HasIndex("BoxID");
-
-                    b.HasIndex("ProductItemID");
-
-                    b.HasIndex("TrackingTypeID");
-
-                    b.ToTable("BoxesTrackings");
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxTrackingClient", b =>
-                {
-                    b.Property<Guid>("ClientID");
-
-                    b.Property<Guid>("BoxTrackingID");
-
-                    b.HasKey("ClientID", "BoxTrackingID");
-
-                    b.HasIndex("BoxTrackingID");
-
-                    b.ToTable("BoxsTrackingsClients");
-                });
-
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -807,6 +762,51 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("SystemConfigurations");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Tracking", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("TrackingID");
+
+                    b.Property<Guid?>("BoxID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<Guid?>("ProductItemID");
+
+                    b.Property<Guid>("TrackingTypeID");
+
+                    b.HasKey("Id")
+                        .HasName("TrackingID");
+
+                    b.HasIndex("BoxID");
+
+                    b.HasIndex("ProductItemID");
+
+                    b.HasIndex("TrackingTypeID");
+
+                    b.ToTable("Trackings");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.TrackingClient", b =>
+                {
+                    b.Property<Guid>("ClientID");
+
+                    b.Property<Guid>("TrackingID");
+
+                    b.HasKey("ClientID", "TrackingID");
+
+                    b.HasIndex("TrackingID");
+
+                    b.ToTable("TrackingsClients");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.TrackingType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1035,37 +1035,8 @@ namespace CtrlBox.Infra.Context.Migrations
                         .HasForeignKey("DeliveryID");
 
                     b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
-                        .WithMany("LoadBoxesProductItems")
+                        .WithMany("BoxesProductItems")
                         .HasForeignKey("ProductItemID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxTracking", b =>
-                {
-                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
-                        .WithMany("Traceabilities")
-                        .HasForeignKey("BoxID");
-
-                    b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
-                        .WithMany("Traceabilities")
-                        .HasForeignKey("ProductItemID");
-
-                    b.HasOne("CtrlBox.Domain.Entities.TrackingType", "TrackingType")
-                        .WithMany("BoxesTrackings")
-                        .HasForeignKey("TrackingTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxTrackingClient", b =>
-                {
-                    b.HasOne("CtrlBox.Domain.Entities.BoxTracking", "BoxTracking")
-                        .WithMany("BoxesTrackingClients")
-                        .HasForeignKey("BoxTrackingID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
-                        .WithMany("TracesClients")
-                        .HasForeignKey("ClientID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1233,6 +1204,35 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
                         .WithMany("SalesProducts")
                         .HasForeignKey("SaleID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Tracking", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithMany("Trackings")
+                        .HasForeignKey("BoxID");
+
+                    b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
+                        .WithMany("Trackings")
+                        .HasForeignKey("ProductItemID");
+
+                    b.HasOne("CtrlBox.Domain.Entities.TrackingType", "TrackingType")
+                        .WithMany("Trackings")
+                        .HasForeignKey("TrackingTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.TrackingClient", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
+                        .WithMany("TrackingsClients")
+                        .HasForeignKey("ClientID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Tracking", "Tracking")
+                        .WithMany("TrackingsClients")
+                        .HasForeignKey("TrackingID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

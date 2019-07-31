@@ -25,7 +25,7 @@ namespace CtrlBox.Infra.Context.Mapping
                 .HasForeignKey(tk => tk.BoxID);
 
             builder.HasOne(tk => tk.ProductItem)
-                .WithMany(k => k.LoadBoxesProductItems)
+                .WithMany(k => k.BoxesProductItems)
                 .HasForeignKey(tk => tk.ProductItemID);
         }
     }

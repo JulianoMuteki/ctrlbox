@@ -19,11 +19,11 @@ namespace CtrlBox.Infra.Context.Mapping
                 .HasForeignKey(x => x.BoxID);
 
             builder.HasOne(x => x.ProductItem)
-                .WithMany(x => x.Traceabilities)
+                .WithMany(x => x.Trackings)
                 .HasForeignKey(x => x.ProductItemID);
 
             builder.HasOne(x => x.TrackingType)
-                .WithMany(x => x.BoxesTrackings)
+                .WithMany(x => x.Trackings)
                 .HasForeignKey(x => x.TrackingTypeID);
         }
     }

@@ -15,12 +15,12 @@ namespace CtrlBox.Domain.Entities
         public Guid TrackingTypeID { get; set; }
         public TrackingType TrackingType { get; set; }
 
-        public ICollection<TrackingClient> BoxesTrackingClients { get; set; }
+        public ICollection<TrackingClient> TrackingsClients { get; set; }
 
         public Tracking()
             : base()
         {
-            this.BoxesTrackingClients = new HashSet<TrackingClient>();
+            this.TrackingsClients = new HashSet<TrackingClient>();
         }
 
         public void Init()
@@ -33,7 +33,7 @@ namespace CtrlBox.Domain.Entities
 
         public void AddClient(Guid clientID)
         {
-            this.BoxesTrackingClients.Add(new TrackingClient()
+            this.TrackingsClients.Add(new TrackingClient()
             {
                 ClientID = clientID,
                 TrackingID = this.Id

@@ -24,7 +24,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 return _context.Set<Tracking>()
                     .Include(x => x.TrackingType).ThenInclude(x => x.Picture)
-                    .Include(x => x.BoxesTrackingClients).ThenInclude(c => c.Client)
+                    .Include(x => x.TrackingsClients).ThenInclude(c => c.Client)
                     .Where(x => x.BoxID != null && x.BoxID.Value == boxID)
                     .OrderBy(x => x.CreationDate)
                     .ToList();

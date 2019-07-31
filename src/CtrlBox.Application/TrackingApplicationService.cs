@@ -11,18 +11,18 @@ using CtrlBox.Domain.Interfaces.Repository;
 
 namespace CtrlBox.Application
 {
-    public class BoxTrackingApplicationService : IBoxTrackingApplicationService
+    public class TrackingApplicationService : ITrackingApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public BoxTrackingApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
+        public TrackingApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public BoxTrackingVM Add(BoxTrackingVM entity)
+        public TrackingVM Add(TrackingVM entity)
         {
             try
             {
@@ -48,11 +48,11 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching add trace", nameof(this.Add), ex);
+                throw CustomException.Create<TrackingApplicationService>("Unexpected error fetching add trace", nameof(this.Add), ex);
             }
         }
 
-        public Task<BoxTrackingVM> AddAsync(BoxTrackingVM entity)
+        public Task<TrackingVM> AddAsync(TrackingVM entity)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +77,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching add trace type", nameof(this.AddTraceType), ex);
+                throw CustomException.Create<TrackingApplicationService>("Unexpected error fetching add trace type", nameof(this.AddTraceType), ex);
             }
         }
 
@@ -91,12 +91,12 @@ namespace CtrlBox.Application
             throw new NotImplementedException();
         }
 
-        public ICollection<BoxTrackingVM> GetAll()
+        public ICollection<TrackingVM> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<BoxTrackingVM>> GetAllAsync()
+        public Task<ICollection<TrackingVM>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
@@ -115,16 +115,16 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching GetAllTracesTypes", nameof(this.GetAllTrackingsTypes), ex);
+                throw CustomException.Create<TrackingApplicationService>("Unexpected error fetching GetAllTracesTypes", nameof(this.GetAllTrackingsTypes), ex);
             }
         }
 
-        public ICollection<BoxTrackingVM> GetByBoxID(Guid boxID)
+        public ICollection<TrackingVM> GetByBoxID(Guid boxID)
         {
             try
             {
                 var tracesTypes = _unitOfWork.RepositoryCustom<ITrackingRepository>().GetByBoxIDWithTrackingType(boxID);
-                var tracesTypesVMs = _mapper.Map<IList<BoxTrackingVM>>(tracesTypes);
+                var tracesTypesVMs = _mapper.Map<IList<TrackingVM>>(tracesTypes);
                 return tracesTypesVMs;
             }
             catch (CustomException exc)
@@ -133,16 +133,16 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching GetAll TraceabilityVM", nameof(this.GetByBoxID), ex);
+                throw CustomException.Create<TrackingApplicationService>("Unexpected error fetching GetAll TraceabilityVM", nameof(this.GetByBoxID), ex);
             }
         }
 
-        public BoxTrackingVM GetById(Guid id)
+        public TrackingVM GetById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<BoxTrackingVM> GetByIdAsync(Guid id)
+        public Task<TrackingVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -161,16 +161,16 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingApplicationService>("Unexpected error fetching GetAllTraceType", nameof(this.GetTrackTypeById), ex);
+                throw CustomException.Create<TrackingApplicationService>("Unexpected error fetching GetAllTraceType", nameof(this.GetTrackTypeById), ex);
             }
         }
 
-        public BoxTrackingVM Update(BoxTrackingVM updated)
+        public TrackingVM Update(TrackingVM updated)
         {
             throw new NotImplementedException();
         }
 
-        public Task<BoxTrackingVM> UpdateAsync(BoxTrackingVM updated)
+        public Task<TrackingVM> UpdateAsync(TrackingVM updated)
         {
             throw new NotImplementedException();
         }

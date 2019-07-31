@@ -2,10 +2,10 @@
 
 namespace CtrlBox.Application.ViewModel
 {
-    public class BoxTrackingClientVM
+    public class TrackingClientVM
     {
         public Guid BoxTrackingID { get; set; }
-        public BoxTrackingVM BoxTracking { get; set; }
+        public TrackingVM BoxTracking { get; set; }
 
         public Guid ClientID { get; set; }
         public ClientVM Client { get; set; }

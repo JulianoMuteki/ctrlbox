@@ -12,12 +12,12 @@ namespace CtrlBox.UI.Web.Controllers
 {
     public class TrackingController : Controller
     {
-        private readonly IBoxTrackingApplicationService _boxTrackingApplicationService;
+        private readonly ITrackingApplicationService _boxTrackingApplicationService;
         private readonly IBoxApplicationService _boxApplicationService;
         private readonly IProductApplicationService _productApplicationService;
         private readonly IClientApplicationService _clientApplicationService;
 
-        public TrackingController(IBoxTrackingApplicationService boxTrackingApplicationService, IBoxApplicationService boxApplicationService,
+        public TrackingController(ITrackingApplicationService boxTrackingApplicationService, IBoxApplicationService boxApplicationService,
                                 IProductApplicationService productApplicationService, IClientApplicationService clientApplicationService)
         {
             _boxApplicationService = boxApplicationService;
@@ -74,7 +74,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(BoxTrackingVM traceabilityVM)
+        public IActionResult Create(TrackingVM traceabilityVM)
         {
             try
             {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Application.ViewModel
 {
-    public class BoxTrackingVM : ViewModelBase
+    public class TrackingVM : ViewModelBase
     {
         public Guid? ProductItemID { get; set; }
         public ProductItemVM ProductItem { get; set; }
@@ -16,6 +16,6 @@ namespace CtrlBox.Application.ViewModel
         public Guid TrackingTypeID { get; set; }
         public TrackingTypeVM TrackingType { get; set; }
 
-        public ICollection<BoxTrackingClientVM> BoxesTrackingClients { get; set; }
+        public ICollection<TrackingClientVM> TrackingsClients { get; set; }
     }
 }

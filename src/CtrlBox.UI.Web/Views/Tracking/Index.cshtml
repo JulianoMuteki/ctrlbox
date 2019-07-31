@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CtrlBox.Application.ViewModel.BoxTrackingVM>
+﻿@model IEnumerable<CtrlBox.Application.ViewModel.TrackingVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -47,30 +47,30 @@
                     </div>
                 </div>
                 <ul class="timeline">
-                    @foreach (var boxTracking in Model)
+                    @foreach (var tracking in Model)
                     {
                         <li class="timeline-yellow">
                             <div class="timeline-time">
-                                <span class="date">@boxTracking.CreationDate.ToString("dd/MM/yyyy")</span>
-                                <span class="time">@boxTracking.CreationDate.ToString("hh:mm")</span>
+                                <span class="date">@tracking.CreationDate.ToString("dd/MM/yyyy")</span>
+                                <span class="time">@tracking.CreationDate.ToString("hh:mm")</span>
                             </div>
                             <div class="timeline-icon">
-                                @if (boxTracking.TrackingType.Picture == null)
+                                @if (tracking.TrackingType.Picture == null)
                                 {
                                     <i class="icon-trophy"></i> }
                                 else
                                 {
-                                    <img src="@boxTracking.TrackingType.Picture.SrcBase64Image" />
+                                    <img src="@tracking.TrackingType.Picture.SrcBase64Image" />
                                 }
                             </div>
                             <div class="timeline-body">
-                                <h2>@boxTracking.TrackingType.Description - @boxTracking.TrackingType.TrackType</h2>
-                                @if (boxTracking.BoxesTrackingClients.Count > 0)
+                                <h2>@tracking.TrackingType.Description - @tracking.TrackingType.TrackType</h2>
+                                @if (tracking.TrackingsClients.Count > 0)
                                 {
                                     <div class="timeline-content">
                                         <i class="icon-map-marker"></i>
-                                        @boxTracking.BoxesTrackingClients.First().Client.Name
-                                        - <a onClick="AppCtrlBox.callModalAddress('@boxTracking.BoxesTrackingClients.First().Client.AddressID')" href="#" class="nav-link">
+                                        @tracking.TrackingsClients.First().Client.Name
+                                        - <a onClick="AppCtrlBox.callModalAddress('@tracking.TrackingsClients.First().Client.AddressID')" href="#" class="nav-link">
                                             Address <i class="m-icon-swapright m-icon-white"></i>
                                         </a>
                                     </div>

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190731124009_InitialCreate")]
+    [Migration("20190731151722_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -638,6 +638,8 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("RouteID");
 
+                    b.Property<Guid>("ClientOriginID");
+
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
@@ -660,6 +662,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id")
                         .HasName("RouteID");
+
+                    b.HasIndex("ClientOriginID");
 
                     b.ToTable("Routes");
                 });
@@ -1170,12 +1174,19 @@ namespace CtrlBox.Infra.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Route", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "ClientOrigin")
+                        .WithMany("Routes")
+                        .HasForeignKey("ClientOriginID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.RouteClient", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
                         .WithMany("RoutesClients")
-                        .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ClientID");
 
                     b.HasOne("CtrlBox.Domain.Entities.Route", "Route")
                         .WithMany("RoutesClients")
@@ -1187,8 +1198,7 @@ namespace CtrlBox.Infra.Context.Migrations
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
                         .WithMany("Sales")
-                        .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ClientID");
 
                     b.HasOne("CtrlBox.Domain.Entities.Delivery", "Delivery")
                         .WithMany("Sales")

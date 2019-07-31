@@ -12,6 +12,9 @@ namespace CtrlBox.Domain.Entities
         public string Truck { get; set; }
         public bool HasOpenDelivery { get; set; }
 
+        public Guid ClientOriginID { get; set; }
+        public Client ClientOrigin { get; set; }
+
         public ICollection<Delivery> Deliveries { get; set; }
         public ICollection<RouteClient> RoutesClients { get; set; }
 

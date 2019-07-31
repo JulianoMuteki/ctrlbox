@@ -19,10 +19,12 @@ namespace CtrlBox.Domain.Entities
         public ICollection<RouteClient> RoutesClients { get; set; }
         public ICollection<TrackingClient> TrackingsClients { get; set; }
         public ICollection<ClientOptionType> ClientsOptionsTypes { get; set; }
-
+        public ICollection<Route> Routes { get; set; }
+        
         public Client()
             :base()
         {
+            this.Routes = new HashSet<Route>();
             this.ClientsOptionsTypes = new HashSet<ClientOptionType>();
             this.TrackingsClients = new HashSet<TrackingClient>();
             this.RoutesClients = new HashSet<RouteClient>();

@@ -23,11 +23,12 @@ namespace CtrlBox.Application.ViewModel
 
         public ICollection<ClientOptionTypeVM> ClientsOptionsTypes { get; set; }
         public ICollection<string> OptionsTypesID { get; set; }
+        public ICollection<RouteVM> Routes { get; set; }
 
         public ClientVM()
         {
             this.OptionsTypesID = new List<string>();
-
+            this.Routes = new HashSet<RouteVM>();
             this.ClientsOptionsTypes = new HashSet<ClientOptionTypeVM>();
             this.RoutesClients = new HashSet<RouteClientVM>();
             this.Sales = new HashSet<SaleVM>();

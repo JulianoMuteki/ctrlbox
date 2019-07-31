@@ -29,16 +29,7 @@ namespace CtrlBox.Application
             try
             {
                 var products = _unitOfWork.Repository<Product>().GetAll();
-                var productsStocks = _unitOfWork.Repository<StockProduct>().GetAll();
-
                 var productVMs = _mapper.Map<IList<ProductVM>>(products);
-                var productsStocksVMs = _mapper.Map<IList<StockProductVM>>(productsStocks);
-
-                foreach (var product in productVMs)
-                {
-                    product.StocksProducts = (from x in productsStocksVMs where x.ProductID.ToString() == product.DT_RowId select x).ToList();
-                }
-
                 return productVMs;
             }
             catch (CustomException exc)
@@ -203,68 +194,6 @@ namespace CtrlBox.Application
             }
         }
 
-        public int AddProductStock(ICollection<StockProductVM> stocksProductsVM)
-        {
-            try
-            {
-                var stProducts = _mapper.Map<IList<StockProduct>>(stocksProductsVM);
-                var stocksProducts = _unitOfWork.Repository<StockProduct>().FindAll(x => stProducts.Any(s => s.ProductID == x.ProductID));
-
-                foreach (var item in stocksProducts)
-                {
-                    item.Amount = (from x in stProducts where x.ProductID == item.ProductID select x.Amount).FirstOrDefault();
-                }
-                var stocksProductsAdd = stProducts.Where(x => !stocksProducts.Any(s => s.ProductID == x.ProductID)).ToList();
-
-                _unitOfWork.Repository<StockProduct>().UpdateRange(stocksProducts);
-                _unitOfWork.Repository<StockProduct>().AddRange(stocksProductsAdd);
-
-               _unitOfWork.CommitSync();
-
-                return 1;
-            }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add product stock", nameof(this.AddProductStock), ex);
-            }
-        }
-
-        public ICollection<StockProductVM> GetProductsStock()
-        {
-            try
-            {
-                var productsStock = _unitOfWork.Repository<StockProduct>().GetAll();
-
-                var products = _unitOfWork.Repository<Product>().GetAll();
-                var productsWithoutStock = products.Where(p => !productsStock.Any(sp => sp.ProductID == p.Id)).ToList();
-
-                foreach (var product in productsWithoutStock)
-                {
-                    productsStock.Add(new StockProduct()
-                    {
-                        ProductID = product.Id,
-                        Amount = 0,
-                        Product = product
-                    });
-                }
-                productsStock = productsStock.Select(p => { p.Product = (from x in products where x.Id == p.ProductID select x).FirstOrDefault(); return p; }).ToList();
-                var stocksProductsVMs = _mapper.Map<IList<StockProductVM>>(productsStock);
-                return stocksProductsVMs;
-            }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product stock", nameof(this.GetProductsStock), ex);
-            }
-        }
-
         public ICollection<DeliveryProductVM> GetDeliveryProducts(Guid deliveryID)
         {
             try
@@ -300,45 +229,6 @@ namespace CtrlBox.Application
             catch (Exception ex)
             {
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add client product value", nameof(this.GetClientsProductsByClientID), ex);
-            }
-        }
-
-        public StockVM GetStock()
-        {
-            try
-            {
-                var stock = _unitOfWork.Repository<Stock>().GetAll().FirstOrDefault();
-
-                var stockVM = _mapper.Map<StockVM>(stock);
-                return stockVM;
-            }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.GetStock), ex);
-            }
-        }
-
-        public void AddStock(int stockTotal)
-        {
-            try
-            {
-                Stock stock = new Stock();
-                stock.AmountBoxes = stockTotal;
-
-                _unitOfWork.Repository<Stock>().Add(stock);
-               _unitOfWork.CommitSync();
-            }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
-            catch (Exception ex)
-            {
-                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.AddStock), ex);
             }
         }
 

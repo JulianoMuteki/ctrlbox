@@ -18,12 +18,9 @@ namespace CtrlBox.Infra.Context
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientProductValue> CustomersProductsValues { get; set; }
 
-        public DbSet<Check> Checks { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<DeliveryProduct> DeliveriesProducts { get; set; }
-        public DbSet<Stock> Stocks { get; set; }
-        public DbSet<StockProduct> StocksProducts { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleProduct> SalesProducts { get; set; }
@@ -76,16 +73,13 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new ClientProductMap());
 
-            modelBuilder.ApplyConfiguration(new CheckMap());
             modelBuilder.ApplyConfiguration(new ExpenseMap());
             modelBuilder.ApplyConfiguration(new DeliveryMap());
             modelBuilder.ApplyConfiguration(new DeliveryProductMap());
-            modelBuilder.ApplyConfiguration(new StockMap());
             modelBuilder.ApplyConfiguration(new RouteClientMap());
             modelBuilder.ApplyConfiguration(new SaleProductMap());
             modelBuilder.ApplyConfiguration(new RouteMap());
             modelBuilder.ApplyConfiguration(new SaleMap());
-            modelBuilder.ApplyConfiguration(new StockProductMap());
 
             modelBuilder.ApplyConfiguration(new TrackingTypeMap());
             modelBuilder.ApplyConfiguration(new BoxTrackingMap());

@@ -20,7 +20,7 @@ namespace CtrlBox.UI.Web
                 var services = scope.ServiceProvider;
                 try
                 {
-                    DbInitializer.Initialize(services);
+                    //DbInitializer.Initialize(services);
                 }
                 catch (Exception ex)
                 {

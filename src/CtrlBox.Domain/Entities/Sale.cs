@@ -18,14 +18,12 @@ namespace CtrlBox.Domain.Entities
         public Delivery Delivery { get; set; }
         public Payment Payment { get; set; }
 
-        public ICollection<Check> Checks { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
         public ICollection<SaleProduct> SalesProducts { get; set; }
 
         public Sale()
         {
             this.SalesProducts = new HashSet<SaleProduct>();
-            this.Checks = new HashSet<Check>();
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
 
             Init();

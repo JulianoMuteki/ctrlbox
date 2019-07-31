@@ -111,9 +111,6 @@ namespace CtrlBox.Infra.Context
                     routeService.Add(route);
                 }
 
-                var productApplicationService = serviceProvider.GetRequiredService<IProductApplicationService>();
-                productApplicationService.AddStock(100000);
-
                 var paymentService = serviceProvider.GetRequiredService<IPaymentApplicationService>();
 
                 PaymentMethodVM paymentMethodVM = new PaymentMethodVM();

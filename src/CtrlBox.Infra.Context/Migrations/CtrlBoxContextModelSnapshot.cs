@@ -256,36 +256,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("BoxesTypes");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("CheckID");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<DateTime?>("DtExpire");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<bool>("IsDisable");
-
-                    b.Property<int>("Number");
-
-                    b.Property<Guid>("SaleID");
-
-                    b.Property<float>("Value");
-
-                    b.HasKey("Id")
-                        .HasName("CheckID");
-
-                    b.HasIndex("SaleID");
-
-                    b.ToTable("Checks");
-                });
-
             modelBuilder.Entity("CtrlBox.Domain.Entities.Client", b =>
                 {
                     b.Property<Guid>("Id")
@@ -809,43 +779,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("SalesProducts");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.Stock", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("StockID");
-
-                    b.Property<int>("AmountBoxes");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<bool>("IsDisable");
-
-                    b.HasKey("Id")
-                        .HasName("StockID");
-
-                    b.ToTable("Stocks");
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.StockProduct", b =>
-                {
-                    b.Property<Guid>("ProductID");
-
-                    b.Property<Guid>("StockID");
-
-                    b.Property<int>("Amount");
-
-                    b.HasKey("ProductID", "StockID");
-
-                    b.HasIndex("StockID");
-
-                    b.ToTable("StocksProducts");
-                });
-
             modelBuilder.Entity("CtrlBox.Domain.Entities.SystemConfiguration", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1143,14 +1076,6 @@ namespace CtrlBox.Infra.Context.Migrations
                         .HasForeignKey("PictureID");
                 });
 
-            modelBuilder.Entity("CtrlBox.Domain.Entities.Check", b =>
-                {
-                    b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
-                        .WithMany("Checks")
-                        .HasForeignKey("SaleID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("CtrlBox.Domain.Entities.Client", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Address", "Address")
@@ -1308,19 +1233,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
                         .WithMany("SalesProducts")
                         .HasForeignKey("SaleID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.StockProduct", b =>
-                {
-                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
-                        .WithMany("StocksProducts")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CtrlBox.Domain.Entities.Stock", "Stock")
-                        .WithMany("StocksProducts")
-                        .HasForeignKey("StockID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

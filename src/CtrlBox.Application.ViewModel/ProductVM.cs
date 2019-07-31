@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 
 namespace CtrlBox.Application.ViewModel
@@ -30,23 +29,13 @@ namespace CtrlBox.Application.ViewModel
             }
         }
 
-        public int StockTotal
-        {
-            get
-            {
-                return this.StocksProducts.Sum(x => x.Amount);
-            }
-        }
-
         public ICollection<ClientProductValueVM> CustomersProductsValues { get; set; }
         public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }
-        public ICollection<StockProductVM> StocksProducts { get; set; }
         public ICollection<SaleProductVM> SalesProducts { get; set; }
 
         public ProductVM()
         {
             this.DeliveriesProducts = new HashSet<DeliveryProductVM>();
-            this.StocksProducts = new HashSet<StockProductVM>();
             this.SalesProducts = new HashSet<SaleProductVM>();
             this.CustomersProductsValues = new HashSet<ClientProductValueVM>();
         }

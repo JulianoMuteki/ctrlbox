@@ -13,8 +13,8 @@ namespace CtrlBox.Application.ViewModel
         public string Truck { get; set; }
         public bool HasOpenDelivery { get; set; }
 
-        public Guid ClientID { get; set; }
-        public ClientVM Client { get; set; }
+        public Guid ClientOriginID { get; set; }
+        public ClientVM ClientOrigin { get; set; }
 
         public virtual ICollection<DeliveryVM> Deliveries { get; set; }
         public virtual ICollection<RouteClientVM> RoutesClients { get; set; }

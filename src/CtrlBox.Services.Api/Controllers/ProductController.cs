@@ -163,42 +163,6 @@ namespace CtrlBox.Services.Api.Controllers
                 }
             }
         }
-
-        [HttpPost("[action]")]
-        public IActionResult AddProductStock(ICollection<StockProductVM> stocksProductsVM)
-        {
-            //if (ModelState.IsValid)
-            if (true)
-            {
-                try
-                {
-                    var result = _productApplicationService.AddProductStock(stocksProductsVM);
-
-                    if (result > 0)
-                    {
-                        return Ok(result);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-            }
-        }
-
-        [HttpGet("[action]")]
-        public IEnumerable<StockProductVM> GetProductsStock()
-        {
-            var prodsStock = _productApplicationService.GetProductsStock();
-            ICollection<StockProductVM> productsStockVM = _mapper.Map<List<StockProductVM>>(prodsStock);
-
-            return productsStockVM;
-        }
-
-        
+      
     }
 }

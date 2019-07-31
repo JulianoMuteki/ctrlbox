@@ -147,42 +147,8 @@ namespace CtrlBox.UI.Web.Controllers
 
         #region ProductStock
         public ActionResult ProductStock()
-        {
-            var stockVM = _productService.GetStock();
-            ViewData["StockID"] = stockVM.DT_RowId;
+        {         
             return View();
-        }
-
-        [HttpGet]
-        public ActionResult GetAjaxHandlerProductStock()
-        {
-            try
-            {
-                var productsStocks = _productService.GetProductsStock();
-                return Json(new
-                {
-                    aaData = productsStocks.Select(x => new { x.StockID, x.ProductID, x.Amount, ProductName = x.Product.Name, x.Product.UnitMeasure }).ToList(),
-                    success = true
-                });
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        [HttpPost]
-        public ActionResult PutAjaxHandlerProductStock(string[] tbProducts)
-        {
-            JsonSerialize jsonS = new JsonSerialize();
-            var stocksProductsVM = jsonS.JsonDeserialize<StockProductVM>(tbProducts[0]);
-            var result = _productService.AddProductStock(stocksProductsVM);
-
-            return Json(new
-            {
-                success = true,
-                Message = "OK"
-            });
         }
         #endregion
 

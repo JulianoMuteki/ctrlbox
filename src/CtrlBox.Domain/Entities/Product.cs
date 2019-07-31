@@ -26,7 +26,6 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
-        public ICollection<StockProduct> StocksProducts { get; set; }
         public ICollection<SaleProduct> SalesProducts { get; set; }
 
         public ICollection<Box> Boxes { get; set; }
@@ -35,7 +34,6 @@ namespace CtrlBox.Domain.Entities
             :base()
         {
             this.DeliveriesProducts = new HashSet<DeliveryProduct>();
-            this.StocksProducts = new HashSet<StockProduct>();
             this.SalesProducts = new HashSet<SaleProduct>();
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
             this.Boxes = new HashSet<Box>();

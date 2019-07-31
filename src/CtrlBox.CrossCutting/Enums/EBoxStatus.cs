@@ -10,6 +10,6 @@ namespace CtrlBox.CrossCutting.Enums
         ReadyDelivery = 4,
         InTraffic = 5,
         Delivered = 6,
-        LoadRouteBack = 7
+        LoadRouteBack = 8
     }
 }

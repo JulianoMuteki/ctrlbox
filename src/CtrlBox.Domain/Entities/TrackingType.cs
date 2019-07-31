@@ -13,12 +13,12 @@ namespace CtrlBox.Domain.Entities
         public Guid? PictureID { get; set; }
         public Picture Picture { get; set; }
 
-        public ICollection<BoxTracking> BoxesTrackings { get; set; }
+        public ICollection<Tracking> BoxesTrackings { get; set; }
 
         public TrackingType()
             : base()
         {
-            this.BoxesTrackings = new HashSet<BoxTracking>();
+            this.BoxesTrackings = new HashSet<Tracking>();
         }
 
         public void Init()

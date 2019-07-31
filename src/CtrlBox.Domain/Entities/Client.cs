@@ -17,14 +17,14 @@ namespace CtrlBox.Domain.Entities
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<Sale> Sales { get; set; }
         public ICollection<RouteClient> RoutesClients { get; set; }
-        public ICollection<BoxTrackingClient> TracesClients { get; set; }
+        public ICollection<TrackingClient> TrackingsClients { get; set; }
         public ICollection<ClientOptionType> ClientsOptionsTypes { get; set; }
 
         public Client()
             :base()
         {
             this.ClientsOptionsTypes = new HashSet<ClientOptionType>();
-            this.TracesClients = new HashSet<BoxTrackingClient>();
+            this.TrackingsClients = new HashSet<TrackingClient>();
             this.RoutesClients = new HashSet<RouteClient>();
             this.Sales = new HashSet<Sale>();         
             this.CustomersProductsValues = new HashSet<ClientProductValue>();

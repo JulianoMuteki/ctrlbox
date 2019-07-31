@@ -26,7 +26,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var traceability = _mapper.Map<BoxTracking>(entity);
+                var traceability = _mapper.Map<Tracking>(entity);
 
                 if(entity.ClientID != null && entity.ClientID != Guid.Empty)
                 {
@@ -37,7 +37,7 @@ namespace CtrlBox.Application
                 //    throw new CustomException(string.Join(", ", boxType.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
                 //}
 
-                _unitOfWork.Repository<BoxTracking>().Add(traceability);
+                _unitOfWork.Repository<Tracking>().Add(traceability);
                _unitOfWork.CommitSync();
 
                 return entity;

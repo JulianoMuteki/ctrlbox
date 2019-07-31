@@ -28,12 +28,12 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Box> BoxesChildren { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
-        public ICollection<BoxTracking> Traceabilities { get; set; }
+        public ICollection<Tracking> Trackings { get; set; }
 
         public Box()
             : base()
         {
-            this.Traceabilities = new HashSet<BoxTracking>();
+            this.Trackings = new HashSet<Tracking>();
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
@@ -42,7 +42,7 @@ namespace CtrlBox.Domain.Entities
         public void Destructor()
         {
             this.BoxType = null;
-            this.Traceabilities = new HashSet<BoxTracking>();
+            this.Trackings = new HashSet<Tracking>();
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();

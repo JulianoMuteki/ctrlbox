@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CtrlBox.Infra.Repository.Repositories
 {
-    public class BoxTrackingRepository : GenericRepository<BoxTracking>, IBoxTrackingRepository
+    public class BoxTrackingRepository : GenericRepository<Tracking>, IBoxTrackingRepository
     {
         public BoxTrackingRepository(CtrlBoxContext context)
             : base(context)
@@ -18,11 +18,11 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         }
 
-        public ICollection<BoxTracking> GetByBoxIDWithTrackingType(Guid boxID)
+        public ICollection<Tracking> GetByBoxIDWithTrackingType(Guid boxID)
         {
             try
             {
-                return _context.Set<BoxTracking>()
+                return _context.Set<Tracking>()
                     .Include(x => x.TrackingType).ThenInclude(x => x.Picture)
                     .Include(x => x.BoxesTrackingClients).ThenInclude(c => c.Client)
                     .Where(x => x.BoxID != null && x.BoxID.Value == boxID)

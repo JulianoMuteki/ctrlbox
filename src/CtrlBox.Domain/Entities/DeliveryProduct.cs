@@ -10,7 +10,7 @@ namespace CtrlBox.Domain.Entities
         public Guid DeliveryID { get; set; }
         public Guid ProductID { get; set; }
 
-        public int Amount { get; set; }
+        public int QuantityProductItem { get; set; }
 
         public Delivery Delivery { get; set; }
         public Product Product { get; set; }
@@ -20,12 +20,6 @@ namespace CtrlBox.Domain.Entities
 
         }
 
-        public void SubtractProductsDelivered(int amount)
-        {
-            this.Amount -= amount;
-            if (this.Amount < 0)
-                throw new Exception("Not enough stock!");
-        }
         protected override IEnumerable<object> GetEqualityComponents()
         {
 

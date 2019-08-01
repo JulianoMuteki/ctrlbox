@@ -305,5 +305,26 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult PostAjaxHandlerMakeDelivery(string[] strMakeDeliveryJSON)
+        {
+            try
+            {
+                JsonSerialize jsonS = new JsonSerialize();
+                var deliveryVM = jsonS.JsonDeserializeObject<DeliveryVM>(strMakeDeliveryJSON[0]);
+                _deliveryService.MakeDelivery(deliveryVM);
+
+                return Json(new
+                {
+                    success = true,
+                    Message = "OK"
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

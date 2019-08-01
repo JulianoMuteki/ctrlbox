@@ -175,6 +175,38 @@ namespace CtrlBox.Application
             }
         }
 
+        public void MakeDelivery(DeliveryVM deliveryVM)
+        {
+            try
+            {
+                var delivery = _mapper.Map<Delivery>(deliveryVM);
+                _unitOfWork.SetTrackAll();
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(delivery.Id);
+
+                foreach (var deliveryProduct in delivery.DeliveriesProducts)
+                {
+                    foreach (var box in boxes)
+                    {
+                        box.DoDelivery(deliveryProduct.ProductID, deliveryProduct.Amount);
+                    }
+                }
+
+                _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                _unitOfWork.Repository<DeliveryProduct>().AddRange(delivery.DeliveriesProducts);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                _unitOfWork.Rollback();
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.Add), ex);
+            }
+        }
+
         public DeliveryVM Update(DeliveryVM updated)
         {
             throw new NotImplementedException();

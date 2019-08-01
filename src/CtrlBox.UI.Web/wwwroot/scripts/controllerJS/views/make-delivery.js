@@ -3,6 +3,7 @@ var _deliveryID = '';
 
 var MakeDeliveryComponents = function () {
     var oTable;
+    var delivery = {};
 
     function initPage() {
         inicializateComponentes();
@@ -83,6 +84,46 @@ var MakeDeliveryComponents = function () {
                 $(this).find("#iconDetails").addClass("m-icon-swapup").removeClass("m-icon-swapdown");
                 oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
             }
+        });
+
+        $(".btnSubmit").click(function () {
+
+            delivery.ClientID = _clientID;
+            delivery.DT_RowId = _deliveryID;
+
+            var tbProducts = [];
+            $.each(oTable.fnGetNodes(), function (index, value) {
+                var row = oTable.fnGetData(value);
+                var productItem = {};
+
+                var qtdeVenda = $(value).find('input.qtdeVenda').val();
+                qtdeVenda = qtdeVenda || 0;
+
+                productItem.Amount = qtdeVenda;
+                productItem.ProductID = row.DT_RowId;
+                productItem.DeliveryID = _deliveryID;
+                tbProducts.push(productItem);
+            });
+            delivery.DeliveriesProducts = tbProducts;
+
+            var myJsonString = JSON.stringify(delivery);
+
+            $.ajax({
+                url: '../Delivery/PostAjaxHandlerMakeDelivery',
+                type: 'POST',
+                dataType: 'json',
+                data: { strMakeDeliveryJSON: myJsonString },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        window.history.back();
+                    }
+                },
+                "error": handleAjaxError
+            });
+            event.preventDefault();
+
+            return true;
         });
 
     }

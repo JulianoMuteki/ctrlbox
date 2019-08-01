@@ -39,7 +39,6 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Stock = "Check stock of the product: XXXXXXXX";
             return View();
         }
 
@@ -133,21 +132,21 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         //[AuthorizePolicyEnum(CRUD.Create)]
-        public ActionResult ExecuteDelivery(string entregaID, string linhaID)
+        public ActionResult ViewDelivery(string deliveryID, string routeID)
         {
-            ViewData["entregaID"] = entregaID;
-            ViewData["linhaID"] = linhaID;
+            ViewData["DeliveryID"] = deliveryID;
+            ViewData["RouteID"] = routeID;
 
-            ViewData["RouteName"] = _routeService.GetById(new Guid(linhaID)).Name;
+            ViewData["RouteName"] = _routeService.GetById(new Guid(routeID)).Name;
             return View();
         }
 
-        public ActionResult AjaxHandlerExecutarEntrega(string entregaID)
+        public ActionResult GetAjaxHandlerViewDelivery(string deliveryID)
         {
             try
             {
-                Guid deliveryID = new Guid(entregaID);
-                var deliveryVM = _deliveryService.GetById(deliveryID);
+                Guid id = new Guid(deliveryID);
+                var deliveryVM = _deliveryService.GetById(id);
                 var routeVM = _routeService.GetById(deliveryVM.RouteID);
                 var clientsVM = _clientService.GetByRouteID(new Guid(routeVM.DT_RowId));
 
@@ -162,7 +161,7 @@ namespace CtrlBox.UI.Web.Controllers
                                             }).ToList();
 
 
-                var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(deliveryID).GroupBy(n => new { n.BoxTypeID, n })
+                var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(id).GroupBy(n => new { n.BoxTypeID, n })
                                                   .Select(g => new
                                                   {
                                                       DT_RowId = g.Key.BoxTypeID,

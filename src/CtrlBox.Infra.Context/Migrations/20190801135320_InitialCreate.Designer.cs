@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190801120917_ColumnQuantityProductItem")]
-    partial class ColumnQuantityProductItem
+    [Migration("20190801135320_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -153,6 +153,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid?>("DeliveryID");
 
                     b.Property<bool>("IsDelivered");
+
+                    b.Property<bool>("IsItemRemovedBox");
 
                     b.HasKey("BoxID", "ProductItemID");
 
@@ -325,9 +327,13 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("BoxID");
 
+                    b.Property<Guid>("ClientID");
+
                     b.HasKey("DeliveryID", "BoxID");
 
                     b.HasIndex("BoxID");
+
+                    b.HasIndex("ClientID");
 
                     b.ToTable("DeliveriesBoxes");
                 });
@@ -1100,13 +1106,15 @@ namespace CtrlBox.Infra.Context.Migrations
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
                         .WithMany("DeliveriesBoxes")
-                        .HasForeignKey("BoxID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BoxID");
+
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
+                        .WithMany("DeliveriesBoxes")
+                        .HasForeignKey("ClientID");
 
                     b.HasOne("CtrlBox.Domain.Entities.Delivery", "Delivery")
                         .WithMany("DeliveriesBoxes")
-                        .HasForeignKey("DeliveryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("DeliveryID");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.DeliveryProduct", b =>

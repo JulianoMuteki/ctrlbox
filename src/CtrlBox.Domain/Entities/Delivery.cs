@@ -63,12 +63,7 @@ namespace CtrlBox.Domain.Entities
         {
             foreach (var box in boxesReadyToDelivery)
             {
-                DeliveryBox deliveryBox = new DeliveryBox();
-                deliveryBox.BoxID = box.Id;
-                deliveryBox.DeliveryID = this.Id;
-
                 PutInTheBoxBoxesProductItemsChildren(box);
-                this.DeliveriesBoxes.Add(deliveryBox);
             }
         }
 

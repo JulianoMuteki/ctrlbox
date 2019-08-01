@@ -13,6 +13,9 @@ namespace CtrlBox.Domain.Entities
         public Delivery Delivery { get; set; }
         public Box Box { get; set; }
 
+        public Guid ClientID { get; set; }
+        public Client Client { get; set; }
+
         public DeliveryBox()
         {
 

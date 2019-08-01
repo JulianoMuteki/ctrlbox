@@ -173,7 +173,7 @@ namespace CtrlBox.UI.Web.Controllers
 
                 return Json(new
                 {
-                    aaData = clientsVM,
+                    aaData = clientsVMs,
                     xaData = boxesLoadInRoute.ToList(),
                     xbData = despesasVM,
                     success = true

@@ -56,18 +56,29 @@
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
                                 var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@routeID' + '&entregaID=' + '@deliveryID';
-                                var viewSale = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
+                                var link = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
 
-                                var url2 = '@Url.Action("MakeDelivery", "Delivery")?clientID=' + row.DT_RowId + '&deliveryID=' + '@deliveryID';
-                                var makeDelivery = '<a href="' + url2 + '" class="btn mini"><i class="icon-share"></i> Make delivery</a>';
-
-                                var link = viewSale + makeDelivery;
                                 if (row.SaleVM !== null && row.SaleVM.IsFinished) {
                                     link = '<a href="' + url + '" class="btn mini"><i class="icon-eye-open"></i> View</a>';
                                     url = '@Url.Action("Invoice", "Sale")?saleID=' + row.SaleVM.DT_RowId
                                     link += '<a href="' + url + '" class="btn mini" target="_blank"><i class="icon-print"></i> Invoice</a>';
                                 }
 
+                                return link;
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "mData": null,
+                        "sType": "html",
+                        "bSortable": false,
+                        "sClass": "calc",
+                        "mRender": function (data, type, row) {
+                            if (type === 'display') {
+                                var url2 = '@Url.Action("MakeDelivery", "Delivery")?clientID=' + row.DT_RowId + '&deliveryID=' + '@deliveryID';
+                                var link = '<a href="' + url2 + '" class="btn mini"><i class="icon-share"></i> Make delivery</a>';
+                                                  
                                 return link;
                             }
                             return data;
@@ -312,7 +323,8 @@
                                     <th>Endereço</th>
                                     <th class="hidden-480">Telefone</th>
                                     <th>Contato</th>
-                                    <th>Vender</th>
+                                    <th>Sale</th>
+                                    <th>Delivery</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>

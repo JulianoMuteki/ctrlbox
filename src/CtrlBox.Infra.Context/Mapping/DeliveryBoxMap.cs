@@ -14,11 +14,18 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.HasOne(tk => tk.Delivery)
                 .WithMany(t => t.DeliveriesBoxes)
-                .HasForeignKey(tk => tk.DeliveryID);
+                .HasForeignKey(tk => tk.DeliveryID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(tk => tk.Box)
                 .WithMany(k => k.DeliveriesBoxes)
-                .HasForeignKey(tk => tk.BoxID);
+                .HasForeignKey(tk => tk.BoxID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasOne(tk => tk.Client)
+                .WithMany(k => k.DeliveriesBoxes)
+                .HasForeignKey(tk => tk.ClientID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

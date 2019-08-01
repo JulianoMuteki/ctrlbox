@@ -25,7 +25,7 @@ namespace CtrlBox.Domain.Entities
         public IList<string> OptionsVolumeUnit { get { return CtrlBoxUnits.CtrlBoxVolumeUnit; } }
 
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
-        public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
+        public ICollection<DeliveryDetail> DeliveriesDetails { get; set; }
         public ICollection<SaleProduct> SalesProducts { get; set; }
 
         public ICollection<Box> Boxes { get; set; }
@@ -33,7 +33,7 @@ namespace CtrlBox.Domain.Entities
         public Product()
             :base()
         {
-            this.DeliveriesProducts = new HashSet<DeliveryProduct>();
+            this.DeliveriesDetails = new HashSet<DeliveryDetail>();
             this.SalesProducts = new HashSet<SaleProduct>();
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
             this.Boxes = new HashSet<Box>();

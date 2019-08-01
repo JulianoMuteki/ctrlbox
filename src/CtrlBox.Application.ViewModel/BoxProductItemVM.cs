@@ -12,6 +12,6 @@ namespace CtrlBox.Application.ViewModel
         public bool IsDelivered { get; set; }
 
         public Guid? DeliveryID { get; set; }
-        public DeliveryVM Delivery { get; set; }
+        public OrderVM Delivery { get; set; }
     }
 }

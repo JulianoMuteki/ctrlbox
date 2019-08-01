@@ -8,7 +8,7 @@ namespace CtrlBox.Application.AutoMapper
     {
         public DeliveryProfile()
         {
-            CreateMap<Delivery, DeliveryVM>()
+            CreateMap<Order, OrderVM>()
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id))
                 .ForMember(dest => dest.RouteName,
@@ -16,7 +16,7 @@ namespace CtrlBox.Application.AutoMapper
                 .ForMember(dest => dest.UserName,
                           opts => opts.MapFrom(src => src.User.UserName));
 
-            CreateMap<DeliveryVM, Delivery>()
+            CreateMap<OrderVM, Order>()
                 .ForMember(dest => dest.Id,
                           opts => opts.MapFrom(src => src.DT_RowId))
                  .AfterMap((src, dest) => dest.Init());

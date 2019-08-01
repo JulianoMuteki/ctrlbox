@@ -6,7 +6,7 @@ namespace CtrlBox.Application.ViewModel.Custom
 {
     class ExecuteDeliveryVM
     {
-        public IList<DeliveryProductVM> DeliverysProducts { get; set; }
+        public IList<DeliveryDetailVM> DeliverysProducts { get; set; }
         public IList<ClientVM> Clients { get; set; }
         public IList<ExpenseVM> Expenses { get; set; }
 

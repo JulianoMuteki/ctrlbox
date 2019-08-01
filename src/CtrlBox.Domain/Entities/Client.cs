@@ -20,12 +20,12 @@ namespace CtrlBox.Domain.Entities
         public ICollection<TrackingClient> TrackingsClients { get; set; }
         public ICollection<ClientOptionType> ClientsOptionsTypes { get; set; }
         public ICollection<Route> Routes { get; set; }
-        public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
+        public ICollection<DeliveryDetail> DeliveriesDetails { get; set; }
         
         public Client()
             :base()
         {
-            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
+            this.DeliveriesDetails = new HashSet<DeliveryDetail>();
             this.Routes = new HashSet<Route>();
             this.ClientsOptionsTypes = new HashSet<ClientOptionType>();
             this.TrackingsClients = new HashSet<TrackingClient>();

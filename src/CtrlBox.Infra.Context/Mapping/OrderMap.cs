@@ -5,9 +5,9 @@ using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class DeliveryMap : EntityConfiguration<Delivery>
+    public class OrderMap : EntityConfiguration<Order>
     {
-        protected override void Initialize(EntityTypeBuilder<Delivery> builder)
+        protected override void Initialize(EntityTypeBuilder<Order> builder)
         {
             base.Initialize(builder);
 

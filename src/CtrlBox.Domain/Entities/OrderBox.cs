@@ -5,26 +5,22 @@ using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class DeliveryProduct : ValueObject<DeliveryProduct>
+    public class OrderBox : ValueObject<OrderBox>
     {
-        public Guid DeliveryID { get; set; }
-        public Guid ProductID { get; set; }
+        public Guid BoxID { get; set; }
+        public Box Box { get; set; }
 
-        public int QuantityProductItem { get; set; }
+        public Guid OrderID { get; set; }
+        public Order Order { get; set; }
 
-        public Delivery Delivery { get; set; }
-        public Product Product { get; set; }
-
-        public DeliveryProduct()
+        public OrderBox()
         {
 
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
-
         }
     }
 }

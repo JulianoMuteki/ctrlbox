@@ -5,14 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190731151722_InitialCreate.cs" />
-    <Compile Remove="Migrations\20190801133812_ColumnNew.cs" />
-    <Compile Remove="Migrations\20190801134208_ColumnsNew.cs" />
-    <Compile Remove="Migrations\20190801134358_ColumnsNew.cs" />
-    <Compile Remove="Migrations\20190801135112_InitialCreate.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />

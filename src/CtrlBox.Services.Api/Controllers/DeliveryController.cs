@@ -35,11 +35,11 @@ namespace CtrlBox.Services.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<DeliveryVM> Get()
+        public IEnumerable<OrderVM> Get()
         {
             var deliveries = _deliveryApplicationService.GetAll();
 
-            IList<DeliveryVM> deliveriesVM = _mapper.Map<List<DeliveryVM>>(deliveries);
+            IList<OrderVM> deliveriesVM = _mapper.Map<List<OrderVM>>(deliveries);
             return deliveriesVM;
         }
 
@@ -50,11 +50,11 @@ namespace CtrlBox.Services.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "Get")]
-        public DeliveryVM Get(Guid id)
+        public OrderVM Get(Guid id)
         {
             var deliveries = _deliveryApplicationService.GetById(id);
 
-            DeliveryVM DeliveryVM = _mapper.Map<DeliveryVM>(deliveries);
+            OrderVM DeliveryVM = _mapper.Map<OrderVM>(deliveries);
             return DeliveryVM;
         }
 
@@ -65,7 +65,7 @@ namespace CtrlBox.Services.Api.Controllers
         /// <param name="deliveryVM"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post(DeliveryVM deliveryVM)
+        public IActionResult Post(OrderVM deliveryVM)
         {
             //if (ModelState.IsValid)
             if (true)

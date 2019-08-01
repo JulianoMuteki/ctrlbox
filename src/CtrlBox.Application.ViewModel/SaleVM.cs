@@ -14,16 +14,16 @@ namespace CtrlBox.Application.ViewModel
         public bool IsFinished { get; set; }
 
         public virtual ClientVM Client { get; set; }
-        public virtual DeliveryVM Delivery { get; set; }
+        public virtual OrderVM Delivery { get; set; }
         public virtual PaymentVM Payment { get; set; }
 
-        public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }
+        public ICollection<DeliveryDetailVM> DeliveriesProducts { get; set; }
         public ICollection<SaleProductVM> SalesProducts { get; set; }
 
         public SaleVM()
         {
             this.SalesProducts = new HashSet<SaleProductVM>();
-            this.DeliveriesProducts = new HashSet<DeliveryProductVM>();
+            this.DeliveriesProducts = new HashSet<DeliveryDetailVM>();
         }
     }
 }

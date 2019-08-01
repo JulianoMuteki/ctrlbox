@@ -18,9 +18,9 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(x => x.IsItemRemovedBox)
               .IsRequired();
 
-            builder.HasOne(tk => tk.Delivery)
+            builder.HasOne(tk => tk.Order)
                 .WithMany(t => t.BoxesProductItems)
-                .HasForeignKey(tk => tk.DeliveryID)
+                .HasForeignKey(tk => tk.OrderID)
                 .IsRequired(false);
 
             builder.HasOne(tk => tk.Box)

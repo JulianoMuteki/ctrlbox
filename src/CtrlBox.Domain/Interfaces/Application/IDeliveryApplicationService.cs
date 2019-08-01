@@ -4,11 +4,11 @@ using CtrlBox.Application.ViewModel;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IDeliveryApplicationService : IApplicationServiceBase<DeliveryVM>
+    public interface IDeliveryApplicationService : IApplicationServiceBase<OrderVM>
     {
-        ICollection<DeliveryVM> GetByUserId(Guid userId);
+        ICollection<OrderVM> GetByUserId(Guid userId);
         void FinalizeDelivery(Guid deliveryID);
-        DeliveryVM GetResumeDeliveryById(Guid deliveryID);
-        void MakeDelivery(DeliveryVM deliveryVM);
+        OrderVM GetResumeDeliveryById(Guid deliveryID);
+        void MakeDelivery(OrderVM deliveryVM);
     }
 }

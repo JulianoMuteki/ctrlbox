@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Application.ViewModel
 {
-    public class DeliveryVM : ViewModelBase
+    public class OrderVM : ViewModelBase
     {
         public Guid RouteID { get; set; }
         public Guid UserID { get; set; }
@@ -19,18 +19,21 @@ namespace CtrlBox.Application.ViewModel
         public string UserName { get; set; }
         public RouteVM RouteVM { get; set; }
 
+        public ICollection<ExpenseVM> Expenses { get; set; }
+        public ICollection<DeliveryDetailVM> DeliveriesDetails { get; set; }
+        public ICollection<OrderBoxVM> OrdersBoxes { get; set; }
         public ICollection<SaleVM> Sales { get; set; }
+        public ICollection<BoxProductItemVM> BoxesProductItems { get; set; }
 
-        public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }
-        public ICollection<DeliveryBoxVM> DeliveriesBoxes { get; set; }
         public ICollection<BoxTypeVM> BoxesTypes { get; set; }
-
-        public DeliveryVM()
+        public OrderVM()
         {
             this.BoxesTypes = new HashSet<BoxTypeVM>();
-            this.DeliveriesProducts = new HashSet<DeliveryProductVM>();
+            this.BoxesProductItems = new HashSet<BoxProductItemVM>();
+            this.Expenses = new HashSet<ExpenseVM>();
+            this.DeliveriesDetails = new HashSet<DeliveryDetailVM>();
+            this.OrdersBoxes = new HashSet<OrderBoxVM>();
             this.Sales = new HashSet<SaleVM>();
-            this.DeliveriesBoxes = new HashSet<DeliveryBoxVM>();
         }
     }
 }

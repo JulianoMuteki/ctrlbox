@@ -194,13 +194,13 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<DeliveryProductVM> GetDeliveryProducts(Guid deliveryID)
+        public ICollection<DeliveryDetailVM> GetDeliveryProducts(Guid deliveryID)
         {
             try
             {
                 var deliveries = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryProductsLoad(deliveryID);
 
-                var deliveriesVMs = _mapper.Map<IList<DeliveryProductVM>>(deliveries);
+                var deliveriesVMs = _mapper.Map<IList<DeliveryDetailVM>>(deliveries);
                 return deliveriesVMs;
             }
             catch (CustomException exc)

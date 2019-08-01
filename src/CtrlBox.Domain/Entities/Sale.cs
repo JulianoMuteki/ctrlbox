@@ -15,7 +15,7 @@ namespace CtrlBox.Domain.Entities
         public bool IsFinished { get; set; }
 
         public Client   Client { get; set; }
-        public Delivery Delivery { get; set; }
+        public Order Order { get; set; }
         public Payment Payment { get; set; }
 
         public ICollection<SaleProduct> SalesProducts { get; set; }

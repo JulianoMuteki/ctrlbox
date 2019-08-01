@@ -15,8 +15,8 @@ namespace CtrlBox.Domain.Entities
         public bool IsDelivered { get; set; }
         public bool IsItemRemovedBox { get; set; }
 
-        public Guid? DeliveryID { get; set; }
-        public Delivery Delivery { get; set; }
+        public Guid? OrderID { get; set; }
+        public Order Order { get; set; }
 
         public BoxProductItem()
         {

@@ -23,11 +23,11 @@ namespace CtrlBox.Application
             _mapper = mapper;
         }
 
-        public DeliveryVM Add(DeliveryVM entity)
+        public OrderVM Add(OrderVM entity)
         {
             try
             {
-                var delivery = _mapper.Map<Delivery>(entity);
+                var delivery = _mapper.Map<Order>(entity);
 
                 foreach (BoxTypeVM boxType in entity.BoxesTypes)
                 {
@@ -37,7 +37,7 @@ namespace CtrlBox.Application
                 }
                 var lista = delivery.BoxesProductItems.ToList();
                 delivery.BoxesProductItems.Clear();
-                _unitOfWork.Repository<Delivery>().Add(delivery);
+                _unitOfWork.Repository<Order>().Add(delivery);
                 _unitOfWork.Repository<BoxProductItem>().UpdateRange(lista);
 
                 _unitOfWork.CommitSync();
@@ -54,7 +54,7 @@ namespace CtrlBox.Application
             }
         }
 
-        public Task<DeliveryVM> AddAsync(DeliveryVM entity)
+        public Task<OrderVM> AddAsync(OrderVM entity)
         {
             throw new NotImplementedException();
         }
@@ -73,9 +73,9 @@ namespace CtrlBox.Application
         {
             try
             {
-                var delivery = _unitOfWork.Repository<Delivery>().GetById(deliveryID);
+                var delivery = _unitOfWork.Repository<Order>().GetById(deliveryID);
                 delivery.FinalizeDelivery();
-                _unitOfWork.Repository<Delivery>().Update(delivery);
+                _unitOfWork.Repository<Order>().Update(delivery);
                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
@@ -88,13 +88,13 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<DeliveryVM> GetAll()
+        public ICollection<OrderVM> GetAll()
         {
             try
             {
                 var deliveries = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryRouteLoad();
 
-                var deliveriesVMs = _mapper.Map<IList<DeliveryVM>>(deliveries);
+                var deliveriesVMs = _mapper.Map<IList<OrderVM>>(deliveries);
                 return deliveriesVMs;
             }
             catch (CustomException exc)
@@ -107,17 +107,17 @@ namespace CtrlBox.Application
             }
         }
 
-        public Task<ICollection<DeliveryVM>> GetAllAsync()
+        public Task<ICollection<OrderVM>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public DeliveryVM GetById(Guid id)
+        public OrderVM GetById(Guid id)
         {
             try
             {
-                var delivery = _unitOfWork.Repository<Delivery>().GetById(id);
-                var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
+                var delivery = _unitOfWork.Repository<Order>().GetById(id);
+                var deliveryVM = _mapper.Map<OrderVM>(delivery);
                 return deliveryVM;
             }
             catch (CustomException exc)
@@ -130,18 +130,18 @@ namespace CtrlBox.Application
             }
         }
 
-        public Task<DeliveryVM> GetByIdAsync(Guid id)
+        public Task<OrderVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<DeliveryVM> GetByUserId(Guid userId)
+        public ICollection<OrderVM> GetByUserId(Guid userId)
         {
             try
             {
                 var delivery = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryByUserWithRoute(userId);
 
-                var deliveriesVM = _mapper.Map<IList<DeliveryVM>>(delivery);
+                var deliveriesVM = _mapper.Map<IList<OrderVM>>(delivery);
                 return deliveriesVM;
             }
             catch (CustomException exc)
@@ -154,14 +154,14 @@ namespace CtrlBox.Application
             }
         }
 
-        public DeliveryVM GetResumeDeliveryById(Guid deliveryID)
+        public OrderVM GetResumeDeliveryById(Guid deliveryID)
         {
             {
                 try
                 {
                     var delivery = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetResumeDeliveryById(deliveryID);
 
-                    var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
+                    var deliveryVM = _mapper.Map<OrderVM>(delivery);
                     return deliveryVM;
                 }
                 catch (CustomException exc)
@@ -175,15 +175,15 @@ namespace CtrlBox.Application
             }
         }
 
-        public void MakeDelivery(DeliveryVM deliveryVM)
+        public void MakeDelivery(OrderVM deliveryVM)
         {
             try
             {
-                var delivery = _mapper.Map<Delivery>(deliveryVM);
+                var delivery = _mapper.Map<Order>(deliveryVM);
                 _unitOfWork.SetTrackAll();
                 var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(delivery.Id);
 
-                foreach (var deliveryProduct in delivery.DeliveriesProducts)
+                foreach (var deliveryProduct in delivery.DeliveriesDetails)
                 {
                     foreach (var box in boxes)
                     {
@@ -192,7 +192,7 @@ namespace CtrlBox.Application
                 }
 
                 _unitOfWork.Repository<Box>().UpdateRange(boxes);
-                _unitOfWork.Repository<DeliveryProduct>().AddRange(delivery.DeliveriesProducts);
+                _unitOfWork.Repository<DeliveryDetail>().AddRange(delivery.DeliveriesDetails);
                 _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
@@ -207,12 +207,12 @@ namespace CtrlBox.Application
             }
         }
 
-        public DeliveryVM Update(DeliveryVM updated)
+        public OrderVM Update(OrderVM updated)
         {
             throw new NotImplementedException();
         }
 
-        public Task<DeliveryVM> UpdateAsync(DeliveryVM updated)
+        public Task<OrderVM> UpdateAsync(OrderVM updated)
         {
             throw new NotImplementedException();
         }

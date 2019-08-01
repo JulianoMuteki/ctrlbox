@@ -9,7 +9,7 @@ namespace CtrlBox.Application.ViewModel
         public Guid DeliveryID { get; set; }
         public Guid BoxTypeID { get; set; }
 
-        public DeliveryVM Delivery { get; set; }
+        public OrderVM Delivery { get; set; }
         public BoxVM Box { get; set; }
 
     }

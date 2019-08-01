@@ -8,9 +8,9 @@ namespace CtrlBox.Application.AutoMapper
     {
         public DeliveryProductProfile()
         {
-            CreateMap<DeliveryProduct, DeliveryProductVM>();
+            CreateMap<DeliveryDetail, DeliveryDetailVM>();
 
-            CreateMap<DeliveryProductVM, DeliveryProduct>();
+            CreateMap<DeliveryDetailVM, DeliveryDetail>();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class Delivery : EntityBase
+    public class Order : EntityBase
     {
         public Guid RouteID { get; set; }
         public Guid UserID { get; set; }
@@ -21,18 +21,18 @@ namespace CtrlBox.Domain.Entities
         public ApplicationUser User { get; set; }
 
         public ICollection<Expense> Expenses { get; set; }
-        public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
-        public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
+        public ICollection<DeliveryDetail> DeliveriesDetails { get; set; }
+        public ICollection<OrderBox> OrdersBoxes { get; set; }
         public ICollection<Sale> Sales { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
 
-        public Delivery()
+        public Order()
             :base()
         {
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.Expenses = new HashSet<Expense>();
-            this.DeliveriesProducts = new HashSet<DeliveryProduct>();
-            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
+            this.DeliveriesDetails = new HashSet<DeliveryDetail>();
+            this.OrdersBoxes = new HashSet<OrderBox>();
             this.Sales = new HashSet<Sale>();
         }
 
@@ -71,7 +71,7 @@ namespace CtrlBox.Domain.Entities
         {
             if (box.BoxesProductItems.Count > 0)
             {
-                var boxesProductItems = box.BoxesProductItems.Select(x => { x.DeliveryID = this.Id; return x; }).ToList();
+                var boxesProductItems = box.BoxesProductItems.Select(x => { x.OrderID = this.Id; return x; }).ToList();
 
                 foreach (BoxProductItem boxProductItem in boxesProductItems)
                 {

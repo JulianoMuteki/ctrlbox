@@ -47,7 +47,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                ICollection<DeliveryVM> deliveriesVM;
+                ICollection<OrderVM> deliveriesVM;
 
                 if (User.IsInRole(RoleAuthorize.Driver.ToString()))
                 {
@@ -113,7 +113,7 @@ namespace CtrlBox.UI.Web.Controllers
                 JsonSerialize jsonS = new JsonSerialize();
                 var deliveryBoxTypeVMs = jsonS.JsonDeserialize<BoxTypeVM>(tbBoxesTypes[0]);
 
-                DeliveryVM deliveryVM = new DeliveryVM();
+                OrderVM deliveryVM = new OrderVM();
                 deliveryVM.RouteID = new Guid(routeID);
                 deliveryVM.UserID = new Guid(userID);
                 deliveryVM.BoxesTypes = deliveryBoxTypeVMs;
@@ -311,7 +311,7 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
-                var deliveryVM = jsonS.JsonDeserializeObject<DeliveryVM>(strMakeDeliveryJSON[0]);
+                var deliveryVM = jsonS.JsonDeserializeObject<OrderVM>(strMakeDeliveryJSON[0]);
                 _deliveryService.MakeDelivery(deliveryVM);
 
                 return Json(new

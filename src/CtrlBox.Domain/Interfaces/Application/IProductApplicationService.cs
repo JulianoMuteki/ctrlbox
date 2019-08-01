@@ -8,7 +8,7 @@ namespace CtrlBox.Domain.Interfaces.Application
     {
         ICollection<ClientProductValueVM> ConnectRouteToClient(ICollection<ClientProductValueVM> clientsProductsVMs);
 
-        ICollection<DeliveryProductVM> GetDeliveryProducts(Guid deliveryID);
+        ICollection<DeliveryDetailVM> GetDeliveryProducts(Guid deliveryID);
         ICollection<ClientProductValueVM> GetClientsProductsByClientID(Guid clientID);
 
         void GenerateProductItem(Guid productID, int quantity);

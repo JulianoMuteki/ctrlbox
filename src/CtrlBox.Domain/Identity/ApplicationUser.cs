@@ -16,7 +16,7 @@ namespace CtrlBox.Domain.Identity
         public virtual ICollection<ApplicationUserLogin> UserLogins { get; set; }
         public virtual ICollection<ApplicationUserToken> UserTokens { get; set; }
 
-        public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Order> Deliveries { get; set; }
 
         
     }

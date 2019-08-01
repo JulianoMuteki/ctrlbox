@@ -33,7 +33,7 @@ namespace CtrlBox.Application
                 {
                     var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
 
-                    delivery.ShippingBoxes(boxesReadyToDelivery);
+                    delivery.AddOrdersBoxes(boxesReadyToDelivery);
                 }
                 var lista = delivery.BoxesProductItems.ToList();
                 delivery.BoxesProductItems.Clear();

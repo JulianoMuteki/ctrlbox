@@ -59,11 +59,18 @@ namespace CtrlBox.Domain.Entities
             this.FinalizedBy = "Juliano";
         }
 
-        public void ShippingBoxes(IEnumerable<Box> boxesReadyToDelivery)
+        public void AddOrdersBoxes(IEnumerable<Box> boxesToOrder)
         {
-            foreach (var box in boxesReadyToDelivery)
+            foreach (var box in boxesToOrder)
             {
                 PutInTheBoxBoxesProductItemsChildren(box);
+
+                OrderBox orderBox = new OrderBox()
+                {
+                    OrderID = this.Id,
+                    BoxID = box.Id
+                };
+                this.OrdersBoxes.Add(orderBox);
             }
         }
 

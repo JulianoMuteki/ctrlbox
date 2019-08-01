@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "MakeDelivery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section scriptsViews
+    {
+    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
+    <script src="~/scripts/controllerJS/views/make-delivery.js"></script>
+}
+
+    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        @{ var clientID = ViewData["ClientID"];
+            var deliveryID = ViewData["DeliveryID"];
+            }
+        MakeDeliveryComponents.init('@clientID', '@deliveryID');
+    });
+    </script>
+
+<div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Delivery</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="#">Sale</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Make delivery</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box blue tabbable">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Make just delivery</div>
+                    </div>
+                    <div class="portlet-body">
+                        <!-- BEGIN FORM-->
+                        <form action="#" class="form-horizontal">
+                            <div class="control-group">
+                                <table id="tbProductItems" class="table-bordered table-striped table-condensed cf">
+                                    <thead class="cf">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Items available to delivery</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="2" style="text-align:right">Total:</th>
+                                            <th>
+
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="isReadOlny form-actions">
+                                <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>
+                                <button type="button" class="btn blue btnSubmit"><i class="icon-ok"></i> Save</button>
+                                <button type="button" class="btn">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+</div>
+

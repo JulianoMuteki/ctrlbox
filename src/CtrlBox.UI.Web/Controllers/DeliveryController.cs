@@ -248,5 +248,62 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
+
+        public ActionResult MakeDelivery(Guid routeID, Guid clientID, Guid deliveryID)
+        {
+            ViewData["ClientID"] = clientID;
+            ViewData["DeliveryID"] = deliveryID;
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerMakeDelivery(Guid clientID, Guid deliveryID)
+        {
+            try
+            {
+                //Busca preço de produtos por clientes. Deve sempre existir preço para todos clientes
+                var clientsProductsVM = _productService.GetClientsProductsByClientID(clientID);
+                var boxesProductItemsVM = _boxService.GetBoxesBoxesProductItemsByDeliveryID(deliveryID);
+
+                var boxesProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
+                                                                  (key, group) => new {
+                                                                      DT_RowId = key,
+                                                                      Product = group.Select(x => x.ProductItem.Product).FirstOrDefault(),
+                                                                      NomeProduto = group.Select(x => x.ProductItem.Product.Name).FirstOrDefault(),
+                                                                      PictureID = group.Select(x => x.ProductItem.Product.PictureID).FirstOrDefault(),
+                                                                      TotalBox = group.Select(p => p.ProductItem).Count()
+                                                                  })
+                                                         .ToList();
+
+                return Json(new
+                {
+                    aaData = boxesProductItemsGroup.Select(x => new
+                    {
+                        DT_RowId = x.DT_RowId.ToString(),
+                        x.NomeProduto,
+                        Product = new
+                        {
+                            x.Product.Description,
+                            x.Product.Package,
+                            Capacity = $"{x.Product.Capacity} {x.Product.UnitMeasure}",
+                            Weight = $"{x.Product.Weight} {x.Product.MassUnitWeight}"
+                        },
+                        x.PictureID,
+                        ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
+                        x.TotalBox,
+                        Total = String.Format("{0:c}", 0)
+                    }),
+                    success = true,
+                    SaldoAnterior = 0,
+                    CaixasEmDebito = 0
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

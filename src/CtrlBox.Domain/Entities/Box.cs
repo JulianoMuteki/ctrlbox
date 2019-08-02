@@ -11,6 +11,7 @@ namespace CtrlBox.Domain.Entities
     {
         public string Description { get; set; }
         public EBoxStatus Status { get; set; }
+        public EFlowStep EFlowStep { get; set; }
 
         public int PorcentFull { get; set; }
 
@@ -66,6 +67,7 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.BoxBarcode = new BoxBarcode();
+                this.EFlowStep = EFlowStep.Create;
             }
         }
 

@@ -8,6 +8,7 @@ namespace CtrlBox.Domain.Entities
     public class ProductItem: EntityBase
     {
         public string Barcode { get; set; }
+        public EFlowStep EFlowStep { get; set; }
 
         public Guid ProductID { get; set; }
         public Product Product { get; set; }
@@ -29,6 +30,7 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.Status = EProductItemStatus.AvailableStock;
+                this.EFlowStep = EFlowStep.Create;
             }
         }
 

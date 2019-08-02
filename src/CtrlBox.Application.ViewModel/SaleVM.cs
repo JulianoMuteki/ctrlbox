@@ -17,6 +17,8 @@ namespace CtrlBox.Application.ViewModel
         public virtual OrderVM Order { get; set; }
         public virtual PaymentVM Payment { get; set; }
 
+        public bool HasDelivery { get; set; }
+
         public ICollection<SaleProductVM> SalesProducts { get; set; }
 
         public SaleVM()

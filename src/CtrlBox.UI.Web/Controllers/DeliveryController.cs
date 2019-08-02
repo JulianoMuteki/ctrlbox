@@ -147,18 +147,18 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 Guid id = new Guid(deliveryID);
                 var deliveryVM = _deliveryService.GetById(id);
-                var routeVM = _routeService.GetById(deliveryVM.RouteID);
-                var clientsVM = _clientService.GetByRouteID(new Guid(routeVM.DT_RowId));
+              //  var routeVM = _routeService.GetById(deliveryVM.RouteID);
+                var clientsVM = _clientService.GetByRouteID(deliveryVM.RouteID);
 
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
-                var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
-                var clientsVMs = clientsVM.Select(c =>
-                                            {
-                                                c.SaleVM =
-                                                       ((from x in sales
-                                                         where x.ClientID.ToString() == c.DT_RowId
-                                                         select x).FirstOrDefault() ?? new SaleVM()); return c;
-                                            }).ToList();
+                //var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
+                //var clientsVMs = clientsVM.Select(c =>
+                //                            {
+                //                                c.SaleVM =
+                //                                       ((from x in sales
+                //                                         where x.ClientID.ToString() == c.DT_RowId
+                //                                         select x).FirstOrDefault() ?? new SaleVM()); return c;
+                //                            }).ToList();
 
 
                 var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(id).GroupBy(n => new { n.BoxTypeID, n })
@@ -173,7 +173,7 @@ namespace CtrlBox.UI.Web.Controllers
 
                 return Json(new
                 {
-                    aaData = clientsVMs,
+                    aaData = clientsVM,
                     xaData = boxesLoadInRoute.ToList(),
                     xbData = despesasVM,
                     success = true

@@ -58,9 +58,9 @@
                                 var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@routeID' + '&entregaID=' + '@deliveryID';
                                 var link = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
 
-                                if (row.SaleVM !== null && row.SaleVM.IsFinished) {
+                                if (row.Sales.length > 0 && row.Sales[0].IsFinished) {
                                     link = '<a href="' + url + '" class="btn mini"><i class="icon-eye-open"></i> View</a>';
-                                    url = '@Url.Action("Invoice", "Sale")?saleID=' + row.SaleVM.DT_RowId
+                                    url = '@Url.Action("Invoice", "Sale")?saleID=' + row.Sales[0].DT_RowId
                                     link += '<a href="' + url + '" class="btn mini" target="_blank"><i class="icon-print"></i> Invoice</a>';
                                 }
 
@@ -78,7 +78,9 @@
                             if (type === 'display') {
                                 var url2 = '@Url.Action("MakeDelivery", "Delivery")?clientID=' + row.DT_RowId + '&deliveryID=' + '@deliveryID';
                                 var link = '<a href="' + url2 + '" class="btn mini"><i class="icon-share"></i> Make delivery</a>';
-                                                  
+                                if (row.DeliveriesDetails.length > 0) {
+                                    link = '<span>Delivered</span>'
+                                }
                                 return link;
                             }
                             return data;
@@ -93,7 +95,7 @@
                                 var status = 'warning';
                                 var texto = "Pendente";
 
-                                if (row.SaleVM.IsFinished) {
+                                if (row.Sales.length > 0 && row.Sales[0].IsFinished) {
                                     status = 'success';
                                     texto = "Entregue"
                                 }

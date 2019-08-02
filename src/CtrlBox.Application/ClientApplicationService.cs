@@ -30,7 +30,7 @@ namespace CtrlBox.Application
                 var client = _mapper.Map<Client>(entity);
                 client.SetOptionsTypes(entity.OptionsTypesID);
                 _unitOfWork.Repository<Client>().Add(client);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
 
                 return entity;
             }
@@ -180,7 +180,10 @@ namespace CtrlBox.Application
         {
             try
             {
-                var clients = _unitOfWork.RepositoryCustom<IClientRepository>().FindAll(x => x.RoutesClients.Where(r => r.RouteID == routeID).Select(c => c.ClientID).Contains(x.Id));
+                // var clients = _unitOfWork.RepositoryCustom<IClientRepository>().FindAll(x => x.RoutesClients.Where(r => r.RouteID == routeID).Select(c => c.ClientID).Contains(x.Id));
+
+                var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetByRouteID(routeID);
+
                 IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
 
                 return clientsVM;

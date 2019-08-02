@@ -1,21 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@section scriptsViews
-    {
-    <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
-    <script src="~/scripts/controllerJS/views/product-stock.js"></script>
+@section cssViews{
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
+
+    <!-- END PAGE LEVEL STYLES -->
 }
-<script type="text/javascript" charset="utf-8">
-    @{ var stockID = ViewData["StockID"];
-      }
+@section scriptsViews{
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/scripts/controllerJS/views/product-stock.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+}
 
-        jQuery(document).ready(function () {
-            ProductStock.init('@stockID');
-        });
-</script>
-
-
+    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        ProductStock.init();
+    });
+    </script>
 <!-- BEGIN PAGE -->
 <div class="page-content" style="min-height:1029px !important">
     <!-- BEGIN PAGE CONTAINER-->
@@ -52,16 +55,16 @@
                         <!-- BEGIN FORM-->
                         <form action="#" class="form-horizontal">
                             <div class="control-group">
-                                <table id="tbProductStock" class="table-bordered table-striped table-condensed cf">
-                                    <thead class="cf">
-                                        <tr>
-                                            <th>Produto</th>
-                                            <th>Total</th>
-                                            <th>Unit Measure</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                                <label class="control-label">Client</label>
+                                <div class="controls">
+                                    <select id="ddlClient" class="span6 select2_option" data-placeholder="Choose a Client" name="ClientID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Product</label>
+                                <div class="controls">
+                                    <select id="ddlProduct" class="span6 select2_option" data-placeholder="Choose a Product" name="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"><option value="0">Please select user</option></select>
+                                </div>
                             </div>
                             <div class="form-actions">
                                 <a onclick="window.history.back(); return false;" href="#" class="btn purple"><i class="m-icon-swapleft  m-icon-white"></i> Back</a>

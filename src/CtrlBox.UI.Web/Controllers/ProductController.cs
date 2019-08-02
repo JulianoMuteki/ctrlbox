@@ -147,8 +147,40 @@ namespace CtrlBox.UI.Web.Controllers
 
         #region ProductStock
         public ActionResult ProductStock()
-        {         
+        {
+            var clients = _clientService.GetAll()
+                      .Select(client => new SelectListItem
+                      {
+                          Value = client.DT_RowId,
+                          Text = client.Name
+                      }).ToList();
+            ViewData["Clients"] = clients;
+
+            var products = _productService.GetAll()
+                            .Select(prod => new SelectListItem
+                            {
+                                Value = prod.DT_RowId,
+                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
+                            }).ToList();
+            ViewData["Products"] = products;
             return View();
+        }
+
+        public ActionResult GetTotalProductItemByProductID(Guid productID)
+        {
+            try
+            {
+                var totalProductsItems = _productService.GetTotalProductItemByProductID(productID);
+                return Json(new
+                {
+                    aaData = totalProductsItems,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
 

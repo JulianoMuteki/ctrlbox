@@ -1,93 +1,39 @@
-﻿
+﻿var ddlProduct = "#ddlProduct";
+
 var ProductStock = function () {
-    return {
-        init: function (stockID) {
-            var _stockID = stockID;
-            var list = [];
-            (function ($) {
-                $.fn.serializeFormJSON = function () {
-                    list = [];
-                    var a = this.serializeArray();
-                    $.each(a, function () {
-                        if (this.value != "") {
-                            list.push({ "StockID": _stockID, "ProductID": this.name, "Amount": this.value });
-                        }
-                    });
-                    return JSON.stringify(list);
-                };
-            })(jQuery);
 
-            $('#btnSubmit').click(function () {
-                var oTableAdd = $('#tbProductStock').dataTable();
-                var sData = oTableAdd.$('input').serializeFormJSON();
-               
-                if (list.length > 0) {
-                    $.ajax({
-                        url: "PutAjaxHandlerProductStock",
-                        type: 'POST',
-                        dataType: 'json',
-                        data: { tbProducts: sData },
-                        "success": function (json) {
-                            if (!json.NotAuthorized) {
-                                alert('Complete');
-                                window.history.back();
-                            }
-                        },
-                        "error": handleAjaxError
-                    }); 
-                } else
-                {
-                    alert("There are not products selected");
-                }
+    function getTotalProductItemByClientIDAndProductID() {
+        var _productID = $(ddlProduct).val();
 
-                return false;
-            });
-
-            var url = "GetAjaxHandlerProductStock";
-            var oTable = $('#tbProductStock').dataTable({
-                "sAjaxSource": url,
-                "bProcessing": true,
-                "bDestroy": true,
-                "aoColumns": [
-                    {
-                        "mData": "ProductName"
-                    },
-                    {
-                        "mData": null,
-                        "sType": "html",
-                        "bSortable": false,
-                        sClass: "calc",
-                        "mRender": function (data, type, row) {
-                            if (type === 'display') {
-                                return '<input type="text" placeholder="' + row.Amount + '" class="m-wrap small" name="' + row.ProductID + '" />'
-                            }
-                            return data;
-                        }
-                    },
-                    {
-                        "mData": "UnitMeasure"
-                    },
-                ],
-                "aLengthMenu": [
-                    [5, 15, 20, -1],
-                    [5, 15, 20, "All"] // change per page values here
-                ],
-                // set the initial value
-                "iDisplayLength": 5,
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-                "sPaginationType": "bootstrap",
-                "oLanguage": {
-                    "sLengthMenu": "_MENU_ records per page",
-                    "oPaginate": {
-                        "sPrevious": "Prev",
-                        "sNext": "Next"
+            $.ajax({
+                url: '../Product/GetTotalProductItemByProductID',
+                type: 'POST',
+                dataType: 'json',
+                data: { productID: _productID },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert("Complete");
                     }
                 },
-                "aoColumnDefs": [{
-                    'bSortable': false,
-                    'aTargets': [0]
-                }
-                ]
+                "error": handleAjaxError
+            });
+  
+
+    }
+    return {
+        init: function () {
+            jQuery(document).ready(function () {
+                $('.select2_option').select2({
+                    allowClear: true
+                });
+
+                $(ddlProduct).change(function (event) {
+
+                    if ($(this).val() !== '0') {
+                        getTotalProductItemByClientIDAndProductID();
+                    }
+                });
+
             });
         }
     };

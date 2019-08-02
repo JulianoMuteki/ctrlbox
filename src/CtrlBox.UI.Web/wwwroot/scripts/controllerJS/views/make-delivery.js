@@ -1,9 +1,9 @@
 ﻿var _clientID = '';
-var _deliveryID = '';
+var _orderID = '';
 
 var MakeDeliveryComponents = function () {
     var oTable;
-    var delivery = {};
+    var order = {};
 
     function initPage() {
         inicializateComponentes();
@@ -14,8 +14,8 @@ var MakeDeliveryComponents = function () {
             "sAjaxSource": '../Delivery/GetAjaxHandlerMakeDelivery',
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "clientID", "value": _clientID });
-                aoData.push({ "name": "deliveryID", "value": _deliveryID });
-            },
+                aoData.push({ "name": "deliveryID", "value": _orderID });
+            }, 
             "bProcessing": true,
             "bDestroy": true,
             "aoColumns": [
@@ -88,25 +88,24 @@ var MakeDeliveryComponents = function () {
 
         $(".btnSubmit").click(function () {
 
-            delivery.ClientID = _clientID;
-            delivery.DT_RowId = _deliveryID;
+            order.DT_RowId = _orderID;
 
-            var tbProducts = [];
+            var tbDeliveriesDetails = [];
             $.each(oTable.fnGetNodes(), function (index, value) {
                 var row = oTable.fnGetData(value);
-                var productItem = {};
+                var deliveryDetail = {};
 
                 var qtdeVenda = $(value).find('input.qtdeVenda').val();
                 qtdeVenda = qtdeVenda || 0;
-
-                productItem.Amount = qtdeVenda;
-                productItem.ProductID = row.DT_RowId;
-                productItem.DeliveryID = _deliveryID;
-                tbProducts.push(productItem);
+                deliveryDetail.ClientID = _clientID;
+                deliveryDetail.QuantityProductItem = qtdeVenda;
+                deliveryDetail.ProductID = row.DT_RowId;
+                deliveryDetail.OrderID = _orderID;
+                tbDeliveriesDetails.push(deliveryDetail);
             });
-            delivery.DeliveriesProducts = tbProducts;
+            order.DeliveriesDetails = tbDeliveriesDetails;
 
-            var myJsonString = JSON.stringify(delivery);
+            var myJsonString = JSON.stringify(order);
 
             $.ajax({
                 url: '../Delivery/PostAjaxHandlerMakeDelivery',
@@ -145,7 +144,7 @@ var MakeDeliveryComponents = function () {
         //main function to initiate the module
         init: function (clientID, deliveryID) {
             _clientID = clientID;
-            _deliveryID = deliveryID;
+            _orderID = deliveryID;
             initPage();
         },
         readOnly: function () {

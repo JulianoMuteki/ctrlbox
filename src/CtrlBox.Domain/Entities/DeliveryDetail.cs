@@ -31,5 +31,21 @@ namespace CtrlBox.Domain.Entities
                 base.InitBase();
             }
         }
+
+        internal void AddDeliveryBox(Guid boxID)
+        {
+            DeliveryBox deliveryBox = new DeliveryBox()
+            {
+                BoxID = boxID,
+                DeliveryDetailID = this.Id
+            };
+
+            this.DeliveriesBoxes.Add(deliveryBox);
+        }
+
+        public void MakeDeliveryBox(Box box)
+        {
+            box.DoDelivery(this, this.QuantityProductItem);
+        }
     }
 }

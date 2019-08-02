@@ -186,8 +186,8 @@ namespace CtrlBox.Application
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
                     foreach (var box in boxes)
-                    {
-                        box.DoDelivery(deliveryDetail.ProductID, deliveryDetail.QuantityProductItem);
+                    {                     
+                        deliveryDetail.MakeDeliveryBox(box);
                     }
                 }
 

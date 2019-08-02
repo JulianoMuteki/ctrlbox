@@ -91,8 +91,10 @@ namespace CtrlBox.Domain.Entities
 
         public int CountQuantityProductItems { get; set; }
 
-        public void DoDelivery(Guid productID, int quantity)
+        public void DoDelivery(DeliveryDetail deliveryDetail,int quantity)
         {
+            deliveryDetail.AddDeliveryBox(this.Id);
+
             if (!this.BoxType.IsReturnable)
             {
                 this.Status = EBoxStatus.Delivered;
@@ -100,7 +102,7 @@ namespace CtrlBox.Domain.Entities
             }
             else if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == productID && x.IsDelivered == false).Take(quantity).ToList();
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == deliveryDetail.ProductID && x.IsDelivered == false).Take(quantity).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {
@@ -119,7 +121,7 @@ namespace CtrlBox.Domain.Entities
                     if (this.CountQuantityProductItems == 0)
                         break;
 
-                    boxChild.DoDelivery(productID, this.CountQuantityProductItems);
+                    boxChild.DoDelivery(deliveryDetail, this.CountQuantityProductItems);
                 }
 
                 if (this.BoxParentID != null && this.BoxParentID != Guid.Empty)

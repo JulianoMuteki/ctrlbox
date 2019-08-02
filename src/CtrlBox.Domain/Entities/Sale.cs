@@ -8,7 +8,7 @@ namespace CtrlBox.Domain.Entities
     public class Sale : EntityBase
     {
         public Guid ClientID { get; set; }
-        public Guid DeliveryID { get; set; }
+        public Guid OrderID { get; set; }
 
         public decimal ReceivedValue { get; set; }
         public decimal ForwardValue { get; set; }

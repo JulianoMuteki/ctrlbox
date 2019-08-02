@@ -4,9 +4,9 @@ using CtrlBox.Domain.Entities;
 
 namespace CtrlBox.Application.AutoMapper
 {
-   public class DeliveryProfile : Profile
+   public class OrderProfile : Profile
     {
-        public DeliveryProfile()
+        public OrderProfile()
         {
             CreateMap<Order, OrderVM>()
                 .ForMember(dest => dest.DT_RowId,

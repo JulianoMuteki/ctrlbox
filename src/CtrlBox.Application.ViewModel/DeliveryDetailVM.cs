@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CtrlBox.Application.ViewModel
 {
-    public class DeliveryDetailVM
+    public class DeliveryDetailVM: ViewModelBase
     {
         public Guid ProductID { get; set; }
         public ProductVM Product { get; set; }

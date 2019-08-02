@@ -175,24 +175,24 @@ namespace CtrlBox.Application
             }
         }
 
-        public void MakeDelivery(OrderVM deliveryVM)
+        public void MakeDelivery(OrderVM orderVM)
         {
             try
             {
-                var delivery = _mapper.Map<Order>(deliveryVM);
+                var order = _mapper.Map<Order>(orderVM);
                 _unitOfWork.SetTrackAll();
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(delivery.Id);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(order.Id);
 
-                foreach (var deliveryProduct in delivery.DeliveriesDetails)
+                foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
                     foreach (var box in boxes)
                     {
-                        box.DoDelivery(deliveryProduct.ProductID, deliveryProduct.QuantityProductItem);
+                        box.DoDelivery(deliveryDetail.ProductID, deliveryDetail.QuantityProductItem);
                     }
                 }
 
                 _unitOfWork.Repository<Box>().UpdateRange(boxes);
-                _unitOfWork.Repository<DeliveryDetail>().AddRange(delivery.DeliveriesDetails);
+                _unitOfWork.Repository<DeliveryDetail>().AddRange(order.DeliveriesDetails);
                 _unitOfWork.CommitSync();
             }
             catch (CustomException exc)

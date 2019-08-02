@@ -10,8 +10,9 @@ namespace CtrlBox.Application.ViewModel
         public ProductItemVM ProductItem { get; set; }
 
         public bool IsDelivered { get; set; }
+        public bool IsItemRemovedBox { get; set; }
 
-        public Guid? DeliveryID { get; set; }
-        public OrderVM Delivery { get; set; }
+        public Guid? OrderID { get; set; }
+        public OrderVM Order { get; set; }
     }
 }

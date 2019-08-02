@@ -17,13 +17,11 @@ namespace CtrlBox.Application.ViewModel
         public virtual OrderVM Delivery { get; set; }
         public virtual PaymentVM Payment { get; set; }
 
-        public ICollection<DeliveryDetailVM> DeliveriesProducts { get; set; }
         public ICollection<SaleProductVM> SalesProducts { get; set; }
 
         public SaleVM()
         {
             this.SalesProducts = new HashSet<SaleProductVM>();
-            this.DeliveriesProducts = new HashSet<DeliveryDetailVM>();
         }
     }
 }

@@ -119,6 +119,24 @@ namespace CtrlBox.Application
             }
         }
 
+        public ICollection<TrackingTypeVM> GetAllTrackingsTypesByPlace()
+        {
+            try
+            {
+                var tracesTypes = _unitOfWork.Repository<TrackingType>().FindAll(x => x.TrackType == CrossCutting.Enums.ETrackType.Place);
+                var tracesTypesVMs = _mapper.Map<IList<TrackingTypeVM>>(tracesTypes);
+                return tracesTypesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<TrackingApplicationService>("Unexpected error fetching GetAllTracesTypes", nameof(this.GetAllTrackingsTypes), ex);
+            }
+        }
+
         public ICollection<TrackingVM> GetByBoxID(Guid boxID)
         {
             try

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Entities;
@@ -42,8 +43,24 @@ namespace CtrlBox.Infra.Repository.Repositories
                                      x.ProductID == productID)
                               .Count();
 
-
                 return query;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductRepository>("Unexpected error fetching total", nameof(this.GetTotalProductItemByProductID), ex);
+            }
+        }
+
+        public ICollection<ProductItem> GetAvailableProductItemByProductID(Guid productID, int quantity)
+        {
+            try
+            {
+                var query = _context.Set<ProductItem>()
+                              .Where(x => x.EFlowStep == CrossCutting.Enums.EFlowStep.Create &&
+                                     x.ProductID == productID)
+                              .Take(quantity);
+
+                return query.ToList();
             }
             catch (Exception ex)
             {

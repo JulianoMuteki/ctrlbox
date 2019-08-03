@@ -15,11 +15,13 @@ namespace CtrlBox.UI.Web.Controllers
     {
         private readonly IClientApplicationService _clientService;
         private readonly IProductApplicationService _productService;
+        private readonly ITrackingApplicationService _trackingService;
 
-        public ProductController(IClientApplicationService clientService, IProductApplicationService productService)
+        public ProductController(IClientApplicationService clientService, IProductApplicationService productService, ITrackingApplicationService trackingService)
         {
             _clientService = clientService;
             _productService = productService;
+            _trackingService = trackingService;
         }
 
         #region Product
@@ -163,6 +165,15 @@ namespace CtrlBox.UI.Web.Controllers
                                 Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
                             }).ToList();
             ViewData["Products"] = products;
+
+            var trackingsTypes = _trackingService.GetAllTrackingsTypesByPlace()
+                .Select(trace => new SelectListItem
+                {
+                    Value = trace.DT_RowId,
+                    Text = trace.Description
+                }).ToList();
+            ViewData["TrackingTypes"] = trackingsTypes;
+
             return View();
         }
 
@@ -184,11 +195,11 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostAjaxHandlerAddStockProduct(Guid productID, Guid clientID, int quantity)
+        public ActionResult PostAjaxHandlerAddStockProduct(Guid productID, Guid clientID, Guid trackingTypeID, int quantity)
         {
             try
             {
-                _productService.AddStockProduct(productID, clientID, quantity);
+                _productService.AddStockProduct(productID, clientID, trackingTypeID, quantity);
                 return Json(new
                 {
                     success = true

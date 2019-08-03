@@ -55,6 +55,12 @@
                         <!-- BEGIN FORM-->
                         <form action="#" class="form-horizontal">
                             <div class="control-group">
+                                <label class="control-label">Tracking Types</label>
+                                <div class="controls">
+                                    <select id="ddlTrackingType" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"><option value="0">Please select Tracking Types</option></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
                                 <label class="control-label">Client</label>
                                 <div class="controls">
                                     <select id="ddlClient" class="span6 select2_option" data-placeholder="Choose a Client" name="ClientID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"></select>
@@ -67,17 +73,17 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Total Product Items</label>
+                                <label class="control-label">Available Product Items</label>
                                 <div class="controls">
-                                    <input class="span6 m-wrap" type="text" placeholder="" disabled="">
+                                    <input id="txtTotalProductItem" class="span6 m-wrap" type="text" placeholder="" disabled="">
                                     <span class="help-inline">Total available</span>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Qauntity</label>
+                                <label class="control-label">Quantity</label>
                                 <div class="controls">
-                                    <input type="text" class="span6 m-wrap">
-                                    <span class="help-inline">Enter with total for client</span>
+                                    <input id="txtQuantity" type="text" class="span6 m-wrap">
+                                    <span class="help-inline">Enter with total items</span>
                                 </div>
                             </div>
                             <div class="form-actions">

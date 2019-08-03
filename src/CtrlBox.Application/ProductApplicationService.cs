@@ -75,13 +75,13 @@ namespace CtrlBox.Application
             try
             {
                 var product = _mapper.Map<Product>(entity);
-                if(entity.Picture != null)
+                if (entity.Picture != null)
                 {
                     var picture = _mapper.Map<Picture>(entity.Picture);
                     _unitOfWork.Repository<Picture>().Add(picture);
                 }
                 _unitOfWork.Repository<Product>().Add(product);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
 
                 return entity;
             }
@@ -102,7 +102,7 @@ namespace CtrlBox.Application
                 var product = _mapper.Map<Product>(entity);
 
                 _unitOfWork.Repository<Product>().AddAsync(product);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
 
                 return Task.FromResult(entity);
             }
@@ -127,7 +127,7 @@ namespace CtrlBox.Application
                 {
                     productUpdate.UpdateData(product);
                     _unitOfWork.Repository<Product>().Update(productUpdate);
-                   _unitOfWork.CommitSync();
+                    _unitOfWork.CommitSync();
                 }
                 return updated;
             }
@@ -156,7 +156,7 @@ namespace CtrlBox.Application
                 {
 
                     _unitOfWork.Repository<Product>().Delete(product);
-                   _unitOfWork.CommitSync();
+                    _unitOfWork.CommitSync();
                 }
             }
             catch (CustomException exc)
@@ -180,7 +180,7 @@ namespace CtrlBox.Application
             {
                 var clientsProducts = _mapper.Map<IList<ClientProductValue>>(clientsProductsVMs);
                 _unitOfWork.Repository<ClientProductValue>().AddRange(clientsProducts);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
 
                 return clientsProductsVMs;
             }
@@ -247,7 +247,7 @@ namespace CtrlBox.Application
                 }
 
                 _unitOfWork.Repository<ProductItem>().AddRange(productsItems);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -266,7 +266,7 @@ namespace CtrlBox.Application
                 var productsItems = _unitOfWork.Repository<ProductItem>().GetAll();
                 var products = _unitOfWork.Repository<Product>().GetAll();
 
-                productsItems = productsItems.Select(x => { x.Product = (from p in products where p.Id == x.ProductID select p).FirstOrDefault(); return x; }).OrderBy(x=>x.Barcode).ToList();
+                productsItems = productsItems.Select(x => { x.Product = (from p in products where p.Id == x.ProductID select p).FirstOrDefault(); return x; }).OrderBy(x => x.Barcode).ToList();
 
                 var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
                 return productsItemsVMs;
@@ -286,7 +286,7 @@ namespace CtrlBox.Application
             try
             {
                 var productsItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.Status == EProductItemStatus.AvailableStock).Take(quantity);
-                
+
                 var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
                 return productsItemsVMs;
             }
@@ -318,12 +318,35 @@ namespace CtrlBox.Application
             }
         }
 
-        public void AddStockProduct(Guid productID, Guid clientID, int quantity)
+        public void AddStockProduct(Guid productID, Guid clientID, Guid trackingTypeID, int quantity)
         {
             try
             {
-                var total = _unitOfWork.RepositoryCustom<IProductRepository>().GetTotalProductItemByProductID(productID);
+                var productItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableProductItemByProductID(productID, quantity);
 
+                IList<Tracking> trackings = new List<Tracking>();
+
+                foreach (var productItem in productItems)
+                {
+                    productItem.EFlowStep = EFlowStep.Available;
+                    
+                    Tracking tracking = new Tracking()
+                    {
+                        TrackingTypeID = trackingTypeID,
+                        ProductItemID = productItem.Id
+                    };
+
+                    tracking.TrackingsClients.Add(new TrackingClient()
+                    {
+                        ClientID = clientID,
+                        TrackingID = tracking.Id
+                    });
+                    trackings.Add(tracking);
+                }
+
+                _unitOfWork.Repository<Tracking>().AddRange(trackings);
+                _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
+                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -331,7 +354,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
             }
         }
     }

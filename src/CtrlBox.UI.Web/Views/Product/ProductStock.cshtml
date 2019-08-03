@@ -50,7 +50,7 @@
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-reorder"></i>Products stock</div>
                     </div>
-                    <div class="portlet-body  no-more-tables">
+                    <div class="portlet-body form">
                         <h3 class="block">Stock of local products</h3>
                         <!-- BEGIN FORM-->
                         <form action="#" class="form-horizontal">
@@ -64,6 +64,20 @@
                                 <label class="control-label">Product</label>
                                 <div class="controls">
                                     <select id="ddlProduct" class="span6 select2_option" data-placeholder="Choose a Product" name="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"><option value="0">Please select user</option></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Total Product Items</label>
+                                <div class="controls">
+                                    <input class="span6 m-wrap" type="text" placeholder="" disabled="">
+                                    <span class="help-inline">Total available</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Qauntity</label>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap">
+                                    <span class="help-inline">Enter with total for client</span>
                                 </div>
                             </div>
                             <div class="form-actions">

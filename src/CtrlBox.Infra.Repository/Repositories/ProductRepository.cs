@@ -39,9 +39,11 @@ namespace CtrlBox.Infra.Repository.Repositories
                 //           .Select(x => x.ProductItem);
                 var query = _context.Set<ProductItem>()
                               .Where(x => x.EFlowStep == CrossCutting.Enums.EFlowStep.Create &&
-                                     x.ProductID == productID);
+                                     x.ProductID == productID)
+                              .Count();
 
-                return query.ToList().Count();
+
+                return query;
             }
             catch (Exception ex)
             {

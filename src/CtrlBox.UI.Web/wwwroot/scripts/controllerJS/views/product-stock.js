@@ -4,7 +4,6 @@ var ProductStock = function () {
 
     function getTotalProductItemByClientIDAndProductID() {
         var _productID = $(ddlProduct).val();
-
             $.ajax({
                 url: '../Product/GetTotalProductItemByProductID',
                 type: 'POST',
@@ -12,13 +11,11 @@ var ProductStock = function () {
                 data: { productID: _productID },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
-                        alert("Complete");
+                        $(ddlProduct).val(json.aaData);
                     }
                 },
                 "error": handleAjaxError
             });
-  
-
     }
     return {
         init: function () {
@@ -28,12 +25,10 @@ var ProductStock = function () {
                 });
 
                 $(ddlProduct).change(function (event) {
-
                     if ($(this).val() !== '0') {
                         getTotalProductItemByClientIDAndProductID();
                     }
                 });
-
             });
         }
     };

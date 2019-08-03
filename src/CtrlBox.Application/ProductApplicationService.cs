@@ -317,5 +317,22 @@ namespace CtrlBox.Application
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
             }
         }
+
+        public void AddStockProduct(Guid productID, Guid clientID, int quantity)
+        {
+            try
+            {
+                var total = _unitOfWork.RepositoryCustom<IProductRepository>().GetTotalProductItemByProductID(productID);
+
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
     }
 }

@@ -182,6 +182,23 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
+
+        [HttpPost]
+        public ActionResult PostAjaxHandlerAddStockProduct(Guid productID, Guid clientID, int quantity)
+        {
+            try
+            {
+                _productService.AddStockProduct(productID, clientID, quantity);
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         public ActionResult ProductItem()

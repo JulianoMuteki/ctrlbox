@@ -15,12 +15,16 @@ namespace CtrlBox.UI.Web.Controllers
     {
         private readonly IBoxApplicationService _boxApplicationService;
         private readonly IProductApplicationService _productApplicationService;
+        private readonly IClientApplicationService _clientService;
+        private readonly ITrackingApplicationService _trackingService;
 
-        public BoxController(IBoxApplicationService boxApplicationService, IProductApplicationService productApplicationService)
+        public BoxController(IBoxApplicationService boxApplicationService, IProductApplicationService productApplicationService,
+                             IClientApplicationService clientService, ITrackingApplicationService trackingService)
         {
             _boxApplicationService = boxApplicationService;
             _productApplicationService = productApplicationService;
-
+            _trackingService = trackingService;
+            _clientService = clientService;
         }
 
         public IActionResult Index()
@@ -54,7 +58,8 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 var boxesVM = _boxApplicationService.BoxesParents();
                 var boxes = boxesVM.GroupBy(n => n.BoxTypeID)
-                    .Select(g => new {
+                    .Select(g => new
+                    {
                         DT_RowId = g.Key,
                         BoxType = g.Select(x => x.BoxType.Name).FirstOrDefault(),
                         SrcPicture = g.Select(x => x.BoxType.Picture.SrcBase64Image).FirstOrDefault(),
@@ -185,6 +190,59 @@ namespace CtrlBox.UI.Web.Controllers
         {
             var boxes = _boxApplicationService.GetBoxesByBoxWithChildren(boxFatherID);
             return View(boxes);
+        }
+
+        public IActionResult BoxStock()
+        {
+            var boxesType = _boxApplicationService.GetAllBoxesType()
+                                        .Select(boxType => new SelectListItem
+                                        {
+                                            Value = boxType.DT_RowId,
+                                            Text = $"{boxType.Name} - {boxType.Description}"
+                                        }).ToList();
+            ViewData["BoxesType"] = boxesType;
+
+            var clients = _clientService.GetAll()
+                                        .Select(client => new SelectListItem
+                                        {
+                                            Value = client.DT_RowId,
+                                            Text = client.Name
+                                        }).ToList();
+            ViewData["Clients"] = clients;
+
+            var products = _productApplicationService.GetAll()
+                                        .Select(prod => new SelectListItem
+                                        {
+                                            Value = prod.DT_RowId,
+                                            Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
+                                        }).ToList();
+            ViewData["Products"] = products;
+
+            var trackingsTypes = _trackingService.GetAllTrackingsTypesByPlace()
+                                        .Select(trace => new SelectListItem
+                                        {
+                                            Value = trace.DT_RowId,
+                                            Text = trace.Description
+                                        }).ToList();
+            ViewData["TrackingTypes"] = trackingsTypes;
+            return Index();
+        }
+
+        public IActionResult GetAjaxHandlerAvailableProductItemsByClientIDAndProductID(Guid productID, Guid clientID)
+        {
+            try
+            {
+                var productItems = _productApplicationService.GetAvailableStockProductItemsByClientIDAndProductID(productID, clientID);
+                return Json(new
+                {
+                    aaData = productItems,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public IActionResult GenerateBoxes(int nivel)

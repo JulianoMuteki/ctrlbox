@@ -357,5 +357,24 @@ namespace CtrlBox.Application
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
             }
         }
+
+        public ICollection<ProductItemVM> GetAvailableStockProductItemsByClientIDAndProductID(Guid productID, Guid clientID)
+        {
+            try
+            {
+                var productsItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableStockProductItemsByClientIDAndProductID(productID, clientID);
+
+                var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
+                return productsItemsVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
     }
 }

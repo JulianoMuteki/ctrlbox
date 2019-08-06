@@ -9,5 +9,6 @@ namespace CtrlBox.Domain.Interfaces.Repository
     {
         int GetTotalProductItemByProductID(Guid productID);
         ICollection<ProductItem> GetAvailableProductItemByProductID(Guid productID, int quantity);
+        ICollection<ProductItem> GetAvailableStockProductItemsByClientIDAndProductID(Guid productID, Guid clientID);
     }
 }

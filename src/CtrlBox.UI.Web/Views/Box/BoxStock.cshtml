@@ -1,6 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@{
+    ViewData["Title"] = "BoxStock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section cssViews{
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
@@ -10,15 +13,18 @@
 @section scriptsViews{
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
-    <script src="~/scripts/controllerJS/views/product-stock.js"></script>
+    <script src="~/scripts/controllerJS/views/box-stock.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
 }
 
-    <script type="text/javascript">
+<script type="text/javascript">
     jQuery(document).ready(function () {
-        ProductStock.init();
+
+        BoxStock.init();
+
+
     });
-    </script>
+</script>
 <!-- BEGIN PAGE -->
 <div class="page-content" style="min-height:1029px !important">
     <!-- BEGIN PAGE CONTAINER-->
@@ -48,14 +54,20 @@
             <div class="span12">
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-reorder"></i>Products stock</div>
+                        <div class="caption"><i class="icon-reorder"></i>Add stock box</div>
                     </div>
                     <div class="portlet-body form">
-                        <h3 class="block">Stock of local products</h3>
+                        <h3 class="block">choose options</h3>
                         <!-- BEGIN FORM-->
                         <form action="#" class="form-horizontal">
                             <div class="control-group">
-                                <label class="control-label">Tracking Types local</label>
+                                <label class="control-label">Box type</label>
+                                <div class="controls">
+                                    <select id="ddlBoxesType" class="span6 select2_option" data-placeholder="Choose a box type" tabindex="1" name="BoxTypeID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Tracking Types</label>
                                 <div class="controls">
                                     <select id="ddlTrackingType" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"><option value="0">Please select Tracking Types</option></select>
                                 </div>
@@ -67,23 +79,42 @@
                                 </div>
                             </div>
                             <div class="control-group">
+                                <label class="control-label">Which box child</label>
+                                <div class="controls">
+                                    <label class="radio">
+                                        <input type="radio" id="idHasProduct" name="HasProduct" value="True" />
+                                        Has Product
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="HasProduct" value="False" checked />
+                                        Hasn't Product
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="grpBoxesChild" class="control-group">
+                                <label class="control-label">Box type child</label>
+                                <div class="controls">
+                                    <select id="ddlBoxesTypeChild" class="span6 select2_option" data-placeholder="Choose a box type" name="BoxesTypeChildID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
+                                </div>
+                            </div>
+                            <div id="grpProducts" style="display:none;" class="control-group">
                                 <label class="control-label">Product</label>
                                 <div class="controls">
                                     <select id="ddlProduct" class="span6 select2_option" data-placeholder="Choose a Product" name="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"><option value="0">Please select user</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Available Product Items</label>
+                                <label class="control-label">Available child</label>
                                 <div class="controls">
-                                    <input id="txtTotalProductItem" class="span6 m-wrap" type="text" placeholder="" disabled="">
-                                    <span class="help-inline">Total available</span>
+                                    <input id="txtAvailableChild" class="span6 m-wrap" type="text" placeholder="" disabled="">
+                                    <span class="help-inline">Total available child</span>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Quantity</label>
                                 <div class="controls">
                                     <input id="txtQuantity" type="text" class="span6 m-wrap">
-                                    <span class="help-inline">Enter with total items</span>
+                                    <span class="help-inline">Enter with total boxes</span>
                                 </div>
                             </div>
                             <div class="form-actions">

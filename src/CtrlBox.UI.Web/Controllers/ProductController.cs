@@ -268,8 +268,5 @@ namespace CtrlBox.UI.Web.Controllers
                 Message = "OK"
             });
         }
-
-
-
     }
 }

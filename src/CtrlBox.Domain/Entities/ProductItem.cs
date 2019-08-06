@@ -30,7 +30,7 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.Status = EProductItemStatus.AvailableStock;
-                this.EFlowStep = EFlowStep.Create;
+                this.EFlowStep = EFlowStep.Available;
             }
         }
 
@@ -43,6 +43,7 @@ namespace CtrlBox.Domain.Entities
         internal void PutInTheBox()
         {
             this.Status = EProductItemStatus.InBox;
+            this.EFlowStep = EFlowStep.InBox;
         }
     }
 }

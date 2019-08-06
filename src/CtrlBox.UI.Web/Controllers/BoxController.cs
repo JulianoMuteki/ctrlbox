@@ -228,6 +228,7 @@ namespace CtrlBox.UI.Web.Controllers
             return Index();
         }
 
+        [HttpGet]
         public IActionResult GetAjaxHandlerAvailableProductItemsByClientIDAndProductID(Guid productID, Guid clientID)
         {
             try
@@ -236,6 +237,23 @@ namespace CtrlBox.UI.Web.Controllers
                 return Json(new
                 {
                     aaData = productItems,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public IActionResult PostAjaxHandlerAddBoxStockWithProductItems(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid productID, int quantity)
+        {
+            try
+            {
+                _productApplicationService.AddBoxStockWithProductItems(boxTypeID, trackingTypeID, clientID, productID, quantity);
+                return Json(new
+                {
                     success = true
                 });
             }

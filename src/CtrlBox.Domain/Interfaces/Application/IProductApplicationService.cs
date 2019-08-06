@@ -17,5 +17,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         int GetTotalProductItemByProductID(Guid productID);
         void AddStockProduct(Guid productID, Guid clientID, Guid trackingTypeID, int quantity);
         ICollection<ProductItemVM> GetAvailableStockProductItemsByClientIDAndProductID(Guid productID, Guid clientID);
+        void AddBoxStockWithProductItems(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid productID, int quantity);
     }
 }

@@ -11,7 +11,7 @@ var BoxStock = function () {
 
         $.ajax({
             url: '../Box/GetAjaxHandlerAvailableProductItemsByClientIDAndProductID',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json',
             data: { productID: _productID, clientID: _clientID },
             "success": function (json) {
@@ -58,16 +58,17 @@ var BoxStock = function () {
                 });
 
                 $('#btnSubmit').click(function () {
+                    var _boxTypeID = $(ddlBoxesType).val();
                     var _productID = $(ddlProduct).val();
                     var _clientID = $(ddlClient).val();
                     var _trackingTypeID = $(ddlTrackingType).val();
                     var _quantity = $(txtQuantity).val();
 
                     $.ajax({
-                        url: '../Product/PostAjaxHandlerAddStockProduct',
+                        url: '../Box/PostAjaxHandlerAddBoxStockWithProductItems',
                         type: 'POST',
                         dataType: 'json',
-                        data: { productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, quantity: _quantity },
+                        data: { boxTypeID: _boxTypeID, productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, quantity: _quantity },
                         "success": function (json) {
                             if (!json.NotAuthorized) {
                                 alert('Completo');

@@ -6,6 +6,7 @@ using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Domain.Interfaces.Repository;
+using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -243,6 +244,7 @@ namespace CtrlBox.Application
                     ProductItem productItem = new ProductItem();
                     productItem.Barcode = $"{i}{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14);
                     productItem.ProductID = productID;
+                    productItem.EFlowStep = EFlowStep.Available;
                     productsItems.Add(productItem);
                 }
 
@@ -328,7 +330,7 @@ namespace CtrlBox.Application
 
                 foreach (var productItem in productItems)
                 {
-                    productItem.EFlowStep = EFlowStep.Available;
+                    productItem.EFlowStep = EFlowStep.InStock;
                     
                     Tracking tracking = new Tracking()
                     {
@@ -374,6 +376,68 @@ namespace CtrlBox.Application
             catch (Exception ex)
             {
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
+
+        public void AddBoxStockWithProductItems(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid productID, int quantity)
+        {
+            try
+            {
+                var productsItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableStockProductItemsByClientIDAndProductID(productID, clientID);
+                var boxType = _unitOfWork.Repository<BoxType>().GetById(boxTypeID);
+                List<ProductItem> productsItemsUpdate = new List<ProductItem>();
+                IList<Box> boxes = new List<Box>();
+
+                for (int i = 0; i < quantity; i++)
+                {
+                    Box box = new Box()
+                    {
+                        EFlowStep = EFlowStep.InStock,
+                        BoxTypeID = boxTypeID,
+                        ProductID = productID,
+                        Description = $"Box nº: {i} - {boxType.Name}",
+                        BoxType = boxType, 
+
+                    };
+                    box.Init();
+                    var updateList = productsItems.Where(x=> !productsItemsUpdate.Any(p=>p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
+                    box.LoadProductItems(updateList);
+                    productsItemsUpdate.AddRange(updateList);
+
+                    if (!box.ComponentValidator.Validate(box, new BoxValidator()))
+                    {
+                        throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+                    }
+
+                    Tracking tracking = new Tracking()
+                    {
+                        TrackingTypeID = trackingTypeID,
+                        BoxID = box.Id
+                    };
+
+                    tracking.TrackingsClients.Add(new TrackingClient()
+                    {
+                        ClientID = clientID,
+                        TrackingID = tracking.Id
+                    });
+
+                    box.Trackings.Add(tracking);
+                    box.BoxType = null;
+                    boxes.Add(box);
+                }
+                               
+                _unitOfWork.Repository<Box>().AddRange(boxes);
+                _unitOfWork.Repository<ProductItem>().UpdateRange(productsItemsUpdate);
+
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
             }
         }
     }

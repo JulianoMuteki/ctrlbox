@@ -5,10 +5,12 @@ namespace CtrlBox.CrossCutting.Enums
     {
         Create = 0,
         Available = 1,
-        Order = 2,
-        Sale = 3,
-        Delivery = 4,
-        SaleAndDelivery = 5,
-        Completed = 6
+        InStock = 2,
+        InBox = 3,
+        Order = 4,
+        Sale = 5,
+        Delivery = 6,
+        SaleAndDelivery = 7,
+        Completed = 8
     }
 }

@@ -40,6 +40,7 @@ namespace CtrlBox.Domain.Entities
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
+            Init();
         }
 
         public void Destructor()
@@ -56,19 +57,20 @@ namespace CtrlBox.Domain.Entities
             this.BoxType = boxType;
         }
 
-        public void SetBarcode(int i)
-        {
-            this.BoxBarcode = new BoxBarcode();
-        }
-
         public void Init()
         {
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                this.BoxBarcode = new BoxBarcode();
-                this.EFlowStep = EFlowStep.Create;
+                InicializateProperties();
             }
+        }
+
+        private void InicializateProperties()
+        {
+            this.BoxBarcode = new BoxBarcode();
+            this.BoxBarcode.BoxID = this.Id;
+            this.EFlowStep = EFlowStep.Create;
         }
 
         public void LoadProductItems(ICollection<ProductItem> productItems)

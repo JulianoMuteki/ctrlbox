@@ -331,7 +331,7 @@ namespace CtrlBox.Application
                 foreach (var productItem in productItems)
                 {
                     productItem.EFlowStep = EFlowStep.InStock;
-                    
+
                     Tracking tracking = new Tracking()
                     {
                         TrackingTypeID = trackingTypeID,
@@ -396,11 +396,11 @@ namespace CtrlBox.Application
                         BoxTypeID = boxTypeID,
                         ProductID = productID,
                         Description = $"Box nº: {i} - {boxType.Name}",
-                        BoxType = boxType, 
+                        BoxType = boxType,
 
                     };
                     box.Init();
-                    var updateList = productsItems.Where(x=> !productsItemsUpdate.Any(p=>p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
+                    var updateList = productsItems.Where(x => !productsItemsUpdate.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
                     box.LoadProductItems(updateList);
                     productsItemsUpdate.AddRange(updateList);
 
@@ -425,9 +425,90 @@ namespace CtrlBox.Application
                     box.BoxType = null;
                     boxes.Add(box);
                 }
-                               
+
                 _unitOfWork.Repository<Box>().AddRange(boxes);
                 _unitOfWork.Repository<ProductItem>().UpdateRange(productsItemsUpdate);
+
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
+            }
+        }
+
+        public ICollection<BoxVM> GetAvailableBoxesByBoxTypeIDAndProductID(Guid boxTypeID, Guid clientID)
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IProductRepository>().GetBoxesInStockByBoxTypeIDAndClientID(boxTypeID, clientID);
+
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
+
+        public void AddBoxStockWithBoxes(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid boxTypeChildID, int quantity)
+        {
+            try
+            {
+
+                var boxesChildrem = _unitOfWork.RepositoryCustom<IProductRepository>().GetBoxesInStockByBoxTypeIDAndClientID(boxTypeChildID, clientID);
+
+                var boxType = _unitOfWork.Repository<BoxType>().GetById(boxTypeID);
+                List<Box> boxesUpdateChildrem = new List<Box>();
+                IList<Box> boxes = new List<Box>();
+
+                for (int i = 0; i < quantity; i++)
+                {
+                    Box box = new Box()
+                    {
+                        EFlowStep = EFlowStep.InStock,
+                        BoxTypeID = boxTypeID,
+                        Description = $"Box nº: {i} - {boxType.Name}",
+                        BoxType = boxType,
+                    };
+
+                    var updateList = boxesChildrem.Where(x => !boxesUpdateChildrem.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
+                    box.AddChildren(updateList);
+                    boxesUpdateChildrem.AddRange(updateList);
+
+                    if (!box.ComponentValidator.Validate(box, new BoxValidator()))
+                    {
+                        throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+                    }
+
+                    Tracking tracking = new Tracking()
+                    {
+                        TrackingTypeID = trackingTypeID,
+                        BoxID = box.Id
+                    };
+
+                    tracking.TrackingsClients.Add(new TrackingClient()
+                    {
+                        ClientID = clientID,
+                        TrackingID = tracking.Id
+                    });
+
+                    box.Trackings.Add(tracking);
+                    box.BoxType = null;
+                    boxes.Add(box);
+                }
+
+                _unitOfWork.Repository<Box>().AddRange(boxes);
+                _unitOfWork.Repository<Box>().UpdateRange(boxesUpdateChildrem);
 
                 _unitOfWork.CommitSync();
             }

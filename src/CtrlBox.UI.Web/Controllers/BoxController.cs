@@ -246,6 +246,41 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult GetAjaxHandlerAvailableBoxesByBoxTypeIDAndProductID(Guid boxTypeID, Guid clientID)
+        {
+            try
+            {
+                var boxes = _productApplicationService.GetAvailableBoxesByBoxTypeIDAndProductID(boxTypeID, clientID);
+                return Json(new
+                {
+                    aaData = boxes,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public IActionResult PostAjaxHandlerAddBoxStockWithBoxes(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid boxTypeChildID, int quantity)
+        {
+            try
+            {
+                _productApplicationService.AddBoxStockWithBoxes(boxTypeID, trackingTypeID, clientID, boxTypeChildID, quantity);
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpPost]
         public IActionResult PostAjaxHandlerAddBoxStockWithProductItems(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid productID, int quantity)
         {

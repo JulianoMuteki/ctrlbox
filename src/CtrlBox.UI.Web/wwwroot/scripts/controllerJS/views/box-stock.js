@@ -2,6 +2,7 @@
 var ddlTrackingType = '#ddlTrackingType';
 var ddlClient = '#ddlClient';
 var txtQuantity = '#txtQuantity';
+var ddlBoxesTypeChild = '#ddlBoxesTypeChild';
 
 var BoxStock = function () {
 
@@ -24,6 +25,24 @@ var BoxStock = function () {
         });
     }
 
+    function getTotalAvailableBoxesByBoxTypeIDAndProductID() {
+        var _boxTypeID = $(ddlBoxesTypeChild).val();
+        var _clientID = $(ddlClient).val();
+
+        $.ajax({
+            url: '../Box/GetAjaxHandlerAvailableBoxesByBoxTypeIDAndProductID',
+            type: 'GET',
+            dataType: 'json',
+            data: { boxTypeID: _boxTypeID, clientID: _clientID },
+            "success": function (json) {
+                if (!json.NotAuthorized) {
+                    $('#txtAvailableChild').val(json.aaData.length);
+                    console.log(json);
+                }
+            },
+            "error": handleAjaxError
+        });
+    }
     return {
         init: function () {
             jQuery(document).ready(function () {
@@ -49,6 +68,12 @@ var BoxStock = function () {
                     }
                 });
 
+                $(ddlBoxesTypeChild).change(function (event) {
+                    if ($(this).val() !== '0') {
+                        getTotalAvailableBoxesByBoxTypeIDAndProductID();
+                    }
+                });
+
                 $(ddlClient).change(function (event) {
                     var hasProduct = $(".radio input[type=radio][id=idHasProduct]").is(":checked");
 
@@ -59,25 +84,46 @@ var BoxStock = function () {
 
                 $('#btnSubmit').click(function () {
                     var _boxTypeID = $(ddlBoxesType).val();
-                    var _productID = $(ddlProduct).val();
                     var _clientID = $(ddlClient).val();
                     var _trackingTypeID = $(ddlTrackingType).val();
                     var _quantity = $(txtQuantity).val();
 
-                    $.ajax({
-                        url: '../Box/PostAjaxHandlerAddBoxStockWithProductItems',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: { boxTypeID: _boxTypeID, productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, quantity: _quantity },
-                        "success": function (json) {
-                            if (!json.NotAuthorized) {
-                                alert('Completo');
-                                //  window.history.back();
-                            }
-                        },
-                        "error": handleAjaxError
-                    });
+                    var hasProduct = $(".radio input[type=radio][id=idHasProduct]").is(":checked");
 
+                    if (hasProduct) {
+                        var _productID = $(ddlProduct).val();
+
+                        $.ajax({
+                            url: '../Box/PostAjaxHandlerAddBoxStockWithProductItems',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: { boxTypeID: _boxTypeID, productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, quantity: _quantity },
+                            "success": function (json) {
+                                if (!json.NotAuthorized) {
+                                    alert('Completo');
+                                    //  window.history.back();
+                                }
+                            },
+                            "error": handleAjaxError
+                        });
+
+                    } else {
+                        var _boxTypeChildID = $(ddlBoxesTypeChild).val();
+
+                        $.ajax({
+                            url: '../Box/PostAjaxHandlerAddBoxStockWithBoxes',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: { boxTypeID: _boxTypeID, productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, boxTypeChildID: _boxTypeChildID, quantity: _quantity },
+                            "success": function (json) {
+                                if (!json.NotAuthorized) {
+                                    alert('Completo');
+                                    //  window.history.back();
+                                }
+                            },
+                            "error": handleAjaxError
+                        });
+                    }
                 });
             });
         }

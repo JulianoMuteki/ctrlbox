@@ -40,7 +40,6 @@ namespace CtrlBox.Domain.Entities
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
-            Init();
         }
 
         public void Destructor()
@@ -66,7 +65,7 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
-        private void InicializateProperties()
+        public void InicializateProperties()
         {
             this.BoxBarcode = new BoxBarcode();
             this.BoxBarcode.BoxID = this.Id;
@@ -153,6 +152,11 @@ namespace CtrlBox.Domain.Entities
         {
             this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesChildren.Count) / this.BoxType.MaxProductsItems);
             this.DateModified = DateTime.Now;
+
+            if (this.BoxesChildren.Count > 0 && this.PorcentFull < 100)
+                this.Status = EBoxStatus.Loading;
+            else if (this.PorcentFull == 100)
+                this.Status = EBoxStatus.Full;
         }
 
         public List<Box> AddChildren(List<Box> boxesChildren)

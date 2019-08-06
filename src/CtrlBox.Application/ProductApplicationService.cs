@@ -480,6 +480,7 @@ namespace CtrlBox.Application
                         Description = $"Box nº: {i} - {boxType.Name}",
                         BoxType = boxType,
                     };
+                    box.InicializateProperties();
 
                     var updateList = boxesChildrem.Where(x => !boxesUpdateChildrem.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
                     box.AddChildren(updateList);

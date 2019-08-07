@@ -390,16 +390,8 @@ namespace CtrlBox.Application
 
                 for (int i = 0; i < quantity; i++)
                 {
-                    Box box = new Box()
-                    {
-                        EFlowStep = EFlowStep.InStock,
-                        BoxTypeID = boxTypeID,
-                        ProductID = productID,
-                        Description = $"Box nº: {i} - {boxType.Name}",
-                        BoxType = boxType,
+                    Box box = Create(boxTypeID, boxType, i);
 
-                    };
-                    box.Init();
                     var updateList = productsItems.Where(x => !productsItemsUpdate.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
                     box.LoadProductItems(updateList);
                     productsItemsUpdate.AddRange(updateList);
@@ -473,14 +465,7 @@ namespace CtrlBox.Application
 
                 for (int i = 0; i < quantity; i++)
                 {
-                    Box box = new Box()
-                    {
-                        EFlowStep = EFlowStep.InStock,
-                        BoxTypeID = boxTypeID,
-                        Description = $"Box nº: {i} - {boxType.Name}",
-                        BoxType = boxType,
-                    };
-                    box.InicializateProperties();
+                    Box box = Create(boxTypeID, boxType, i);
 
                     var updateList = boxesChildrem.Where(x => !boxesUpdateChildrem.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
                     box.AddChildren(updateList);
@@ -521,6 +506,17 @@ namespace CtrlBox.Application
             {
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
             }
+        }
+
+        private static Box Create(Guid boxTypeID, BoxType boxType, int i)
+        {
+            Box box = new Box();
+            box.InicializateProperties();
+            box.EFlowStep = EFlowStep.InStock;
+            box.BoxTypeID = boxTypeID;
+            box.Description = $"Box nº: {i} - {boxType.Name}";
+            box.BoxType = boxType;
+            return box;
         }
     }
 }

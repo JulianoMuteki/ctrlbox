@@ -18,12 +18,13 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         }
 
-        public ICollection<Client> GetAvailable(Guid routeID)
+        public ICollection<Client> GetAvailable(Guid routeID, Guid clientOriginID)
         {
             try
             {
                 var query = _context.Set<Client>()
-                                                   .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id));
+                                                   .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id)
+                                                           && c.Id != clientOriginID);
 
                 return query.ToList();
             }

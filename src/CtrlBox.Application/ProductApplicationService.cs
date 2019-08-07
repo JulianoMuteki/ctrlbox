@@ -390,30 +390,13 @@ namespace CtrlBox.Application
 
                 for (int i = 0; i < quantity; i++)
                 {
-                    Box box = Create(boxTypeID, boxType, i);
 
                     var updateList = productsItems.Where(x => !productsItemsUpdate.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
-                    box.LoadProductItems(updateList);
                     productsItemsUpdate.AddRange(updateList);
 
-                    if (!box.ComponentValidator.Validate(box, new BoxValidator()))
-                    {
-                        throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
-                    }
-
-                    Tracking tracking = new Tracking()
-                    {
-                        TrackingTypeID = trackingTypeID,
-                        BoxID = box.Id
-                    };
-
-                    tracking.TrackingsClients.Add(new TrackingClient()
-                    {
-                        ClientID = clientID,
-                        TrackingID = tracking.Id
-                    });
-
-                    box.Trackings.Add(tracking);
+                    Box box = Box.FactoryCreate(boxTypeID, boxType, i);
+                    box.LoadProductItems(updateList);
+                    box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
                     boxes.Add(box);
                 }
@@ -465,30 +448,12 @@ namespace CtrlBox.Application
 
                 for (int i = 0; i < quantity; i++)
                 {
-                    Box box = Create(boxTypeID, boxType, i);
-
                     var updateList = boxesChildrem.Where(x => !boxesUpdateChildrem.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
-                    box.AddChildren(updateList);
                     boxesUpdateChildrem.AddRange(updateList);
 
-                    if (!box.ComponentValidator.Validate(box, new BoxValidator()))
-                    {
-                        throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
-                    }
-
-                    Tracking tracking = new Tracking()
-                    {
-                        TrackingTypeID = trackingTypeID,
-                        BoxID = box.Id
-                    };
-
-                    tracking.TrackingsClients.Add(new TrackingClient()
-                    {
-                        ClientID = clientID,
-                        TrackingID = tracking.Id
-                    });
-
-                    box.Trackings.Add(tracking);
+                    Box box = Box.FactoryCreate(boxTypeID, boxType, i);
+                    box.AddChildren(updateList);
+                    box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
                     boxes.Add(box);
                 }
@@ -508,15 +473,5 @@ namespace CtrlBox.Application
             }
         }
 
-        private static Box Create(Guid boxTypeID, BoxType boxType, int i)
-        {
-            Box box = new Box();
-            box.InicializateProperties();
-            box.EFlowStep = EFlowStep.InStock;
-            box.BoxTypeID = boxTypeID;
-            box.Description = $"Box nº: {i} - {boxType.Name}";
-            box.BoxType = boxType;
-            return box;
-        }
     }
 }

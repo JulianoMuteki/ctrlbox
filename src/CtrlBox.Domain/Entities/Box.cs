@@ -1,6 +1,7 @@
 ﻿using CtrlBox.CrossCutting;
 using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
         public ICollection<Tracking> Trackings { get; set; }
 
-        public Box()
+        internal Box()
             : base()
         {
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
@@ -40,6 +41,22 @@ namespace CtrlBox.Domain.Entities
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
+        }
+
+        public static Box FactoryCreate(Guid boxTypeID, BoxType boxType, int i)
+        {
+            Box box = new Box();
+            box.InicializateProperties();
+            box.EFlowStep = EFlowStep.InStock;
+            box.BoxTypeID = boxTypeID;
+            box.Description = $"Box nº: {i} - {boxType.Name}";
+            box.BoxType = boxType;
+
+            if (!box.ComponentValidator.Validate(box, new BoxValidator()))
+            {
+                throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+            }
+            return box;
         }
 
         public void Destructor()
@@ -94,7 +111,7 @@ namespace CtrlBox.Domain.Entities
 
         public int CountQuantityProductItems { get; set; }
 
-        public void DoDelivery(DeliveryDetail deliveryDetail,int quantity)
+        public void DoDelivery(DeliveryDetail deliveryDetail, int quantity)
         {
             deliveryDetail.AddDeliveryBox(this.Id);
 
@@ -165,6 +182,27 @@ namespace CtrlBox.Domain.Entities
             LoadFullBoxCompletedChildrem();
 
             return this.BoxesChildren.ToList();
+        }
+
+
+        public void AddTracking(Guid trackingTypeID, Guid clientID)
+        {
+            Tracking tracking = new Tracking()
+            {
+                TrackingTypeID = trackingTypeID,
+                BoxID = this.Id
+            };
+
+            if (clientID != null && clientID != Guid.Empty)
+            {
+                tracking.TrackingsClients.Add(new TrackingClient()
+                {
+                    ClientID = clientID,
+                    TrackingID = tracking.Id
+                });
+            }
+
+            this.Trackings.Add(tracking);
         }
 
     }

@@ -1,13 +1,13 @@
 ﻿<div id="modalFinalizeDelivery" class="modal hide fade" tabindex="-1" data-focus-on="input:first" style="display: none; margin-top: -155px;" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <h3>Delivery</h3>
+        <h3>Finalize Delivery</h3>
     </div>
     <div class="modal-body">
         <div class="row-fluid">
             <div class="span12 top-news">
                 <a href="#" class="btn green">
-                    <span>Finalize</span>
+                    <span>Details</span>
                     <p><span id="startDate"></span></p>
                     <p>                     
                         <span id="totalSale"></span>
@@ -22,7 +22,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a id="btnCloseDelivery" onClick="AppCtrlBox.putFinalizeDelivery(this)" class="btn blue"><i class="icon-plus"></i> Finalize</a>
+            <a id="btnCloseDelivery" onClick="AppCtrlBox.putFinalizeDelivery(this)" class="btn blue"><i class=" icon-ok"></i> Finalize</a>
+            <a id="btnCrossDocking" onClick="AppCtrlBox.putCrossDockingFinalize(this)" class="btn purple"><i class="icon-random"></i> Cross-Docking</a>
             <button type="button" data-dismiss="modal" class="btn">Close</button>
         </div>
     </div>

@@ -185,26 +185,6 @@ namespace CtrlBox.Domain.Entities
             return this.BoxesChildren.ToList();
         }
 
-        public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)
-        {
-            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
-            {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
-
-                foreach (var boxProductItem in boxProductsItems)
-                {
-                    boxProductItem.AddTrackingProductItem(trackingTypeID, clientID);
-                }
-            }
-            else
-            {
-                foreach (var boxChild in this.BoxesChildren)
-                {
-                    boxChild.AddTrackingProductItems(trackingTypeID, clientID);
-                }
-            }
-        }
-
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
             Tracking tracking = new Tracking()
@@ -225,5 +205,54 @@ namespace CtrlBox.Domain.Entities
             this.Trackings.Add(tracking);
         }
 
+        public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)
+        {
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            {
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
+
+                foreach (var boxProductItem in boxProductsItems)
+                {
+                    boxProductItem.AddTrackingProductItem(trackingTypeID, clientID);
+                }
+            }
+            else
+            {
+                foreach (var boxChild in this.BoxesChildren)
+                {
+                    boxChild.AddTrackingProductItems(trackingTypeID, clientID);
+                }
+            }
+        }
+
+        public void FinishDelivery(bool hasCrossDocking)
+        {
+            SetFlowDelivery(hasCrossDocking);
+
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            {
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
+
+                foreach (var boxProductItem in boxProductsItems)
+                {
+                    boxProductItem.FinishDelivery(hasCrossDocking);
+                }
+            }
+            else
+            {
+                foreach (var boxChild in this.BoxesChildren)
+                {
+                    boxChild.FinishDelivery(hasCrossDocking);
+                }
+            }
+        }
+
+        private void SetFlowDelivery(bool hasCrossDocking)
+        {
+            if (hasCrossDocking)
+                this.EFlowStep = EFlowStep.InStock;
+            else
+                this.EFlowStep = EFlowStep.Delivery;
+        }
     }
 }

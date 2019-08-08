@@ -76,7 +76,7 @@ namespace CtrlBox.Application
                 var delivery = _unitOfWork.Repository<Order>().GetById(deliveryID);
                 delivery.FinalizeDelivery();
                 _unitOfWork.Repository<Order>().Update(delivery);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -85,6 +85,36 @@ namespace CtrlBox.Application
             catch (Exception ex)
             {
                 throw CustomException.Create<DeliveryApplicationService>("Unexpected error fetching put delivery", nameof(this.FinalizeDelivery), ex);
+            }
+        }
+
+        public void FinishDelivery(Guid orderID, bool hasCrossDocking)
+        {
+            try
+            {
+                _unitOfWork.SetTrackAll();
+                var order = _unitOfWork.Repository<Order>().GetById(orderID);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(orderID);
+
+                foreach (var box in boxes)
+                {
+                    box.FinishDelivery(hasCrossDocking);
+                }
+                order.Close();
+
+                _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                _unitOfWork.Repository<Order>().Update(order);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                _unitOfWork.Rollback();
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.FinishDelivery), ex);
             }
         }
 
@@ -186,7 +216,7 @@ namespace CtrlBox.Application
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
                     foreach (var box in boxes)
-                    {                     
+                    {
                         deliveryDetail.MakeDeliveryBox(box);
 
                         box.AddTracking(trackingTypeID, deliveryDetail.ClientID);
@@ -206,7 +236,7 @@ namespace CtrlBox.Application
             catch (Exception ex)
             {
                 _unitOfWork.Rollback();
-                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.Add), ex);
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.MakeDelivery), ex);
             }
         }
 

@@ -38,5 +38,10 @@ namespace CtrlBox.Domain.Entities
         {
             this.ProductItem.AddTracking(trackingTypeID, clientID);
         }
+
+        internal void FinishDelivery(bool hasCrossDocking)
+        {
+            this.ProductItem.FinishDelivery(hasCrossDocking);
+        }
     }
 }

@@ -373,5 +373,24 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult PostAjaxHanblerFinishDelivery(Guid orderID, bool hasCrossDocking)
+        {
+            try
+            {
+              
+                _deliveryService.FinishDelivery(orderID, hasCrossDocking);
+
+                return Json(new
+                {
+                    success = true,
+                    Message = "OK"
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

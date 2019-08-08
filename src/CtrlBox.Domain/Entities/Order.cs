@@ -94,5 +94,12 @@ namespace CtrlBox.Domain.Entities
                 }
             }
         }
+
+        public void Close()
+        {
+            this.IsFinalized = true;
+            this.DtEnd = DateTime.Now;
+            this.FinalizedBy = "Juliano";
+        }
     }
 }

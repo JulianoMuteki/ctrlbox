@@ -41,6 +41,14 @@ namespace CtrlBox.Domain.Entities
             SetFlowDelivered();
         }
 
+        internal void FinishDelivery(bool hasCrossDocking)
+        {
+            if (hasCrossDocking)
+                this.EFlowStep = EFlowStep.InStock;
+            else
+                this.EFlowStep = EFlowStep.Delivery;
+        }
+
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
             Tracking tracking = new Tracking()

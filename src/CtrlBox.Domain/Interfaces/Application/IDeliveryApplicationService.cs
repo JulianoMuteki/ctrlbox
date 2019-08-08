@@ -10,5 +10,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         void FinalizeDelivery(Guid deliveryID);
         OrderVM GetResumeDeliveryById(Guid deliveryID);
         void MakeDelivery(OrderVM deliveryVM, Guid trackingTypeID);
+        void FinishDelivery(Guid orderID, bool hasCrossDocking);
     }
 }

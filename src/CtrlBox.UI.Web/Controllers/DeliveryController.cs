@@ -22,11 +22,12 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly ISaleApplicationService _saleService;
         private readonly ISecurityApplicationService _securityService;
         private readonly IBoxApplicationService _boxService;
+        private readonly ITrackingApplicationService _trackingApplicationService;
 
         public DeliveryController(IClientApplicationService clientService, IRouteApplicationService routeService,
                                    IDeliveryApplicationService deliveryService, IProductApplicationService productService,
                                    ISaleApplicationService saleService, ISecurityApplicationService securityService,
-                                   IBoxApplicationService boxService)
+                                   IBoxApplicationService boxService, ITrackingApplicationService trackingApplicationService)
         {
             _boxService = boxService;
             _clientService = clientService;
@@ -35,6 +36,7 @@ namespace CtrlBox.UI.Web.Controllers
             _productService = productService;
             _saleService = saleService;
             _securityService = securityService;
+            _trackingApplicationService = trackingApplicationService;
         }
 
         public ActionResult Index()
@@ -285,6 +287,17 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult MakeDelivery(Guid routeID, Guid clientID, Guid deliveryID)
         {
+            var trackingsTypes = _trackingApplicationService.GetAllTrackingsTypesByPlace()
+                            .Select(trace => new SelectListItem
+                            {
+                                Value = trace.DT_RowId,
+                                Text = trace.Description
+                            }).ToList();
+            ViewData["TrackingTypes"] = trackingsTypes;
+
+
+            var client = _clientService.GetById(clientID);
+            ViewData["Client"] = client.Name;
             ViewData["ClientID"] = clientID;
             ViewData["DeliveryID"] = deliveryID;
 
@@ -340,13 +353,13 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostAjaxHandlerMakeDelivery(string[] strMakeDeliveryJSON)
+        public ActionResult PostAjaxHandlerMakeDelivery(string[] strMakeDeliveryJSON, Guid trackingTypeID)
         {
             try
             {
                 JsonSerialize jsonS = new JsonSerialize();
                 var deliveryVM = jsonS.JsonDeserializeObject<OrderVM>(strMakeDeliveryJSON[0]);
-                _deliveryService.MakeDelivery(deliveryVM);
+                _deliveryService.MakeDelivery(deliveryVM, trackingTypeID);
 
                 return Json(new
                 {

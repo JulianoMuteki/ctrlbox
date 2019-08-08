@@ -9,6 +9,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<OrderVM> GetByUserId(Guid userId);
         void FinalizeDelivery(Guid deliveryID);
         OrderVM GetResumeDeliveryById(Guid deliveryID);
-        void MakeDelivery(OrderVM deliveryVM);
+        void MakeDelivery(OrderVM deliveryVM, Guid trackingTypeID);
     }
 }

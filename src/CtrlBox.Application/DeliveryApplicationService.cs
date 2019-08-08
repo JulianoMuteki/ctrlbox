@@ -175,7 +175,7 @@ namespace CtrlBox.Application
             }
         }
 
-        public void MakeDelivery(OrderVM orderVM)
+        public void MakeDelivery(OrderVM orderVM, Guid trackingTypeID)
         {
             try
             {
@@ -188,6 +188,9 @@ namespace CtrlBox.Application
                     foreach (var box in boxes)
                     {                     
                         deliveryDetail.MakeDeliveryBox(box);
+
+                        box.AddTracking(trackingTypeID, deliveryDetail.ClientID);
+                        box.AddTrackingProductItems(trackingTypeID, deliveryDetail.ClientID);
                     }
                 }
 

@@ -33,5 +33,10 @@ namespace CtrlBox.Domain.Entities
             this.IsDelivered = true;
             this.ProductItem.Deliver();
         }
+
+        public void AddTrackingProductItem(Guid trackingTypeID, Guid clientID)
+        {
+            this.ProductItem.AddTracking(trackingTypeID, clientID);
+        }
     }
 }

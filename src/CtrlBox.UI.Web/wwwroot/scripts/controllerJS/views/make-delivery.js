@@ -10,12 +10,17 @@ var MakeDeliveryComponents = function () {
     }
 
     function inicializateComponentes() {
+        $('.select2_option').select2({
+            allowClear: true
+        });
+
+
         oTable = $('#tbProductItems').dataTable({
             "sAjaxSource": '../Delivery/GetAjaxHandlerMakeDelivery',
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "clientID", "value": _clientID });
                 aoData.push({ "name": "deliveryID", "value": _orderID });
-            }, 
+            },
             "bProcessing": true,
             "bDestroy": true,
             "aoColumns": [
@@ -106,12 +111,13 @@ var MakeDeliveryComponents = function () {
             order.DeliveriesDetails = tbDeliveriesDetails;
 
             var myJsonString = JSON.stringify(order);
+            var trackTypeID = $('#ddlTrackingType').val();
 
             $.ajax({
                 url: '../Delivery/PostAjaxHandlerMakeDelivery',
                 type: 'POST',
                 dataType: 'json',
-                data: { strMakeDeliveryJSON: myJsonString },
+                data: { strMakeDeliveryJSON: myJsonString, trackingTypeID: trackTypeID },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Completo');

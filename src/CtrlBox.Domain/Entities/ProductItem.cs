@@ -38,6 +38,32 @@ namespace CtrlBox.Domain.Entities
         {
             this.IsDisable = true;
             this.Status = EProductItemStatus.Sold_Delivered;
+            SetFlowDelivered();
+        }
+
+        public void AddTracking(Guid trackingTypeID, Guid clientID)
+        {
+            Tracking tracking = new Tracking()
+            {
+                TrackingTypeID = trackingTypeID,
+                ProductItemID = this.Id
+            };
+
+            if (clientID != null && clientID != Guid.Empty)
+            {
+                tracking.TrackingsClients.Add(new TrackingClient()
+                {
+                    ClientID = clientID,
+                    TrackingID = tracking.Id
+                });
+            }
+
+            this.Trackings.Add(tracking);
+        }        
+
+        private void SetFlowDelivered()
+        {
+            this.EFlowStep = EFlowStep.Delivery;
         }
 
         internal void PutInTheBox()

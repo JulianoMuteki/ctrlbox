@@ -114,13 +114,7 @@ namespace CtrlBox.Domain.Entities
         public void DoDelivery(DeliveryDetail deliveryDetail, int quantity)
         {
             deliveryDetail.AddDeliveryBox(this.Id);
-
-            if (!this.BoxType.IsReturnable)
-            {
-                this.Status = EBoxStatus.Delivered;
-                this.IsDisable = true;
-            }
-            else if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
                 var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == deliveryDetail.ProductID && x.IsDelivered == false).Take(quantity).ToList();
 
@@ -149,6 +143,13 @@ namespace CtrlBox.Domain.Entities
 
                 LoadFullBoxCompletedChildrem();
             }
+
+            SetFlowDelivered();
+        }
+
+        private void SetFlowDelivered()
+        {
+            this.EFlowStep = EFlowStep.Delivery;
         }
 
         private void LoadFullBoxCompletedProductItems()
@@ -184,6 +185,25 @@ namespace CtrlBox.Domain.Entities
             return this.BoxesChildren.ToList();
         }
 
+        public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)
+        {
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            {
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
+
+                foreach (var boxProductItem in boxProductsItems)
+                {
+                    boxProductItem.AddTrackingProductItem(trackingTypeID, clientID);
+                }
+            }
+            else
+            {
+                foreach (var boxChild in this.BoxesChildren)
+                {
+                    boxChild.AddTrackingProductItems(trackingTypeID, clientID);
+                }
+            }
+        }
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {

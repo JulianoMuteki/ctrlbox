@@ -73,9 +73,53 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult Create()
         {
+            var routes = _routeService.GetAll()
+                               .Select(route => new SelectListItem
+                               {
+                                   Value = route.DT_RowId,
+                                   Text = route.Name
+                               }).ToList();
+            ViewData["Routes"] = routes;
+
+            var users = _securityService.GetAllUsers()
+                                 .Select(user => new SelectListItem
+                                 {
+                                     Value = user.Id.ToString(),
+                                     Text = $"{user.FirstName} - {user.LastName}"
+                                 }).ToList();
+            ViewData["Users"] = users;
+
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetBoxesByRouteID(Guid routeID)
+        {
+            try
+            {
+                var boxesVM = _boxService.GetBoxesStockParents(routeID);
+                var boxes = boxesVM.GroupBy(n => n.BoxTypeID)
+                    .Select(g => new
+                    {
+                        DT_RowId = g.Key,
+                        BoxType = g.Select(x => x.BoxType.Name).FirstOrDefault(),
+                        SrcPicture = g.Select(x => x.BoxType.Picture.SrcBase64Image).FirstOrDefault(),
+                        TotalBox = g.Count()
+                    }
+                    ).ToList();
+
+
+                return Json(new
+                {
+                    aaData = boxes,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet]
         public ActionResult GetAjaxHandlerUsers()
         {

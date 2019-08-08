@@ -6,6 +6,7 @@ using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Infra.Context;
 using CtrlBox.Infra.Repository.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace CtrlBox.Infra.Repository.Repositories
 {
@@ -105,13 +106,43 @@ namespace CtrlBox.Infra.Repository.Repositories
                               track => track.Tracking.Id,
                               cl => cl.TrackingID,
                               (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
-
                               .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
                                      x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
                                      x.Box.BoxTypeID == boxTypeID &&
                                      x.TrackingClient.ClientID == clientID)
                            .Select(x => x.Box);
 
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductRepository>("Unexpected error fetching total", nameof(this.GetTotalProductItemByProductID), ex);
+            }
+        }
+
+        public ICollection<Box> GetBoxesInStockByClientID(Guid clientID)
+        {
+            try
+            {
+                var query = _context.Set<Box>()
+                              .Where(x => x.EFlowStep == CrossCutting.Enums.EFlowStep.InStock && x.BoxParentID == null)
+                              .Join(_context.Set<Tracking>(),
+                              pdi => pdi.Id,
+                              track => track.BoxID,
+                              (pdi, track) => new { Box = pdi, Tracking = track })
+                            .Join(_context.Set<TrackingType>(),
+                              track => track.Tracking.TrackingTypeID,
+                              tt => tt.Id,
+                              (track, tt) => new { track.Box, track.Tracking, TrackingType = tt })
+                            .Join(_context.Set<TrackingClient>(),
+                              track => track.Tracking.Id,
+                              cl => cl.TrackingID,
+                              (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
+                              .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
+                                     x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
+                                     x.TrackingClient.ClientID == clientID)
+                           .Select(x => x.Box)
+                           .Include(x => x.BoxType).ThenInclude(x => x.Picture);
 
                 return query.ToList();
             }

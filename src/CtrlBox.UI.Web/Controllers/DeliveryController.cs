@@ -191,29 +191,19 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 Guid id = new Guid(deliveryID);
                 var deliveryVM = _deliveryService.GetById(id);
-              //  var routeVM = _routeService.GetById(deliveryVM.RouteID);
                 var clientsVM = _clientService.GetByRouteID(deliveryVM.RouteID);
-
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
-                //var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
-                //var clientsVMs = clientsVM.Select(c =>
-                //                            {
-                //                                c.SaleVM =
-                //                                       ((from x in sales
-                //                                         where x.ClientID.ToString() == c.DT_RowId
-                //                                         select x).FirstOrDefault() ?? new SaleVM()); return c;
-                //                            }).ToList();
 
-
-                var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(id).GroupBy(n => new { n.BoxTypeID, n })
-                                                  .Select(g => new
-                                                  {
-                                                      DT_RowId = g.Key.BoxTypeID,
-                                                      g.Key.n.BoxType.PictureID,
-                                                      BoxType = g.Key.n.BoxType.Name,
-                                                      TotalBox = g.Count(),
-                                                      TotalProductItems = g.Sum(x => x.TotalProductsItemsChildren)
-                                                  });
+                var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(id).GroupBy(n => n.BoxTypeID)
+                  .Select(g => new
+                  {
+                      DT_RowId = g.Key,
+                      BoxType = g.Select(x => x.BoxType.Name).FirstOrDefault(),
+                      PictureID = g.Select(x => x.BoxType.PictureID).FirstOrDefault(),
+                      TotalBox = g.Count(),
+                      TotalProductItems = g.Sum(x => x.TotalProductsItemsChildren)
+                  }
+                  ).ToList();
 
                 return Json(new
                 {

@@ -1,5 +1,5 @@
-﻿var _ddlRoute = "#ddlRoute";
-
+﻿var _ddlRoute = '#ddlRoute';
+var _ddlUser = '#ddlUser'
 
 var CreateOrderComponents = function () {
     var oTable;
@@ -36,11 +36,11 @@ var CreateOrderComponents = function () {
                 }
             });
             var myJsonString = JSON.stringify(tb);
-            var routeId = $("select#mainSelect").val();
-            var userId = $("select#ddlUser").val();
+            var routeId = $(_ddlRoute).val();
+            var userId = $(_ddlUser).val();
 
             $.ajax({
-                url: '@Url.Content("~/Delivery/PostAjaxHandlerCreateDelivery")',
+                url: '../Delivery/PostAjaxHandlerCreateDelivery',
                 type: 'POST',
                 dataType: 'json',
                 data: { tbBoxesTypes: myJsonString, routeID: routeId, userID: userId },

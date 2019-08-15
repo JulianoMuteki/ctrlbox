@@ -167,7 +167,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 var query = _context.Set<BoxProductItem>()
 
-                            .Where(x => x.OrderID == deliveryID && x.IsDelivered == false)
+                          //  .Where(x => x.OrderID == deliveryID && x.IsDelivered == false)
                             .Include(b => b.ProductItem).ThenInclude(p => p.Product);
 
                 return query.ToList();
@@ -183,7 +183,6 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Box>()
-                    //.Include(x => x.BoxesProductItems)
                     .Include(x=>x.BoxBarcode)
                     .Include(x => x.BoxType).ThenInclude(x => x.Picture)
                     .Where(x => x.Id == boxID)

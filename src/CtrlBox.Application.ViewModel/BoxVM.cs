@@ -55,7 +55,7 @@ namespace CtrlBox.Application.ViewModel
         private int SumTotalProductItemsChildren()
         {
             if (BoxesProductItems.Count > 0)
-                _totalProductsItemsChildren = BoxesProductItems.Where(p => p.IsDelivered == false).Count();
+                _totalProductsItemsChildren = BoxesProductItems.Where(p => p.IsItemRemovedBox == false).Count();
             else
                 _totalProductsItemsChildren += this.BoxesChildren.Sum(x => x.TotalProductsItemsChildren);
 

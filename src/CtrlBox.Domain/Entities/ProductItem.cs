@@ -16,10 +16,12 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
         public ICollection<Tracking> Trackings { get; set; }
+        public ICollection<OrderProductItem> OrderProductItems { get; set; }
 
         public ProductItem()
             :base()
         {
+            this.OrderProductItems = new HashSet<OrderProductItem>();
             this.Trackings = new HashSet<Tracking>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
         }

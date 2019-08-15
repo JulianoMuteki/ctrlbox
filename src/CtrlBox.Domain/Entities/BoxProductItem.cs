@@ -12,11 +12,7 @@ namespace CtrlBox.Domain.Entities
         public Box Box { get; set; }
         public ProductItem ProductItem { get; set; }
 
-        public bool IsDelivered { get; set; }
         public bool IsItemRemovedBox { get; set; }
-
-        public Guid? OrderID { get; set; }
-        public Order Order { get; set; }
 
         public BoxProductItem()
         {
@@ -30,7 +26,6 @@ namespace CtrlBox.Domain.Entities
 
         public void Deliver()
         {
-            this.IsDelivered = true;
             this.ProductItem.Deliver();
         }
 

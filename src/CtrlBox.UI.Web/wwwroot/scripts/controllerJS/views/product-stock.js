@@ -46,9 +46,9 @@ var ProductStock = function () {
                         dataType: 'json',
                         data: { productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, quantity: _quantity },
                         "success": function (json) {
-                            if (!json.NotAuthorized) {
+                            if (json.success) {
                                 alert('Completo');
-                              //  window.history.back();
+                                window.history.back();
                             }
                         },
                         "error": handleAjaxError

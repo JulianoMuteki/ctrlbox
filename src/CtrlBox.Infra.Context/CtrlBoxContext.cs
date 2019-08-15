@@ -21,6 +21,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderBox> OrdersBoxes { get; set; }
+        public DbSet<OrderProductItem> OrderProductItems { get; set; }
 
         public DbSet<DeliveryDetail> DeliveriesDetails { get; set; }
         public DbSet<Route> Routes { get; set; }
@@ -41,7 +42,6 @@ namespace CtrlBox.Infra.Context
         public DbSet<BoxProductItem> BoxesProductItems { get; set; }
         public DbSet<BoxBarcode> BoxesCodes { get; set; }
 
-        public DbSet<OrderBox> DeliveriesBoxes { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
@@ -74,12 +74,16 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new ClientMap());
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new ClientProductMap());
+            modelBuilder.ApplyConfiguration(new ProductItemMap());
 
             modelBuilder.ApplyConfiguration(new ExpenseMap());
             modelBuilder.ApplyConfiguration(new OrderMap());
             modelBuilder.ApplyConfiguration(new OrderBoxMap());
+            modelBuilder.ApplyConfiguration(new OrderProductItemMap());
 
             modelBuilder.ApplyConfiguration(new DeliveryDetailMap());
+            modelBuilder.ApplyConfiguration(new DeliveryBoxMap());
+
             modelBuilder.ApplyConfiguration(new RouteClientMap());
             modelBuilder.ApplyConfiguration(new SaleProductMap());
             modelBuilder.ApplyConfiguration(new RouteMap());
@@ -94,10 +98,8 @@ namespace CtrlBox.Infra.Context
 
             modelBuilder.ApplyConfiguration(new BoxBarcodeMap());
             modelBuilder.ApplyConfiguration(new BoxMap());
-            modelBuilder.ApplyConfiguration(new ProductItemMap());
             modelBuilder.ApplyConfiguration(new BoxTypeMap());
             modelBuilder.ApplyConfiguration(new BoxProductItemMap());
-            modelBuilder.ApplyConfiguration(new DeliveryBoxMap());
             modelBuilder.ApplyConfiguration(new PictureMap());
 
             modelBuilder.ApplyConfiguration(new PaymentMap());

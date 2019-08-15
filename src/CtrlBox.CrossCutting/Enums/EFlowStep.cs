@@ -11,6 +11,7 @@ namespace CtrlBox.CrossCutting.Enums
         Sale = 5,
         Delivery = 6,
         SaleAndDelivery = 7,
-        Completed = 8
+        CrossDocking = 7,
+        Completed = 9
     }
 }

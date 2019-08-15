@@ -394,7 +394,7 @@ namespace CtrlBox.Application
                     var updateList = productsItems.Where(x => !productsItemsUpdate.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
                     productsItemsUpdate.AddRange(updateList);
 
-                    Box box = Box.FactoryCreate(boxTypeID, boxType, i);
+                    Box box = Box.FactoryCreate(boxTypeID, boxType, i, productID);
                     box.LoadProductItems(updateList);
                     box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;

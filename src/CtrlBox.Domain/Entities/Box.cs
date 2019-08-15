@@ -43,7 +43,7 @@ namespace CtrlBox.Domain.Entities
             this.OrdersBoxes = new HashSet<OrderBox>();
         }
 
-        public static Box FactoryCreate(Guid boxTypeID, BoxType boxType, int i)
+        public static Box FactoryCreate(Guid boxTypeID, BoxType boxType, int i, Guid? productID = null)
         {
             Box box = new Box();
             box.InicializateProperties();
@@ -51,6 +51,9 @@ namespace CtrlBox.Domain.Entities
             box.BoxTypeID = boxTypeID;
             box.Description = $"Box nº: {i} - {boxType.Name}";
             box.BoxType = boxType;
+
+            if (productID != null && productID.Value != Guid.Empty)
+                box.ProductID = productID;
 
             if (!box.ComponentValidator.Validate(box, new BoxValidator()))
             {
@@ -116,7 +119,7 @@ namespace CtrlBox.Domain.Entities
             deliveryDetail.AddDeliveryBox(this.Id);
             if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == deliveryDetail.ProductID && x.IsDelivered == false).Take(quantity).ToList();
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == deliveryDetail.ProductID).Take(quantity).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {
@@ -154,7 +157,7 @@ namespace CtrlBox.Domain.Entities
 
         private void LoadFullBoxCompletedProductItems()
         {
-            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x => x.IsDelivered == false).ToList().Count) / this.BoxType.MaxProductsItems);
+            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).ToList().Count) / this.BoxType.MaxProductsItems);
             SetBoxStatus();
         }
 
@@ -250,7 +253,7 @@ namespace CtrlBox.Domain.Entities
         private void SetFlowDelivery(bool hasCrossDocking)
         {
             if (hasCrossDocking)
-                this.EFlowStep = EFlowStep.InStock;
+                this.EFlowStep = EFlowStep.CrossDocking;
             else
                 this.EFlowStep = EFlowStep.Delivery;
         }

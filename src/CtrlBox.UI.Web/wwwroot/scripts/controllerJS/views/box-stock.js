@@ -99,9 +99,9 @@ var BoxStock = function () {
                             dataType: 'json',
                             data: { boxTypeID: _boxTypeID, productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, quantity: _quantity },
                             "success": function (json) {
-                                if (!json.NotAuthorized) {
+                                if (json.success) {
                                     alert('Completo');
-                                    //  window.history.back();
+                                    window.history.back();
                                 }
                             },
                             "error": handleAjaxError
@@ -116,9 +116,9 @@ var BoxStock = function () {
                             dataType: 'json',
                             data: { boxTypeID: _boxTypeID, productID: _productID, clientID: _clientID, trackingTypeID: _trackingTypeID, boxTypeChildID: _boxTypeChildID, quantity: _quantity },
                             "success": function (json) {
-                                if (!json.NotAuthorized) {
+                                if (json.success) {
                                     alert('Completo');
-                                    //  window.history.back();
+                                    window.history.back();
                                 }
                             },
                             "error": handleAjaxError

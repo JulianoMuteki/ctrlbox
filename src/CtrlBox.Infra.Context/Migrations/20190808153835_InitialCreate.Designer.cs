@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190801154018_InitialCreate")]
+    [Migration("20190808153835_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,6 +87,8 @@ namespace CtrlBox.Infra.Context.Migrations
                         .IsRequired()
                         .HasMaxLength(250);
 
+                    b.Property<int>("EFlowStep");
+
                     b.Property<bool>("IsDelete");
 
                     b.Property<bool>("IsDisable");
@@ -150,15 +152,13 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("ProductItemID");
 
-                    b.Property<bool>("IsDelivered");
-
                     b.Property<bool>("IsItemRemovedBox");
 
-                    b.Property<Guid?>("OrderID");
+                    b.Property<Guid?>("OrderId");
 
                     b.HasKey("BoxID", "ProductItemID");
 
-                    b.HasIndex("OrderID");
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductItemID");
 
@@ -390,7 +390,7 @@ namespace CtrlBox.Infra.Context.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("DeliveryID");
+                        .HasColumnName("OrderID");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -419,13 +419,13 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid>("UserID");
 
                     b.HasKey("Id")
-                        .HasName("DeliveryID");
+                        .HasName("OrderID");
 
                     b.HasIndex("RouteID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Deliveries");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.OrderBox", b =>
@@ -439,6 +439,19 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("BoxID");
 
                     b.ToTable("OrdersBoxes");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.OrderProductItem", b =>
+                {
+                    b.Property<Guid>("OrderID");
+
+                    b.Property<Guid>("ProductItemID");
+
+                    b.HasKey("OrderID", "ProductItemID");
+
+                    b.HasIndex("ProductItemID");
+
+                    b.ToTable("OrdersProductItems");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
@@ -646,6 +659,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DateModified");
 
+                    b.Property<int>("EFlowStep");
+
                     b.Property<bool>("IsDelete");
 
                     b.Property<bool>("IsDisable");
@@ -723,8 +738,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DateModified");
 
-                    b.Property<Guid>("DeliveryID");
-
                     b.Property<decimal>("ForwardValue")
                         .HasColumnType("decimal(10,2)");
 
@@ -734,7 +747,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsFinished");
 
-                    b.Property<Guid?>("OrderId");
+                    b.Property<Guid>("OrderID");
 
                     b.Property<decimal>("ReceivedValue")
                         .HasColumnType("decimal(10,2)");
@@ -744,7 +757,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasIndex("ClientID");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderID");
 
                     b.ToTable("Sales");
                 });
@@ -1068,9 +1081,9 @@ namespace CtrlBox.Infra.Context.Migrations
                         .HasForeignKey("BoxID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CtrlBox.Domain.Entities.Order", "Order")
+                    b.HasOne("CtrlBox.Domain.Entities.Order")
                         .WithMany("BoxesProductItems")
-                        .HasForeignKey("OrderID");
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
                         .WithMany("BoxesProductItems")
@@ -1183,6 +1196,19 @@ namespace CtrlBox.Infra.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.OrderProductItem", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Order", "Order")
+                        .WithMany("OrderProductItems")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
+                        .WithMany("OrderProductItems")
+                        .HasForeignKey("ProductItemID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
@@ -1247,7 +1273,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasOne("CtrlBox.Domain.Entities.Order", "Order")
                         .WithMany("Sales")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.SaleProduct", b =>

@@ -25,10 +25,12 @@ namespace CtrlBox.Domain.Entities
         public ICollection<OrderBox> OrdersBoxes { get; set; }
         public ICollection<Sale> Sales { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
+        public ICollection<OrderProductItem> OrderProductItems { get; set; }
 
         public Order()
-            :base()
+            : base()
         {
+            this.OrderProductItems = new HashSet<OrderProductItem>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.Expenses = new HashSet<Expense>();
             this.DeliveriesDetails = new HashSet<DeliveryDetail>();
@@ -59,18 +61,19 @@ namespace CtrlBox.Domain.Entities
             this.FinalizedBy = "Juliano";
         }
 
-        public void AddOrdersBoxes(IEnumerable<Box> boxesToOrder)
+        public void CreateOrdersBoxes(IEnumerable<Box> boxesToOrder)
         {
             foreach (var box in boxesToOrder)
             {
-                PutInTheBoxBoxesProductItemsChildren(box);
-
                 OrderBox orderBox = new OrderBox()
                 {
                     OrderID = this.Id,
                     BoxID = box.Id
                 };
                 this.OrdersBoxes.Add(orderBox);
+
+                if (box.BoxesChildren.Count > 0)
+                    CreateOrdersBoxes(box.BoxesChildren);
             }
         }
 
@@ -78,9 +81,9 @@ namespace CtrlBox.Domain.Entities
         {
             if (box.BoxesProductItems.Count > 0)
             {
-                var boxesProductItems = box.BoxesProductItems.Select(x => { x.OrderID = this.Id; return x; }).ToList();
+                //var boxesProductItems = box.BoxesProductItems.Select(x => { x.OrderID = this.Id; return x; }).ToList();
 
-                foreach (BoxProductItem boxProductItem in boxesProductItems)
+                foreach (BoxProductItem boxProductItem in box.BoxesProductItems)
                 {
                     boxProductItem.ProductItem.PutInTheBox();
                     this.BoxesProductItems.Add(boxProductItem);

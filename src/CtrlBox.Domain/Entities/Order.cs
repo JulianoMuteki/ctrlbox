@@ -71,9 +71,30 @@ namespace CtrlBox.Domain.Entities
                     BoxID = box.Id
                 };
                 this.OrdersBoxes.Add(orderBox);
+                box.SetFlowOrder();
 
                 if (box.BoxesChildren.Count > 0)
                     CreateOrdersBoxes(box.BoxesChildren);
+                else if(box.ProductID != null && box.ProductID != Guid.Empty)
+                {
+                    CreateOrderProductItem(box);
+                }
+
+            }
+        }
+
+        private void CreateOrderProductItem(Box box)
+        {
+            foreach (var boxProductItem in box.BoxesProductItems)
+            {
+                OrderProductItem orderProductItem = new OrderProductItem()
+                {
+                    ProductItemID = boxProductItem.ProductItemID,
+                    OrderID = this.Id
+                };
+
+                this.OrderProductItems.Add(orderProductItem);
+                boxProductItem.ProductItem.SetFlowOrder();
             }
         }
 

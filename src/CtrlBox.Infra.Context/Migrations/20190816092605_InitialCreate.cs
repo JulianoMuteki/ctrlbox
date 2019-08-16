@@ -716,7 +716,8 @@ namespace CtrlBox.Infra.Context.Migrations
                 columns: table => new
                 {
                     BoxID = table.Column<Guid>(nullable: false),
-                    OrderID = table.Column<Guid>(nullable: false)
+                    OrderID = table.Column<Guid>(nullable: false),
+                    IsFinalized = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -740,7 +741,8 @@ namespace CtrlBox.Infra.Context.Migrations
                 columns: table => new
                 {
                     ProductItemID = table.Column<Guid>(nullable: false),
-                    OrderID = table.Column<Guid>(nullable: false)
+                    OrderID = table.Column<Guid>(nullable: false),
+                    IsFinalized = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

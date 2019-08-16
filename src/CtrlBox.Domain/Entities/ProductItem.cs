@@ -81,5 +81,10 @@ namespace CtrlBox.Domain.Entities
             this.Status = EProductItemStatus.InBox;
             this.EFlowStep = EFlowStep.InBox;
         }
+
+        internal void SetFlowOrder()
+        {
+            this.EFlowStep = EFlowStep.Order;
+        }
     }
 }

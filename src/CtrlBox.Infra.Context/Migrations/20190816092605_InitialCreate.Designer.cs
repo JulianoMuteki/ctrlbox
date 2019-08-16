@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190808153835_InitialCreate")]
+    [Migration("20190816092605_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -434,6 +434,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("BoxID");
 
+                    b.Property<bool>("IsFinalized");
+
                     b.HasKey("OrderID", "BoxID");
 
                     b.HasIndex("BoxID");
@@ -446,6 +448,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid>("OrderID");
 
                     b.Property<Guid>("ProductItemID");
+
+                    b.Property<bool>("IsFinalized");
 
                     b.HasKey("OrderID", "ProductItemID");
 

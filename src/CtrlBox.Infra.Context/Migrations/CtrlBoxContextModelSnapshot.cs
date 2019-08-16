@@ -432,6 +432,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("BoxID");
 
+                    b.Property<bool>("IsFinalized");
+
                     b.HasKey("OrderID", "BoxID");
 
                     b.HasIndex("BoxID");
@@ -444,6 +446,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid>("OrderID");
 
                     b.Property<Guid>("ProductItemID");
+
+                    b.Property<bool>("IsFinalized");
 
                     b.HasKey("OrderID", "ProductItemID");
 

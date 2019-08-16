@@ -27,6 +27,7 @@ namespace CtrlBox.Application
         {
             try
             {
+                _unitOfWork.SetTrackAll();
                 var delivery = _mapper.Map<Order>(entity);
 
                 foreach (BoxTypeVM boxType in entity.BoxesTypes)
@@ -34,12 +35,10 @@ namespace CtrlBox.Application
                     var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
 
                     delivery.CreateOrdersBoxes(boxesReadyToDelivery);
+                    _unitOfWork.Repository<Box>().UpdateRange(boxesReadyToDelivery);
                 }
-                var lista = delivery.BoxesProductItems.ToList();
-                delivery.BoxesProductItems.Clear();
-                _unitOfWork.Repository<Order>().Add(delivery);
-                _unitOfWork.Repository<BoxProductItem>().UpdateRange(lista);
 
+                _unitOfWork.Repository<Order>().Add(delivery);
                 _unitOfWork.CommitSync();
 
                 return entity;

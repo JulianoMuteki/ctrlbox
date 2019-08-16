@@ -71,6 +71,11 @@ namespace CtrlBox.Domain.Entities
             this.OrdersBoxes = new HashSet<OrderBox>();
         }
 
+        internal void SetFlowOrder()
+        {
+            this.EFlowStep = EFlowStep.Order;
+        }
+
         public void SetBoxType(BoxType boxType)
         {
             this.BoxType = boxType;

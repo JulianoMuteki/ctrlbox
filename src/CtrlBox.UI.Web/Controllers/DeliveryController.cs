@@ -203,7 +203,7 @@ namespace CtrlBox.UI.Web.Controllers
                       BoxType = g.Select(x => x.BoxType.Name).FirstOrDefault(),
                       PictureID = g.Select(x => x.BoxType.PictureID).FirstOrDefault(),
                       TotalBox = g.Count(),
-                      TotalProductItems = g.Sum(x => x.TotalProductsItemsChildren)
+                      TotalProductItems = g.Where(x=>x.ProductID != null).Sum(x => x.TotalProductsItemsChildren)
                   }
                   ).ToList();
 

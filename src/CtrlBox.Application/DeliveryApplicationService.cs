@@ -93,7 +93,7 @@ namespace CtrlBox.Application
             {
                 _unitOfWork.SetTrackAll();
                 var order = _unitOfWork.Repository<Order>().GetById(orderID);
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(orderID);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(orderID);
 
                 foreach (var box in boxes)
                 {
@@ -210,7 +210,7 @@ namespace CtrlBox.Application
             {
                 var order = _mapper.Map<Order>(orderVM);
                 _unitOfWork.SetTrackAll();
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(order.Id);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(order.Id);
 
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {

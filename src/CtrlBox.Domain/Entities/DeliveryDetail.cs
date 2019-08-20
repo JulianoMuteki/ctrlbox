@@ -34,13 +34,20 @@ namespace CtrlBox.Domain.Entities
 
         internal void AddDeliveryBox(Guid boxID)
         {
-            DeliveryBox deliveryBox = new DeliveryBox()
+            if (!this.DeliveriesBoxes.Any(x => x.BoxID == boxID))
             {
-                BoxID = boxID,
-                DeliveryDetailID = this.Id
-            };
+                DeliveryBox deliveryBox = new DeliveryBox()
+                {
+                    BoxID = boxID,
+                    DeliveryDetailID = this.Id
+                };
 
-            this.DeliveriesBoxes.Add(deliveryBox);
+                this.DeliveriesBoxes.Add(deliveryBox);
+            }
+            else
+            {
+
+            }
         }
 
         public void MakeDeliveryBox(Box box)

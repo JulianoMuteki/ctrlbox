@@ -193,5 +193,31 @@ namespace CtrlBox.Infra.Repository.Repositories
                 throw CustomException.Create<BoxRepository>("Unexpected error fetching GetBoxesByIDWithBoxTypeAndProductItems", nameof(this.GetBoxesByIDWithBoxTypeAndProductItems), ex);
             }
         }
+
+        public ICollection<Box> GetBoxesParentsByOrderIDWithProductItems(Guid orderID)
+        {
+            try
+            {
+                var query = _context.Set<Box>()
+                           .Include(b => b.BoxType)
+                           .Include(x => x.BoxesChildren)
+                           .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
+                           .AsEnumerable() // <-- Force full execution (loading)
+                           .Join(_context.Set<OrderBox>(), // the source table of the inner join
+                              box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
+                              bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
+                              (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
+
+                              .Where(x => x.DeliveryBox.OrderID == orderID && x.Box.BoxParentID == null)
+                           .Select(x => x.Box);
+
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetBoxesParentsWithBoxType), ex);
+            }
+        }
     }
 }

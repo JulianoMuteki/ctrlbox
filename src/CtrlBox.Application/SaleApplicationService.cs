@@ -35,7 +35,7 @@ namespace CtrlBox.Application
                 {
                     if (entity.HasDelivery)
                     {
-                        var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(sale.OrderID);
+                        var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(sale.OrderID);
 
                         foreach (var box in boxes)
                         {

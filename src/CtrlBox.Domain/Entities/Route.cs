@@ -12,13 +12,16 @@ namespace CtrlBox.Domain.Entities
         public string Truck { get; set; }
         public bool HasOpenDelivery { get; set; }
 
-        public ICollection<Delivery> Deliveries { get; set; }
+        public Guid ClientOriginID { get; set; }
+        public Client ClientOrigin { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
         public ICollection<RouteClient> RoutesClients { get; set; }
 
         public Route()
             :base()
         {
-            this.Deliveries = new HashSet<Delivery>();
+            this.Orders = new HashSet<Order>();
             this.RoutesClients = new HashSet<RouteClient>();
         }
 

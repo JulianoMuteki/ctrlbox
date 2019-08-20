@@ -29,21 +29,36 @@ namespace CtrlBox.Application
             {
                 var sale = _mapper.Map<Sale>(entity);
                 _unitOfWork.SetTrackAll();
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByDeliveryIDWithProductItems(sale.DeliveryID);
+                IList<DeliveryDetail> deliveriesBoxes = new List<DeliveryDetail>();
 
                 foreach (var saleProduct in sale.SalesProducts)
-                {                  
-                    foreach (var box in boxes)
+                {
+                    if (entity.HasDelivery)
                     {
-                        box.DoDelivery(saleProduct.ProductID, saleProduct.Quantity);
+                        var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(sale.OrderID);
+
+                        foreach (var box in boxes)
+                        {
+                            DeliveryDetail deliveryDetail = new DeliveryDetail()
+                            {
+                                ClientID = sale.ClientID,
+                                ProductID = saleProduct.ProductID,
+                                OrderID = sale.OrderID,
+                                QuantityProductItem = saleProduct.Quantity
+                            };
+
+                            deliveryDetail.MakeDeliveryBox(box);
+                            deliveriesBoxes.Add(deliveryDetail);
+                        }
+
+                        _unitOfWork.Repository<Box>().UpdateRange(boxes);
                     }
 
                     saleProduct.CalcTotalValue();
                 }
 
                 sale.CalculatePayment();
-
-                _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                _unitOfWork.Repository<DeliveryDetail>().AddRange(deliveriesBoxes);
                 _unitOfWork.Repository<Sale>().Add(sale);
                 _unitOfWork.CommitSync();
 
@@ -80,7 +95,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var sales = _unitOfWork.Repository<Sale>().FindAll(x => x.DeliveryID == deliveryID);
+                var sales = _unitOfWork.Repository<Sale>().FindAll(x => x.OrderID == deliveryID);
                 var salesVMs = _mapper.Map<IList<SaleVM>>(sales);
                 return salesVMs;
             }
@@ -118,7 +133,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var sale = _unitOfWork.Repository<Sale>().Find(x => x.ClientID == clientID && x.DeliveryID == deliveryID);
+                var sale = _unitOfWork.Repository<Sale>().Find(x => x.ClientID == clientID && x.OrderID == deliveryID);
                 if (sale != null)
                 {
                     sale.SalesProducts = _unitOfWork.Repository<SaleProduct>().FindAll(x => x.SaleID == sale.Id);

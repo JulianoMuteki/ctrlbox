@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace CtrlBox.Domain.Validations
 {
-    public class DeliveryValidator : AbstractValidator<Delivery>
+    public class DeliveryValidator : AbstractValidator<Order>
     {
         public DeliveryValidator()
         {

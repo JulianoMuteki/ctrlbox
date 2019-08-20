@@ -92,7 +92,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Post(CtrlBox.Application.ViewModel.DeliveryVM)">
+        <member name="M:CtrlBox.Services.Api.Controllers.DeliveryController.Post(CtrlBox.Application.ViewModel.OrderVM)">
             <summary>
             
             </summary>

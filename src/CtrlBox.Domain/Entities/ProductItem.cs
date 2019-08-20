@@ -8,19 +8,22 @@ namespace CtrlBox.Domain.Entities
     public class ProductItem: EntityBase
     {
         public string Barcode { get; set; }
+        public EFlowStep EFlowStep { get; set; }
 
         public Guid ProductID { get; set; }
         public Product Product { get; set; }
         public EProductItemStatus Status { get; set; }
 
-        public ICollection<BoxProductItem> LoadBoxesProductItems { get; set; }
-        public ICollection<BoxTracking> Traceabilities { get; set; }
+        public ICollection<BoxProductItem> BoxesProductItems { get; set; }
+        public ICollection<Tracking> Trackings { get; set; }
+        public ICollection<OrderProductItem> OrderProductItems { get; set; }
 
         public ProductItem()
             :base()
         {
-            this.Traceabilities = new HashSet<BoxTracking>();
-            this.LoadBoxesProductItems = new HashSet<BoxProductItem>();
+            this.OrderProductItems = new HashSet<OrderProductItem>();
+            this.Trackings = new HashSet<Tracking>();
+            this.BoxesProductItems = new HashSet<BoxProductItem>();
         }
 
         public void Init()
@@ -29,6 +32,7 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.Status = EProductItemStatus.AvailableStock;
+                this.EFlowStep = EFlowStep.Available;
             }
         }
 
@@ -36,11 +40,51 @@ namespace CtrlBox.Domain.Entities
         {
             this.IsDisable = true;
             this.Status = EProductItemStatus.Sold_Delivered;
+            SetFlowDelivered();
+        }
+
+        internal void FinishDelivery(bool hasCrossDocking)
+        {
+            if (hasCrossDocking)
+                this.EFlowStep = EFlowStep.InStock;
+            else
+                this.EFlowStep = EFlowStep.Delivery;
+        }
+
+        public void AddTracking(Guid trackingTypeID, Guid clientID)
+        {
+            Tracking tracking = new Tracking()
+            {
+                TrackingTypeID = trackingTypeID,
+                ProductItemID = this.Id
+            };
+
+            if (clientID != null && clientID != Guid.Empty)
+            {
+                tracking.TrackingsClients.Add(new TrackingClient()
+                {
+                    ClientID = clientID,
+                    TrackingID = tracking.Id
+                });
+            }
+
+            this.Trackings.Add(tracking);
+        }        
+
+        private void SetFlowDelivered()
+        {
+            this.EFlowStep = EFlowStep.Delivery;
         }
 
         internal void PutInTheBox()
         {
             this.Status = EProductItemStatus.InBox;
+            this.EFlowStep = EFlowStep.InBox;
+        }
+
+        internal void SetFlowOrder()
+        {
+            this.EFlowStep = EFlowStep.Order;
         }
     }
 }

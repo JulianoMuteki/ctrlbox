@@ -18,12 +18,13 @@ namespace CtrlBox.Infra.Repository.Repositories
 
         }
 
-        public ICollection<Client> GetAvailable(Guid routeID)
+        public ICollection<Client> GetAvailable(Guid routeID, Guid clientOriginID)
         {
             try
             {
                 var query = _context.Set<Client>()
-                                                   .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id));
+                                                   .Where(c => !_context.Set<RouteClient>().Where(x => x.RouteID == routeID).Any(r => r.ClientID == c.Id)
+                                                           && c.Id != clientOriginID);
 
                 return query.ToList();
             }
@@ -60,6 +61,32 @@ namespace CtrlBox.Infra.Repository.Repositories
             catch (Exception ex)
             {
                 throw CustomException.Create<ClientRepository>("Unexpected error fetching all not available clients", nameof(this.GetNotAvailable), ex);
+            }
+        }
+
+        public ICollection<Client> GetByRouteID(Guid routeID)
+        {
+            try
+            {
+                var query = _context.Set<Client>()
+
+                           .Join(_context.Set<RouteClient>(),
+                              cl => cl.Id,
+                              rt => rt.ClientID,
+                              (cl, rt) => new { Client = cl, rt.RouteID })
+
+                           .Where(x => x.RouteID == routeID)
+                           .Select(x => x.Client)
+                              .Include(c => c.Sales)
+                              .Include(c => c.DeliveriesDetails);
+
+
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetByRouteID", nameof(this.GetByRouteID), ex);
             }
         }
     }

@@ -12,141 +12,15 @@
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/scripts/controllerJS/views/create-order.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
 }
 
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function () {
-        $('.select2_option').select2({
-            allowClear: true
-        });
 
-          $.ajax({
-            type: "GET",
-            url: '@Url.Content("~/Delivery/GetAjaxHandlerUsers")',
-            dataType: "json",
-              "success": function (data) {
-                  console.log(data);
-                  if (data.aaData.length > 0) {
-                      $.each(data.aaData, function (index, obj) {
-                        var newOption = new Option(obj.Text, obj.Value, false, obj.Selected);
-                        $("#ddlUser").append(newOption).trigger('change');
-                    });
-                }
-              },
-              "error": handleAjaxError
-        });
-        //carregar dropdown linhas
-        var $div = $("<div>", { class: "a" });
-        var sel = $('<select class="calor"/>').appendTo($div);
-        sel.append($("<option>").attr('value', 0).text('selecione'));
-        $.ajax({
-            type: "GET",
-            url: '@Url.Content("~/Route/AjaxHandlerGet")',
-            dataType: "json",
-            "success": function (data) {
-                if (data.aaData.length > 0) {
-                    var url = '@Url.Content("~/Box/GetAjaxHandlerBoxesParents")';
+<script type="text/javascript">
+    jQuery(document).ready(function () {
 
-                    $('#tbBox').dataTable({
-                        "bPaginate": false,
-                        "bAutoWidth": false,
-                        "sAjaxSource": url,
-                        bFilter: false, bInfo: false,
-                        "bDestroy": true,
-                        "aoColumns": [
-                                    {
-                                        "mData": null,
-                                        "sType": "html",
-                                        "bSortable": false,
-                                        "mData": function (data, type, row) {
-                                            if (type === 'display') {
-                                                if (data.SrcPicture === '' || data.SrcPicture === null) {
-                                                    return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.BoxType;
-                                                }
-                                                return '<img  src="' + data.SrcPicture + '" /> ' + data.BoxType;
-                                            }
-                                            return data;
-                                        }
-                                    },
-                                    {
-                                        "mData": null,
-                                        "sType": "html",
-                                        "bSortable": false,
-                                        "mRender": function (data, type, row) {
-                                            if (type === 'display') {
-                                                var statusStock = "green-stripe";
-                                                if (row.TotalBox <= 0) {
-                                                    statusStock = "red-stripe"
-                                                }
-                                                return '<div class="btn mini ' + statusStock + '">Total: ' + row.TotalBox + '</div>';
-                                            }
-                                            return data;
-                                        }
-                                    },
-                                    {
-                                        "mData": null,
-                                        "sType": "html",
-                                        "bSortable": false,
-                                        "mRender": function (data, type, row) {
-                                            if (type === 'display') {
-                                                var txtTotal = '<input type="text" placeholder="0" class="m-wrap small quantityToDelivery">';
-
-                                                if (row.TotalBox <= 0) {
-                                                    txtTotal = '<span class="label label-important">Unavailable</span>'
-                                                }
-                                                return txtTotal;                                               
-                                            }
-                                            return data;
-                                        }
-                                    }
-                        ]
-                    });
-
-                    $.each(data.aaData, function (i, obj) {
-                        sel.append($("<option>").attr('value', obj.DT_RowId).text(obj.Name));
-                        $("#mainSelect").append($("<option>").attr('value', obj.DT_RowId).text(obj.Name));
-                    });
-                }
-            },
-            "error": handleAjaxError
-        });
-
-        $("#btnSubmit").click(function () {
-            var oTable = $('#tbBox').dataTable();
-            var tb = [];
-            $.each(oTable.fnGetNodes(), function (index, value) {
-                if ($(value).find('input.quantityToDelivery').val() > 0) {
-                    var row = oTable.fnGetData(value);
-
-                    var quantityToDelivery = $(value).find('input.quantityToDelivery').val();
-                    if (quantityToDelivery !== undefined && quantityToDelivery !== '') {
-                        row.QuantityToDelivery = quantityToDelivery;
-                        row.BoxTypeID = row.DT_RowId;
-                        tb.push(row);
-                    }             
-                }
-            });
-            var myJsonString = JSON.stringify(tb);
-            var routeId = $("select#mainSelect").val();
-            var userId = $("select#ddlUser").val();
-
-            $.ajax({
-                url: '@Url.Content("~/Delivery/PostAjaxHandlerCreateDelivery")',
-                type: 'POST',
-                dataType: 'json',
-                data: { tbBoxesTypes: myJsonString, routeID: routeId, userID: userId },
-                "success": function (json) {
-                    if (!json.NotAuthorized) {
-                        alert('Completo');
-                        window.history.go(-1);
-                    }
-                },
-                "error": handleAjaxError
-            });
-            event.preventDefault();
-            return true;
-        });
+        CreateOrderComponents.init();
     });
 </script>
 
@@ -180,21 +54,21 @@
                 <!-- BEGIN VALIDATION STATES-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-reorder"></i>Create delivery</div>
+                        <div class="caption"><i class="icon-reorder"></i>Create Order</div>
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
                         <form action="#" id="form_sample_1" class="form-horizontal">
                             <div class="control-group">
-                                <label class="control-label">Routes<span class="required">*</span></label>
+                                <label class="control-label">Client</label>
                                 <div class="controls">
-                                    <select id="mainSelect" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="category"><option value="0">Please select route</option></select>
+                                    <select id="ddlRoute" class="span6 select2_option" data-placeholder="Choose a Route" name="RouteID" asp-items="@((List<SelectListItem>)ViewData["Routes"])"><option value="0">Select one</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Users<span class="required">*</span></label>
+                                <label class="control-label">Client</label>
                                 <div class="controls">
-                                    <select id="ddlUser" class="span6 select2_option" data-placeholder="Choose a user" tabindex="1" name="UserSelected"> <option value="0">Please select user</option></select>
+                                    <select id="ddlUser" class="span6 select2_option" data-placeholder="Choose a User" name="UserID" asp-items="@((List<SelectListItem>)ViewData["Users"])"></select>
                                 </div>
                             </div>
                             <div class="form-actions">

@@ -10,28 +10,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CtrlBox.Infra.Repository.Repositories
 {
-    public class BoxTrackingRepository : GenericRepository<BoxTracking>, IBoxTrackingRepository
+    public class TrackingRepository : GenericRepository<Tracking>, ITrackingRepository
     {
-        public BoxTrackingRepository(CtrlBoxContext context)
+        public TrackingRepository(CtrlBoxContext context)
             : base(context)
         {
 
         }
 
-        public ICollection<BoxTracking> GetByBoxIDWithTrackingType(Guid boxID)
+        public ICollection<Tracking> GetByBoxIDWithTrackingType(Guid boxID)
         {
             try
             {
-                return _context.Set<BoxTracking>()
+                return _context.Set<Tracking>()
                     .Include(x => x.TrackingType).ThenInclude(x => x.Picture)
-                    .Include(x => x.BoxesTrackingClients).ThenInclude(c => c.Client)
+                    .Include(x => x.TrackingsClients).ThenInclude(c => c.Client)
                     .Where(x => x.BoxID != null && x.BoxID.Value == boxID)
                     .OrderBy(x => x.CreationDate)
                     .ToList();
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingRepository>("Unexpected error fetching get Traceability", nameof(this.GetByBoxIDWithTrackingType), ex);
+                throw CustomException.Create<TrackingRepository>("Unexpected error fetching get Traceability", nameof(this.GetByBoxIDWithTrackingType), ex);
             }
         }
 
@@ -46,7 +46,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxTrackingRepository>("Unexpected error fetching get TraceType", nameof(this.GetTrackingsTypesWithPictures), ex);
+                throw CustomException.Create<TrackingRepository>("Unexpected error fetching get TraceType", nameof(this.GetTrackingsTypesWithPictures), ex);
             }
         }
     }

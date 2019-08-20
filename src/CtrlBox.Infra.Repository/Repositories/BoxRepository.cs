@@ -76,12 +76,12 @@ namespace CtrlBox.Infra.Repository.Repositories
                            .Include(x => x.BoxesChildren)
                            .Include(b => b.BoxesProductItems).ThenInclude(x=>x.ProductItem)
                            .AsEnumerable() // <-- Force full execution (loading)
-                           .Join(_context.Set<DeliveryBox>(), // the source table of the inner join
+                           .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
                               (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
 
-                              .Where(x => x.DeliveryBox.DeliveryID == deliveryID)
+                              .Where(x => x.DeliveryBox.OrderID == deliveryID)
                            .Select(x => x.Box);
 
 
@@ -102,12 +102,12 @@ namespace CtrlBox.Infra.Repository.Repositories
                            .Include(x => x.BoxesChildren)
                            .Include(b => b.BoxesProductItems)
                            .AsEnumerable() // <-- Force full execution (loading)
-                           .Join(_context.Set<DeliveryBox>(), // the source table of the inner join
+                           .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
                               (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
                            
-                              .Where(x => x.DeliveryBox.DeliveryID == deliveryID)
+                           .Where(x => x.DeliveryBox.OrderID == deliveryID && x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
                            .Select(x => x.Box);
                            
 
@@ -167,7 +167,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 var query = _context.Set<BoxProductItem>()
 
-                            .Where(x => x.DeliveryID == deliveryID && x.IsDelivered == false)
+                          //  .Where(x => x.OrderID == deliveryID && x.IsDelivered == false)
                             .Include(b => b.ProductItem).ThenInclude(p => p.Product);
 
                 return query.ToList();
@@ -183,7 +183,6 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Box>()
-                    //.Include(x => x.BoxesProductItems)
                     .Include(x=>x.BoxBarcode)
                     .Include(x => x.BoxType).ThenInclude(x => x.Picture)
                     .Where(x => x.Id == boxID)
@@ -192,6 +191,32 @@ namespace CtrlBox.Infra.Repository.Repositories
             catch (Exception ex)
             {
                 throw CustomException.Create<BoxRepository>("Unexpected error fetching GetBoxesByIDWithBoxTypeAndProductItems", nameof(this.GetBoxesByIDWithBoxTypeAndProductItems), ex);
+            }
+        }
+
+        public ICollection<Box> GetBoxesParentsByOrderIDWithProductItems(Guid orderID)
+        {
+            try
+            {
+                var query = _context.Set<Box>()
+                           .Include(b => b.BoxType)
+                           .Include(x => x.BoxesChildren)
+                           .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
+                           .AsEnumerable() // <-- Force full execution (loading)
+                           .Join(_context.Set<OrderBox>(), // the source table of the inner join
+                              box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
+                              bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
+                              (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
+
+                              .Where(x => x.DeliveryBox.OrderID == orderID && x.Box.BoxParentID == null)
+                           .Select(x => x.Box);
+
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetBoxesParentsWithBoxType), ex);
             }
         }
     }

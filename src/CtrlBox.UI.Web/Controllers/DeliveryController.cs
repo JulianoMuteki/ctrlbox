@@ -22,11 +22,12 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly ISaleApplicationService _saleService;
         private readonly ISecurityApplicationService _securityService;
         private readonly IBoxApplicationService _boxService;
+        private readonly ITrackingApplicationService _trackingApplicationService;
 
         public DeliveryController(IClientApplicationService clientService, IRouteApplicationService routeService,
                                    IDeliveryApplicationService deliveryService, IProductApplicationService productService,
                                    ISaleApplicationService saleService, ISecurityApplicationService securityService,
-                                   IBoxApplicationService boxService)
+                                   IBoxApplicationService boxService, ITrackingApplicationService trackingApplicationService)
         {
             _boxService = boxService;
             _clientService = clientService;
@@ -35,11 +36,11 @@ namespace CtrlBox.UI.Web.Controllers
             _productService = productService;
             _saleService = saleService;
             _securityService = securityService;
+            _trackingApplicationService = trackingApplicationService;
         }
 
         public ActionResult Index()
         {
-            ViewBag.Stock = "Check stock of the product: XXXXXXXX";
             return View();
         }
 
@@ -48,7 +49,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                ICollection<DeliveryVM> deliveriesVM;
+                ICollection<OrderVM> deliveriesVM;
 
                 if (User.IsInRole(RoleAuthorize.Driver.ToString()))
                 {
@@ -74,9 +75,53 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult Create()
         {
+            var routes = _routeService.GetAll()
+                               .Select(route => new SelectListItem
+                               {
+                                   Value = route.DT_RowId,
+                                   Text = route.Name
+                               }).ToList();
+            ViewData["Routes"] = routes;
+
+            var users = _securityService.GetAllUsers()
+                                 .Select(user => new SelectListItem
+                                 {
+                                     Value = user.Id.ToString(),
+                                     Text = $"{user.FirstName} - {user.LastName}"
+                                 }).ToList();
+            ViewData["Users"] = users;
+
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetBoxesByRouteID(Guid routeID)
+        {
+            try
+            {
+                var boxesVM = _boxService.GetBoxesStockParents(routeID);
+                var boxes = boxesVM.GroupBy(n => n.BoxTypeID)
+                    .Select(g => new
+                    {
+                        DT_RowId = g.Key,
+                        BoxType = g.Select(x => x.BoxType.Name).FirstOrDefault(),
+                        SrcPicture = g.Select(x => x.BoxType.Picture.SrcBase64Image).FirstOrDefault(),
+                        TotalBox = g.Count()
+                    }
+                    ).ToList();
+
+
+                return Json(new
+                {
+                    aaData = boxes,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet]
         public ActionResult GetAjaxHandlerUsers()
         {
@@ -114,7 +159,7 @@ namespace CtrlBox.UI.Web.Controllers
                 JsonSerialize jsonS = new JsonSerialize();
                 var deliveryBoxTypeVMs = jsonS.JsonDeserialize<BoxTypeVM>(tbBoxesTypes[0]);
 
-                DeliveryVM deliveryVM = new DeliveryVM();
+                OrderVM deliveryVM = new OrderVM();
                 deliveryVM.RouteID = new Guid(routeID);
                 deliveryVM.UserID = new Guid(userID);
                 deliveryVM.BoxesTypes = deliveryBoxTypeVMs;
@@ -133,44 +178,34 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         //[AuthorizePolicyEnum(CRUD.Create)]
-        public ActionResult ExecuteDelivery(string entregaID, string linhaID)
+        public ActionResult ViewDelivery(string deliveryID, string routeID)
         {
-            ViewData["entregaID"] = entregaID;
-            ViewData["linhaID"] = linhaID;
+            ViewData["DeliveryID"] = deliveryID;
+            ViewData["RouteID"] = routeID;
 
-            ViewData["RouteName"] = _routeService.GetById(new Guid(linhaID)).Name;
+            ViewData["RouteName"] = _routeService.GetById(new Guid(routeID)).Name;
             return View();
         }
 
-        public ActionResult AjaxHandlerExecutarEntrega(string entregaID)
+        public ActionResult GetAjaxHandlerViewDelivery(string deliveryID)
         {
             try
             {
-                Guid deliveryID = new Guid(entregaID);
-                var deliveryVM = _deliveryService.GetById(deliveryID);
-                var routeVM = _routeService.GetById(deliveryVM.RouteID);
-                var clientsVM = _clientService.GetByRouteID(new Guid(routeVM.DT_RowId));
-
+                Guid id = new Guid(deliveryID);
+                var deliveryVM = _deliveryService.GetById(id);
+                var clientsVM = _clientService.GetByRouteID(deliveryVM.RouteID);
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
-                var sales = _saleService.FindAllByDelivery(new Guid(deliveryVM.DT_RowId));
-                var clientsVMs = clientsVM.Select(c =>
-                                            {
-                                                c.SaleVM =
-                                                       ((from x in sales
-                                                         where x.ClientID.ToString() == c.DT_RowId
-                                                         select x).FirstOrDefault() ?? new SaleVM()); return c;
-                                            }).ToList();
 
-
-                var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(deliveryID).GroupBy(n => new { n.BoxTypeID, n })
-                                                  .Select(g => new
-                                                  {
-                                                      DT_RowId = g.Key.BoxTypeID,
-                                                      g.Key.n.BoxType.PictureID,
-                                                      BoxType = g.Key.n.BoxType.Name,
-                                                      TotalBox = g.Count(),
-                                                      TotalProductItems = g.Sum(x => x.TotalProductsItemsChildren)
-                                                  });
+                var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(id).GroupBy(n => n.BoxTypeID)
+                  .Select(g => new
+                  {
+                      DT_RowId = g.Key,
+                      BoxType = g.Select(x => x.BoxType.Name).FirstOrDefault(),
+                      PictureID = g.Select(x => x.BoxType.PictureID).FirstOrDefault(),
+                      TotalBox = g.Count(),
+                      TotalProductItems = g.Where(x=>x.ProductID != null).Sum(x => x.TotalProductsItemsChildren)
+                  }
+                  ).ToList();
 
                 return Json(new
                 {
@@ -242,6 +277,114 @@ namespace CtrlBox.UI.Web.Controllers
                     },
 
                     success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ActionResult MakeDelivery(Guid routeID, Guid clientID, Guid deliveryID)
+        {
+            var trackingsTypes = _trackingApplicationService.GetAllTrackingsTypesByPlace()
+                            .Select(trace => new SelectListItem
+                            {
+                                Value = trace.DT_RowId,
+                                Text = trace.Description
+                            }).ToList();
+            ViewData["TrackingTypes"] = trackingsTypes;
+
+
+            var client = _clientService.GetById(clientID);
+            ViewData["Client"] = client.Name;
+            ViewData["ClientID"] = clientID;
+            ViewData["DeliveryID"] = deliveryID;
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerMakeDelivery(Guid clientID, Guid deliveryID)
+        {
+            try
+            {
+                //Busca preço de produtos por clientes. Deve sempre existir preço para todos clientes
+                var clientsProductsVM = _productService.GetClientsProductsByClientID(clientID);
+                var boxesProductItemsVM = _boxService.GetBoxesBoxesProductItemsByDeliveryID(deliveryID);
+
+                var boxesProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
+                                                                  (key, group) => new {
+                                                                      DT_RowId = key,
+                                                                      Product = group.Select(x => x.ProductItem.Product).FirstOrDefault(),
+                                                                      NomeProduto = group.Select(x => x.ProductItem.Product.Name).FirstOrDefault(),
+                                                                      PictureID = group.Select(x => x.ProductItem.Product.PictureID).FirstOrDefault(),
+                                                                      TotalBox = group.Select(p => p.ProductItem).Count()
+                                                                  })
+                                                         .ToList();
+
+                return Json(new
+                {
+                    aaData = boxesProductItemsGroup.Select(x => new
+                    {
+                        DT_RowId = x.DT_RowId.ToString(),
+                        x.NomeProduto,
+                        Product = new
+                        {
+                            x.Product.Description,
+                            x.Product.Package,
+                            Capacity = $"{x.Product.Capacity} {x.Product.UnitMeasure}",
+                            Weight = $"{x.Product.Weight} {x.Product.MassUnitWeight}"
+                        },
+                        x.PictureID,
+                        ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
+                        x.TotalBox,
+                        Total = String.Format("{0:c}", 0)
+                    }),
+                    success = true,
+                    SaldoAnterior = 0,
+                    CaixasEmDebito = 0
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult PostAjaxHandlerMakeDelivery(string[] strMakeDeliveryJSON, Guid trackingTypeID)
+        {
+            try
+            {
+                JsonSerialize jsonS = new JsonSerialize();
+                var deliveryVM = jsonS.JsonDeserializeObject<OrderVM>(strMakeDeliveryJSON[0]);
+                _deliveryService.MakeDelivery(deliveryVM, trackingTypeID);
+
+                return Json(new
+                {
+                    success = true,
+                    Message = "OK"
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult PostAjaxHanblerFinishDelivery(Guid orderID, bool hasCrossDocking)
+        {
+            try
+            {
+              
+                _deliveryService.FinishDelivery(orderID, hasCrossDocking);
+
+                return Json(new
+                {
+                    success = true,
+                    Message = "OK"
                 });
             }
             catch (Exception ex)

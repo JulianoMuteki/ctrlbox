@@ -5,15 +5,15 @@ using System;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
-    public class DeliveryMap : EntityConfiguration<Delivery>
+    public class OrderMap : EntityConfiguration<Order>
     {
-        protected override void Initialize(EntityTypeBuilder<Delivery> builder)
+        protected override void Initialize(EntityTypeBuilder<Order> builder)
         {
             base.Initialize(builder);
 
-            builder.ToTable("Deliveries");
-            builder.Property(x => x.Id).HasColumnName("DeliveryID");
-            builder.HasKey(b => b.Id).HasName("DeliveryID");
+            builder.ToTable("Orders");
+            builder.Property(x => x.Id).HasColumnName("OrderID");
+            builder.HasKey(b => b.Id).HasName("OrderID");
 
             builder.Property(e => e.CreatedBy)
                 .IsRequired()

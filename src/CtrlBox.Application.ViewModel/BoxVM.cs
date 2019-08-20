@@ -23,7 +23,6 @@ namespace CtrlBox.Application.ViewModel
         public int RangeProductsItems { get; set; }
         public BoxBarcodeVM BoxBarcode { get; set; }
 
-        public ICollection<BoxVM> BoxesChildren { get; set; }
         public string[] ChildrenBoxesID { get; set; }
 
         private int _totalProductsItemsChildren;
@@ -37,21 +36,26 @@ namespace CtrlBox.Application.ViewModel
         }
 
 
+        public ICollection<BoxVM> BoxesChildren { get; set; }
         public ICollection<BoxProductItemVM> BoxesProductItems { get; set; }
+        public ICollection<OrderBoxVM> OrdersBoxes { get; set; }
         public ICollection<DeliveryBoxVM> DeliveriesBoxes { get; set; }
+        public ICollection<TrackingVM> Trackings { get; set; }
 
         public BoxVM()
             : base()
         {
+            this.DeliveriesBoxes = new HashSet<DeliveryBoxVM>();
+            this.Trackings = new HashSet<TrackingVM>();
             this.BoxesChildren = new HashSet<BoxVM>();
             this.BoxesProductItems = new HashSet<BoxProductItemVM>();
-            this.DeliveriesBoxes = new HashSet<DeliveryBoxVM>();
+            this.OrdersBoxes = new HashSet<OrderBoxVM>();
         }
 
         private int SumTotalProductItemsChildren()
         {
             if (BoxesProductItems.Count > 0)
-                _totalProductsItemsChildren = BoxesProductItems.Where(p => p.IsDelivered == false).Count();
+                _totalProductsItemsChildren = BoxesProductItems.Where(p => p.IsItemRemovedBox == false).Count();
             else
                 _totalProductsItemsChildren += this.BoxesChildren.Sum(x => x.TotalProductsItemsChildren);
 

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Repository
 {
-    public interface IDeliveryRepository : IGenericRepository<Delivery>
+    public interface IDeliveryRepository : IGenericRepository<Order>
     {
-        ICollection<DeliveryProduct> GetDeliveryProductsLoad(Guid deliveryID);
-        ICollection<Delivery> GetDeliveryRouteLoad();
-        ICollection<Delivery> GetDeliveryByUserWithRoute(Guid userId);
+        ICollection<DeliveryDetail> GetDeliveryProductsLoad(Guid deliveryID);
+        ICollection<Order> GetDeliveryRouteLoad();
+        ICollection<Order> GetDeliveryByUserWithRoute(Guid userId);
 
-        Delivery GetResumeDeliveryById(Guid deliveryID);
+        Order GetResumeDeliveryById(Guid deliveryID);
     }
 }

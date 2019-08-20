@@ -21,6 +21,8 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Status)
                 .HasConversion<int>();
 
+            builder.Property(e => e.EFlowStep)
+                .HasConversion<int>();
         }
     }
 }

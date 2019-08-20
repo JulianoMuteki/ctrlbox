@@ -30,12 +30,12 @@ namespace CtrlBox.Application.ViewModel
         }
 
         public ICollection<ClientProductValueVM> CustomersProductsValues { get; set; }
-        public ICollection<DeliveryProductVM> DeliveriesProducts { get; set; }
+        public ICollection<DeliveryDetailVM> DeliveriesProducts { get; set; }
         public ICollection<SaleProductVM> SalesProducts { get; set; }
 
         public ProductVM()
         {
-            this.DeliveriesProducts = new HashSet<DeliveryProductVM>();
+            this.DeliveriesProducts = new HashSet<DeliveryDetailVM>();
             this.SalesProducts = new HashSet<SaleProductVM>();
             this.CustomersProductsValues = new HashSet<ClientProductValueVM>();
         }

@@ -27,7 +27,8 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.HasOne(e => e.Client)
                 .WithMany(e=>e.Sales)
-                .HasForeignKey(s => s.ClientID);
+                .HasForeignKey(s => s.ClientID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

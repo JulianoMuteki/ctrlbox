@@ -27,6 +27,10 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.HasOpenDelivery)
                 .IsRequired();
+
+            builder.HasOne(x=>x.ClientOrigin)
+                    .WithMany(x=>x.Routes)
+                    .HasForeignKey(s => s.ClientOriginID);
         }
     }
 }

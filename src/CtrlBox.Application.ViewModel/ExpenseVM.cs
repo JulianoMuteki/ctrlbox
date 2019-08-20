@@ -12,6 +12,6 @@ namespace CtrlBox.Application.ViewModel
 
         public string Description { get; set; }
 
-        public virtual DeliveryVM Delivery { get; set; }
+        public virtual OrderVM Delivery { get; set; }
     }
 }

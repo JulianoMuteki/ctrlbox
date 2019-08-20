@@ -19,16 +19,19 @@ namespace CtrlBox.Infra.Context
         public DbSet<ClientProductValue> CustomersProductsValues { get; set; }
 
         public DbSet<Expense> Expenses { get; set; }
-        public DbSet<Delivery> Deliveries { get; set; }
-        public DbSet<DeliveryProduct> DeliveriesProducts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderBox> OrdersBoxes { get; set; }
+        public DbSet<OrderProductItem> OrderProductItems { get; set; }
+
+        public DbSet<DeliveryDetail> DeliveriesDetails { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleProduct> SalesProducts { get; set; }
         public DbSet<RouteClient> RoutesClients { get; set; }
 
-        public DbSet<BoxTracking> Traceabilities { get; set; }
-        public DbSet<TrackingType> TracesTypes { get; set; }
-        public DbSet<BoxTrackingClient> TraceabilitiesClients { get; set; }
+        public DbSet<Tracking> Trackings { get; set; }
+        public DbSet<TrackingType> TrackingsTypes { get; set; }
+        public DbSet<TrackingClient> TrackingsClients { get; set; }
 
         public DbSet<OptiontType> OptiontsTypes { get; set; }
         public DbSet<ClientOptionType> ClientsOptionsTypes { get; set; }
@@ -39,7 +42,6 @@ namespace CtrlBox.Infra.Context
         public DbSet<BoxProductItem> BoxesProductItems { get; set; }
         public DbSet<BoxBarcode> BoxesCodes { get; set; }
 
-        public DbSet<DeliveryBox> DeliveriesBoxes { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
@@ -72,28 +74,32 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new ClientMap());
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new ClientProductMap());
+            modelBuilder.ApplyConfiguration(new ProductItemMap());
 
             modelBuilder.ApplyConfiguration(new ExpenseMap());
-            modelBuilder.ApplyConfiguration(new DeliveryMap());
-            modelBuilder.ApplyConfiguration(new DeliveryProductMap());
+            modelBuilder.ApplyConfiguration(new OrderMap());
+            modelBuilder.ApplyConfiguration(new OrderBoxMap());
+            modelBuilder.ApplyConfiguration(new OrderProductItemMap());
+
+            modelBuilder.ApplyConfiguration(new DeliveryDetailMap());
+            modelBuilder.ApplyConfiguration(new DeliveryBoxMap());
+
             modelBuilder.ApplyConfiguration(new RouteClientMap());
             modelBuilder.ApplyConfiguration(new SaleProductMap());
             modelBuilder.ApplyConfiguration(new RouteMap());
             modelBuilder.ApplyConfiguration(new SaleMap());
 
             modelBuilder.ApplyConfiguration(new TrackingTypeMap());
-            modelBuilder.ApplyConfiguration(new BoxTrackingMap());
-            modelBuilder.ApplyConfiguration(new BoxTrackingClientMap());
+            modelBuilder.ApplyConfiguration(new TrackingMap());
+            modelBuilder.ApplyConfiguration(new TrackingClientMap());
 
             modelBuilder.ApplyConfiguration(new OptiontTypeMap());
             modelBuilder.ApplyConfiguration(new ClientOptionTypeMap());
 
             modelBuilder.ApplyConfiguration(new BoxBarcodeMap());
             modelBuilder.ApplyConfiguration(new BoxMap());
-            modelBuilder.ApplyConfiguration(new ProductItemMap());
             modelBuilder.ApplyConfiguration(new BoxTypeMap());
             modelBuilder.ApplyConfiguration(new BoxProductItemMap());
-            modelBuilder.ApplyConfiguration(new DeliveryBoxMap());
             modelBuilder.ApplyConfiguration(new PictureMap());
 
             modelBuilder.ApplyConfiguration(new PaymentMap());

@@ -4,11 +4,12 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Application
 {
-    public interface IBoxTrackingApplicationService : IApplicationServiceBase<BoxTrackingVM>
+    public interface ITrackingApplicationService : IApplicationServiceBase<TrackingVM>
     {
         void AddTraceType(TrackingTypeVM entity);
         ICollection<TrackingTypeVM> GetAllTrackingsTypes();
-        ICollection<BoxTrackingVM> GetByBoxID(Guid boxID);
+        ICollection<TrackingVM> GetByBoxID(Guid boxID);
         TrackingTypeVM GetTrackTypeById(Guid guid);
+        ICollection<TrackingTypeVM> GetAllTrackingsTypesByPlace();
     }
 }

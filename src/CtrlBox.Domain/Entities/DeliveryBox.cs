@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class DeliveryBox : ValueObject<DeliveryBox>
+  public  class DeliveryBox: ValueObject<DeliveryBox>
     {
         public Guid BoxID { get; set; }
-        public Guid DeliveryID { get; set; }
-
-        public Delivery Delivery { get; set; }
         public Box Box { get; set; }
+
+        public Guid DeliveryDetailID { get; set; }
+        public DeliveryDetail DeliveryDetail { get; set; }
 
         public DeliveryBox()
         {

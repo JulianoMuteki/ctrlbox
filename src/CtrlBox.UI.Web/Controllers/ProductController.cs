@@ -15,11 +15,13 @@ namespace CtrlBox.UI.Web.Controllers
     {
         private readonly IClientApplicationService _clientService;
         private readonly IProductApplicationService _productService;
+        private readonly ITrackingApplicationService _trackingService;
 
-        public ProductController(IClientApplicationService clientService, IProductApplicationService productService)
+        public ProductController(IClientApplicationService clientService, IProductApplicationService productService, ITrackingApplicationService trackingService)
         {
             _clientService = clientService;
             _productService = productService;
+            _trackingService = trackingService;
         }
 
         #region Product
@@ -147,8 +149,66 @@ namespace CtrlBox.UI.Web.Controllers
 
         #region ProductStock
         public ActionResult ProductStock()
-        {         
+        {
+            var clients = _clientService.GetAll()
+                      .Select(client => new SelectListItem
+                      {
+                          Value = client.DT_RowId,
+                          Text = client.Name
+                      }).ToList();
+            ViewData["Clients"] = clients;
+
+            var products = _productService.GetAll()
+                            .Select(prod => new SelectListItem
+                            {
+                                Value = prod.DT_RowId,
+                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
+                            }).ToList();
+            ViewData["Products"] = products;
+
+            var trackingsTypes = _trackingService.GetAllTrackingsTypesByPlace()
+                .Select(trace => new SelectListItem
+                {
+                    Value = trace.DT_RowId,
+                    Text = trace.Description
+                }).ToList();
+            ViewData["TrackingTypes"] = trackingsTypes;
+
             return View();
+        }
+
+        public ActionResult GetTotalProductItemByProductID(Guid productID)
+        {
+            try
+            {
+                var totalProductsItems = _productService.GetTotalProductItemByProductID(productID);
+                return Json(new
+                {
+                    aaData = totalProductsItems,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult PostAjaxHandlerAddStockProduct(Guid productID, Guid clientID, Guid trackingTypeID, int quantity)
+        {
+            try
+            {
+                _productService.AddStockProduct(productID, clientID, trackingTypeID, quantity);
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
 
@@ -208,8 +268,5 @@ namespace CtrlBox.UI.Web.Controllers
                 Message = "OK"
             });
         }
-
-
-
     }
 }

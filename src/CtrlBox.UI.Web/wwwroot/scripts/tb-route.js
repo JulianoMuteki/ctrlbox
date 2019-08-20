@@ -70,7 +70,7 @@
 
             function getElementRelation(id) {
                 var url = '/Route/ClientRelation?linhaID=' + id;
-                return '<a href="' + url +'" class="btn mini"><i class="icon-link"></i> Relation clients</a>';
+                return '<a href="' + url + '" class="btn mini"><i class="icon-link"></i> Relation destination clients</a>';
             }
 
             function cancelEditRow(oTable, nRow) {

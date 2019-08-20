@@ -23,23 +23,22 @@ namespace CtrlBox.Application
             _mapper = mapper;
         }
 
-        public DeliveryVM Add(DeliveryVM entity)
+        public OrderVM Add(OrderVM entity)
         {
             try
             {
-                var delivery = _mapper.Map<Delivery>(entity);
+                _unitOfWork.SetTrackAll();
+                var delivery = _mapper.Map<Order>(entity);
 
                 foreach (BoxTypeVM boxType in entity.BoxesTypes)
                 {
                     var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
 
-                    delivery.ShippingBoxes(boxesReadyToDelivery);
+                    delivery.CreateOrdersBoxes(boxesReadyToDelivery);
+                    _unitOfWork.Repository<Box>().UpdateRange(boxesReadyToDelivery);
                 }
-                var lista = delivery.BoxesProductItems.ToList();
-                delivery.BoxesProductItems.Clear();
-                _unitOfWork.Repository<Delivery>().Add(delivery);
-                _unitOfWork.Repository<BoxProductItem>().UpdateRange(lista);
 
+                _unitOfWork.Repository<Order>().Add(delivery);
                 _unitOfWork.CommitSync();
 
                 return entity;
@@ -54,7 +53,7 @@ namespace CtrlBox.Application
             }
         }
 
-        public Task<DeliveryVM> AddAsync(DeliveryVM entity)
+        public Task<OrderVM> AddAsync(OrderVM entity)
         {
             throw new NotImplementedException();
         }
@@ -73,10 +72,10 @@ namespace CtrlBox.Application
         {
             try
             {
-                var delivery = _unitOfWork.Repository<Delivery>().GetById(deliveryID);
+                var delivery = _unitOfWork.Repository<Order>().GetById(deliveryID);
                 delivery.FinalizeDelivery();
-                _unitOfWork.Repository<Delivery>().Update(delivery);
-               _unitOfWork.CommitSync();
+                _unitOfWork.Repository<Order>().Update(delivery);
+                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -88,13 +87,43 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<DeliveryVM> GetAll()
+        public void FinishDelivery(Guid orderID, bool hasCrossDocking)
+        {
+            try
+            {
+                _unitOfWork.SetTrackAll();
+                var order = _unitOfWork.Repository<Order>().GetById(orderID);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(orderID);
+
+                foreach (var box in boxes)
+                {
+                    box.FinishDelivery(hasCrossDocking);
+                }
+                order.Close();
+
+                _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                _unitOfWork.Repository<Order>().Update(order);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                _unitOfWork.Rollback();
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.FinishDelivery), ex);
+            }
+        }
+
+        public ICollection<OrderVM> GetAll()
         {
             try
             {
                 var deliveries = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryRouteLoad();
 
-                var deliveriesVMs = _mapper.Map<IList<DeliveryVM>>(deliveries);
+                var deliveriesVMs = _mapper.Map<IList<OrderVM>>(deliveries);
                 return deliveriesVMs;
             }
             catch (CustomException exc)
@@ -107,17 +136,17 @@ namespace CtrlBox.Application
             }
         }
 
-        public Task<ICollection<DeliveryVM>> GetAllAsync()
+        public Task<ICollection<OrderVM>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public DeliveryVM GetById(Guid id)
+        public OrderVM GetById(Guid id)
         {
             try
             {
-                var delivery = _unitOfWork.Repository<Delivery>().GetById(id);
-                var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
+                var delivery = _unitOfWork.Repository<Order>().GetById(id);
+                var deliveryVM = _mapper.Map<OrderVM>(delivery);
                 return deliveryVM;
             }
             catch (CustomException exc)
@@ -130,18 +159,18 @@ namespace CtrlBox.Application
             }
         }
 
-        public Task<DeliveryVM> GetByIdAsync(Guid id)
+        public Task<OrderVM> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<DeliveryVM> GetByUserId(Guid userId)
+        public ICollection<OrderVM> GetByUserId(Guid userId)
         {
             try
             {
                 var delivery = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryByUserWithRoute(userId);
 
-                var deliveriesVM = _mapper.Map<IList<DeliveryVM>>(delivery);
+                var deliveriesVM = _mapper.Map<IList<OrderVM>>(delivery);
                 return deliveriesVM;
             }
             catch (CustomException exc)
@@ -154,14 +183,14 @@ namespace CtrlBox.Application
             }
         }
 
-        public DeliveryVM GetResumeDeliveryById(Guid deliveryID)
+        public OrderVM GetResumeDeliveryById(Guid deliveryID)
         {
             {
                 try
                 {
                     var delivery = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetResumeDeliveryById(deliveryID);
 
-                    var deliveryVM = _mapper.Map<DeliveryVM>(delivery);
+                    var deliveryVM = _mapper.Map<OrderVM>(delivery);
                     return deliveryVM;
                 }
                 catch (CustomException exc)
@@ -175,12 +204,47 @@ namespace CtrlBox.Application
             }
         }
 
-        public DeliveryVM Update(DeliveryVM updated)
+        public void MakeDelivery(OrderVM orderVM, Guid trackingTypeID)
+        {
+            try
+            {
+                var order = _mapper.Map<Order>(orderVM);
+                _unitOfWork.SetTrackAll();
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(order.Id);
+
+                foreach (var deliveryDetail in order.DeliveriesDetails)
+                {
+                    foreach (var box in boxes)
+                    {
+                        deliveryDetail.MakeDeliveryBox(box);
+
+                        box.AddTracking(trackingTypeID, deliveryDetail.ClientID);
+                        box.AddTrackingProductItems(trackingTypeID, deliveryDetail.ClientID);
+                    }
+                }
+
+                _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                _unitOfWork.Repository<DeliveryDetail>().AddRange(order.DeliveriesDetails);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                _unitOfWork.Rollback();
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                throw CustomException.Create<SaleApplicationService>("Unexpected error fetching add sale", nameof(this.MakeDelivery), ex);
+            }
+        }
+
+        public OrderVM Update(OrderVM updated)
         {
             throw new NotImplementedException();
         }
 
-        public Task<DeliveryVM> UpdateAsync(DeliveryVM updated)
+        public Task<OrderVM> UpdateAsync(OrderVM updated)
         {
             throw new NotImplementedException();
         }

@@ -20,7 +20,7 @@ namespace CtrlBox.Infra.Context
                 var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
                 SeedData(userManager, roleManager);
-                SeedData(serviceProvider);
+                //(serviceProvider);
                // SeedDataBox(serviceProvider);
             }
             catch (Exception ex)

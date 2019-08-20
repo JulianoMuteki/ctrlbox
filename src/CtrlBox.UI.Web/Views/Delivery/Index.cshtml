@@ -26,7 +26,7 @@
                             "sType": "html",
                             "mRender": function (data, type, row) {
                                 if (type === 'display') {
-                                    var url = '@Url.Action("ExecuteDelivery", "Delivery")?entregaID=' + data.DT_RowId + '&linhaID=' + data.RouteID;
+                                    var url = '@Url.Action("ViewDelivery", "Delivery")?deliveryID=' + data.DT_RowId + '&routeID=' + data.RouteID;
                                     return getElementRelation(url);
                                 }
                                 return data;

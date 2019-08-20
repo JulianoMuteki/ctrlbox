@@ -107,11 +107,12 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<BoxVM> BoxesParents()
+        public ICollection<BoxVM> GetBoxesStockParents(Guid routeID)
         {
             try
             {
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsWithBoxType();
+                var route = _unitOfWork.Repository<Route>().GetById(routeID);
+                var boxes = _unitOfWork.RepositoryCustom<IProductRepository>().GetBoxesInStockByClientID(route.ClientOriginID);
                 var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
                 return boxesVMs;
             }

@@ -42,8 +42,20 @@ var AppCtrlBox = function () {
         });
     }
 
-    function putFinalizeDelivery(deliveryID) {
-
+    function putFinalizeDelivery(orderID, hasCrossDocking) {
+        $.ajax({
+            url: 'Delivery/PostAjaxHanblerFinishDelivery',
+            type: 'POST',
+            dataType: 'json',
+            data: { orderID: orderID, hasCrossDocking },
+            "success": function (json) {
+                if (json.success) {
+                    alert('Completo');
+                    window.location.reload(true);
+                }
+            },
+            "error": handleAjaxError
+        });    
     }
     return {
         callModalAddress: function (addressID) {
@@ -52,7 +64,8 @@ var AppCtrlBox = function () {
 
         callModalFinalizeDelivery: function (deliveryID) {
             $("#btnCloseDelivery").val(deliveryID);
-
+            $("#btnCrossDocking").val(deliveryID);
+            
             $.ajax({
                 url: 'Delivery/GetTableAjaxHandlerResumeDelivery',
                 type: 'GET',
@@ -71,21 +84,13 @@ var AppCtrlBox = function () {
             $('#modalFinalizeDelivery').modal('show');
         },
         putFinalizeDelivery: function (button) {
-
             var id = $(button).val();
-            $.ajax({
-                url: 'Delivery/PutAjaxHandlerFinalizeDelivery',
-                type: 'POST',
-                dataType: 'json',
-                data: { deliveryID: id },
-                "success": function (json) {
-                    if (!json.NotAuthorized) {
-                        alert('Completo');
-                        window.location.reload(false);
-                    }
-                },
-                "error": handleAjaxError
-            });
+            putFinalizeDelivery(id, false)
+        },
+        putCrossDockingFinalize: function (button) {
+            var id = $(button).val();
+            putFinalizeDelivery(id, true)
         }
+
     };
 }();

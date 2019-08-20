@@ -1,7 +1,9 @@
-﻿@{
-    ViewData["Title"] = "ExecuteDelivery";
+﻿
+@{
+    ViewData["Title"] = "ViewDelivery";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section scriptsViews
     {
     <partial name="~/Views/PartialsSections/_ScriptsTable.cshtml" />
@@ -10,45 +12,16 @@
 <partial name="~/Views/PartialsSections/_ViewModalAddress.cshtml" />
 
 <script type="text/javascript">
-            @{ var entregaID = ViewData["entregaID"];
-                var linhaID = ViewData["linhaID"];
+            @{ var deliveryID = ViewData["DeliveryID"];
+                var routeID = ViewData["RouteID"];
             }
-    function handleAjaxError(xhr, textStatus, error) {
 
-        $('#example').dataTable({
-            "bDestroy": true,
-            "bProcessing": false
-        });
-
-        if (textStatus === 'timeout') {
-            alert('The server took too long to send the data.');
-        }
-        else {
-            var obj = $.parseJSON(xhr.responseText);
-            alert(obj.Message);
-            alert("É necessário atualizar a página");
-        }
-
-        return false;
-    }
-
-    Number.prototype.formatMoney = function (places, symbol, thousand, decimal) {
-        places = !isNaN(places = Math.abs(places)) ? places : 2;
-        symbol = symbol !== undefined ? symbol : "R$ ";
-        thousand = thousand || ".";
-        decimal = decimal || ",";
-        var number = this,
-            negative = number < 0 ? "-" : "",
-            i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
-            j = (j = i.length) > 3 ? j % 3 : 0;
-        return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
-    };
 
     function loadTable() {
 
-         var url = '@Url.Content("~/Delivery/AjaxHandlerExecutarEntrega")?entregaID=' + '@entregaID';
+         var url = '@Url.Content("~/Delivery/GetAjaxHandlerViewDelivery")?deliveryID=' + '@deliveryID';
 
-        var oTable = $('#tbClientes').dataTable({
+        var oTable = $('#tbClients').dataTable({
             "sPaginationType": "full_numbers",
             "sAjaxSource": url,
             "bProcessing": true,
@@ -82,15 +55,32 @@
                         "sClass": "calc",
                         "mRender": function (data, type, row) {
                             if (type === 'display') {
-                                var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@linhaID' + '&entregaID=' + '@entregaID';
+                                var url = '@Url.Action("Index", "Sale")?clienteID=' + row.DT_RowId + '&linhaID=' + '@routeID' + '&entregaID=' + '@deliveryID';
                                 var link = '<a href="' + url + '" class="btn mini"><i class="icon-shopping-cart"></i> Sale</a>';
 
-                                if (row.SaleVM !== null && row.SaleVM.IsFinished) {
+                                if (row.Sales.length > 0 && row.Sales[0].IsFinished) {
                                     link = '<a href="' + url + '" class="btn mini"><i class="icon-eye-open"></i> View</a>';
-                                    url = '@Url.Action("Invoice", "Sale")?saleID=' + row.SaleVM.DT_RowId
+                                    url = '@Url.Action("Invoice", "Sale")?saleID=' + row.Sales[0].DT_RowId
                                     link += '<a href="' + url + '" class="btn mini" target="_blank"><i class="icon-print"></i> Invoice</a>';
                                 }
 
+                                return link;
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "mData": null,
+                        "sType": "html",
+                        "bSortable": false,
+                        "sClass": "calc",
+                        "mRender": function (data, type, row) {
+                            if (type === 'display') {
+                                var url2 = '@Url.Action("MakeDelivery", "Delivery")?clientID=' + row.DT_RowId + '&deliveryID=' + '@deliveryID';
+                                var link = '<a href="' + url2 + '" class="btn mini"><i class="icon-share"></i> Make delivery</a>';
+                                if (row.DeliveriesDetails.length > 0) {
+                                    link = '<span>Delivered</span>'
+                                }
                                 return link;
                             }
                             return data;
@@ -105,7 +95,7 @@
                                 var status = 'warning';
                                 var texto = "Pendente";
 
-                                if (row.SaleVM.IsFinished) {
+                                if (row.Sales.length > 0 && row.Sales[0].IsFinished) {
                                     status = 'success';
                                     texto = "Entregue"
                                 }
@@ -219,7 +209,7 @@
                 url: '@Url.Content("~/Delivery/SubmitDespesa")',
                 type: 'POST',
                 dataType: 'json',
-                data: { entregaID: '@entregaID', descricao : desc, valor : val },
+                data: { entregaID: '@deliveryID', descricao : desc, valor : val },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
                         alert('Complete');
@@ -325,17 +315,18 @@
                 <!-- BEGIN SAMPLE TABLE PORTLET-->
                 <div class="portlet box red">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-cogs"></i>Clientes</div>
+                        <div class="caption"><i class="icon-cogs"></i>Clients</div>
                     </div>
                     <div class="portlet-body">
-                        <table id="tbClientes" class="table table-hover">
+                        <table id="tbClients" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
                                     <th>Endereço</th>
                                     <th class="hidden-480">Telefone</th>
                                     <th>Contato</th>
-                                    <th>Vender</th>
+                                    <th>Sale</th>
+                                    <th>Delivery</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -387,8 +378,7 @@
                                     <th>Product Items</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>

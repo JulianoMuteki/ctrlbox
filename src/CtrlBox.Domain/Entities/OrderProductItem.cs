@@ -5,15 +5,15 @@ using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class BoxTrackingClient : ValueObject<BoxTrackingClient>
+    public class OrderProductItem : ValueObject<OrderProductItem>
     {
-        public Guid BoxTrackingID { get; set; }
-        public BoxTracking BoxTracking { get; set; }
+        public Guid ProductItemID { get; set; }
+        public ProductItem ProductItem { get; set; }
 
-        public Guid ClientID { get; set; }
-        public Client Client { get; set; }
+        public Guid OrderID { get; set; }
+        public Order Order { get; set; }
 
-        public BoxTrackingClient()
+        public OrderProductItem()
         {
 
         }

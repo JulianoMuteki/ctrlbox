@@ -8,23 +8,21 @@ namespace CtrlBox.Domain.Entities
     public class Sale : EntityBase
     {
         public Guid ClientID { get; set; }
-        public Guid DeliveryID { get; set; }
+        public Guid OrderID { get; set; }
 
         public decimal ReceivedValue { get; set; }
         public decimal ForwardValue { get; set; }
         public bool IsFinished { get; set; }
 
         public Client   Client { get; set; }
-        public Delivery Delivery { get; set; }
+        public Order Order { get; set; }
         public Payment Payment { get; set; }
 
-        public ICollection<DeliveryProduct> DeliveriesProducts { get; set; }
         public ICollection<SaleProduct> SalesProducts { get; set; }
 
         public Sale()
         {
             this.SalesProducts = new HashSet<SaleProduct>();
-            this.DeliveriesProducts = new HashSet<DeliveryProduct>();
 
             Init();
         }

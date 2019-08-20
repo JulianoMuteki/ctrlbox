@@ -1,6 +1,7 @@
 ﻿using CtrlBox.CrossCutting;
 using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace CtrlBox.Domain.Entities
     {
         public string Description { get; set; }
         public EBoxStatus Status { get; set; }
+        public EFlowStep EFlowStep { get; set; }
 
         public int PorcentFull { get; set; }
 
@@ -27,25 +29,51 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Box> BoxesChildren { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
+        public ICollection<OrderBox> OrdersBoxes { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
-        public ICollection<BoxTracking> Traceabilities { get; set; }
+        public ICollection<Tracking> Trackings { get; set; }
 
-        public Box()
+        internal Box()
             : base()
         {
-            this.Traceabilities = new HashSet<BoxTracking>();
+            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
+            this.Trackings = new HashSet<Tracking>();
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
-            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
+            this.OrdersBoxes = new HashSet<OrderBox>();
+        }
+
+        public static Box FactoryCreate(Guid boxTypeID, BoxType boxType, int i, Guid? productID = null)
+        {
+            Box box = new Box();
+            box.InicializateProperties();
+            box.EFlowStep = EFlowStep.InStock;
+            box.BoxTypeID = boxTypeID;
+            box.Description = $"Box nº: {i} - {boxType.Name}";
+            box.BoxType = boxType;
+
+            if (productID != null && productID.Value != Guid.Empty)
+                box.ProductID = productID;
+
+            if (!box.ComponentValidator.Validate(box, new BoxValidator()))
+            {
+                throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
+            }
+            return box;
         }
 
         public void Destructor()
         {
             this.BoxType = null;
-            this.Traceabilities = new HashSet<BoxTracking>();
+            this.Trackings = new HashSet<Tracking>();
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
-            this.DeliveriesBoxes = new HashSet<DeliveryBox>();
+            this.OrdersBoxes = new HashSet<OrderBox>();
+        }
+
+        internal void SetFlowOrder()
+        {
+            this.EFlowStep = EFlowStep.Order;
         }
 
         public void SetBoxType(BoxType boxType)
@@ -53,18 +81,20 @@ namespace CtrlBox.Domain.Entities
             this.BoxType = boxType;
         }
 
-        public void SetBarcode(int i)
-        {
-            this.BoxBarcode = new BoxBarcode();
-        }
-
         public void Init()
         {
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                this.BoxBarcode = new BoxBarcode();
+                InicializateProperties();
             }
+        }
+
+        public void InicializateProperties()
+        {
+            this.BoxBarcode = new BoxBarcode();
+            this.BoxBarcode.BoxID = this.Id;
+            this.EFlowStep = EFlowStep.Create;
         }
 
         public void LoadProductItems(ICollection<ProductItem> productItems)
@@ -89,16 +119,12 @@ namespace CtrlBox.Domain.Entities
 
         public int CountQuantityProductItems { get; set; }
 
-        public void DoDelivery(Guid productID, int quantity)
+        public void DoDelivery(DeliveryDetail deliveryDetail, int quantity)
         {
-            if (!this.BoxType.IsReturnable)
+            deliveryDetail.AddDeliveryBox(this.Id);
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
-                this.Status = EBoxStatus.Delivered;
-                this.IsDisable = true;
-            }
-            else if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
-            {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == productID && x.IsDelivered == false).Take(quantity).ToList();
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == deliveryDetail.ProductID).Take(quantity).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {
@@ -117,7 +143,7 @@ namespace CtrlBox.Domain.Entities
                     if (this.CountQuantityProductItems == 0)
                         break;
 
-                    boxChild.DoDelivery(productID, this.CountQuantityProductItems);
+                    boxChild.DoDelivery(deliveryDetail, this.CountQuantityProductItems);
                 }
 
                 if (this.BoxParentID != null && this.BoxParentID != Guid.Empty)
@@ -125,11 +151,18 @@ namespace CtrlBox.Domain.Entities
 
                 LoadFullBoxCompletedChildrem();
             }
+
+            SetFlowDelivered();
+        }
+
+        private void SetFlowDelivered()
+        {
+            this.EFlowStep = EFlowStep.Delivery;
         }
 
         private void LoadFullBoxCompletedProductItems()
         {
-            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x => x.IsDelivered == false).ToList().Count) / this.BoxType.MaxProductsItems);
+            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).ToList().Count) / this.BoxType.MaxProductsItems);
             SetBoxStatus();
         }
 
@@ -145,6 +178,11 @@ namespace CtrlBox.Domain.Entities
         {
             this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesChildren.Count) / this.BoxType.MaxProductsItems);
             this.DateModified = DateTime.Now;
+
+            if (this.BoxesChildren.Count > 0 && this.PorcentFull < 100)
+                this.Status = EBoxStatus.Loading;
+            else if (this.PorcentFull == 100)
+                this.Status = EBoxStatus.Full;
         }
 
         public List<Box> AddChildren(List<Box> boxesChildren)
@@ -155,5 +193,74 @@ namespace CtrlBox.Domain.Entities
             return this.BoxesChildren.ToList();
         }
 
+        public void AddTracking(Guid trackingTypeID, Guid clientID)
+        {
+            Tracking tracking = new Tracking()
+            {
+                TrackingTypeID = trackingTypeID,
+                BoxID = this.Id
+            };
+
+            if (clientID != null && clientID != Guid.Empty)
+            {
+                tracking.TrackingsClients.Add(new TrackingClient()
+                {
+                    ClientID = clientID,
+                    TrackingID = tracking.Id
+                });
+            }
+
+            this.Trackings.Add(tracking);
+        }
+
+        public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)
+        {
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            {
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
+
+                foreach (var boxProductItem in boxProductsItems)
+                {
+                    boxProductItem.AddTrackingProductItem(trackingTypeID, clientID);
+                }
+            }
+            else
+            {
+                foreach (var boxChild in this.BoxesChildren)
+                {
+                    boxChild.AddTrackingProductItems(trackingTypeID, clientID);
+                }
+            }
+        }
+
+        public void FinishDelivery(bool hasCrossDocking)
+        {
+            SetFlowDelivery(hasCrossDocking);
+
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            {
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
+
+                foreach (var boxProductItem in boxProductsItems)
+                {
+                    boxProductItem.FinishDelivery(hasCrossDocking);
+                }
+            }
+            else
+            {
+                foreach (var boxChild in this.BoxesChildren)
+                {
+                    boxChild.FinishDelivery(hasCrossDocking);
+                }
+            }
+        }
+
+        private void SetFlowDelivery(bool hasCrossDocking)
+        {
+            if (hasCrossDocking)
+                this.EFlowStep = EFlowStep.CrossDocking;
+            else
+                this.EFlowStep = EFlowStep.Delivery;
+        }
     }
 }

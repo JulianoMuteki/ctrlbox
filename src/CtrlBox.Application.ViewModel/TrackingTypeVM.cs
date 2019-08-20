@@ -11,6 +11,6 @@ namespace CtrlBox.Application.ViewModel
         public Guid? PictureID { get; set; }
         public PictureVM Picture { get; set; }
 
-        public ICollection<BoxTrackingVM> BoxesTrackings { get; set; }
+        public ICollection<TrackingVM> Trackings { get; set; }
     }
 }

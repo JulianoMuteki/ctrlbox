@@ -1,6 +1,6 @@
 ﻿var _clientID = '';
 var _routeID = '';
-var _deliveryID = '';
+var _orderID = '';
 
 var SaleComponents = function () {
     var sale = {};
@@ -59,7 +59,7 @@ var SaleComponents = function () {
         $(".btnSubmit").click(function () {
 
             sale.ClientID = _clientID;
-            sale.DeliveryID = _deliveryID;
+            sale.OrderID = _orderID;
 
             var tbSalesProducts = [];
             $.each(oTableSale.fnGetNodes(), function (index, value) {
@@ -160,7 +160,7 @@ var SaleComponents = function () {
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "clienteID", "value": _clientID });
                 aoData.push({ "name": "linhaID", "value": _routeID });
-                aoData.push({ "name": "deliveryID", "value": _deliveryID });
+                aoData.push({ "name": "orderID", "value": _orderID });
             },
             "bProcessing": true,
             "bDestroy": true,
@@ -384,10 +384,10 @@ var SaleComponents = function () {
 
     return {
         //main function to initiate the module
-        init: function (clientID, routeID, deliveryID) {
+        init: function (clientID, routeID, orderID) {
             _clientID = clientID;
             _routeID = routeID;
-            _deliveryID = deliveryID;
+            _orderID = orderID;
             initPage();
         },
         readOnly: function (totalValueSale, isCashPayment) {

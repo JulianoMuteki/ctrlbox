@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -34,9 +36,19 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
 
-        public ActionResult Create()
+        public ActionResult Create(Guid routeID)
         {
-            return View();
+            var routeVM = _routeApplicationService.GetById(routeID);
+
+            var clients = _clientApplicationService.GetAll()
+                                        .Select(client => new SelectListItem
+                                        {
+                                            Value = client.DT_RowId,
+                                            Text = client.Name
+                                        }).ToList();
+            ViewData["Clients"] = clients;
+
+            return View(routeVM);
         }
 
         [HttpPost]

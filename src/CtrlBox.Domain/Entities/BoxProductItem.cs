@@ -12,10 +12,7 @@ namespace CtrlBox.Domain.Entities
         public Box Box { get; set; }
         public ProductItem ProductItem { get; set; }
 
-        public bool IsDelivered { get; set; }
-
-        public Guid? DeliveryID { get; set; }
-        public Delivery Delivery { get; set; }
+        public bool IsItemRemovedBox { get; set; }
 
         public BoxProductItem()
         {
@@ -29,8 +26,17 @@ namespace CtrlBox.Domain.Entities
 
         public void Deliver()
         {
-            this.IsDelivered = true;
             this.ProductItem.Deliver();
+        }
+
+        public void AddTrackingProductItem(Guid trackingTypeID, Guid clientID)
+        {
+            this.ProductItem.AddTracking(trackingTypeID, clientID);
+        }
+
+        internal void FinishDelivery(bool hasCrossDocking)
+        {
+            this.ProductItem.FinishDelivery(hasCrossDocking);
         }
     }
 }

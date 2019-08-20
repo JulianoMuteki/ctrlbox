@@ -6,6 +6,7 @@ using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Domain.Interfaces.Repository;
+using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,13 +76,13 @@ namespace CtrlBox.Application
             try
             {
                 var product = _mapper.Map<Product>(entity);
-                if(entity.Picture != null)
+                if (entity.Picture != null)
                 {
                     var picture = _mapper.Map<Picture>(entity.Picture);
                     _unitOfWork.Repository<Picture>().Add(picture);
                 }
                 _unitOfWork.Repository<Product>().Add(product);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
 
                 return entity;
             }
@@ -102,7 +103,7 @@ namespace CtrlBox.Application
                 var product = _mapper.Map<Product>(entity);
 
                 _unitOfWork.Repository<Product>().AddAsync(product);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
 
                 return Task.FromResult(entity);
             }
@@ -127,7 +128,7 @@ namespace CtrlBox.Application
                 {
                     productUpdate.UpdateData(product);
                     _unitOfWork.Repository<Product>().Update(productUpdate);
-                   _unitOfWork.CommitSync();
+                    _unitOfWork.CommitSync();
                 }
                 return updated;
             }
@@ -156,7 +157,7 @@ namespace CtrlBox.Application
                 {
 
                     _unitOfWork.Repository<Product>().Delete(product);
-                   _unitOfWork.CommitSync();
+                    _unitOfWork.CommitSync();
                 }
             }
             catch (CustomException exc)
@@ -180,7 +181,7 @@ namespace CtrlBox.Application
             {
                 var clientsProducts = _mapper.Map<IList<ClientProductValue>>(clientsProductsVMs);
                 _unitOfWork.Repository<ClientProductValue>().AddRange(clientsProducts);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
 
                 return clientsProductsVMs;
             }
@@ -194,13 +195,13 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<DeliveryProductVM> GetDeliveryProducts(Guid deliveryID)
+        public ICollection<DeliveryDetailVM> GetDeliveryProducts(Guid deliveryID)
         {
             try
             {
                 var deliveries = _unitOfWork.RepositoryCustom<IDeliveryRepository>().GetDeliveryProductsLoad(deliveryID);
 
-                var deliveriesVMs = _mapper.Map<IList<DeliveryProductVM>>(deliveries);
+                var deliveriesVMs = _mapper.Map<IList<DeliveryDetailVM>>(deliveries);
                 return deliveriesVMs;
             }
             catch (CustomException exc)
@@ -243,11 +244,12 @@ namespace CtrlBox.Application
                     ProductItem productItem = new ProductItem();
                     productItem.Barcode = $"{i}{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14);
                     productItem.ProductID = productID;
+                    productItem.EFlowStep = EFlowStep.Available;
                     productsItems.Add(productItem);
                 }
 
                 _unitOfWork.Repository<ProductItem>().AddRange(productsItems);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -266,7 +268,7 @@ namespace CtrlBox.Application
                 var productsItems = _unitOfWork.Repository<ProductItem>().GetAll();
                 var products = _unitOfWork.Repository<Product>().GetAll();
 
-                productsItems = productsItems.Select(x => { x.Product = (from p in products where p.Id == x.ProductID select p).FirstOrDefault(); return x; }).OrderBy(x=>x.Barcode).ToList();
+                productsItems = productsItems.Select(x => { x.Product = (from p in products where p.Id == x.ProductID select p).FirstOrDefault(); return x; }).OrderBy(x => x.Barcode).ToList();
 
                 var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
                 return productsItemsVMs;
@@ -286,7 +288,7 @@ namespace CtrlBox.Application
             try
             {
                 var productsItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.Status == EProductItemStatus.AvailableStock).Take(quantity);
-                
+
                 var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
                 return productsItemsVMs;
             }
@@ -299,5 +301,177 @@ namespace CtrlBox.Application
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
             }
         }
+
+        public int GetTotalProductItemByProductID(Guid productID)
+        {
+            try
+            {
+                var total = _unitOfWork.RepositoryCustom<IProductRepository>().GetTotalProductItemByProductID(productID);
+
+                return total;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
+
+        public void AddStockProduct(Guid productID, Guid clientID, Guid trackingTypeID, int quantity)
+        {
+            try
+            {
+                var productItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableProductItemByProductID(productID, quantity);
+
+                IList<Tracking> trackings = new List<Tracking>();
+
+                foreach (var productItem in productItems)
+                {
+                    productItem.EFlowStep = EFlowStep.InStock;
+
+                    Tracking tracking = new Tracking()
+                    {
+                        TrackingTypeID = trackingTypeID,
+                        ProductItemID = productItem.Id
+                    };
+
+                    tracking.TrackingsClients.Add(new TrackingClient()
+                    {
+                        ClientID = clientID,
+                        TrackingID = tracking.Id
+                    });
+                    trackings.Add(tracking);
+                }
+
+                _unitOfWork.Repository<Tracking>().AddRange(trackings);
+                _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
+            }
+        }
+
+        public ICollection<ProductItemVM> GetAvailableStockProductItemsByClientIDAndProductID(Guid productID, Guid clientID)
+        {
+            try
+            {
+                var productsItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableStockProductItemsByClientIDAndProductID(productID, clientID);
+
+                var productsItemsVMs = _mapper.Map<IList<ProductItemVM>>(productsItems);
+                return productsItemsVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
+
+        public void AddBoxStockWithProductItems(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid productID, int quantity)
+        {
+            try
+            {
+                var productsItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableStockProductItemsByClientIDAndProductID(productID, clientID);
+                var boxType = _unitOfWork.Repository<BoxType>().GetById(boxTypeID);
+                List<ProductItem> productsItemsUpdate = new List<ProductItem>();
+                IList<Box> boxes = new List<Box>();
+
+                for (int i = 0; i < quantity; i++)
+                {
+
+                    var updateList = productsItems.Where(x => !productsItemsUpdate.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
+                    productsItemsUpdate.AddRange(updateList);
+
+                    Box box = Box.FactoryCreate(boxTypeID, boxType, i, productID);
+                    box.LoadProductItems(updateList);
+                    box.AddTracking(trackingTypeID, clientID);
+                    box.BoxType = null;
+                    boxes.Add(box);
+                }
+
+                _unitOfWork.Repository<Box>().AddRange(boxes);
+                _unitOfWork.Repository<ProductItem>().UpdateRange(productsItemsUpdate);
+
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
+            }
+        }
+
+        public ICollection<BoxVM> GetAvailableBoxesByBoxTypeIDAndProductID(Guid boxTypeID, Guid clientID)
+        {
+            try
+            {
+                var boxes = _unitOfWork.RepositoryCustom<IProductRepository>().GetBoxesInStockByBoxTypeIDAndClientID(boxTypeID, clientID);
+
+                var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
+                return boxesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get product items", nameof(this.GetProductsItemsAvailable), ex);
+            }
+        }
+
+        public void AddBoxStockWithBoxes(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid boxTypeChildID, int quantity)
+        {
+            try
+            {
+
+                var boxesChildrem = _unitOfWork.RepositoryCustom<IProductRepository>().GetBoxesInStockByBoxTypeIDAndClientID(boxTypeChildID, clientID);
+
+                var boxType = _unitOfWork.Repository<BoxType>().GetById(boxTypeID);
+                List<Box> boxesUpdateChildrem = new List<Box>();
+                IList<Box> boxes = new List<Box>();
+
+                for (int i = 0; i < quantity; i++)
+                {
+                    var updateList = boxesChildrem.Where(x => !boxesUpdateChildrem.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
+                    boxesUpdateChildrem.AddRange(updateList);
+
+                    Box box = Box.FactoryCreate(boxTypeID, boxType, i);
+                    box.AddChildren(updateList);
+                    box.AddTracking(trackingTypeID, clientID);
+                    box.BoxType = null;
+                    boxes.Add(box);
+                }
+
+                _unitOfWork.Repository<Box>().AddRange(boxes);
+                _unitOfWork.Repository<Box>().UpdateRange(boxesUpdateChildrem);
+
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching Add Stock Product", nameof(this.AddStockProduct), ex);
+            }
+        }
+
     }
 }

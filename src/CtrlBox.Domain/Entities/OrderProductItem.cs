@@ -13,8 +13,6 @@ namespace CtrlBox.Domain.Entities
         public Guid OrderID { get; set; }
         public Order Order { get; set; }
 
-        public bool IsFinalized { get; set; }
-
         public OrderProductItem()
         {
 

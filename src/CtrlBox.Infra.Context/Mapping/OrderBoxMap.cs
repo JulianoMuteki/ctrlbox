@@ -22,9 +22,6 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.HasOne(tk => tk.Box)
                 .WithMany(k => k.OrdersBoxes)
                 .HasForeignKey(tk => tk.BoxID);
-
-            builder.Property(e => e.IsFinalized)
-                .IsRequired();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace CtrlBox.Domain.Entities
 
         internal void FinishDelivery(bool hasCrossDocking)
         {
-            this.ProductItem.FinishDelivery(hasCrossDocking);
+            this.ProductItem.FlowStep.SetFlowDelivery(hasCrossDocking);
         }
     }
 }

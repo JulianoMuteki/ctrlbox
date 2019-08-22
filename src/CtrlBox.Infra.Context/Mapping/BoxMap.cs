@@ -16,8 +16,15 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.Status)
                 .HasConversion<int>();
-            builder.Property(e => e.EFlowStep)
-                .HasConversion<int>();
+
+            builder.OwnsOne(
+                x => x.FlowStep,
+                        flowStep =>
+                        {
+                            flowStep.Property(e => e.EFlowStep)
+                                    .HasColumnName("EFlowStep")
+                                    .HasConversion<int>();
+                        });
 
             builder.Property(e => e.Description)
                     .IsRequired()

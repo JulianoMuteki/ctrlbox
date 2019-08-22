@@ -1,5 +1,6 @@
 ﻿using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ namespace CtrlBox.Domain.Entities
     public class ProductItem : EntityBase
     {
         public string Barcode { get; set; }
-        public EFlowStep EFlowStep { get; set; }
+        public FlowStep FlowStep { get; set; }
 
         public Guid ProductID { get; set; }
         public Product Product { get; set; }
@@ -32,7 +33,8 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.Status = EProductItemStatus.AvailableStock;
-                this.EFlowStep = EFlowStep.Available;
+                this.FlowStep = FlowStep.FactoryCreate();
+                this.FlowStep.SetAvailable();
             }
         }
 
@@ -40,15 +42,7 @@ namespace CtrlBox.Domain.Entities
         {
             this.IsDisable = true;
             this.Status = EProductItemStatus.Sold_Delivered;
-            SetFlowDelivered();
-        }
-
-        internal void FinishDelivery(bool hasCrossDocking)
-        {
-            if (hasCrossDocking)
-                this.EFlowStep = EFlowStep.InStock;
-            else
-                this.EFlowStep = EFlowStep.Delivery;
+            this.FlowStep.SetFlowDelivered();
         }
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
@@ -63,36 +57,29 @@ namespace CtrlBox.Domain.Entities
             this.Trackings.Add(tracking);
         }
 
-        private void SetFlowDelivered()
-        {
-            this.EFlowStep = EFlowStep.Delivery;
-        }
-
         internal void PutInTheBox()
         {
             this.Status = EProductItemStatus.InBox;
-            this.EFlowStep = EFlowStep.InBox;
-        }
-
-        internal void SetFlowOrder()
-        {
-            this.EFlowStep = EFlowStep.Order;
+            this.FlowStep.SetInBox();
         }
 
         public void AddInStock(Guid trackingTypeID, Guid clientID)
         {
-            this.EFlowStep = EFlowStep.InStock;
+            this.FlowStep.SetInStock();
             AddTracking(trackingTypeID, clientID);
         }
 
         public static ProductItem FactoryCreate(Guid productID)
         {
-            return new ProductItem()
+            var productItem = new ProductItem()
             {
                 Barcode = $"1{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14),
                 ProductID = productID,
-                EFlowStep = EFlowStep.Available
+                FlowStep = FlowStep.FactoryCreate()
             };
+
+            productItem.FlowStep.SetAvailable();
+            return productItem;
         }
     }
 }

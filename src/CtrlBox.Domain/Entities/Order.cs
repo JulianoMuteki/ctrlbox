@@ -68,7 +68,7 @@ namespace CtrlBox.Domain.Entities
                 OrderBox orderBox = OrderBox.FactoryCreate(this.Id, box.Id);
 
                 this.OrdersBoxes.Add(orderBox);
-                box.SetFlowOrder();
+                box.FlowStep.SetFlowOrder();
 
                 if (box.BoxesChildren.Count > 0)
                     CreateOrdersBoxes(box.BoxesChildren);
@@ -76,7 +76,6 @@ namespace CtrlBox.Domain.Entities
                 {
                     CreateOrderProductItem(box);
                 }
-
             }
         }
 
@@ -86,7 +85,7 @@ namespace CtrlBox.Domain.Entities
             {
                 OrderProductItem orderProductItem = OrderProductItem.FactoryCreate(boxProductItem.ProductItemID, this.Id);
                 this.OrderProductItems.Add(orderProductItem);
-                boxProductItem.ProductItem.SetFlowOrder();
+                boxProductItem.ProductItem.FlowStep.SetFlowOrder();
             }
         }
 

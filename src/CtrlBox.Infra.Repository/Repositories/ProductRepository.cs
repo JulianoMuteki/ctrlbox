@@ -23,7 +23,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<ProductItem>()
-                              .Where(x => x.EFlowStep == CrossCutting.Enums.EFlowStep.Available &&
+                              .Where(x => x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Available &&
                                      x.ProductID == productID)
                               .Count();
 
@@ -40,7 +40,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<ProductItem>()
-                              .Where(x => x.EFlowStep == CrossCutting.Enums.EFlowStep.Available &&
+                              .Where(x => x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Available &&
                                      x.ProductID == productID)
                               .Take(quantity);
 
@@ -57,7 +57,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<ProductItem>()
-                              .Where(x => x.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
+                              .Where(x => x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
                                      x.ProductID == productID)
                               .Join(_context.Set<Tracking>(),
                               pdi => pdi.Id,
@@ -73,7 +73,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               (tr, trcl) => new { tr.ProductItem, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
                            
                               .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
-                                     x.ProductItem.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
+                                     x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
                                      x.ProductItem.ProductID == productID &&
                                      x.TrackingClient.ClientID == clientID)
                            .Select(x => x.ProductItem);
@@ -92,7 +92,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<Box>()
-                              .Where(x => x.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
+                              .Where(x => x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
                                      x.BoxTypeID == boxTypeID)
                               .Join(_context.Set<Tracking>(),
                               pdi => pdi.Id,
@@ -107,7 +107,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               cl => cl.TrackingID,
                               (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
                               .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
-                                     x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
+                                     x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock &&
                                      x.Box.BoxTypeID == boxTypeID &&
                                      x.TrackingClient.ClientID == clientID)
                            .Select(x => x.Box);
@@ -125,7 +125,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<Box>()
-                              .Where(x => (x.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
+                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
                               .Join(_context.Set<Tracking>(),
                               pdi => pdi.Id,
                               track => track.BoxID,
@@ -139,7 +139,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               cl => cl.TrackingID,
                               (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
                               .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
-                                     (x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
+                                     (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
                                      x.TrackingClient.ClientID == clientID)
                            .Select(x => x.Box)
                            .Include(x => x.BoxType).ThenInclude(x => x.Picture);

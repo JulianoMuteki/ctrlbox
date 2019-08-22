@@ -107,7 +107,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
                               (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
                            
-                           .Where(x => x.DeliveryBox.OrderID == deliveryID && x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
+                           .Where(x => x.DeliveryBox.OrderID == deliveryID && x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
                            .Select(x => x.Box);
                            
 

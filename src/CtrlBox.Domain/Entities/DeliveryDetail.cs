@@ -19,11 +19,12 @@ namespace CtrlBox.Domain.Entities
         public Client Client { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
 
-        public DeliveryDetail()
+        private DeliveryDetail()
             :base()
         {
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
         }
+
         public void Init()
         {
             if (this.Id == null || this.Id == Guid.Empty)
@@ -36,23 +37,30 @@ namespace CtrlBox.Domain.Entities
         {
             if (!this.DeliveriesBoxes.Any(x => x.BoxID == boxID))
             {
-                DeliveryBox deliveryBox = new DeliveryBox()
-                {
-                    BoxID = boxID,
-                    DeliveryDetailID = this.Id
-                };
-
+                DeliveryBox deliveryBox = DeliveryBox.FactoryCreate(boxID, this.Id);
                 this.DeliveriesBoxes.Add(deliveryBox);
-            }
-            else
-            {
-
             }
         }
 
         public void MakeDeliveryBox(Box box)
         {
             box.DoDelivery(this, this.QuantityProductItem);
+        }
+
+        public static DeliveryDetail FactoryCreate(Guid clientID, Guid productID, Guid orderID, int quantity)
+        {
+            return new DeliveryDetail()
+            {
+                ClientID = clientID,
+                ProductID = productID,
+                OrderID = orderID,
+                QuantityProductItem = quantity
+            };
+            //    ClientID = sale.ClientID,
+            //    ProductID = saleProduct.ProductID,
+            //    OrderID = sale.OrderID,
+            //    QuantityProductItem = saleProduct.Quantity
+            
         }
     }
 }

@@ -13,11 +13,11 @@ namespace CtrlBox.Domain.Entities
         public Route Route { get; set; }
         public Client Client { get; set; }
 
-        public RouteClient()
+        private RouteClient()
         {
 
         }
-        public RouteClient(string clientID, Guid routeID)
+        private RouteClient(string clientID, Guid routeID)
         {
             this.ClientID = new Guid(clientID);
             this.RouteID = routeID;

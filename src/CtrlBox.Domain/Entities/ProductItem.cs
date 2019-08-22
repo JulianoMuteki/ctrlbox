@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class ProductItem: EntityBase
+    public class ProductItem : EntityBase
     {
         public string Barcode { get; set; }
         public EFlowStep EFlowStep { get; set; }
@@ -18,8 +18,8 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Tracking> Trackings { get; set; }
         public ICollection<OrderProductItem> OrderProductItems { get; set; }
 
-        public ProductItem()
-            :base()
+        private ProductItem()
+            : base()
         {
             this.OrderProductItems = new HashSet<OrderProductItem>();
             this.Trackings = new HashSet<Tracking>();
@@ -53,23 +53,15 @@ namespace CtrlBox.Domain.Entities
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
-            Tracking tracking = new Tracking()
-            {
-                TrackingTypeID = trackingTypeID,
-                ProductItemID = this.Id
-            };
+            Tracking tracking = Tracking.FactoryCreate(trackingTypeID, this.Id, null);
 
             if (clientID != null && clientID != Guid.Empty)
             {
-                tracking.TrackingsClients.Add(new TrackingClient()
-                {
-                    ClientID = clientID,
-                    TrackingID = tracking.Id
-                });
+                tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
             }
 
             this.Trackings.Add(tracking);
-        }        
+        }
 
         private void SetFlowDelivered()
         {
@@ -85,6 +77,22 @@ namespace CtrlBox.Domain.Entities
         internal void SetFlowOrder()
         {
             this.EFlowStep = EFlowStep.Order;
+        }
+
+        public void AddInStock(Guid trackingTypeID, Guid clientID)
+        {
+            this.EFlowStep = EFlowStep.InStock;
+            AddTracking(trackingTypeID, clientID);
+        }
+
+        public static ProductItem FactoryCreate(Guid productID)
+        {
+            return new ProductItem()
+            {
+                Barcode = $"1{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14),
+                ProductID = productID,
+                EFlowStep = EFlowStep.Available
+            };
         }
     }
 }

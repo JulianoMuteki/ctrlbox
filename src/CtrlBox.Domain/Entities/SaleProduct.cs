@@ -18,7 +18,7 @@ namespace CtrlBox.Domain.Entities
         public Product Product { get; set; }
         public Sale Sale { get; set; }
 
-        public SaleProduct()
+        private SaleProduct()
         {
 
         }

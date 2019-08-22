@@ -14,9 +14,18 @@ namespace CtrlBox.Domain.Entities
 
         public bool IsItemRemovedBox { get; set; }
 
-        public BoxProductItem()
+        private BoxProductItem()
         {
            
+        }
+
+        public static BoxProductItem FactoryCreate(Guid boxID, Guid productItemID)
+        {
+            return new BoxProductItem()
+            {
+                BoxID = boxID,
+                ProductItemID = productItemID
+            };
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

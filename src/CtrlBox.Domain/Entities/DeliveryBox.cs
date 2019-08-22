@@ -13,7 +13,7 @@ namespace CtrlBox.Domain.Entities
         public Guid DeliveryDetailID { get; set; }
         public DeliveryDetail DeliveryDetail { get; set; }
 
-        public DeliveryBox()
+        private DeliveryBox()
         {
 
         }
@@ -21,6 +21,15 @@ namespace CtrlBox.Domain.Entities
         protected override IEnumerable<object> GetEqualityComponents()
         {
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
+        }
+
+        internal static DeliveryBox FactoryCreate(Guid boxID, Guid deliveryDetailID)
+        {
+            return new DeliveryBox()
+            {
+                BoxID = boxID,
+                DeliveryDetailID = deliveryDetailID
+            };
         }
     }
 }

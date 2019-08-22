@@ -9,6 +9,7 @@ namespace CtrlBox.Application.AutoMapper
             return new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new ClientProfile());
+                cfg.AddProfile(new BoxProfile());
                 cfg.AddProfile(new ProductProfile());
                 cfg.AddProfile(new RouteProfile());
                 cfg.AddProfile(new OrderProfile());

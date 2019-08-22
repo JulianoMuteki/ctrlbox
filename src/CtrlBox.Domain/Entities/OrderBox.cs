@@ -13,9 +13,18 @@ namespace CtrlBox.Domain.Entities
         public Guid OrderID { get; set; }
         public Order Order { get; set; }
 
-        public OrderBox()
+        private OrderBox()
         {
 
+        }
+
+        public static OrderBox FactoryCreate(Guid orderID, Guid boxID)
+        {
+            return new OrderBox()
+            {
+                OrderID = orderID,
+                BoxID = boxID
+            };
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

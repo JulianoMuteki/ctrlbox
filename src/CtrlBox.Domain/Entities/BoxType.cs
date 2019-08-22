@@ -23,7 +23,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Box> Boxes { get; set; }
 
-        public BoxType()
+        private BoxType()
         : base()
         {
             this.Boxes = new HashSet<Box>();

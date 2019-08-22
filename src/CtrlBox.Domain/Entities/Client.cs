@@ -22,7 +22,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Route> Routes { get; set; }
         public ICollection<DeliveryDetail> DeliveriesDetails { get; set; }
         
-        public Client()
+        private Client()
             :base()
         {
             this.DeliveriesDetails = new HashSet<DeliveryDetail>();
@@ -40,12 +40,7 @@ namespace CtrlBox.Domain.Entities
             {
                 foreach (var optionTypeID in optionsTypesID)
                 {
-                    ClientOptionType clientOptionType = new ClientOptionType()
-                    {
-                        ClientID = this.Id,
-                        OptiontTypeID = new Guid(optionTypeID)
-                    };
-
+                    ClientOptionType clientOptionType = ClientOptionType.FactoryCreate(this.Id);
                     this.ClientsOptionsTypes.Add(clientOptionType);
                 }
             }

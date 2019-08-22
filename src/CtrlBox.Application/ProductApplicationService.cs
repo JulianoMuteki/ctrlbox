@@ -241,10 +241,7 @@ namespace CtrlBox.Application
 
                 for (int i = 0; i < quantity; i++)
                 {
-                    ProductItem productItem = new ProductItem();
-                    productItem.Barcode = $"{i}{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14);
-                    productItem.ProductID = productID;
-                    productItem.EFlowStep = EFlowStep.Available;
+                    ProductItem productItem = ProductItem.FactoryCreate(productID);              
                     productsItems.Add(productItem);
                 }
 
@@ -324,29 +321,15 @@ namespace CtrlBox.Application
         {
             try
             {
+                _unitOfWork.SetTrackAll();
                 var productItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableProductItemByProductID(productID, quantity);
-
-                IList<Tracking> trackings = new List<Tracking>();
 
                 foreach (var productItem in productItems)
                 {
-                    productItem.EFlowStep = EFlowStep.InStock;
-
-                    Tracking tracking = new Tracking()
-                    {
-                        TrackingTypeID = trackingTypeID,
-                        ProductItemID = productItem.Id
-                    };
-
-                    tracking.TrackingsClients.Add(new TrackingClient()
-                    {
-                        ClientID = clientID,
-                        TrackingID = tracking.Id
-                    });
-                    trackings.Add(tracking);
+                    productItem.AddInStock(trackingTypeID, clientID);
                 }
 
-                _unitOfWork.Repository<Tracking>().AddRange(trackings);
+              //  _unitOfWork.Repository<Tracking>().AddRange(trackings);
                 _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
                 _unitOfWork.CommitSync();
             }

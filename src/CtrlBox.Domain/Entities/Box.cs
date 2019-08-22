@@ -33,7 +33,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
         public ICollection<Tracking> Trackings { get; set; }
 
-        internal Box()
+        private Box()
             : base()
         {
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
@@ -92,8 +92,7 @@ namespace CtrlBox.Domain.Entities
 
         public void InicializateProperties()
         {
-            this.BoxBarcode = new BoxBarcode();
-            this.BoxBarcode.BoxID = this.Id;
+            this.BoxBarcode = BoxBarcode.FactoryCreate(this.Id);
             this.EFlowStep = EFlowStep.Create;
         }
 
@@ -104,11 +103,7 @@ namespace CtrlBox.Domain.Entities
 
             foreach (var item in productItems)
             {
-                BoxProductItem boxProductItem = new BoxProductItem
-                {
-                    BoxID = this.Id,
-                    ProductItemID = item.Id
-                };
+                BoxProductItem boxProductItem = BoxProductItem.FactoryCreate(this.Id, item.Id);
                 item.PutInTheBox();
 
                 this.BoxesProductItems.Add(boxProductItem);
@@ -195,19 +190,11 @@ namespace CtrlBox.Domain.Entities
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
-            Tracking tracking = new Tracking()
-            {
-                TrackingTypeID = trackingTypeID,
-                BoxID = this.Id
-            };
+            Tracking tracking = Tracking.FactoryCreate(trackingTypeID, null, this.Id);
 
             if (clientID != null && clientID != Guid.Empty)
             {
-                tracking.TrackingsClients.Add(new TrackingClient()
-                {
-                    ClientID = clientID,
-                    TrackingID = tracking.Id
-                });
+                tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(clientID, tracking.Id));
             }
 
             this.Trackings.Add(tracking);

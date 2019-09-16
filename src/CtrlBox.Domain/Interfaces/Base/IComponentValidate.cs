@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Interfaces.Base
 {
@@ -9,5 +10,6 @@ namespace CtrlBox.Domain.Interfaces.Base
         ValidationResult ValidationResult { get; set; }
 
         bool Validate<TModel>(TModel model, AbstractValidator<TModel> validator);
+        List<KeyValuePair<string, string>> GetNotifications();
     }
 }

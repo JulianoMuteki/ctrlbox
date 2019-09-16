@@ -9,6 +9,7 @@ using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Domain.Entities;
 using CtrlBox.CrossCutting;
+using CtrlBox.Infra.Context;
 
 namespace CtrlBox.Application
 {
@@ -29,6 +30,12 @@ namespace CtrlBox.Application
             {
                 var client = _mapper.Map<Client>(entity);
                 client.SetOptionsTypes(entity.OptionsTypesID);
+
+                if(!client.ComponentValidator.IsValid)
+                {
+                    entity.SetNotifications(client.ComponentValidator.GetNotifications());
+                    return entity;
+                }
                 _unitOfWork.Repository<Client>().Add(client);
                 _unitOfWork.CommitSync();
 

@@ -40,12 +40,12 @@ namespace CtrlBox.Domain.Entities.ValueObjects
 
         internal void SetInBox()
         {
-            throw new NotImplementedException();
+            this.EFlowStep = EFlowStep.InBox;
         }
 
         internal void SetInStock()
         {
-            throw new NotImplementedException();
+            this.EFlowStep = EFlowStep.InStock;
         }
     }
 }

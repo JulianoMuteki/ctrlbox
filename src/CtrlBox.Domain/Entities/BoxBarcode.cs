@@ -29,7 +29,7 @@ namespace CtrlBox.Domain.Entities
             this.RFID = string.Empty;
         }
 
-        public BoxBarcode FactoryCreate(Guid boxID)
+        public static BoxBarcode FactoryCreate(Guid boxID)
         {
             return new BoxBarcode()
             {

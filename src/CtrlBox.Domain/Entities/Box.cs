@@ -49,16 +49,12 @@ namespace CtrlBox.Domain.Entities
             Box box = new Box();
             box.InicializateSubDomains();
             box.BoxTypeID = boxTypeID;
-            box.Description = $"Box nº: {i} - {boxType.Name}";
             box.BoxType = boxType;
 
             if (productID != null && productID.Value != Guid.Empty)
                 box.ProductID = productID;
 
-            if (!box.ComponentValidator.Validate(box, new BoxValidator()))
-            {
-                throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
-            }
+            box.ComponentValidator.Validate(box, new BoxValidator());
             return box;
         }
 

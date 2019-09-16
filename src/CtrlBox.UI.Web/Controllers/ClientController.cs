@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CtrlBox.Application.ViewModel;
+﻿using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +53,7 @@ namespace CtrlBox.UI.Web.Controllers
                             .Select(option => new SelectListItem
                             {
                                 Value = option.DT_RowId,
-                                Text =  $"{option.Name} - {option.EClientType}"
+                                Text = $"{option.Name} - {option.EClientType}"
                             }).ToList();
             ViewData["OptionsTypes"] = optionsTypes;
 
@@ -64,12 +63,20 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult Create(ClientVM clientVM)
         {
-            if (string.IsNullOrEmpty(clientVM.DT_RowId))
-                _clientApplicationService.Add(clientVM);
-            else
-                _clientApplicationService.Update(clientVM);
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrEmpty(clientVM.DT_RowId))
+                    clientVM = _clientApplicationService.Add(clientVM);
+                else
+                    clientVM = _clientApplicationService.Update(clientVM);
 
-            return RedirectToAction("Index");
+                if (clientVM.HasNotifications)
+                    return View(clientVM);
+
+                return RedirectToAction("Index");
+            }
+            else
+                return View(clientVM);
         }
 
         [HttpPost]

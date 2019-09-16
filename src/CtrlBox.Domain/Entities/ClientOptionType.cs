@@ -23,12 +23,12 @@ namespace CtrlBox.Domain.Entities
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
         }
 
-        internal static ClientOptionType FactoryCreate(Guid clientID)
+        internal static ClientOptionType FactoryCreate(Guid clientID, Guid optiontTypeID)
         {
             return new ClientOptionType()
             {
                 ClientID = clientID,
-                OptiontTypeID = new Guid()
+                OptiontTypeID = optiontTypeID
             };
         }
     }

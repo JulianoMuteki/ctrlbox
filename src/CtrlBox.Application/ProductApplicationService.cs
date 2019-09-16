@@ -6,7 +6,6 @@ using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Domain.Interfaces.Repository;
-using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

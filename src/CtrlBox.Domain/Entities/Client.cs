@@ -40,7 +40,7 @@ namespace CtrlBox.Domain.Entities
             {
                 foreach (var optionTypeID in optionsTypesID)
                 {
-                    ClientOptionType clientOptionType = ClientOptionType.FactoryCreate(this.Id);
+                    ClientOptionType clientOptionType = ClientOptionType.FactoryCreate(this.Id, new Guid(optionTypeID));
                     this.ClientsOptionsTypes.Add(clientOptionType);
                 }
             }

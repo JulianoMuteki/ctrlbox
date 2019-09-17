@@ -1,4 +1,5 @@
 ﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting;
 using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,13 @@ namespace CtrlBox.UI.Web.Controllers
             if (clientVM != null)
                 clientVM.SetClientsCategoriesID();
 
+            LoadDropDowns();
+
+            return View(clientVM);
+        }
+
+        private void LoadDropDowns()
+        {
             var addresses = _addressApplicationService.GetAll()
                                         .Select(address => new SelectListItem
                                         {
@@ -56,14 +64,12 @@ namespace CtrlBox.UI.Web.Controllers
                                 Text = $"{option.Name} - {option.EClientType}"
                             }).ToList();
             ViewData["OptionsTypes"] = optionsTypes;
-
-            return View(clientVM);
         }
 
         [HttpPost]
         public ActionResult Create(ClientVM clientVM)
         {
-            if (ModelState.IsValid)
+            try
             {
                 if (string.IsNullOrEmpty(clientVM.DT_RowId))
                     clientVM = _clientApplicationService.Add(clientVM);
@@ -71,12 +77,21 @@ namespace CtrlBox.UI.Web.Controllers
                     clientVM = _clientApplicationService.Update(clientVM);
 
                 if (clientVM.HasNotifications)
+                {
+                    LoadDropDowns();
                     return View(clientVM);
+                }
 
                 return RedirectToAction("Index");
             }
-            else
-                return View(clientVM);
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]

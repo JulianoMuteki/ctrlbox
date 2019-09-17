@@ -39,6 +39,7 @@ namespace CtrlBox.Application
                 _unitOfWork.Repository<Client>().Add(client);
                 _unitOfWork.CommitSync();
 
+                throw new Exception("error teste");
                 return entity;
             }
             catch (CustomException exc)

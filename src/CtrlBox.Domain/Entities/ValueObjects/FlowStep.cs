@@ -5,7 +5,7 @@ namespace CtrlBox.Domain.Entities.ValueObjects
 {
     public class FlowStep
     {
-        public EFlowStep EFlowStep { get; set; }
+        public EFlowStep EFlowStep { get; protected set; }
 
         private FlowStep()
         {
@@ -17,33 +17,33 @@ namespace CtrlBox.Domain.Entities.ValueObjects
             return new FlowStep();
         }
 
-        internal void SetFlowDelivery(bool hasCrossDocking)
+        public void SetFlowDelivery(bool hasCrossDocking)
         {
             if (hasCrossDocking)
                 this.EFlowStep = EFlowStep.CrossDocking;
             else
                 this.EFlowStep = EFlowStep.Delivery;
         }
-        internal void SetFlowDelivered()
+        public void SetFlowDelivered()
         {
             this.EFlowStep = EFlowStep.Delivery;
         }
-        internal void SetFlowOrder()
+        public void SetFlowOrder()
         {
             this.EFlowStep = EFlowStep.Order;
         }
 
-        internal void SetAvailable()
+        public void SetAvailable()
         {
             this.EFlowStep = EFlowStep.Available;
         }
 
-        internal void SetInBox()
+        public void SetInBox()
         {
             this.EFlowStep = EFlowStep.InBox;
         }
 
-        internal void SetInStock()
+        public void SetInStock()
         {
             this.EFlowStep = EFlowStep.InStock;
         }

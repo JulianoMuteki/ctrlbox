@@ -377,6 +377,7 @@ namespace CtrlBox.Application
                     productsItemsUpdate.AddRange(updateList);
 
                     Box box = Box.FactoryCreate(boxTypeID, boxType, i, productID);
+                    box.FlowStep.SetInStock();
                     box.LoadProductItems(updateList);
                     box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
@@ -431,12 +432,13 @@ namespace CtrlBox.Application
                 for (int i = 0; i < quantity; i++)
                 {
                     var updateList = boxesChildrem.Where(x => !boxesUpdateChildrem.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
-                    boxesUpdateChildrem.AddRange(updateList);
 
                     Box box = Box.FactoryCreate(boxTypeID, boxType, i);
-                    box.AddChildren(updateList);
+                    box.FlowStep.SetInStock();
+                    boxesUpdateChildrem.AddRange(box.AddChildren(updateList));
                     box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
+                    box.BoxesChildren = null;
                     boxes.Add(box);
                 }
 

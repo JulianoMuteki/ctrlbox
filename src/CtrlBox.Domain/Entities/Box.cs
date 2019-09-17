@@ -50,6 +50,7 @@ namespace CtrlBox.Domain.Entities
             box.InicializateSubDomains();
             box.BoxTypeID = boxTypeID;
             box.BoxType = boxType;
+            box.Description = $"Desc.{i} - {boxType.Name}";
 
             if (productID != null && productID.Value != Guid.Empty)
                 box.ProductID = productID;
@@ -180,7 +181,7 @@ namespace CtrlBox.Domain.Entities
 
             if (clientID != null && clientID != Guid.Empty)
             {
-                tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(clientID, tracking.Id));
+                tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
             }
 
             this.Trackings.Add(tracking);

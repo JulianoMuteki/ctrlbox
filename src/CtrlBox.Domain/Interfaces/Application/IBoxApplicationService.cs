@@ -10,7 +10,7 @@ namespace CtrlBox.Domain.Interfaces.Application
         void AddBoxType(BoxTypeVM boxTypeVM);
         ICollection<BoxVM> GetBoxesStockParents(Guid routeID);
         ICollection<BoxVM> GetBoxesByDeliveryID(Guid deliveryID);
-        ICollection<BoxProductItemVM> GetBoxesBoxesProductItemsByDeliveryID(Guid guid);
+        ICollection<OrderProductItemVM> GetOrderProductItemByDeliveryID(Guid guid);
         ICollection<BoxVM> GetBoxesByBoxWithChildren(Guid boxID);
         BoxVM GetBoxesByIDWithBoxTypeAndProductItems(Guid boxID);
         IEnumerable<BoxVM> GetBoxesParentsWithBoxTypeEndProduct();

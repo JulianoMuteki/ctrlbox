@@ -216,13 +216,13 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<BoxProductItemVM> GetBoxesBoxesProductItemsByDeliveryID(Guid deliveryID)
+        public ICollection<OrderProductItemVM> GetOrderProductItemByDeliveryID(Guid deliveryID)
         {
             try
             {
-                var boxesProductsItems = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesBoxesProductItemsByDeliveryID(deliveryID);
-                var boxesProductsItemsVMs = _mapper.Map<IList<BoxProductItemVM>>(boxesProductsItems);
-                return boxesProductsItemsVMs;
+                var orderProducstItems = _unitOfWork.RepositoryCustom<IBoxRepository>().GetOrderProductItemByDeliveryID(deliveryID);
+                var OrderProductItemVMs = _mapper.Map<IList<OrderProductItemVM>>(orderProducstItems);
+                return OrderProductItemVMs;
             }
             catch (CustomException exc)
             {
@@ -230,7 +230,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetBoxesBoxesProductItemsByDeliveryID), ex);
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching all boxes", nameof(this.GetOrderProductItemByDeliveryID), ex);
             }
         }
 

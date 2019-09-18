@@ -161,14 +161,13 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
-        public ICollection<BoxProductItem> GetBoxesBoxesProductItemsByDeliveryID(Guid deliveryID)
+        public ICollection<OrderProductItem> GetOrderProductItemByDeliveryID(Guid deliveryID)
         {
             try
             {
-                var query = _context.Set<BoxProductItem>()
-
-                          //  .Where(x => x.OrderID == deliveryID && x.IsDelivered == false)
-                            .Include(b => b.ProductItem).ThenInclude(p => p.Product);
+                var query = _context.Set<OrderProductItem>()
+                            .Include(b => b.ProductItem).ThenInclude(p => p.Product)
+                            .Where(x => x.OrderID == deliveryID);
 
                 return query.ToList();
             }

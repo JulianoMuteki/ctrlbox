@@ -101,7 +101,7 @@ var BoxStock = function () {
                             "success": function (json) {
                                 if (json.success) {
                                     alert('Completo');
-                                    window.history.back();
+                                    window.location.reload(false);
                                 }
                             },
                             "error": handleAjaxError
@@ -118,7 +118,7 @@ var BoxStock = function () {
                             "success": function (json) {
                                 if (json.success) {
                                     alert('Completo');
-                                    window.history.back();
+                                    window.location.reload(false);
                                 }
                             },
                             "error": handleAjaxError

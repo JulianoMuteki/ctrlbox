@@ -69,18 +69,13 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 var query = _context.Set<Client>()
-
                            .Join(_context.Set<RouteClient>(),
                               cl => cl.Id,
                               rt => rt.ClientID,
                               (cl, rt) => new { Client = cl, rt.RouteID })
-
+                          
                            .Where(x => x.RouteID == routeID)
-                           .Select(x => x.Client)
-                              .Include(c => c.Sales)
-                              .Include(c => c.DeliveriesDetails);
-
-
+                          .Select(x => x.Client);
 
                 return query.ToList();
             }

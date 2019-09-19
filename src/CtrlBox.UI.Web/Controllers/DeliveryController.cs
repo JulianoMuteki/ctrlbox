@@ -193,7 +193,7 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 Guid id = new Guid(deliveryID);
                 var deliveryVM = _deliveryService.GetById(id);
-                var clientsVM = _clientService.GetByRouteID(deliveryVM.RouteID);
+                var clientsVM = _clientService.GetByRouteIDAndOrderID(deliveryVM.RouteID, id);
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
 
                 var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(id).GroupBy(n => n.BoxTypeID)
@@ -210,7 +210,7 @@ namespace CtrlBox.UI.Web.Controllers
                 return Json(new
                 {
                     aaData = clientsVM,
-                    xaData = boxesLoadInRoute.ToList(),
+                    xaData = boxesLoadInRoute.OrderBy(x=>x.TotalProductItems).ToList(),
                     xbData = despesasVM,
                     success = true
                 });

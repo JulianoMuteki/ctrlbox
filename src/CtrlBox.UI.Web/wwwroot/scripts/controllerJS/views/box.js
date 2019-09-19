@@ -10,6 +10,8 @@ var BoxComponents = function () {
     }
 
     function inicializateComponentes() {
+ 
+
 
         oTableSale = $('#tbBox').dataTable({
             "sAjaxSource": 'Box/GetAjaxHandlerBoxes',
@@ -17,15 +19,18 @@ var BoxComponents = function () {
             "bDestroy": true,
             "aoColumns": [
                         {
-                            "mData": null,
                             "sType": "html",
-                            "bSortable": false,
+                            "bSortable": true,
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
                                     if (data.BoxType.PictureID === '' || data.BoxType.PictureID === null) {
                                         return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" />' + data.BoxType.Name ;
                                     }
                                     return '<img  src="/../Configuration/ViewImage/' + data.BoxType.PictureID + '" /> ' + data.BoxType.Name ;
+                                }
+                                else if (type === 'sort') {
+                                    console.log(data);
+                                    return data.BoxType.Name;
                                 }
                                 return data;
                             }
@@ -79,7 +84,6 @@ var BoxComponents = function () {
                             }
                         }
             ]
-
         });
     }
 

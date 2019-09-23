@@ -18,7 +18,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Order> Orders { get; set; }
         public ICollection<RouteClient> RoutesClients { get; set; }
 
-        public Route()
+        private Route()
             :base()
         {
             this.Orders = new HashSet<Order>();

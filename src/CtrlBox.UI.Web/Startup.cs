@@ -104,9 +104,10 @@ namespace CtrlBox.UI.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                //app.UseBrowserLink();
-                app.UseDatabaseErrorPage();
+                //app.UseDeveloperExceptionPage();
+                ////app.UseBrowserLink();
+                //app.UseDatabaseErrorPage();
+                app.UseExceptionHandler(@"/Home/Error");
             }
             else
             {

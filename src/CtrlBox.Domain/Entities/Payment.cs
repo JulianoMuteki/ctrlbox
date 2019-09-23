@@ -20,7 +20,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<PaymentSchedule> PaymentsSchedules { get; set; }
 
-        public Payment()
+        private Payment()
             :base()
         {
             this.PaymentsSchedules = new HashSet<PaymentSchedule>();

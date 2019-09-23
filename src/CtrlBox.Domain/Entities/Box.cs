@@ -1,6 +1,7 @@
 ﻿using CtrlBox.CrossCutting;
 using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Entities.ValueObjects;
 using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace CtrlBox.Domain.Entities
     {
         public string Description { get; set; }
         public EBoxStatus Status { get; set; }
-        public EFlowStep EFlowStep { get; set; }
+        public FlowStep FlowStep { get; set; }
 
         public int PorcentFull { get; set; }
 
@@ -33,7 +34,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
         public ICollection<Tracking> Trackings { get; set; }
 
-        internal Box()
+        private Box()
             : base()
         {
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
@@ -46,19 +47,15 @@ namespace CtrlBox.Domain.Entities
         public static Box FactoryCreate(Guid boxTypeID, BoxType boxType, int i, Guid? productID = null)
         {
             Box box = new Box();
-            box.InicializateProperties();
-            box.EFlowStep = EFlowStep.InStock;
+            box.InicializateSubDomains();
             box.BoxTypeID = boxTypeID;
-            box.Description = $"Box nº: {i} - {boxType.Name}";
             box.BoxType = boxType;
+            box.Description = $"Desc.{i} - {boxType.Name}";
 
             if (productID != null && productID.Value != Guid.Empty)
                 box.ProductID = productID;
 
-            if (!box.ComponentValidator.Validate(box, new BoxValidator()))
-            {
-                throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
-            }
+            box.ComponentValidator.Validate(box, new BoxValidator());
             return box;
         }
 
@@ -71,11 +68,6 @@ namespace CtrlBox.Domain.Entities
             this.OrdersBoxes = new HashSet<OrderBox>();
         }
 
-        internal void SetFlowOrder()
-        {
-            this.EFlowStep = EFlowStep.Order;
-        }
-
         public void SetBoxType(BoxType boxType)
         {
             this.BoxType = boxType;
@@ -86,15 +78,14 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
-                InicializateProperties();
+                InicializateSubDomains();
             }
         }
 
-        public void InicializateProperties()
+        public void InicializateSubDomains()
         {
-            this.BoxBarcode = new BoxBarcode();
-            this.BoxBarcode.BoxID = this.Id;
-            this.EFlowStep = EFlowStep.Create;
+            this.BoxBarcode = BoxBarcode.FactoryCreate(this.Id);
+            this.FlowStep = FlowStep.FactoryCreate();
         }
 
         public void LoadProductItems(ICollection<ProductItem> productItems)
@@ -104,11 +95,7 @@ namespace CtrlBox.Domain.Entities
 
             foreach (var item in productItems)
             {
-                BoxProductItem boxProductItem = new BoxProductItem
-                {
-                    BoxID = this.Id,
-                    ProductItemID = item.Id
-                };
+                BoxProductItem boxProductItem = BoxProductItem.FactoryCreate(this.Id, item.Id);
                 item.PutInTheBox();
 
                 this.BoxesProductItems.Add(boxProductItem);
@@ -152,12 +139,7 @@ namespace CtrlBox.Domain.Entities
                 LoadFullBoxCompletedChildrem();
             }
 
-            SetFlowDelivered();
-        }
-
-        private void SetFlowDelivered()
-        {
-            this.EFlowStep = EFlowStep.Delivery;
+            this.FlowStep.SetFlowDelivered();
         }
 
         private void LoadFullBoxCompletedProductItems()
@@ -195,19 +177,11 @@ namespace CtrlBox.Domain.Entities
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
-            Tracking tracking = new Tracking()
-            {
-                TrackingTypeID = trackingTypeID,
-                BoxID = this.Id
-            };
+            Tracking tracking = Tracking.FactoryCreate(trackingTypeID, null, this.Id);
 
             if (clientID != null && clientID != Guid.Empty)
             {
-                tracking.TrackingsClients.Add(new TrackingClient()
-                {
-                    ClientID = clientID,
-                    TrackingID = tracking.Id
-                });
+                tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
             }
 
             this.Trackings.Add(tracking);
@@ -217,7 +191,7 @@ namespace CtrlBox.Domain.Entities
         {
             if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.FlowStep.EFlowStep == EFlowStep.Delivery).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {
@@ -235,11 +209,11 @@ namespace CtrlBox.Domain.Entities
 
         public void FinishDelivery(bool hasCrossDocking)
         {
-            SetFlowDelivery(hasCrossDocking);
+            this.FlowStep.SetFlowDelivery(hasCrossDocking);
 
             if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.EFlowStep == EFlowStep.Delivery).ToList();
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.FlowStep.EFlowStep == EFlowStep.Delivery).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {
@@ -255,12 +229,5 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
-        private void SetFlowDelivery(bool hasCrossDocking)
-        {
-            if (hasCrossDocking)
-                this.EFlowStep = EFlowStep.CrossDocking;
-            else
-                this.EFlowStep = EFlowStep.Delivery;
-        }
     }
 }

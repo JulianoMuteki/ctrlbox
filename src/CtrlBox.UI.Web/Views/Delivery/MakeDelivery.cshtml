@@ -51,34 +51,27 @@
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
             <div class="span12">
-                <div class="alert alert-info">
-                    <h3><strong>Client name:</strong> @ViewData["Client"]</h3>
-                </div>
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span12">
-                <p>
-                    <div>
-                        <label class="control-label">Tracking Types</label>
-                        <div class="controls">
-                            <select id="ddlTrackingType" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"><option value="0">Please select Tracking Types</option></select>
-                        </div>
-                    </div>
-                </p>
-            </div>
-        </div>
-        <br/>
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="portlet box blue tabbable">
+                <div class="portlet box blue">
                     <div class="portlet-title">
                         <div class="caption"><i class="icon-reorder"></i>Make just delivery</div>
                     </div>
-                    <div class="portlet-body">
+                    <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <form action="#" class="form-horizontal">
+                        <form action="#" class="form-horizontal">                  
                             <div class="control-group">
+                               
+                              
+                                    <h3 class="form-section  alert alert-info"><strong>Client name:</strong> @ViewData["Client"]</h3>
+                             
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Select track<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select id="ddlTrackingType" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"><option value="0">Please select Tracking Types</option></select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="control-group" >
                                 <table id="tbProductItems" class="table-bordered table-striped table-condensed cf">
                                     <thead class="cf">
                                         <tr>

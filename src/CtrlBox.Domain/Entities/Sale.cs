@@ -20,7 +20,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<SaleProduct> SalesProducts { get; set; }
 
-        public Sale()
+        private Sale()
         {
             this.SalesProducts = new HashSet<SaleProduct>();
 

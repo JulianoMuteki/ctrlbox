@@ -27,7 +27,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
         public ICollection<OrderProductItem> OrderProductItems { get; set; }
 
-        public Order()
+        private Order()
             : base()
         {
             this.OrderProductItems = new HashSet<OrderProductItem>();
@@ -65,21 +65,17 @@ namespace CtrlBox.Domain.Entities
         {
             foreach (var box in boxesToOrder)
             {
-                OrderBox orderBox = new OrderBox()
-                {
-                    OrderID = this.Id,
-                    BoxID = box.Id
-                };
+                OrderBox orderBox = OrderBox.FactoryCreate(this.Id, box.Id);
+
                 this.OrdersBoxes.Add(orderBox);
-                box.SetFlowOrder();
+                box.FlowStep.SetFlowOrder();
 
                 if (box.BoxesChildren.Count > 0)
                     CreateOrdersBoxes(box.BoxesChildren);
-                else if(box.ProductID != null && box.ProductID != Guid.Empty)
+                else if (box.ProductID != null && box.ProductID != Guid.Empty)
                 {
                     CreateOrderProductItem(box);
                 }
-
             }
         }
 
@@ -87,14 +83,9 @@ namespace CtrlBox.Domain.Entities
         {
             foreach (var boxProductItem in box.BoxesProductItems)
             {
-                OrderProductItem orderProductItem = new OrderProductItem()
-                {
-                    ProductItemID = boxProductItem.ProductItemID,
-                    OrderID = this.Id
-                };
-
+                OrderProductItem orderProductItem = OrderProductItem.FactoryCreate(boxProductItem.ProductItemID, this.Id);
                 this.OrderProductItems.Add(orderProductItem);
-                boxProductItem.ProductItem.SetFlowOrder();
+                boxProductItem.ProductItem.FlowStep.SetFlowOrder();
             }
         }
 

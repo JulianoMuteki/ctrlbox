@@ -63,7 +63,7 @@ namespace CtrlBox.UI.Web.Controllers
 
                 //Busca preço de produtos por clientes. Deve sempre existir preço para todos clientes
                 var clientsProductsVM = _productService.GetClientsProductsByClientID(clientID);
-                var boxesProductItemsVM = _boxService.GetBoxesBoxesProductItemsByDeliveryID(new Guid(orderID));
+                var boxesProductItemsVM = _boxService.GetOrderProductItemByDeliveryID(new Guid(orderID));
 
                 //if (clientsProductsVM.Count == 0)
                 //    throw CustomException.Create<SaleController>("There aren't products for this client.", nameof(this.GetAjaxHandlerExecuteSale));

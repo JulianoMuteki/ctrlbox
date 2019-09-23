@@ -39,13 +39,7 @@ namespace CtrlBox.Application
 
                         foreach (var box in boxes)
                         {
-                            DeliveryDetail deliveryDetail = new DeliveryDetail()
-                            {
-                                ClientID = sale.ClientID,
-                                ProductID = saleProduct.ProductID,
-                                OrderID = sale.OrderID,
-                                QuantityProductItem = saleProduct.Quantity
-                            };
+                            DeliveryDetail deliveryDetail = DeliveryDetail.FactoryCreate(sale.ClientID, saleProduct.ProductID, sale.OrderID, saleProduct.Quantity);
 
                             deliveryDetail.MakeDeliveryBox(box);
                             deliveriesBoxes.Add(deliveryDetail);

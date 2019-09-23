@@ -8,7 +8,7 @@ namespace CtrlBox.Domain.Interfaces.Application
     {
         ICollection<ClientVM> GetAvailable(Guid routeID);
         ICollection<ClientVM> GetNotAvailable(Guid idRoute);
-        ICollection<ClientVM> GetByRouteID(Guid routeID);
+        ICollection<ClientVM> GetByRouteIDAndOrderID(Guid routeID, Guid orderID);
         ICollection<OptiontTypeVM> GetAllOptionsTypes();
         void AddOptionType(OptiontTypeVM optiontTypeVM);
     }

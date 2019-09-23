@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CtrlBox.UI.Web.Models;
 using CtrlBox.Application.ViewModel;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -29,6 +30,11 @@ namespace CtrlBox.UI.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            var excptionDetail = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            //excptionDetail.Path;
+            //excptionDetail.Error.Message;
+            //excptionDetail.Error.Source;
+            //excptionDetail.Error.StackTrace;
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 

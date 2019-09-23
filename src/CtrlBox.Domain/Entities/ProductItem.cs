@@ -1,14 +1,15 @@
 ﻿using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
+using CtrlBox.Domain.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
-    public class ProductItem: EntityBase
+    public class ProductItem : EntityBase
     {
         public string Barcode { get; set; }
-        public EFlowStep EFlowStep { get; set; }
+        public FlowStep FlowStep { get; set; }
 
         public Guid ProductID { get; set; }
         public Product Product { get; set; }
@@ -18,8 +19,8 @@ namespace CtrlBox.Domain.Entities
         public ICollection<Tracking> Trackings { get; set; }
         public ICollection<OrderProductItem> OrderProductItems { get; set; }
 
-        public ProductItem()
-            :base()
+        private ProductItem()
+            : base()
         {
             this.OrderProductItems = new HashSet<OrderProductItem>();
             this.Trackings = new HashSet<Tracking>();
@@ -32,7 +33,8 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
                 this.Status = EProductItemStatus.AvailableStock;
-                this.EFlowStep = EFlowStep.Available;
+                this.FlowStep = FlowStep.FactoryCreate();
+                this.FlowStep.SetAvailable();
             }
         }
 
@@ -40,51 +42,44 @@ namespace CtrlBox.Domain.Entities
         {
             this.IsDisable = true;
             this.Status = EProductItemStatus.Sold_Delivered;
-            SetFlowDelivered();
-        }
-
-        internal void FinishDelivery(bool hasCrossDocking)
-        {
-            if (hasCrossDocking)
-                this.EFlowStep = EFlowStep.InStock;
-            else
-                this.EFlowStep = EFlowStep.Delivery;
+            this.FlowStep.SetFlowDelivered();
         }
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
-            Tracking tracking = new Tracking()
-            {
-                TrackingTypeID = trackingTypeID,
-                ProductItemID = this.Id
-            };
+            Tracking tracking = Tracking.FactoryCreate(trackingTypeID, this.Id, null);
 
             if (clientID != null && clientID != Guid.Empty)
             {
-                tracking.TrackingsClients.Add(new TrackingClient()
-                {
-                    ClientID = clientID,
-                    TrackingID = tracking.Id
-                });
+                tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
             }
 
             this.Trackings.Add(tracking);
-        }        
-
-        private void SetFlowDelivered()
-        {
-            this.EFlowStep = EFlowStep.Delivery;
         }
 
         internal void PutInTheBox()
         {
             this.Status = EProductItemStatus.InBox;
-            this.EFlowStep = EFlowStep.InBox;
+            this.FlowStep.SetInBox();
         }
 
-        internal void SetFlowOrder()
+        public void AddInStock(Guid trackingTypeID, Guid clientID)
         {
-            this.EFlowStep = EFlowStep.Order;
+            this.FlowStep.SetInStock();
+            AddTracking(trackingTypeID, clientID);
+        }
+
+        public static ProductItem FactoryCreate(Guid productID)
+        {
+            var productItem = new ProductItem()
+            {
+                Barcode = $"1{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14),
+                ProductID = productID,
+                FlowStep = FlowStep.FactoryCreate()
+            };
+
+            productItem.FlowStep.SetAvailable();
+            return productItem;
         }
     }
 }

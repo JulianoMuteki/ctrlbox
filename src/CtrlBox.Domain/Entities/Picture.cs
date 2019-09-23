@@ -22,7 +22,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<BoxType> BoxesTypes { get; set; }
         public ICollection<TrackingType> TracesTypes { get; set; }
 
-        public Picture()
+        private Picture()
             :base()
         {
             this.TracesTypes = new HashSet<TrackingType>();

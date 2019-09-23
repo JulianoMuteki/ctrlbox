@@ -14,7 +14,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<ClientOptionType> ClientsOptionsTypes { get; set; }
 
-        public OptiontType()
+        private OptiontType()
         : base()
         {
             this.ClientsOptionsTypes = new HashSet<ClientOptionType>();

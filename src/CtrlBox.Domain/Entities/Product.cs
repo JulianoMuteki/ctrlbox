@@ -30,7 +30,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Box> Boxes { get; set; }
 
-        public Product()
+        private Product()
             :base()
         {
             this.DeliveriesDetails = new HashSet<DeliveryDetail>();

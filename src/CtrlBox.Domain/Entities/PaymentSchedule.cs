@@ -15,7 +15,7 @@ namespace CtrlBox.Domain.Entities
         public Guid PaymentMethodID { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
 
-        public PaymentSchedule()
+        private PaymentSchedule()
             :base()
         {
            

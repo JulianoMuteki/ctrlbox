@@ -107,7 +107,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
                               (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
                            
-                           .Where(x => x.DeliveryBox.OrderID == deliveryID && x.Box.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
+                           .Where(x => x.DeliveryBox.OrderID == deliveryID && x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
                            .Select(x => x.Box);
                            
 
@@ -161,14 +161,13 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
-        public ICollection<BoxProductItem> GetBoxesBoxesProductItemsByDeliveryID(Guid deliveryID)
+        public ICollection<OrderProductItem> GetOrderProductItemByDeliveryID(Guid deliveryID)
         {
             try
             {
-                var query = _context.Set<BoxProductItem>()
-
-                          //  .Where(x => x.OrderID == deliveryID && x.IsDelivered == false)
-                            .Include(b => b.ProductItem).ThenInclude(p => p.Product);
+                var query = _context.Set<OrderProductItem>()
+                            .Include(b => b.ProductItem).ThenInclude(p => p.Product)
+                            .Where(x => x.OrderID == deliveryID);
 
                 return query.ToList();
             }

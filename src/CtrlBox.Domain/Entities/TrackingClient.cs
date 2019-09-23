@@ -13,9 +13,14 @@ namespace CtrlBox.Domain.Entities
         public Guid ClientID { get; set; }
         public Client Client { get; set; }
 
-        public TrackingClient()
+        private TrackingClient()
         {
 
+        }
+
+        public static TrackingClient FactoryCreate(Guid trackingID, Guid clientID)
+        {
+            return new TrackingClient(){ ClientID = clientID, TrackingID = trackingID };
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

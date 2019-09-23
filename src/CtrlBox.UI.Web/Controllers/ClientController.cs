@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using CtrlBox.Application.ViewModel;
+﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.CrossCutting;
 using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +42,13 @@ namespace CtrlBox.UI.Web.Controllers
             if (clientVM != null)
                 clientVM.SetClientsCategoriesID();
 
+            LoadDropDowns();
+
+            return View(clientVM);
+        }
+
+        private void LoadDropDowns()
+        {
             var addresses = _addressApplicationService.GetAll()
                                         .Select(address => new SelectListItem
                                         {
@@ -54,22 +61,37 @@ namespace CtrlBox.UI.Web.Controllers
                             .Select(option => new SelectListItem
                             {
                                 Value = option.DT_RowId,
-                                Text =  $"{option.Name} - {option.EClientType}"
+                                Text = $"{option.Name} - {option.EClientType}"
                             }).ToList();
             ViewData["OptionsTypes"] = optionsTypes;
-
-            return View(clientVM);
         }
 
         [HttpPost]
         public ActionResult Create(ClientVM clientVM)
         {
-            if (string.IsNullOrEmpty(clientVM.DT_RowId))
-                _clientApplicationService.Add(clientVM);
-            else
-                _clientApplicationService.Update(clientVM);
+            try
+            {
+                if (string.IsNullOrEmpty(clientVM.DT_RowId))
+                    clientVM = _clientApplicationService.Add(clientVM);
+                else
+                    clientVM = _clientApplicationService.Update(clientVM);
 
-            return RedirectToAction("Index");
+                if (clientVM.HasNotifications)
+                {
+                    LoadDropDowns();
+                    return View(clientVM);
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]

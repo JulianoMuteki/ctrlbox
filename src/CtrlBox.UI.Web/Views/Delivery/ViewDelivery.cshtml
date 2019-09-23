@@ -126,7 +126,7 @@
                                                     {
                                                         "mData": null,
                                                         "sType": "html",
-                                                        "bSortable": false,
+                                                        "bSortable": true,
                                                         "mData": function (data, type, row) {
                                                             if (type === 'display') {
                                                                 if (data.PictureID === '' || data.PictureID === null) {
@@ -134,13 +134,17 @@
                                                                 }
                                                                 return '<img  src="/../Configuration/ViewImage/' + data.PictureID + '" /> ' + data.BoxType;
                                                             }
+                                                            else if (type === 'sort') {
+                                                                console.log(data);
+                                                                return data.BoxType;
+                                                            }
                                                             return data;
                                                         }
                                                     },
                                                    {
                                                         "mData": null,
                                                         "sType": "html",
-                                                        "bSortable": false,
+                                                        "bSortable": true,
                                                         "mRender": function (data, type, row) {
                                                             if (type === 'display') {
                                                                 var statusStock = "green-stripe";
@@ -148,6 +152,10 @@
                                                                     statusStock = "red-stripe"
                                                                 }
                                                                 return '<span class="btn mini ' + statusStock + '">Total: ' + row.TotalBox + '</span>';
+                                                            }
+                                                            else if (type === 'sort') {
+                                                                console.log(data);
+                                                                return data.TotalBox;
                                                             }
                                                             return data;
                                                         }

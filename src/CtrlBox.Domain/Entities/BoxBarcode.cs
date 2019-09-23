@@ -21,13 +21,20 @@ namespace CtrlBox.Domain.Entities
         public Guid BoxID { get; set; }
         public Box Box { get; set; }
 
-        public BoxBarcode()
+        private BoxBarcode()
             : base()
         {
             this.BarcodeEAN13 = BarcodeGenerator.GetBarCodeNumber();
             this.BarcodeGS1_128 = string.Empty;
             this.RFID = string.Empty;
+        }
 
+        public static BoxBarcode FactoryCreate(Guid boxID)
+        {
+            return new BoxBarcode()
+            {
+                BoxID = boxID
+            };
         }
     }
 }

@@ -193,7 +193,7 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 Guid id = new Guid(deliveryID);
                 var deliveryVM = _deliveryService.GetById(id);
-                var clientsVM = _clientService.GetByRouteID(deliveryVM.RouteID);
+                var clientsVM = _clientService.GetByRouteIDAndOrderID(deliveryVM.RouteID, id);
                 ICollection<ExpenseVM> despesasVM = new List<ExpenseVM>();
 
                 var boxesLoadInRoute = _boxService.GetBoxesByDeliveryID(id).GroupBy(n => n.BoxTypeID)
@@ -210,7 +210,7 @@ namespace CtrlBox.UI.Web.Controllers
                 return Json(new
                 {
                     aaData = clientsVM,
-                    xaData = boxesLoadInRoute.ToList(),
+                    xaData = boxesLoadInRoute.OrderBy(x=>x.TotalProductItems).ToList(),
                     xbData = despesasVM,
                     success = true
                 });
@@ -310,10 +310,10 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 //Busca preço de produtos por clientes. Deve sempre existir preço para todos clientes
-                var clientsProductsVM = _productService.GetClientsProductsByClientID(clientID);
-                var boxesProductItemsVM = _boxService.GetBoxesBoxesProductItemsByDeliveryID(deliveryID);
+               // var clientsProductsVM = _productService.GetClientsProductsByClientID(clientID);
+                var boxesProductItemsVM = _boxService.GetOrderProductItemByDeliveryID(deliveryID);
 
-                var boxesProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
+                var orderProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
                                                                   (key, group) => new {
                                                                       DT_RowId = key,
                                                                       Product = group.Select(x => x.ProductItem.Product).FirstOrDefault(),
@@ -325,7 +325,7 @@ namespace CtrlBox.UI.Web.Controllers
 
                 return Json(new
                 {
-                    aaData = boxesProductItemsGroup.Select(x => new
+                    aaData = orderProductItemsGroup.Select(x => new
                     {
                         DT_RowId = x.DT_RowId.ToString(),
                         x.NomeProduto,
@@ -337,7 +337,7 @@ namespace CtrlBox.UI.Web.Controllers
                             Weight = $"{x.Product.Weight} {x.Product.MassUnitWeight}"
                         },
                         x.PictureID,
-                        ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
+                        //ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
                         x.TotalBox,
                         Total = String.Format("{0:c}", 0)
                     }),

@@ -16,7 +16,7 @@ namespace CtrlBox.Domain.Entities
 
         public virtual ICollection<Client> Clients { get; set; }
 
-        public Address()
+        private Address()
             : base()
         {
             this.Clients = new HashSet<Client>();

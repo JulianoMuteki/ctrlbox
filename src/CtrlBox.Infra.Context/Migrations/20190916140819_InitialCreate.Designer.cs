@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20190816092605_InitialCreate")]
+    [Migration("20190916140819_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,8 +86,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(250);
-
-                    b.Property<int>("EFlowStep");
 
                     b.Property<bool>("IsDelete");
 
@@ -434,8 +432,6 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<Guid>("BoxID");
 
-                    b.Property<bool>("IsFinalized");
-
                     b.HasKey("OrderID", "BoxID");
 
                     b.HasIndex("BoxID");
@@ -448,8 +444,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<Guid>("OrderID");
 
                     b.Property<Guid>("ProductItemID");
-
-                    b.Property<bool>("IsFinalized");
 
                     b.HasKey("OrderID", "ProductItemID");
 
@@ -662,8 +656,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
-
-                    b.Property<int>("EFlowStep");
 
                     b.Property<bool>("IsDelete");
 
@@ -1068,6 +1060,23 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
                         .WithMany("Boxes")
                         .HasForeignKey("ProductID");
+
+                    b.OwnsOne("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "FlowStep", b1 =>
+                        {
+                            b1.Property<Guid>("BoxId");
+
+                            b1.Property<int>("EFlowStep")
+                                .HasColumnName("EFlowStep");
+
+                            b1.HasKey("BoxId");
+
+                            b1.ToTable("Boxes");
+
+                            b1.HasOne("CtrlBox.Domain.Entities.Box")
+                                .WithOne("FlowStep")
+                                .HasForeignKey("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "BoxId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxBarcode", b =>
@@ -1247,6 +1256,23 @@ namespace CtrlBox.Infra.Context.Migrations
                         .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsOne("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "FlowStep", b1 =>
+                        {
+                            b1.Property<Guid>("ProductItemId");
+
+                            b1.Property<int>("EFlowStep")
+                                .HasColumnName("EFlowStep");
+
+                            b1.HasKey("ProductItemId");
+
+                            b1.ToTable("ProductItems");
+
+                            b1.HasOne("CtrlBox.Domain.Entities.ProductItem")
+                                .WithOne("FlowStep")
+                                .HasForeignKey("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "ProductItemId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Route", b =>

@@ -9,6 +9,7 @@ using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Domain.Entities;
 using CtrlBox.CrossCutting;
+using CtrlBox.Infra.Context;
 
 namespace CtrlBox.Application
 {
@@ -29,6 +30,12 @@ namespace CtrlBox.Application
             {
                 var client = _mapper.Map<Client>(entity);
                 client.SetOptionsTypes(entity.OptionsTypesID);
+
+                if(!client.ComponentValidator.IsValid)
+                {
+                    entity.SetNotifications(client.ComponentValidator.GetNotifications());
+                    return entity;
+                }
                 _unitOfWork.Repository<Client>().Add(client);
                 _unitOfWork.CommitSync();
 
@@ -178,13 +185,16 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<ClientVM> GetByRouteID(Guid routeID)
+        public ICollection<ClientVM> GetByRouteIDAndOrderID(Guid routeID, Guid orderID)
         {
             try
             {
                 var clients = _unitOfWork.RepositoryCustom<IClientRepository>().GetByRouteID(routeID);
+                var details = _unitOfWork.Repository<DeliveryDetail>().FindBy(x => x.OrderID == orderID).ToList();
 
-                IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(clients);
+                var result = clients.Select(x => { x.DeliveriesDetails = details.Where(d => d.ClientID == x.Id).ToList(); return x; }).ToList();
+
+                IList<ClientVM> clientsVM = _mapper.Map<List<ClientVM>>(result);
 
                 return clientsVM;
             }
@@ -194,7 +204,7 @@ namespace CtrlBox.Application
             }
             catch (Exception ex)
             {
-                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get client", nameof(this.GetByRouteID), ex);
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching get client", nameof(this.GetByRouteIDAndOrderID), ex);
             }
         }
 

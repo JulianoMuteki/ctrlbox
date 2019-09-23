@@ -15,7 +15,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<Tracking> Trackings { get; set; }
 
-        public TrackingType()
+        private TrackingType()
             : base()
         {
             this.Trackings = new HashSet<Tracking>();

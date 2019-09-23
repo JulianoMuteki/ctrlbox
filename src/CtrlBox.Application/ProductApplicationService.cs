@@ -6,7 +6,6 @@ using CtrlBox.Domain.Entities;
 using CtrlBox.Domain.Interfaces.Application;
 using CtrlBox.Domain.Interfaces.Base;
 using CtrlBox.Domain.Interfaces.Repository;
-using CtrlBox.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -241,10 +240,7 @@ namespace CtrlBox.Application
 
                 for (int i = 0; i < quantity; i++)
                 {
-                    ProductItem productItem = new ProductItem();
-                    productItem.Barcode = $"{i}{ DateTime.Now.Date.ToString("yyyyMMddHHmmss")}".Substring(0, 14);
-                    productItem.ProductID = productID;
-                    productItem.EFlowStep = EFlowStep.Available;
+                    ProductItem productItem = ProductItem.FactoryCreate(productID);              
                     productsItems.Add(productItem);
                 }
 
@@ -324,29 +320,15 @@ namespace CtrlBox.Application
         {
             try
             {
+                _unitOfWork.SetTrackAll();
                 var productItems = _unitOfWork.RepositoryCustom<IProductRepository>().GetAvailableProductItemByProductID(productID, quantity);
-
-                IList<Tracking> trackings = new List<Tracking>();
 
                 foreach (var productItem in productItems)
                 {
-                    productItem.EFlowStep = EFlowStep.InStock;
-
-                    Tracking tracking = new Tracking()
-                    {
-                        TrackingTypeID = trackingTypeID,
-                        ProductItemID = productItem.Id
-                    };
-
-                    tracking.TrackingsClients.Add(new TrackingClient()
-                    {
-                        ClientID = clientID,
-                        TrackingID = tracking.Id
-                    });
-                    trackings.Add(tracking);
+                    productItem.AddInStock(trackingTypeID, clientID);
                 }
 
-                _unitOfWork.Repository<Tracking>().AddRange(trackings);
+              //  _unitOfWork.Repository<Tracking>().AddRange(trackings);
                 _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
                 _unitOfWork.CommitSync();
             }
@@ -395,6 +377,7 @@ namespace CtrlBox.Application
                     productsItemsUpdate.AddRange(updateList);
 
                     Box box = Box.FactoryCreate(boxTypeID, boxType, i, productID);
+                    box.FlowStep.SetInStock();
                     box.LoadProductItems(updateList);
                     box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
@@ -449,12 +432,13 @@ namespace CtrlBox.Application
                 for (int i = 0; i < quantity; i++)
                 {
                     var updateList = boxesChildrem.Where(x => !boxesUpdateChildrem.Any(p => p.Id == x.Id)).Take(boxType.MaxProductsItems).ToList();
-                    boxesUpdateChildrem.AddRange(updateList);
 
                     Box box = Box.FactoryCreate(boxTypeID, boxType, i);
-                    box.AddChildren(updateList);
+                    box.FlowStep.SetInStock();
+                    boxesUpdateChildrem.AddRange(box.AddChildren(updateList));
                     box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
+                    box.BoxesChildren = null;
                     boxes.Add(box);
                 }
 

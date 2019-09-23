@@ -17,7 +17,7 @@ namespace CtrlBox.Domain.Entities
 
         public ICollection<TrackingClient> TrackingsClients { get; set; }
 
-        public Tracking()
+        private Tracking()
             : base()
         {
             this.TrackingsClients = new HashSet<TrackingClient>();
@@ -33,11 +33,13 @@ namespace CtrlBox.Domain.Entities
 
         public void AddClient(Guid clientID)
         {
-            this.TrackingsClients.Add(new TrackingClient()
-            {
-                ClientID = clientID,
-                TrackingID = this.Id
-            });
+            this.TrackingsClients.Add(TrackingClient.FactoryCreate(this.Id, clientID));
         }
+
+        internal static Tracking FactoryCreate(Guid trackingTypeID, Guid? productItemID, Guid? boxID)
+        {
+            return new Tracking() { TrackingTypeID = trackingTypeID, ProductItemID = productItemID, BoxID = boxID };
+        }
+
     }
 }

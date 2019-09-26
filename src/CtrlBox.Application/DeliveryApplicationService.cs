@@ -216,10 +216,9 @@ namespace CtrlBox.Application
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
                     var boxesProductsAvailable = boxes.Where(x => x.ProductID == deliveryDetail.ProductID).ToList();
+                    var boxesUpdate = deliveryDetail.Create(boxesProductsAvailable, trackingTypeID);
 
-                    deliveryDetail.Create(boxesProductsAvailable, trackingTypeID);
-
-                    boxesUppate.AddRange(boxesProductsAvailable);
+                    boxesUppate.AddRange(boxesUpdate);
                 }
 
                 _unitOfWork.Repository<Box>().UpdateRange(boxes);

@@ -120,7 +120,7 @@
                                 "data": obj.xaData,
                                 "bPaginate": false,
                                 "bAutoWidth": false,
-                                bFilter: false, bInfo: false,
+                                bFilter: true, bInfo: false,
 
                                 "aoColumns": [
                                                     {
@@ -134,8 +134,11 @@
                                                                 }
                                                                 return '<img  src="/../Configuration/ViewImage/' + data.PictureID + '" /> ' + data.BoxType;
                                                             }
-                                                            else if (type === 'sort') {
+                                                            else if (type === 'filter') {
                                                                 console.log(data);
+                                                                return data.BoxType;
+                                                            }
+                                                            else if (type === 'sort') {
                                                                 return data.BoxType;
                                                             }
                                                             return data;

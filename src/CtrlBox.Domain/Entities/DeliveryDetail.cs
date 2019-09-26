@@ -58,10 +58,11 @@ namespace CtrlBox.Domain.Entities
             };
         }
 
-        public void Create(List<Box> boxesProductsAvailable, Guid trackingTypeID)
+        public List<Box> Create(List<Box> boxesProductsAvailable, Guid trackingTypeID)
         {
             var totalProductItemsDelivery = this.QuantityProductItem;
 
+            List<Box> boxesProductsUpdate = new List<Box>();
             foreach (var box in boxesProductsAvailable)
             {
                 if (totalProductItemsDelivery == 0)
@@ -72,7 +73,10 @@ namespace CtrlBox.Domain.Entities
                 box.AddTrackingProductItems(trackingTypeID, this.ClientID);
 
                 totalProductItemsDelivery -= totalDelivered;
+                boxesProductsUpdate.Add(box);
             }
+
+            return boxesProductsUpdate;
         }
     }
 }

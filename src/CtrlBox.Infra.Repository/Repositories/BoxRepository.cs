@@ -93,7 +93,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
-        public ICollection<Box> GetBoxesByDeliveryWithBoxType(Guid deliveryID)
+        public ICollection<Box> GetBoxesByDeliveryWithBoxType(Guid orderID)
         {
             try
             {
@@ -105,9 +105,9 @@ namespace CtrlBox.Infra.Repository.Repositories
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
-                              (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
+                              (box, orderBox) => new { Box = box, OrderBox = orderBox }) // selection                      
                            
-                           .Where(x => x.DeliveryBox.OrderID == deliveryID && x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
+                           .Where(x => x.OrderBox.OrderID == orderID && x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
                            .Select(x => x.Box);
                            
 
@@ -161,13 +161,22 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
-        public ICollection<OrderProductItem> GetOrderProductItemByDeliveryID(Guid deliveryID)
+        public ICollection<OrderProductItem> GetOrderProductItemByDeliveryID(Guid orderID)
         {
             try
             {
+                //var query = _context.Set<OrderProductItem>()
+                //            .Include(b => b.ProductItem).ThenInclude(p => p.Product)
+                //            .Where(x => x.OrderID == deliveryID);
                 var query = _context.Set<OrderProductItem>()
                             .Include(b => b.ProductItem).ThenInclude(p => p.Product)
-                            .Where(x => x.OrderID == deliveryID);
+                           //.Join(_context.Set<Box>(),
+                           //   ordP => ordP.ProductItemID,
+                           //   box => box.Id,
+                           //   (orderProductItem, box) => new { Box = box, OrderProductItem = orderProductItem })               
+
+                           .Where(x => x.OrderID == orderID && x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order);
+                          
 
                 return query.ToList();
             }

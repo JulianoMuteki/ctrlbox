@@ -28,6 +28,7 @@ var BoxComponents = function () {
                                     }
                                     return '<img  src="/../Configuration/ViewImage/' + data.BoxType.PictureID + '" /> ' + data.BoxType.Name ;
                                 }
+                               
                                 else if (type === 'sort') {
                                     console.log(data);
                                     return data.BoxType.Name;

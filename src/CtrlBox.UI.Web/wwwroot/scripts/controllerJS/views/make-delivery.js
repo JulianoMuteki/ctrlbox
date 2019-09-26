@@ -102,11 +102,14 @@ var MakeDeliveryComponents = function () {
 
                 var qtdeVenda = $(value).find('input.qtdeVenda').val();
                 qtdeVenda = qtdeVenda || 0;
-                deliveryDetail.ClientID = _clientID;
-                deliveryDetail.QuantityProductItem = qtdeVenda;
-                deliveryDetail.ProductID = row.DT_RowId;
-                deliveryDetail.OrderID = _orderID;
-                tbDeliveriesDetails.push(deliveryDetail);
+
+                if (qtdeVenda > 0) {
+                    deliveryDetail.ClientID = _clientID;
+                    deliveryDetail.QuantityProductItem = qtdeVenda;
+                    deliveryDetail.ProductID = row.DT_RowId;
+                    deliveryDetail.OrderID = _orderID;
+                    tbDeliveriesDetails.push(deliveryDetail);
+                }
             });
             order.DeliveriesDetails = tbDeliveriesDetails;
 

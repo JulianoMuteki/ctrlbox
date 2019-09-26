@@ -106,8 +106,10 @@ namespace CtrlBox.Domain.Entities
 
         public int CountQuantityProductItems { get; set; }
 
-        public void DoDelivery(DeliveryDetail deliveryDetail, int quantity)
+        public int DoDelivery(DeliveryDetail deliveryDetail, int quantity)
         {
+            var totalProductItemsDelivered = 0;
+
             deliveryDetail.AddDeliveryBox(this.Id);
             if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
             {
@@ -116,10 +118,16 @@ namespace CtrlBox.Domain.Entities
                 foreach (var boxProductItem in boxProductsItems)
                 {
                     boxProductItem.Deliver();
+                    totalProductItemsDelivered++;
                 }
 
-                this.BoxParent.CountQuantityProductItems -= boxProductsItems.Count;
+                SubtractProductItemsOfBoxParent(boxProductsItems);
                 LoadFullBoxCompletedProductItems();
+
+                if (!this.BoxesProductItems.Any(x=>x.ProductItem.FlowStep.EFlowStep != EFlowStep.Delivery))
+                {
+                    this.FlowStep.SetFlowDelivered();
+                }
             }
             else
             {
@@ -139,7 +147,13 @@ namespace CtrlBox.Domain.Entities
                 LoadFullBoxCompletedChildrem();
             }
 
-            this.FlowStep.SetFlowDelivered();
+            return totalProductItemsDelivered;
+        }
+
+        private void SubtractProductItemsOfBoxParent(List<BoxProductItem> boxProductsItems)
+        {
+            if (this.BoxParent != null)
+                this.BoxParent.CountQuantityProductItems -= boxProductsItems.Count;
         }
 
         private void LoadFullBoxCompletedProductItems()

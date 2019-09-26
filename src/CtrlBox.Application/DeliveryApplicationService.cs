@@ -212,15 +212,14 @@ namespace CtrlBox.Application
                 _unitOfWork.SetTrackAll();
                 var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(order.Id);
 
+                List<Box> boxesUppate = new List<Box>();
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
-                    foreach (var box in boxes)
-                    {
-                        deliveryDetail.MakeDeliveryBox(box);
+                    var boxesProductsAvailable = boxes.Where(x => x.ProductID == deliveryDetail.ProductID).ToList();
 
-                        box.AddTracking(trackingTypeID, deliveryDetail.ClientID);
-                        box.AddTrackingProductItems(trackingTypeID, deliveryDetail.ClientID);
-                    }
+                    deliveryDetail.Create(boxesProductsAvailable, trackingTypeID);
+
+                    boxesUppate.AddRange(boxesProductsAvailable);
                 }
 
                 _unitOfWork.Repository<Box>().UpdateRange(boxes);

@@ -115,6 +115,7 @@ namespace CtrlBox.Domain.Entities
             this.IsFinalized = true;
             this.DtEnd = DateTime.Now;
             this.FinalizedBy = "Juliano";
+            this.Route.OrderClosed();
         }
     }
 }

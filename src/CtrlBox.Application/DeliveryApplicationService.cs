@@ -29,18 +29,17 @@ namespace CtrlBox.Application
             {
                 _unitOfWork.SetTrackAll();
                 var order = _mapper.Map<Order>(entity);
-
-                //var boxesVM = _boxService.GetBoxesStockParents(routeID);
-              var boxes =  _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesAvailableToOrderByRouteID(order.RouteID);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesAvailableToOrderByRouteID(order.RouteID);
                 foreach (BoxTypeVM boxType in entity.BoxesTypes)
                 {
-                    // var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
                     var boxesReadyToDelivery = boxes.Where(x => x.BoxTypeID == new Guid(boxType.DT_RowId)).Take(boxType.QuantityToDelivery).ToList();
 
                     order.CreateOrdersBoxes(boxesReadyToDelivery);
                     _unitOfWork.Repository<Box>().UpdateRange(boxesReadyToDelivery);
                 }
-
+                var route = _unitOfWork.Repository<Route>().GetById(order.RouteID);
+                route.OpenOrder();
+                _unitOfWork.Repository<Route>().Update(route);
                 _unitOfWork.Repository<Order>().Add(order);
                 _unitOfWork.CommitSync();
 
@@ -90,26 +89,18 @@ namespace CtrlBox.Application
             }
         }
 
-        public void FinishDelivery(Guid orderID, bool hasCrossDocking)
+        public void FinishDelivery(Guid orderID)
         {
             try
             {
                 _unitOfWork.SetTrackAll();
                 var order = _unitOfWork.Repository<Order>().GetById(orderID);
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesDeliveredByRouteID(orderID);
+                order.Route = _unitOfWork.Repository<Route>().GetById(order.RouteID);
+                order.Close();
 
-                if (boxes.Count > 0)
-                {
-                    foreach (var box in boxes)
-                    {
-                        box.FinishDelivery(hasCrossDocking);
-                    }
-                    order.Close();
+                _unitOfWork.Repository<Order>().Update(order);
+                _unitOfWork.CommitSync();
 
-                    _unitOfWork.Repository<Box>().UpdateRange(boxes);
-                    _unitOfWork.Repository<Order>().Update(order);
-                    _unitOfWork.CommitSync();
-                }
             }
             catch (CustomException exc)
             {
@@ -221,7 +212,7 @@ namespace CtrlBox.Application
                 List<Box> boxesUpdate = new List<Box>();
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
-                    var boxesProductsAvailable = boxes.Where(x => x.ProductID == deliveryDetail.ProductID).OrderBy(x=>x.PorcentFull).ToList();
+                    var boxesProductsAvailable = boxes.Where(x => x.ProductID == deliveryDetail.ProductID).OrderBy(x => x.PorcentFull).ToList();
                     var boxesUpdateResult = deliveryDetail.DeliveryBoxesAndProductItems(boxesProductsAvailable, trackingTypeID);
 
                     boxesUpdate.AddRange(boxesUpdateResult);

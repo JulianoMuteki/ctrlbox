@@ -375,9 +375,8 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult PostAjaxHanblerFinishDelivery(Guid orderID, bool hasCrossDocking)
         {
             try
-            {
-              
-                _deliveryService.FinishDelivery(orderID, hasCrossDocking);
+            {            
+                _deliveryService.FinishDelivery(orderID);
 
                 return Json(new
                 {

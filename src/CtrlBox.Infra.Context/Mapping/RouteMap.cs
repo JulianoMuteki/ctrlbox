@@ -25,7 +25,7 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired()
                 .HasMaxLength(250);
 
-            builder.Property(e => e.HasOpenDelivery)
+            builder.Property(e => e.HasOpenOrder)
                 .IsRequired();
 
             builder.HasOne(x=>x.ClientOrigin)

@@ -395,7 +395,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     KmDistance = table.Column<int>(nullable: false),
                     Truck = table.Column<string>(maxLength: 250, nullable: false),
-                    HasOpenDelivery = table.Column<bool>(nullable: false),
+                    HasOpenOrder = table.Column<bool>(nullable: false),
                     ClientOriginID = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>

@@ -685,7 +685,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DateModified");
 
-                    b.Property<bool>("HasOpenDelivery");
+                    b.Property<bool>("HasOpenOrder");
 
                     b.Property<bool>("IsDelete");
 

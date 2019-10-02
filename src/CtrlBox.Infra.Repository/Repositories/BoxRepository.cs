@@ -227,5 +227,43 @@ namespace CtrlBox.Infra.Repository.Repositories
                 throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetBoxesParentsWithBoxType), ex);
             }
         }
+
+        public ICollection<Box> GetBoxesAvailableToOrderByRouteID(Guid routeID)
+        {
+            try
+            {
+                var query = _context.Set<Box>()
+                            .Include(x => x.BoxesChildren)
+                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                            .AsEnumerable() // <-- Force full execution (loading) of the above
+                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
+                            .Join(_context.Set<Tracking>(),
+                              pdi => pdi.Id,
+                              track => track.BoxID,
+                              (pdi, track) => new { Box = pdi, Tracking = track })
+                            .Join(_context.Set<TrackingType>(),
+                              track => track.Tracking.TrackingTypeID,
+                              tt => tt.Id,
+                              (track, tt) => new { track.Box, track.Tracking, TrackingType = tt })
+                            .Join(_context.Set<TrackingClient>(),
+                              track => track.Tracking.Id,
+                              cl => cl.TrackingID,
+                              (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
+                            .Join(_context.Set<Route>(),
+                              rt => rt.TrackingClient.ClientID,
+                              clit => clit.ClientOriginID,
+                              (tr, rt) => new { tr.Box, tr.Tracking, tr.TrackingClient, tr.TrackingType, Route = rt })
+                              .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
+                                     (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
+                                     x.Route.Id == routeID)
+                           .Select(x => x.Box);                          
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductRepository>("Unexpected error fetching total", nameof(this.GetBoxesAvailableToOrderByRouteID), ex);
+            }
+        }
     }
 }

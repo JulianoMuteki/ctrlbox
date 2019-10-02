@@ -28,17 +28,20 @@ namespace CtrlBox.Application
             try
             {
                 _unitOfWork.SetTrackAll();
-                var delivery = _mapper.Map<Order>(entity);
+                var order = _mapper.Map<Order>(entity);
 
+                //var boxesVM = _boxService.GetBoxesStockParents(routeID);
+              var boxes =  _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesAvailableToOrderByRouteID(order.RouteID);
                 foreach (BoxTypeVM boxType in entity.BoxesTypes)
                 {
-                    var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
+                    // var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
+                    var boxesReadyToDelivery = boxes.Where(x => x.BoxTypeID == new Guid(boxType.DT_RowId)).Take(boxType.QuantityToDelivery).ToList();
 
-                    delivery.CreateOrdersBoxes(boxesReadyToDelivery);
+                    order.CreateOrdersBoxes(boxesReadyToDelivery);
                     _unitOfWork.Repository<Box>().UpdateRange(boxesReadyToDelivery);
                 }
 
-                _unitOfWork.Repository<Order>().Add(delivery);
+                _unitOfWork.Repository<Order>().Add(order);
                 _unitOfWork.CommitSync();
 
                 return entity;

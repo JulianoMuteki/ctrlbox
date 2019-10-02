@@ -42,12 +42,12 @@ var AppCtrlBox = function () {
         });
     }
 
-    function putFinalizeDelivery(orderID, hasCrossDocking) {
+    function putFinalizeDelivery(orderID) {
         $.ajax({
             url: 'Delivery/PostAjaxHanblerFinishDelivery',
             type: 'POST',
             dataType: 'json',
-            data: { orderID: orderID, hasCrossDocking },
+            data: { orderID: orderID },
             "success": function (json) {
                 if (json.success) {
                     alert('Completo');
@@ -64,7 +64,6 @@ var AppCtrlBox = function () {
 
         callModalFinalizeDelivery: function (deliveryID) {
             $("#btnCloseDelivery").val(deliveryID);
-            $("#btnCrossDocking").val(deliveryID);
             
             $.ajax({
                 url: 'Delivery/GetTableAjaxHandlerResumeDelivery',
@@ -85,12 +84,8 @@ var AppCtrlBox = function () {
         },
         putFinalizeDelivery: function (button) {
             var id = $(button).val();
-            putFinalizeDelivery(id, false)
+            putFinalizeDelivery(id)
         },
-        putCrossDockingFinalize: function (button) {
-            var id = $(button).val();
-            putFinalizeDelivery(id, true)
-        }
 
     };
 }();

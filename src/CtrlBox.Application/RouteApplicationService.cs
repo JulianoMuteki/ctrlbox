@@ -124,7 +124,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var routes = _unitOfWork.Repository<Route>().GetAll();
+                var routes = _unitOfWork.Repository<Route>().FindAll(x => x.HasOpenOrder == false);
 
                 var routesVMs = _mapper.Map<List<RouteVM>>(routes);
                 return routesVMs;

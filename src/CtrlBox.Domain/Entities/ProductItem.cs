@@ -3,6 +3,7 @@ using CtrlBox.Domain.Common;
 using CtrlBox.Domain.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -38,15 +39,29 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
-        internal void Deliver()
+        internal void Deliver(bool hasCrossDocking)
         {
-            this.IsDisable = true;
-            this.Status = EProductItemStatus.Sold_Delivered;
-            this.FlowStep.SetFlowDelivered();
+            if (!hasCrossDocking)
+            {
+                this.IsDisable = true;
+                this.Status = EProductItemStatus.Sold_Delivered;
+                this.FlowStep.SetFlowDelivered();
+            }
+            else
+            {
+                this.FlowStep.SetFlowCrossDocking();
+            }
+        }
+
+        private void ResetLastTrack()
+        {
+            this.Trackings = this.Trackings.Select(x => { x.IsLastTrack = false; return x; }).ToList();
         }
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
+            ResetLastTrack();
+
             Tracking tracking = Tracking.FactoryCreate(trackingTypeID, this.Id, null);
 
             if (clientID != null && clientID != Guid.Empty)

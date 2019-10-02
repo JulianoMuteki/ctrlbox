@@ -102,7 +102,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                            .Include(x => x.BoxesChildren)
                             .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
-                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
+                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order) && x.BoxParentID == null)
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
@@ -208,7 +208,6 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Order);
-
                 return query.ToList();
             }
             catch (Exception ex)
@@ -223,6 +222,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                        .Include(b => b.BoxType)
                        .Include(x => x.BoxesChildren)
                        .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
+                       .Include(x=>x.Trackings)
                        .AsEnumerable() // <-- Force full execution (loading)
                        .Join(_context.Set<OrderBox>(), // the source table of the inner join
                           box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)

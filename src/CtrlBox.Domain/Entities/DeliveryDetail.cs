@@ -11,6 +11,7 @@ namespace CtrlBox.Domain.Entities
         public Product Product { get; set; }
 
         public int QuantityProductItem { get; set; }
+        public bool HasCrossDocking { get; set; }
 
         public Guid OrderID { get; set; }
         public Order Order { get; set; }
@@ -58,7 +59,7 @@ namespace CtrlBox.Domain.Entities
             };
         }
 
-        public List<Box> Create(List<Box> boxesProductsAvailable, Guid trackingTypeID)
+        public List<Box> DeliveryBoxesAndProductItems(List<Box> boxesProductsAvailable, Guid trackingTypeID)
         {
             var totalProductItemsDelivery = this.QuantityProductItem;
 
@@ -69,10 +70,10 @@ namespace CtrlBox.Domain.Entities
                     break;
 
                 var totalDelivered = box.DoDelivery(this, totalProductItemsDelivery);
+                totalProductItemsDelivery -= totalDelivered;
+
                 box.AddTracking(trackingTypeID, this.ClientID);
                 box.AddTrackingProductItems(trackingTypeID, this.ClientID);
-
-                totalProductItemsDelivery -= totalDelivered;
                 boxesProductsUpdate.Add(box);
             }
 

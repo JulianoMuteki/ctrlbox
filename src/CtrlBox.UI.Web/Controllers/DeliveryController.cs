@@ -310,7 +310,6 @@ namespace CtrlBox.UI.Web.Controllers
             try
             {
                 //Busca preço de produtos por clientes. Deve sempre existir preço para todos clientes
-               // var clientsProductsVM = _productService.GetClientsProductsByClientID(clientID);
                 var boxesProductItemsVM = _boxService.GetOrderProductItemByDeliveryID(deliveryID);
 
                 var orderProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
@@ -337,7 +336,6 @@ namespace CtrlBox.UI.Web.Controllers
                             Weight = $"{x.Product.Weight} {x.Product.MassUnitWeight}"
                         },
                         x.PictureID,
-                        //ValorProduto = String.Format("{0:c}", (from c in clientsProductsVM where c.ProductID.ToString() == x.DT_RowId select c.Price).FirstOrDefault()),
                         x.TotalBox,
                         Total = String.Format("{0:c}", 0)
                     }),

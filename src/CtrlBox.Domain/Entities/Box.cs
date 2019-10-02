@@ -113,18 +113,22 @@ namespace CtrlBox.Domain.Entities
             deliveryDetail.AddDeliveryBox(this.Id);
             if (this.ProductID != Guid.Empty && this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
             {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false && x.ProductItem.ProductID == deliveryDetail.ProductID ).Take(quantity).ToList();
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false && x.ProductItem.ProductID == deliveryDetail.ProductID).Take(quantity).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {
-                    boxProductItem.Deliver();
+                    boxProductItem.Deliver(deliveryDetail.HasCrossDocking);
                     totalProductItemsDelivered++;
                 }
 
                 SubtractProductItemsOfBoxParent(boxProductsItems);
                 LoadFullBoxCompletedProductItems();
 
-                if (!this.BoxesProductItems.Any(x=>x.ProductItem.FlowStep.EFlowStep != EFlowStep.Delivery))
+                if (deliveryDetail.HasCrossDocking)
+                {
+                    this.FlowStep.SetFlowCrossDocking();
+                }
+                else if (!this.BoxesProductItems.Any(x => x.ProductItem.FlowStep.EFlowStep != EFlowStep.Delivery) && !deliveryDetail.HasCrossDocking)
                 {
                     this.FlowStep.SetFlowDelivered();
                 }
@@ -191,6 +195,8 @@ namespace CtrlBox.Domain.Entities
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
+            ResetLastTrack();
+
             Tracking tracking = Tracking.FactoryCreate(trackingTypeID, null, this.Id);
 
             if (clientID != null && clientID != Guid.Empty)
@@ -199,6 +205,11 @@ namespace CtrlBox.Domain.Entities
             }
 
             this.Trackings.Add(tracking);
+        }
+
+        private void ResetLastTrack()
+        {
+            this.Trackings = this.Trackings.Select(x => { x.IsLastTrack = false; return x; }).ToList();
         }
 
         public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)

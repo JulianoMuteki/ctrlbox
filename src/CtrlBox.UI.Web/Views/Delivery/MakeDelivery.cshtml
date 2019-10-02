@@ -67,7 +67,7 @@
                             <div class="control-group">
                                 <label class="control-label">Select track<span class="required">*</span></label>
                                 <div class="controls">
-                                    <select id="ddlTrackingType" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"><option value="0">Please select Tracking Types</option></select>
+                                    <select id="ddlTrackingType" class="span6 select2_option" data-placeholder="Choose a tracking Types" name="TrackingTypeID" asp-items="@((List<SelectListItem>)ViewData["TrackingTypes"])"></select>
                                 </div>
                             </div>
                             <hr />
@@ -78,6 +78,7 @@
                                             <th>Product</th>
                                             <th>Items available to delivery</th>
                                             <th>Quantity</th>
+                                            <th>Has Cross-Docking</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

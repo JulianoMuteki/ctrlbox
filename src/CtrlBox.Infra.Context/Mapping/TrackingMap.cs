@@ -14,6 +14,9 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(x => x.Id).HasColumnName("TrackingID");
             builder.HasKey(b => b.Id).HasName("TrackingID");
 
+            builder.Property(x => x.IsLastTrack)
+                .IsRequired();
+
             builder.HasOne(x => x.Box)
                 .WithMany(x => x.Trackings)
                 .HasForeignKey(x => x.BoxID);

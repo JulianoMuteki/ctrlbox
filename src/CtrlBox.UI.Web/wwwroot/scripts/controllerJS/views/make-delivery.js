@@ -14,7 +14,6 @@ var MakeDeliveryComponents = function () {
             allowClear: true
         });
 
-
         oTable = $('#tbProductItems').dataTable({
             "sAjaxSource": '../Delivery/GetAjaxHandlerMakeDelivery',
             "fnServerParams": function (aoData) {
@@ -66,15 +65,23 @@ var MakeDeliveryComponents = function () {
                                     if (data.TotalBox == 0) {
                                         link = '<span class="label label-important">finished products</span>'
                                     }
-
+                                    return link;
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            "sType": "html",
+                            "mData": function (data, type, row) {
+                                if (type === 'display') {
+                                    var link = '<div class="controls"><select class="crossDocking span6 select2_option" name="CrossDocking"><option value="0">No</option><option value="1">Yes</option></select></div>';
+                                   
                                     return link;
                                 }
                                 return data;
                             }
                         }
-
             ]
-
         });
 
         $('#tbProductItems').on('click', ' tbody td .showDetails', function () {
@@ -101,6 +108,7 @@ var MakeDeliveryComponents = function () {
                 var deliveryDetail = {};
 
                 var qtdeVenda = $(value).find('input.qtdeVenda').val();
+
                 qtdeVenda = qtdeVenda || 0;
 
                 if (qtdeVenda > 0) {
@@ -108,6 +116,7 @@ var MakeDeliveryComponents = function () {
                     deliveryDetail.QuantityProductItem = qtdeVenda;
                     deliveryDetail.ProductID = row.DT_RowId;
                     deliveryDetail.OrderID = _orderID;
+                    deliveryDetail.HasCrossDocking = $(value).find('select.crossDocking').val();
                     tbDeliveriesDetails.push(deliveryDetail);
                 }
             });
@@ -133,7 +142,6 @@ var MakeDeliveryComponents = function () {
 
             return true;
         });
-
     }
 
     function fnFormatDetails(oTable, nTr) {

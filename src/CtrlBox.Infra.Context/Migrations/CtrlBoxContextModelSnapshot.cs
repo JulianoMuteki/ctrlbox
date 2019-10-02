@@ -300,6 +300,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<DateTime>("DateModified");
 
+                    b.Property<bool>("HasCrossDocking");
+
                     b.Property<bool>("IsDelete");
 
                     b.Property<bool>("IsDisable");
@@ -822,6 +824,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.Property<bool>("IsDelete");
 
                     b.Property<bool>("IsDisable");
+
+                    b.Property<bool>("IsLastTrack");
 
                     b.Property<Guid?>("ProductItemID");
 

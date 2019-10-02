@@ -140,7 +140,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
                               .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
                                      (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
-                                     x.TrackingClient.ClientID == clientID)
+                                     x.TrackingClient.ClientID == clientID && x.Tracking.IsLastTrack)
                            .Select(x => x.Box)
                            .Include(x => x.BoxType).ThenInclude(x => x.Picture);
 

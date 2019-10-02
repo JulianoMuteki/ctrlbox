@@ -15,6 +15,8 @@ namespace CtrlBox.Domain.Entities
         public Guid TrackingTypeID { get; set; }
         public TrackingType TrackingType { get; set; }
 
+        public bool IsLastTrack { get; set; }
+
         public ICollection<TrackingClient> TrackingsClients { get; set; }
 
         private Tracking()
@@ -38,7 +40,7 @@ namespace CtrlBox.Domain.Entities
 
         internal static Tracking FactoryCreate(Guid trackingTypeID, Guid? productItemID, Guid? boxID)
         {
-            return new Tracking() { TrackingTypeID = trackingTypeID, ProductItemID = productItemID, BoxID = boxID };
+            return new Tracking() { TrackingTypeID = trackingTypeID, ProductItemID = productItemID, BoxID = boxID, IsLastTrack = true };
         }
 
     }

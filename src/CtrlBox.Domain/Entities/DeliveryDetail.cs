@@ -11,6 +11,7 @@ namespace CtrlBox.Domain.Entities
         public Product Product { get; set; }
 
         public int QuantityProductItem { get; set; }
+        public bool HasCrossDocking { get; set; }
 
         public Guid OrderID { get; set; }
         public Order Order { get; set; }
@@ -20,7 +21,7 @@ namespace CtrlBox.Domain.Entities
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
 
         private DeliveryDetail()
-            :base()
+            : base()
         {
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
         }
@@ -56,11 +57,27 @@ namespace CtrlBox.Domain.Entities
                 OrderID = orderID,
                 QuantityProductItem = quantity
             };
-            //    ClientID = sale.ClientID,
-            //    ProductID = saleProduct.ProductID,
-            //    OrderID = sale.OrderID,
-            //    QuantityProductItem = saleProduct.Quantity
-            
+        }
+
+        public List<Box> DeliveryBoxesAndProductItems(List<Box> boxesProductsAvailable, Guid trackingTypeID)
+        {
+            var totalProductItemsDelivery = this.QuantityProductItem;
+
+            List<Box> boxesProductsUpdate = new List<Box>();
+            foreach (var box in boxesProductsAvailable)
+            {
+                if (totalProductItemsDelivery == 0)
+                    break;
+
+                var totalDelivered = box.DoDelivery(this, totalProductItemsDelivery);
+                totalProductItemsDelivery -= totalDelivered;
+
+                box.AddTracking(trackingTypeID, this.ClientID);
+                box.AddTrackingProductItems(trackingTypeID, this.ClientID);
+                boxesProductsUpdate.Add(box);
+            }
+
+            return boxesProductsUpdate;
         }
     }
 }

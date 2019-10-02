@@ -47,5 +47,10 @@ namespace CtrlBox.Domain.Entities.ValueObjects
         {
             this.EFlowStep = EFlowStep.InStock;
         }
+
+        internal void SetFlowCrossDocking()
+        {
+            this.EFlowStep = EFlowStep.CrossDocking;
+        }
     }
 }

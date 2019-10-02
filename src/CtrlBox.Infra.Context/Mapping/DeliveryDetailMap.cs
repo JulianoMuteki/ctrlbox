@@ -18,6 +18,9 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.QuantityProductItem)
                 .IsRequired();
 
+            builder.Property(e => e.HasCrossDocking)
+               .IsRequired();
+
             builder.HasOne(tk => tk.Order)
                 .WithMany(t => t.DeliveriesDetails)
                 .HasForeignKey(tk => tk.OrderID)

@@ -10,6 +10,7 @@ namespace CtrlBox.Application.ViewModel
         public ProductVM Product { get; set; }
 
         public int QuantityProductItem { get; set; }
+        public bool HasCrossDocking { get; set; }
 
         public Guid OrderID { get; set; }
         public OrderVM Order { get; set; }

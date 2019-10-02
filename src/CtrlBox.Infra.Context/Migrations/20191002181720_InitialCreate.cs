@@ -593,7 +593,8 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDisable = table.Column<bool>(nullable: false),
                     ProductItemID = table.Column<Guid>(nullable: true),
                     BoxID = table.Column<Guid>(nullable: true),
-                    TrackingTypeID = table.Column<Guid>(nullable: false)
+                    TrackingTypeID = table.Column<Guid>(nullable: false),
+                    IsLastTrack = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -661,6 +662,7 @@ namespace CtrlBox.Infra.Context.Migrations
                     IsDisable = table.Column<bool>(nullable: false),
                     ProductID = table.Column<Guid>(nullable: false),
                     QuantityProductItem = table.Column<int>(nullable: false),
+                    HasCrossDocking = table.Column<bool>(nullable: false),
                     OrderID = table.Column<Guid>(nullable: false),
                     ClientID = table.Column<Guid>(nullable: false)
                 },

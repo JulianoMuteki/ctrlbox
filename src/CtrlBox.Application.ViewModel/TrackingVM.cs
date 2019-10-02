@@ -12,6 +12,7 @@ namespace CtrlBox.Application.ViewModel
         public BoxVM Box { get; set; }
 
         public Guid ClientID { get; set; }
+        public bool IsLastTrack { get; set; }
 
         public Guid TrackingTypeID { get; set; }
         public TrackingTypeVM TrackingType { get; set; }

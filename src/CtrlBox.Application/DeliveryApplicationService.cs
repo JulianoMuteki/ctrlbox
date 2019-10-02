@@ -28,17 +28,20 @@ namespace CtrlBox.Application
             try
             {
                 _unitOfWork.SetTrackAll();
-                var delivery = _mapper.Map<Order>(entity);
+                var order = _mapper.Map<Order>(entity);
 
+                //var boxesVM = _boxService.GetBoxesStockParents(routeID);
+              var boxes =  _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesAvailableToOrderByRouteID(order.RouteID);
                 foreach (BoxTypeVM boxType in entity.BoxesTypes)
                 {
-                    var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
+                    // var boxesReadyToDelivery = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesByBoxTypeIDWithProductItems(new Guid(boxType.DT_RowId), boxType.QuantityToDelivery);
+                    var boxesReadyToDelivery = boxes.Where(x => x.BoxTypeID == new Guid(boxType.DT_RowId)).Take(boxType.QuantityToDelivery).ToList();
 
-                    delivery.CreateOrdersBoxes(boxesReadyToDelivery);
+                    order.CreateOrdersBoxes(boxesReadyToDelivery);
                     _unitOfWork.Repository<Box>().UpdateRange(boxesReadyToDelivery);
                 }
 
-                _unitOfWork.Repository<Order>().Add(delivery);
+                _unitOfWork.Repository<Order>().Add(order);
                 _unitOfWork.CommitSync();
 
                 return entity;
@@ -93,17 +96,20 @@ namespace CtrlBox.Application
             {
                 _unitOfWork.SetTrackAll();
                 var order = _unitOfWork.Repository<Order>().GetById(orderID);
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(orderID);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesDeliveredByRouteID(orderID);
 
-                foreach (var box in boxes)
+                if (boxes.Count > 0)
                 {
-                    box.FinishDelivery(hasCrossDocking);
-                }
-                order.Close();
+                    foreach (var box in boxes)
+                    {
+                        box.FinishDelivery(hasCrossDocking);
+                    }
+                    order.Close();
 
-                _unitOfWork.Repository<Box>().UpdateRange(boxes);
-                _unitOfWork.Repository<Order>().Update(order);
-                _unitOfWork.CommitSync();
+                    _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                    _unitOfWork.Repository<Order>().Update(order);
+                    _unitOfWork.CommitSync();
+                }
             }
             catch (CustomException exc)
             {
@@ -212,18 +218,16 @@ namespace CtrlBox.Application
                 _unitOfWork.SetTrackAll();
                 var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(order.Id);
 
+                List<Box> boxesUpdate = new List<Box>();
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
-                    foreach (var box in boxes)
-                    {
-                        deliveryDetail.MakeDeliveryBox(box);
+                    var boxesProductsAvailable = boxes.Where(x => x.ProductID == deliveryDetail.ProductID).OrderBy(x=>x.PorcentFull).ToList();
+                    var boxesUpdateResult = deliveryDetail.DeliveryBoxesAndProductItems(boxesProductsAvailable, trackingTypeID);
 
-                        box.AddTracking(trackingTypeID, deliveryDetail.ClientID);
-                        box.AddTrackingProductItems(trackingTypeID, deliveryDetail.ClientID);
-                    }
+                    boxesUpdate.AddRange(boxesUpdateResult);
                 }
 
-                _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                _unitOfWork.Repository<Box>().UpdateRange(boxesUpdate);
                 _unitOfWork.Repository<DeliveryDetail>().AddRange(order.DeliveriesDetails);
                 _unitOfWork.CommitSync();
             }

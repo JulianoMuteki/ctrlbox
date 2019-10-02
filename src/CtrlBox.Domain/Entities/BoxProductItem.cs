@@ -33,9 +33,10 @@ namespace CtrlBox.Domain.Entities
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
         }
 
-        public void Deliver()
+        public void Deliver(bool hasCrossDocking)
         {
-            this.ProductItem.Deliver();
+            this.ProductItem.Deliver(hasCrossDocking);
+            this.IsItemRemovedBox = !hasCrossDocking;
         }
 
         public void AddTrackingProductItem(Guid trackingTypeID, Guid clientID)

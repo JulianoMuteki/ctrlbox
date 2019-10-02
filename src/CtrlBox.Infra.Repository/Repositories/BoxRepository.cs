@@ -100,14 +100,15 @@ namespace CtrlBox.Infra.Repository.Repositories
                 var query = _context.Set<Box>()
                            .Include(b => b.BoxType)
                            .Include(x => x.BoxesChildren)
-                           .Include(b => b.BoxesProductItems)
-                           .AsEnumerable() // <-- Force full execution (loading)
+                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                            .AsEnumerable() // <-- Force full execution (loading) of the above
+                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
                               (box, orderBox) => new { Box = box, OrderBox = orderBox }) // selection                      
                            
-                           .Where(x => x.OrderBox.OrderID == orderID && x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
+                           .Where(x => x.OrderBox.OrderID == orderID)
                            .Select(x => x.Box);
                            
 
@@ -206,19 +207,7 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                var query = _context.Set<Box>()
-                           .Include(b => b.BoxType)
-                           .Include(x => x.BoxesChildren)
-                           .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
-                           .AsEnumerable() // <-- Force full execution (loading)
-                           .Join(_context.Set<OrderBox>(), // the source table of the inner join
-                              box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
-                              bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
-                              (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
-
-                              .Where(x => x.DeliveryBox.OrderID == orderID && x.Box.BoxParentID == null && x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
-                           .Select(x => x.Box);
-
+                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Order);
 
                 return query.ToList();
             }
@@ -226,6 +215,23 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetBoxesParentsWithBoxType), ex);
             }
+        }
+
+        private IEnumerable<Box> GetBoxesFullByOrderAndFlowStep(Guid orderID, CrossCutting.Enums.EFlowStep eFlowStep)
+        {
+            var query = _context.Set<Box>()
+                       .Include(b => b.BoxType)
+                       .Include(x => x.BoxesChildren)
+                       .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
+                       .AsEnumerable() // <-- Force full execution (loading)
+                       .Join(_context.Set<OrderBox>(), // the source table of the inner join
+                          box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
+                          bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
+                          (box, deliveryBox) => new { Box = box, DeliveryBox = deliveryBox }) // selection                      
+
+                       .Where(x => x.DeliveryBox.OrderID == orderID && x.Box.BoxParentID == null && x.Box.FlowStep.EFlowStep == eFlowStep)
+                       .Select(x => x.Box);
+            return query;
         }
 
         public ICollection<Box> GetBoxesAvailableToOrderByRouteID(Guid routeID)
@@ -263,6 +269,20 @@ namespace CtrlBox.Infra.Repository.Repositories
             catch (Exception ex)
             {
                 throw CustomException.Create<ProductRepository>("Unexpected error fetching total", nameof(this.GetBoxesAvailableToOrderByRouteID), ex);
+            }
+        }
+
+        public ICollection<Box> GetBoxesDeliveredByRouteID(Guid orderID)
+        {
+            try
+            {
+                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Delivery);
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxRepository>("Unexpected error fetching GetAll", nameof(this.GetBoxesDeliveredByRouteID), ex);
             }
         }
     }

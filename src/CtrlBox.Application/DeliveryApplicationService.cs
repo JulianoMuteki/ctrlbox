@@ -96,17 +96,20 @@ namespace CtrlBox.Application
             {
                 _unitOfWork.SetTrackAll();
                 var order = _unitOfWork.Repository<Order>().GetById(orderID);
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesParentsByOrderIDWithProductItems(orderID);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().GetBoxesDeliveredByRouteID(orderID);
 
-                foreach (var box in boxes)
+                if (boxes.Count > 0)
                 {
-                    box.FinishDelivery(hasCrossDocking);
-                }
-                order.Close();
+                    foreach (var box in boxes)
+                    {
+                        box.FinishDelivery(hasCrossDocking);
+                    }
+                    order.Close();
 
-                _unitOfWork.Repository<Box>().UpdateRange(boxes);
-                _unitOfWork.Repository<Order>().Update(order);
-                _unitOfWork.CommitSync();
+                    _unitOfWork.Repository<Box>().UpdateRange(boxes);
+                    _unitOfWork.Repository<Order>().Update(order);
+                    _unitOfWork.CommitSync();
+                }
             }
             catch (CustomException exc)
             {

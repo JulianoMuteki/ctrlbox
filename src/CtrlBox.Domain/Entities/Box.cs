@@ -111,9 +111,9 @@ namespace CtrlBox.Domain.Entities
             var totalProductItemsDelivered = 0;
 
             deliveryDetail.AddDeliveryBox(this.Id);
-            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
             {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.ProductID == deliveryDetail.ProductID).Take(quantity).ToList();
+                var boxProductsItems = this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false && x.ProductItem.ProductID == deliveryDetail.ProductID ).Take(quantity).ToList();
 
                 foreach (var boxProductItem in boxProductsItems)
                 {

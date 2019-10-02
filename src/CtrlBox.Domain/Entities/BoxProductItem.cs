@@ -36,6 +36,7 @@ namespace CtrlBox.Domain.Entities
         public void Deliver()
         {
             this.ProductItem.Deliver();
+            this.IsItemRemovedBox = true;
         }
 
         public void AddTrackingProductItem(Guid trackingTypeID, Guid clientID)

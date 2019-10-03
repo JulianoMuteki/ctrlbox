@@ -124,7 +124,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var routes = _unitOfWork.Repository<Route>().FindAll(x => x.HasOpenOrder == false);
+                var routes = _unitOfWork.Repository<Route>().GetAll();
 
                 var routesVMs = _mapper.Map<List<RouteVM>>(routes);
                 return routesVMs;
@@ -195,6 +195,25 @@ namespace CtrlBox.Application
         public Task<RouteVM> UpdateAsync(RouteVM updated)
         {
             throw new NotImplementedException();
+        }
+
+        public ICollection<RouteVM> GetRoutesWithoutOpenOrder()
+        {
+            try
+            {
+                var routes = _unitOfWork.Repository<Route>().FindAll(x => x.HasOpenOrder == false);
+
+                var routesVMs = _mapper.Map<List<RouteVM>>(routes);
+                return routesVMs;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ClientApplicationService>("Unexpected error fetching connect get routes", nameof(this.GetAll), ex);
+            }
         }
     }
 }

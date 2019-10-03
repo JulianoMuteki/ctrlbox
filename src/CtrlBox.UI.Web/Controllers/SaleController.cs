@@ -68,13 +68,13 @@ namespace CtrlBox.UI.Web.Controllers
                 //if (clientsProductsVM.Count == 0)
                 //    throw CustomException.Create<SaleController>("There aren't products for this client.", nameof(this.GetAjaxHandlerExecuteSale));
 
-                var boxesProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
+                var boxesProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.Product.DT_RowId,
                                                                   (key, group) => new {
                                                                       DT_RowId = key,
-                                                                      Product = group.Select(x => x.ProductItem.Product).FirstOrDefault(),
-                                                                      NomeProduto = group.Select(x=>x.ProductItem.Product.Name).FirstOrDefault(),
-                                                                      PictureID = group.Select(x => x.ProductItem.Product.PictureID).FirstOrDefault(),
-                                                                      TotalBox = group.Select(p=>p.ProductItem).Count()
+                                                                      Product = group.Select(x => x.Product).FirstOrDefault(),
+                                                                      NomeProduto = group.Select(x=>x.Product.Name).FirstOrDefault(),
+                                                                      PictureID = group.Select(x => x.Product.PictureID).FirstOrDefault(),
+                                                                      TotalBox = group.Select(p=>p).Count()
                                                                   })
                                                          .ToList();
 

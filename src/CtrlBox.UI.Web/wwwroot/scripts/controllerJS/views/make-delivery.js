@@ -1,12 +1,45 @@
 ﻿var _clientID = '';
 var _orderID = '';
 
+function blurFunction(obj) {
+    console.log(obj);
+    //var nRow = $(this).parents('tr')[0];
+    //var qtde = $(nRow).find('.txtTotalBoxes').val();
+
+    ////var rowIndex = tb.fnGetPosition($(this).closest('tr')[0]);
+    ////tb.fnUpdate(totalRow.formatMoney(), rowIndex, 5);
+
+    //console.log(oTable.row(nRow).data());
+}
+
 var MakeDeliveryComponents = function () {
     var oTable;
     var order = {};
 
     function initPage() {
         inicializateComponentes();
+    }
+
+    function visibleInputBox() {
+        oTable.column(3).visible(true);
+    }
+
+    function isAllowedCrossDocking(data) {
+        return (data.BoxType.Total * data.BoxType.MaxBox) == data.TotalProductItems;
+    }
+
+    function getInputForBoxes(data) {
+        if (isAllowedCrossDocking(data)) {
+            var inputBox = '<div style="display: none;" class="forTotalBoxes span6">' +
+                 '<div class="user-info">' +
+                     '<div><input type="text" placeholder="0" class="m-wrap small txtTotalBoxes" /></div>' +
+                     '<div><span class="label label-success"> boxes</span></div>' +
+                 '</div>' +
+             '</div>';
+            return inputBox;
+        } else {
+            return '';
+        }
     }
 
     function inicializateComponentes() {
@@ -22,6 +55,8 @@ var MakeDeliveryComponents = function () {
             },
             "bProcessing": true,
             "bDestroy": true,
+            "bPaginate": false,
+            "bFilter": false, "bInfo": false,
             "aoColumns": [
                         {
                             "mData": null,
@@ -32,7 +67,14 @@ var MakeDeliveryComponents = function () {
                                     if (data.PictureID === '' || data.PictureID === null) {
                                         return '</span><img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.NomeProduto;
                                     }
-                                    return '<div><img  src="/../Configuration/ViewImage/' + data.PictureID + '" /><a class="showDetails row-details-close" style="display: inline-block;margin-left: 10%;">' + data.NomeProduto + ' <i id="iconDetails" class="m-icon-swapdown m-icon-black"></i></a></div>';
+                                    var link = '<div class="user-info">' +
+                                        '<img  src="/../Configuration/ViewImage/' + data.BoxType.BTypePictureID + '" />' +
+                                            '<div>' +
+                                                '<a href="#">' + data.BoxType.BTypeName + '</a> ' +
+                                            '</div>' +
+                                            '<div><span class="label label-success boxTypeTotal">' + data.BoxType.Total + '</span> boxes total</div>' +
+                                    '</div>';
+                                    return link;
                                 }
                                 return data;
                             }
@@ -41,15 +83,19 @@ var MakeDeliveryComponents = function () {
                             "mData": null,
                             "sType": "html",
                             "bSortable": false,
-                            "sClass": "calc",
-                            "defaultContent": "<i>Not set</i>",
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    var statusStock = "green-stripe";
-                                    if (data.TotalBox <= 5) {
-                                        statusStock = "red-stripe"
+                                    if (data.PictureID === '' || data.PictureID === null) {
+                                        return '</span><img style="width:15px; height: 15px;"  src="/../img/avatar.png" /> ' + data.NomeProduto;
                                     }
-                                    return '<span class="btn mini ' + statusStock + '">Total loaded: ' + data.TotalBox + '</span>';
+                                    var link = '<div class="user-info">' +
+                                                  '<img  src="/../Configuration/ViewImage/' + data.PictureID + '" />' +
+                                                      '<div>' +
+                                                          '<a href="#">' + data.ProductName + '</a> ' +
+                                                      '</div>' +
+                                                      '<div><span class="label label-info">' + data.TotalProductItems + '</span> product items total <span class="showDetails row-details-close"><i id="iconDetails" class="m-icon-swapdown m-icon-black"></i></span></div>' +
+                                              '</div>';
+                                    return link;
                                 }
                                 return data;
                             }
@@ -58,13 +104,19 @@ var MakeDeliveryComponents = function () {
                             "mData": null,
                             "sType": "html",
                             "bSortable": false,
-                            "sClass": "calc",
+                            "autoWidth": true,
+                            "sClass": "tdTotalBoxes",
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    var link = '<input type="text" placeholder="0" class="m-wrap small qtdeVenda"> ' + '<span class="label label-danger"> product Items</span>';
-                                    if (data.TotalBox == 0) {
-                                        link = '<span class="label label-important">finished products</span>'
-                                    }
+                                    var link = '<div class="row-fluid">' +
+                                                    '<div class="span6 forTotalProductItems">' +
+                                                        '<div class="user-info">' +
+													        '<div><input type="text" placeholder="0" class="m-wrap small txtTotalProductItems"></div>' +
+													        '<div><span class="label label-info"> product Items</span></div>' +
+												        '</div>' +
+                                                    '</div>' +
+                                                    getInputForBoxes(data) +
+                                                '</div>';
                                     return link;
                                 }
                                 return data;
@@ -72,16 +124,44 @@ var MakeDeliveryComponents = function () {
                         },
                         {
                             "sType": "html",
+                            "autoWidth": true,
+                            "bSortable": false,
+                            "autoWidth": false,
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    var link = '<div class="controls"><select class="crossDocking span6 select2_option" name="CrossDocking"><option value="0">No</option><option value="1">Yes</option></select></div>';
-                                   
+                                    var link = '<span class="label label"> Blocked</span>';
+                                    if (isAllowedCrossDocking(data)) {
+                                        link = '<div><select class="ddlCrossDocking span6 select2_option" name="CrossDocking"><option value="0">No</option><option value="1">Yes</option></select></div>';
+                                    }
                                     return link;
                                 }
                                 return data;
                             }
                         }
-            ]
+            ],
+            "drawCallback": function (settings) {
+                $(".ddlCrossDocking").change(function () {
+                    $(this).closest("tr").children("td:nth-child(3)").find('div.forTotalBoxes input.txtTotalBoxes').val('');
+                    $(this).closest("tr").children("td:nth-child(3)").find('div.forTotalProductItems input.txtTotalProductItems').val('');
+
+                    if ($(this).val() == 1) {
+                        $(this).closest("tr").children("td:nth-child(3)").find('div.forTotalBoxes').show();
+                        $(this).closest("tr").children("td:nth-child(3)").find('div.forTotalProductItems input.txtTotalProductItems').attr('disabled', 'disabled');
+                    } else {
+                        $(this).closest("tr").children("td:nth-child(3)").find('div.forTotalBoxes').hide();
+                        $(this).closest("tr").children("td:nth-child(3)").find('div.forTotalProductItems input.txtTotalProductItems').removeAttr('disabled');
+                    }
+                });
+
+
+            }
+        });
+
+        $('#tbProductItems tbody').on('blur', 'td.tdTotalBoxes input.txtTotalBoxes', function () {
+            var nRow = $(this).parents('tr')[0];
+            var total = $(nRow).find('.txtTotalBoxes').val();
+            var orderProductItemsGroup = $('#tbProductItems').DataTable().row(nRow).data();
+            $(this).closest("td").find('div.forTotalProductItems input.txtTotalProductItems').val(total * orderProductItemsGroup.BoxType.MaxBox);
         });
 
         $('#tbProductItems').on('click', ' tbody td .showDetails', function () {
@@ -107,16 +187,22 @@ var MakeDeliveryComponents = function () {
                 var row = oTable.fnGetData(value);
                 var deliveryDetail = {};
 
-                var qtdeVenda = $(value).find('input.qtdeVenda').val();
+                var totalProductItems = $(value).find('input.txtTotalProductItems').val();
+                totalProductItems = totalProductItems || 0;
 
-                qtdeVenda = qtdeVenda || 0;
+                var totalBoxes = $(value).find('input.txtTotalBoxes').val();
+                totalBoxes = totalBoxes || 0;
 
-                if (qtdeVenda > 0) {
+                if (totalProductItems > 0) {
                     deliveryDetail.ClientID = _clientID;
-                    deliveryDetail.QuantityProductItem = qtdeVenda;
+                    deliveryDetail.QuantityProductItem = totalProductItems;
                     deliveryDetail.ProductID = row.DT_RowId;
                     deliveryDetail.OrderID = _orderID;
-                    deliveryDetail.HasCrossDocking = $(value).find('select.crossDocking').val();
+                    deliveryDetail.HasCrossDocking = $(value).find('select.ddlCrossDocking').val();
+                    if (deliveryDetail.HasCrossDocking === undefined || deliveryDetail.HasCrossDocking === null)
+                        deliveryDetail.HasCrossDocking = false;
+
+                    deliveryDetail.QuantityBoxes = totalBoxes;
                     tbDeliveriesDetails.push(deliveryDetail);
                 }
             });
@@ -142,6 +228,8 @@ var MakeDeliveryComponents = function () {
 
             return true;
         });
+
+
     }
 
     function fnFormatDetails(oTable, nTr) {

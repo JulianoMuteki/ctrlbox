@@ -75,7 +75,7 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult Create()
         {
-            var routes = _routeService.GetAll()
+            var routes = _routeService.GetRoutesWithoutOpenOrder()
                                .Select(route => new SelectListItem
                                {
                                    Value = route.DT_RowId,
@@ -312,13 +312,22 @@ namespace CtrlBox.UI.Web.Controllers
                 //Busca preço de produtos por clientes. Deve sempre existir preço para todos clientes
                 var boxesProductItemsVM = _boxService.GetOrderProductItemByDeliveryID(deliveryID);
 
-                var orderProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.ProductItem.Product.DT_RowId,
+                var orderProductItemsGroup = boxesProductItemsVM.GroupBy(item => item.Product.DT_RowId,
                                                                   (key, group) => new {
                                                                       DT_RowId = key,
-                                                                      Product = group.Select(x => x.ProductItem.Product).FirstOrDefault(),
-                                                                      NomeProduto = group.Select(x => x.ProductItem.Product.Name).FirstOrDefault(),
-                                                                      PictureID = group.Select(x => x.ProductItem.Product.PictureID).FirstOrDefault(),
-                                                                      TotalBox = group.Select(p => p.ProductItem).Count()
+                                                                      Product = group.Select(x => x.Product).FirstOrDefault(),
+                                                                      ProductName = group.Select(x => x.Product.Name).FirstOrDefault(),
+                                                                      PictureID = group.Select(x => x.Product.PictureID).FirstOrDefault(),
+                                                                      TotalProductItems = group.Select(p => p).Count(),//TotalProductItems
+                                                                      BoxType = group.SelectMany(b => b.BoxesProductItems).GroupBy(b => b.Box.BoxTypeID,
+                                                                                                                                        (k, g) => new {
+                                                                                                                                            DT_RowId = k,
+                                                                                                                                            BTypeName = g.Select(x=>x.Box.BoxType.Name).FirstOrDefault(),
+                                                                                                                                            BTypePictureID = g.Select(x => x.Box.BoxType.PictureID.Value).FirstOrDefault(),
+                                                                                                                                            Total = g.Select(x => x.BoxID).Distinct().Count(),
+                                                                                                                                            MaxBox = g.Select(x => x.Box.BoxType.MaxProductsItems).FirstOrDefault()
+                                                                                                                                        }).FirstOrDefault()
+
                                                                   })
                                                          .ToList();
 
@@ -327,7 +336,7 @@ namespace CtrlBox.UI.Web.Controllers
                     aaData = orderProductItemsGroup.Select(x => new
                     {
                         DT_RowId = x.DT_RowId.ToString(),
-                        x.NomeProduto,
+                        x.ProductName,
                         Product = new
                         {
                             x.Product.Description,
@@ -335,8 +344,9 @@ namespace CtrlBox.UI.Web.Controllers
                             Capacity = $"{x.Product.Capacity} {x.Product.UnitMeasure}",
                             Weight = $"{x.Product.Weight} {x.Product.MassUnitWeight}"
                         },
+                        x.BoxType,
                         x.PictureID,
-                        x.TotalBox,
+                        x.TotalProductItems,
                         Total = String.Format("{0:c}", 0)
                     }),
                     success = true,
@@ -375,9 +385,8 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult PostAjaxHanblerFinishDelivery(Guid orderID, bool hasCrossDocking)
         {
             try
-            {
-              
-                _deliveryService.FinishDelivery(orderID, hasCrossDocking);
+            {            
+                _deliveryService.FinishDelivery(orderID);
 
                 return Json(new
                 {

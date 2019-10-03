@@ -162,22 +162,21 @@ namespace CtrlBox.Infra.Repository.Repositories
             }
         }
 
-        public ICollection<OrderProductItem> GetOrderProductItemByDeliveryID(Guid orderID)
+        public ICollection<ProductItem> GetOrderProductItemByDeliveryID(Guid orderID)
         {
             try
             {
-                //var query = _context.Set<OrderProductItem>()
-                //            .Include(b => b.ProductItem).ThenInclude(p => p.Product)
-                //            .Where(x => x.OrderID == deliveryID);
-                var query = _context.Set<OrderProductItem>()
-                            .Include(b => b.ProductItem).ThenInclude(p => p.Product)
-                           //.Join(_context.Set<Box>(),
-                           //   ordP => ordP.ProductItemID,
-                           //   box => box.Id,
-                           //   (orderProductItem, box) => new { Box = box, OrderProductItem = orderProductItem })               
+                var query = _context.Set<ProductItem>()
+                            .Include(b => b.Product)
 
-                           .Where(x => x.OrderID == orderID && x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order);
-                          
+                            .Include(x => x.BoxesProductItems).ThenInclude(b => b.Box).ThenInclude(bt => bt.BoxType)
+                           .Join(_context.Set<OrderProductItem>(),
+                              ordP => ordP.Id,
+                              pi => pi.ProductItemID,
+                              (productItem, orderProductItem) => new { ProductItem = productItem, OrderProductItem = orderProductItem })
+
+                           .Where(x => x.OrderProductItem.OrderID == orderID && x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
+                           .Select(x => x.ProductItem);
 
                 return query.ToList();
             }

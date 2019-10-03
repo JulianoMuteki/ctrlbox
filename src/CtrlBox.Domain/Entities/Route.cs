@@ -10,7 +10,7 @@ namespace CtrlBox.Domain.Entities
         public string Name { get; set; }
         public int KmDistance { get; set; }
         public string Truck { get; set; }
-        public bool HasOpenDelivery { get; set; }
+        public bool HasOpenOrder { get; set; }
 
         public Guid ClientOriginID { get; set; }
         public Client ClientOrigin { get; set; }
@@ -36,6 +36,16 @@ namespace CtrlBox.Domain.Entities
         public void UpdateData(Route updated)
         {
             throw new NotImplementedException();
+        }
+
+        internal void OrderClosed()
+        {
+            this.HasOpenOrder = false;
+        }
+
+        public void OpenOrder()
+        {
+            this.HasOpenOrder = true;
         }
     }
 }

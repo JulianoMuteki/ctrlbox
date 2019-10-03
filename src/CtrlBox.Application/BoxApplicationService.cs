@@ -216,13 +216,13 @@ namespace CtrlBox.Application
             }
         }
 
-        public ICollection<OrderProductItemVM> GetOrderProductItemByDeliveryID(Guid deliveryID)
+        public ICollection<ProductItemVM> GetOrderProductItemByDeliveryID(Guid deliveryID)
         {
             try
             {
-                var orderProducstItems = _unitOfWork.RepositoryCustom<IBoxRepository>().GetOrderProductItemByDeliveryID(deliveryID);
-                var OrderProductItemVMs = _mapper.Map<IList<OrderProductItemVM>>(orderProducstItems);
-                return OrderProductItemVMs;
+                var producstItems = _unitOfWork.RepositoryCustom<IBoxRepository>().GetOrderProductItemByDeliveryID(deliveryID);
+                var productItemVMs = _mapper.Map<IList<ProductItemVM>>(producstItems);
+                return productItemVMs;
             }
             catch (CustomException exc)
             {

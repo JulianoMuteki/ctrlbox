@@ -7,5 +7,6 @@ namespace CtrlBox.Domain.Interfaces.Application
     {
         ICollection<RouteClientVM> ConnectRouteToClient(ICollection<RouteClientVM> routesClientsVM);
         ICollection<RouteClientVM> RemoveRouteFromClient(ICollection<RouteClientVM> routesClientsVM);
+        ICollection<RouteVM> GetRoutesWithoutOpenOrder();
     }
 }

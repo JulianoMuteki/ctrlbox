@@ -198,7 +198,7 @@ var MakeDeliveryComponents = function () {
                     deliveryDetail.QuantityProductItem = totalProductItems;
                     deliveryDetail.ProductID = row.DT_RowId;
                     deliveryDetail.OrderID = _orderID;
-                    deliveryDetail.HasCrossDocking = $(value).find('select.crossDocking').val();
+                    deliveryDetail.HasCrossDocking = $(value).find('select.ddlCrossDocking').val();
                     if (deliveryDetail.HasCrossDocking === undefined || deliveryDetail.HasCrossDocking === null)
                         deliveryDetail.HasCrossDocking = false;
 

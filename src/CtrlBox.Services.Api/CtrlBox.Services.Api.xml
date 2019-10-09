@@ -112,6 +112,13 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="M:CtrlBox.Services.Api.Controllers.MobileController.#ctor(CtrlBox.Domain.Interfaces.Application.IRouteApplicationService)">
+            <summary>
+            
+            </summary>
+            <param name="routeApplicationService"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CtrlBox.Services.Api.Controllers.MobileController.GetRoutesAvailable(System.Guid)" -->
         <member name="T:CtrlBox.Services.Api.Controllers.ProductController">
             <summary>
             

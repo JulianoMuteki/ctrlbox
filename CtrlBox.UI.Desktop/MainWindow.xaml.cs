@@ -20,9 +20,15 @@ namespace CtrlBox.UI.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
+     //   private readonly WebApiMobile _apiRoute = null;
+
         public MainWindow()
         {
             InitializeComponent();
+
+           // _apiRoute = new WebApiMobile("http://localhost:53929", "Route");
+
+
         }
     }
 }

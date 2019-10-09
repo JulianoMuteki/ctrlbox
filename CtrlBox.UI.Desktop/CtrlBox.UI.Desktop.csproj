@@ -153,5 +153,11 @@
       <Name>CtrlBox.Application.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\favicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\rfidsignal.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

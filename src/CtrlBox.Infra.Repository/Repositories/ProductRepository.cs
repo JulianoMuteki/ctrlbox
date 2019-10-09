@@ -142,7 +142,8 @@ namespace CtrlBox.Infra.Repository.Repositories
                                      (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
                                      x.TrackingClient.ClientID == clientID && x.Tracking.IsLastTrack)
                            .Select(x => x.Box)
-                           .Include(x => x.BoxType).ThenInclude(x => x.Picture);
+                           .Include(x => x.BoxType).ThenInclude(x => x.Picture)
+                           .Include(x=>x.BoxBarcode);
 
                 return query.ToList();
             }

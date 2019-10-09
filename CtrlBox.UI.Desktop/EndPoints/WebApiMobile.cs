@@ -36,5 +36,20 @@ namespace CtrlBox.UI.Desktop.EndPoints
 
             return T;
         }
+
+        internal ICollection<BoxVM> GetBoxesStockParents(Guid routeID)
+        {
+            string action = $"{_urlEndPoint}/api/{_controller}/GetBoxesStockParents/{routeID}";
+
+            ICollection<BoxVM> T = null;
+            HttpResponseMessage response = httpClient.GetAsync(action).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Content.ReadAsAsync<ICollection<BoxVM>>().Result;
+            }
+
+            return T;
+        }
+       
     }
 }

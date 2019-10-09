@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CtrlBox.Application.ViewModel;
+using CtrlBox.UI.Desktop.EndPoints;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,15 +22,36 @@ namespace CtrlBox.UI.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
-     //   private readonly WebApiMobile _apiRoute = null;
+        private readonly WebApiMobile _apiMobile = null;
 
         public MainWindow()
         {
             InitializeComponent();
 
-           // _apiRoute = new WebApiMobile("http://localhost:53929", "Route");
+            try
+            {
 
+                _apiMobile = new WebApiMobile("http://localhost:53929", "Mobile");
+                var routes = _apiMobile.GetRoutesAvailable(Guid.NewGuid());
 
+                cboRoutes.ItemsSource = routes;
+                cboRoutes.DisplayMemberPath = "Name";
+                cboRoutes.SelectedValuePath = "DT_RowId";
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void CboRoutes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RouteVM route = (sender as ComboBox).SelectedItem as RouteVM;
+            var boxes = _apiMobile.GetBoxesStockParents(new Guid(route.DT_RowId));
+
+            grdTagsAvailable.ItemsSource = boxes;
+            cboBoxTypes.ItemsSource = boxes.Select(x=>x.BoxType.Name).Distinct().ToList();   
         }
     }
 }

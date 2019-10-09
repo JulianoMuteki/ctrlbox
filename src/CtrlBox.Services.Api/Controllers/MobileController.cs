@@ -14,14 +14,17 @@ namespace CtrlBox.Services.Api.Controllers
     public class MobileController : ControllerBase
     {
         private readonly IRouteApplicationService _routeApplicationService;
+        private readonly IBoxApplicationService _boxApplicationService;
 
         /// <summary>
-        /// 
+        /// MobileController
         /// </summary>
         /// <param name="routeApplicationService"></param>
-        public MobileController(IRouteApplicationService routeApplicationService)
+        /// <param name="boxApplicationService"></param>
+        public MobileController(IRouteApplicationService routeApplicationService, IBoxApplicationService boxApplicationService)
         {
             _routeApplicationService = routeApplicationService;
+            _boxApplicationService = boxApplicationService;
         }
 
         /// <summary>
@@ -32,8 +35,20 @@ namespace CtrlBox.Services.Api.Controllers
         [HttpGet("[action]/{userID}")]
         public IEnumerable<RouteVM> GetRoutesAvailable(Guid userID)
         {
-            var routes = _routeApplicationService.GetAll();
+            var routes = _routeApplicationService.GetRoutesWithoutOpenOrder();
             return routes;
+        }
+
+        /// <summary>
+        /// GetBoxesStockParents
+        /// </summary>
+        /// <param name="routeID"></param>
+        /// <returns></returns>
+        [HttpGet("[action]/{routeID}")]
+        public IEnumerable<BoxVM> GetBoxesStockParents(Guid routeID)
+        {
+            var boxesVM = _boxApplicationService.GetBoxesStockParents(routeID);
+            return boxesVM;
         }
     }
 }

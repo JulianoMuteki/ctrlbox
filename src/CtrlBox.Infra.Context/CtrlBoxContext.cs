@@ -36,6 +36,9 @@ namespace CtrlBox.Infra.Context
         public DbSet<OptiontType> OptiontsTypes { get; set; }
         public DbSet<ClientOptionType> ClientsOptionsTypes { get; set; }
 
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<StockMovement> StocksMovements { get; set; }
+
         public DbSet<BoxType> BoxesTypes { get; set; }
         public DbSet<ProductItem> ProductItems { get; set; }
         public DbSet<Box> Boxes { get; set; }
@@ -92,6 +95,9 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new TrackingTypeMap());
             modelBuilder.ApplyConfiguration(new TrackingMap());
             modelBuilder.ApplyConfiguration(new TrackingClientMap());
+
+            modelBuilder.ApplyConfiguration(new StockMap());
+            modelBuilder.ApplyConfiguration(new StockMovementMap());
 
             modelBuilder.ApplyConfiguration(new OptiontTypeMap());
             modelBuilder.ApplyConfiguration(new ClientOptionTypeMap());

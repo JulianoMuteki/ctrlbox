@@ -500,6 +500,71 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stocks",
+                columns: table => new
+                {
+                    StockID = table.Column<Guid>(nullable: false),
+                    ProductID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    StorageLocationID = table.Column<Guid>(nullable: false),
+                    Minimum = table.Column<int>(nullable: false),
+                    TotalStock = table.Column<int>(nullable: false),
+                    DefaultPrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stocks", x => new { x.StockID, x.ProductID });
+                    table.ForeignKey(
+                        name: "FK_Stocks_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Stocks_Clients_StorageLocationID",
+                        column: x => x.StorageLocationID,
+                        principalTable: "Clients",
+                        principalColumn: "ClientID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StocksMovements",
+                columns: table => new
+                {
+                    StockMovementID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    ClientID = table.Column<Guid>(nullable: false),
+                    ProductID = table.Column<Guid>(nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    TotalValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Amount = table.Column<int>(nullable: false),
+                    StockType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StocksMovements", x => x.StockMovementID);
+                    table.ForeignKey(
+                        name: "FK_StocksMovements_Clients_ClientID",
+                        column: x => x.ClientID,
+                        principalTable: "Clients",
+                        principalColumn: "ClientID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StocksMovements_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -1116,6 +1181,28 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "SaleID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Stocks_ProductID",
+                table: "Stocks",
+                column: "ProductID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stocks_StorageLocationID",
+                table: "Stocks",
+                column: "StorageLocationID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StocksMovements_ClientID",
+                table: "StocksMovements",
+                column: "ClientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StocksMovements_ProductID",
+                table: "StocksMovements",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trackings_BoxID",
                 table: "Trackings",
                 column: "BoxID");
@@ -1190,6 +1277,12 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "SalesProducts");
+
+            migrationBuilder.DropTable(
+                name: "Stocks");
+
+            migrationBuilder.DropTable(
+                name: "StocksMovements");
 
             migrationBuilder.DropTable(
                 name: "SystemConfigurations");

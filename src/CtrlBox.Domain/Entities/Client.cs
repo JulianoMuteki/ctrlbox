@@ -14,6 +14,9 @@ namespace CtrlBox.Domain.Entities
         public Guid AddressID { get; set; }
         public virtual Address Address { get; set; }
 
+        public Stock Stock { get; private set; }
+        public ICollection<StockMovement> StocksMovements { get; private set; }
+
         public ICollection<ClientProductValue> CustomersProductsValues { get; set; }
         public ICollection<Sale> Sales { get; set; }
         public ICollection<RouteClient> RoutesClients { get; set; }

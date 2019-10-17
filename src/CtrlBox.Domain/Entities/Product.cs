@@ -21,6 +21,9 @@ namespace CtrlBox.Domain.Entities
         public Guid? PictureID { get; set; }
         public Picture Picture { get; set; }
 
+        public Stock Stock { get; private set; }
+        public ICollection<StockMovement> StocksMovements { get; private set; }
+
         public IList<string> OptionsMassUnit { get { return CtrlBoxUnits.CtrlBoxMassUnit; } }
         public IList<string> OptionsVolumeUnit { get { return CtrlBoxUnits.CtrlBoxVolumeUnit; } }
 

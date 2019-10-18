@@ -784,9 +784,10 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Stock", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("StockID");
 
-                    b.Property<Guid>("ProductID");
+                    b.Property<Guid>("ClientID");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -801,16 +802,16 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<int>("Minimum");
 
-                    b.Property<Guid>("StorageLocationID");
+                    b.Property<Guid>("ProductID");
 
                     b.Property<int>("TotalStock");
 
-                    b.HasKey("Id", "ProductID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ProductID")
+                    b.HasIndex("ClientID")
                         .IsUnique();
 
-                    b.HasIndex("StorageLocationID")
+                    b.HasIndex("ProductID")
                         .IsUnique();
 
                     b.ToTable("Stocks");
@@ -824,7 +825,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<int>("Amount");
 
-                    b.Property<Guid>("ClientID");
+                    b.Property<Guid>("ClientSupplierID");
 
                     b.Property<DateTime>("CreationDate");
 
@@ -834,7 +835,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsDisable");
 
-                    b.Property<Guid>("ProductID");
+                    b.Property<Guid>("StockID");
 
                     b.Property<int>("StockType");
 
@@ -846,9 +847,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientID");
-
-                    b.HasIndex("ProductID");
+                    b.HasIndex("StockID");
 
                     b.ToTable("StocksMovements");
                 });
@@ -1396,27 +1395,26 @@ namespace CtrlBox.Infra.Context.Migrations
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Stock", b =>
                 {
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
+                        .WithOne("Stock")
+                        .HasForeignKey("CtrlBox.Domain.Entities.Stock", "ClientID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
                         .WithOne("Stock")
                         .HasForeignKey("CtrlBox.Domain.Entities.Stock", "ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CtrlBox.Domain.Entities.Client", "StorageLocation")
-                        .WithOne("Stock")
-                        .HasForeignKey("CtrlBox.Domain.Entities.Stock", "StorageLocationID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.StockMovement", b =>
                 {
-                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "ClientSupplier")
                         .WithMany("StocksMovements")
-                        .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StockID");
 
-                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
+                    b.HasOne("CtrlBox.Domain.Entities.Stock", "Stock")
                         .WithMany("StocksMovements")
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("StockID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

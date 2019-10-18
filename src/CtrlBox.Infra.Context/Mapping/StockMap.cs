@@ -12,7 +12,7 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.ToTable("Stocks");
             builder.Property(x => x.Id).HasColumnName("StockID");
-            builder.HasKey(t => new { t.Id, t.ProductID });
+            builder.HasKey(t => t.Id);
 
             builder.Property(e => e.Minimum)
                 .IsRequired();
@@ -28,9 +28,14 @@ namespace CtrlBox.Infra.Context.Mapping
                     .WithOne(b => b.Stock)
                     .HasForeignKey<Stock>(b => b.ProductID);
 
-            builder.HasOne(a => a.StorageLocation)
+            builder.HasOne(a => a.Client)
                     .WithOne(b => b.Stock)
-                    .HasForeignKey<Stock>(b => b.StorageLocationID);
+                    .HasForeignKey<Stock>(b => b.ClientID);
+
+            builder.HasMany(x => x.StocksMovements)
+                .WithOne(y => y.Stock)
+                .HasForeignKey(fk => fk.StockID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

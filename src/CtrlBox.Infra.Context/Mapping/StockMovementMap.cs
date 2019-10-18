@@ -27,6 +27,15 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.Property(e => e.StockType)
                    .HasConversion<int>();
+
+
+            builder.HasOne(x=>x.ClientSupplier)
+                .WithMany(x=>x.StocksMovements)
+                    .HasForeignKey(fk => fk.StockID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+
         }
     }
 }

@@ -6,11 +6,11 @@ namespace CtrlBox.Domain.Entities
 {
     public class StockMovement : EntityBase
     {
-        public Client Client { get; private set; }
-        public Product Product { get; private set; }
+        public Client ClientSupplier { get; private set; }
+        public Stock Stock { get; private set; }
 
-        public Guid ClientID { get; private set; }
-        public Guid ProductID { get; private set; }
+        public Guid ClientSupplierID { get; private set; }
+        public Guid StockID { get; private set; }
 
         public decimal UnitPrice { get; private set; }
         public decimal TotalValue { get; private set; }

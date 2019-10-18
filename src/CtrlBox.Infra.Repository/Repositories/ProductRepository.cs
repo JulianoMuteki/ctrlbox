@@ -158,7 +158,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 var query = _context.Set<Stock>()
                              .Include(x => x.Product).ThenInclude(z => z.Picture)
-                             .Include(x => x.StorageLocation);
+                             .Include(x => x.Client);
 
                 return query.ToList();
             }

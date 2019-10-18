@@ -1,9 +1,6 @@
 ﻿using CtrlBox.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CtrlBox.Infra.Context.Mapping
 {
@@ -27,6 +24,13 @@ namespace CtrlBox.Infra.Context.Mapping
                   .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
+            builder.HasOne(a => a.Product)
+                    .WithOne(b => b.Stock)
+                    .HasForeignKey<Stock>(b => b.ProductID);
+
+            builder.HasOne(a => a.StorageLocation)
+                    .WithOne(b => b.Stock)
+                    .HasForeignKey<Stock>(b => b.StorageLocationID);
         }
     }
 }

@@ -12,5 +12,7 @@ namespace CtrlBox.Domain.Interfaces.Repository
         ICollection<ProductItem> GetAvailableStockProductItemsByClientIDAndProductID(Guid productID, Guid clientID);
         ICollection<Box> GetBoxesInStockByBoxTypeIDAndClientID(Guid boxTypeID, Guid clientID);
         ICollection<Box> GetBoxesInStockByClientID(Guid clientID);
+
+        ICollection<Stock> GetStocks();
     }
 }

@@ -269,10 +269,20 @@ namespace CtrlBox.UI.Web.Controllers
             });
         }
 
-
         public ActionResult Stock()
-        {
+        {       
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerStocks()
+        {
+            var stocks = _productService.GetStocks();
+            return Json(new
+            {
+                aaData = stocks,
+                success = true
+            });
         }
 
         public IActionResult StockCreate()

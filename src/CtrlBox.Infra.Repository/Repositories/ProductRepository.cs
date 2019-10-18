@@ -151,5 +151,21 @@ namespace CtrlBox.Infra.Repository.Repositories
                 throw CustomException.Create<ProductRepository>("Unexpected error fetching total", nameof(this.GetTotalProductItemByProductID), ex);
             }
         }
+
+        public ICollection<Stock> GetStocks()
+        {
+            try
+            {
+                var query = _context.Set<Stock>()
+                             .Include(x => x.Product).ThenInclude(z => z.Picture)
+                             .Include(x => x.StorageLocation);
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductRepository>("Unexpected error fetching GetStocks", nameof(this.GetStocks), ex);
+            }
+        }
     }
 }

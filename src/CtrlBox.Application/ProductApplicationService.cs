@@ -475,5 +475,23 @@ namespace CtrlBox.Application
                 throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.AddStock), ex);
             }
         }
+
+        public object GetStocks()
+        {
+            try
+            {
+                var stocks = _unitOfWork.RepositoryCustom<IProductRepository>().GetStocks();
+                var stocksVM = _mapper.Map<IList<StockVM>>(stocks);
+                return stocksVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get stocks", nameof(this.GetStocks), ex);
+            }
+        }
     }
 }

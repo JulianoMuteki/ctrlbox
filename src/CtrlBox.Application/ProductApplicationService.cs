@@ -476,13 +476,31 @@ namespace CtrlBox.Application
             }
         }
 
-        public object GetStocks()
+        public ICollection<StockVM> GetStocks()
         {
             try
             {
                 var stocks = _unitOfWork.RepositoryCustom<IProductRepository>().GetStocks();
                 var stocksVM = _mapper.Map<IList<StockVM>>(stocks);
                 return stocksVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get stocks", nameof(this.GetStocks), ex);
+            }
+        }
+
+        public ICollection<StockMovementVM> GetstocksMovements(Guid stockID)
+        {
+            try
+            {
+                var stocksMovements = _unitOfWork.Repository<StockMovement>().FindAll(x=>x.Id == stockID);
+                var stocksMovementsVM = _mapper.Map<IList<StockMovementVM>>(stocksMovements);
+                return stocksMovementsVM;
             }
             catch (CustomException exc)
             {

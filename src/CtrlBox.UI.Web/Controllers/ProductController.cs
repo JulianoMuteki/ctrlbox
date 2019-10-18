@@ -312,5 +312,23 @@ namespace CtrlBox.UI.Web.Controllers
             return RedirectToAction("Stock");
         }
 
+        public IActionResult StocksMovements(Guid stockID)
+        {
+            ViewData["StockID"] = stockID;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerStocksMovements(Guid stockID)
+        {
+            var stocksMovements = _productService.GetstocksMovements(stockID);
+            return Json(new
+            {
+                aaData = stocksMovements,
+                success = true
+            });
+        }
+
+
     }
 }

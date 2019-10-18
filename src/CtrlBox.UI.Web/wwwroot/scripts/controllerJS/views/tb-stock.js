@@ -12,7 +12,7 @@
             "bDestroy": true,
             "aoColumns": [
                         {
-                            "mData": "StorageLocation.Name",
+                            "mData": "Client.Name",
                             "bSortable": false
                         },
                         {
@@ -47,8 +47,15 @@
                             "bSortable": false,
                         },
                         {
+                            "mData": null,
+                            "sType": "html",
                             "bSortable": false,
-                            "defaultContent": "<i>Edit Not set</i>",
+                            "mRender": function (data, type, row) {
+                                if (type === 'display') {
+                                    return '<a href="../Product/StocksMovements?stockID=' + data.DT_RowId + '" class="edit"><i class="icon-edit"></i> Stock Movements</a>';
+                                }
+                                return data;
+                            }
                         }
             ]
         });

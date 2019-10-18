@@ -457,5 +457,23 @@ namespace CtrlBox.Application
             }
         }
 
+        public void AddStock(StockVM stockVM)
+        {
+            try
+            {
+                var stock = _mapper.Map<Stock>(stockVM);
+               
+                _unitOfWork.Repository<Stock>().Add(stock);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.AddStock), ex);
+            }
+        }
     }
 }

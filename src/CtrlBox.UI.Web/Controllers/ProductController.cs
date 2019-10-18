@@ -268,5 +268,39 @@ namespace CtrlBox.UI.Web.Controllers
                 Message = "OK"
             });
         }
+
+
+        public ActionResult Stock()
+        {
+            return View();
+        }
+
+        public IActionResult StockCreate()
+        {
+            var products = _productService.GetAll()
+                            .Select(prod => new SelectListItem
+                            {
+                                Value = prod.DT_RowId,
+                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
+                            }).ToList();
+            ViewData["Products"] = products;
+
+            var clients = _clientService.GetAll()
+                                        .Select(client => new SelectListItem
+                                        {
+                                            Value = client.DT_RowId,
+                                            Text = client.Name
+                                        }).ToList();
+            ViewData["Clients"] = clients;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult StockCreate(StockVM entityVM)
+        {
+            _productService.AddStock(entityVM);
+            return RedirectToAction("Stock");
+        }
+
     }
 }

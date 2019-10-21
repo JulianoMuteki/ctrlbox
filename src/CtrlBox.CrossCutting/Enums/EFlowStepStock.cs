@@ -4,9 +4,12 @@ using System.Text;
 
 namespace CtrlBox.CrossCutting.Enums
 {
-    public enum EStockType
+    public enum EFlowStepStock
     {
         Input = 1,
-        Output = 2
+        Order = 2,
+        InTraffic = 3,
+        Output = 4,
+        Canceled = 5
     }
 }

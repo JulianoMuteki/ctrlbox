@@ -14,7 +14,7 @@ namespace CtrlBox.Application.ViewModel
         public decimal TotalValue { get; set; }
 
         public int Amount { get; set; }
-        public string StockType { get; set; }
+        public string FlowStepStock { get; set; }
 
         public Guid ProductID { get; set; }
     }

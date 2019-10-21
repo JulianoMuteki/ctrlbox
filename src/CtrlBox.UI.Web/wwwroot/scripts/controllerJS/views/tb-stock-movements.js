@@ -51,7 +51,10 @@ var StockMovementsTable = function () {
                             "bSortable": false,
                         },
                         {
-                            "mData": "StockType"
+                            "mData": "FlowStepStock"
+                        },
+                        {
+                            "defaultContent": "<i>Efetivar</i>"
                         }
             ]
         });

@@ -15,8 +15,8 @@ namespace CtrlBox.Application.AutoMapper
             CreateMap<StockMovement, StockMovementVM>()
                 .ForMember(dest => dest.DT_RowId,
                           opts => opts.MapFrom(src => src.Id))
-                .ForMember(dest => dest.StockType, opts => opts.MapFrom(src =>
-                   Enum.GetName(typeof(EStockType), src.StockType)));
+                .ForMember(dest => dest.FlowStepStock, opts => opts.MapFrom(src =>
+                   Enum.GetName(typeof(EFlowStepStock), src.FlowStepStock)));
 
             CreateMap<StockMovementVM, StockMovement>()
                 .ForMember(dest => dest.Id,

@@ -25,7 +25,7 @@ namespace CtrlBox.Infra.Context.Mapping
             builder.Property(e => e.Amount)
                    .IsRequired();
 
-            builder.Property(e => e.StockType)
+            builder.Property(e => e.FlowStepStock)
                    .HasConversion<int>();
 
 

@@ -16,7 +16,7 @@ namespace CtrlBox.Domain.Entities
         public decimal TotalValue { get; private set; }
 
         public int Amount { get; private set; }
-        public EStockType StockType { get; private set; }
+        public EFlowStepStock FlowStepStock { get; private set; }
 
         public StockMovement()
             : base()
@@ -37,9 +37,9 @@ namespace CtrlBox.Domain.Entities
             TotalValue = Amount * UnitPrice;
             this.StockID = stock.Id;
 
-            if (this.StockType == EStockType.Input)
+            if (this.FlowStepStock == EFlowStepStock.Input)
                 stock.InputStock(Amount);
-            else
+            else if(this.FlowStepStock == EFlowStepStock.Output)
                 stock.OutputStock(Amount);
         }
     }

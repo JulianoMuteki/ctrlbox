@@ -29,6 +29,7 @@ namespace CtrlBox.Domain.Entities
             if (this.Id == null || this.Id == Guid.Empty)
             {
                 base.InitBase();
+                FlowStepStock = EFlowStepStock.Input;
             }
         }
 

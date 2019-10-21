@@ -31,7 +31,7 @@ namespace CtrlBox.Infra.Context.Mapping
 
             builder.HasOne(x=>x.ClientSupplier)
                 .WithMany(x=>x.StocksMovements)
-                    .HasForeignKey(fk => fk.StockID)
+                    .HasForeignKey(fk => fk.ClientSupplierID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
 

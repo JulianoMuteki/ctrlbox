@@ -671,8 +671,8 @@ namespace CtrlBox.Infra.Context.Migrations
                 {
                     table.PrimaryKey("PK_StocksMovements", x => x.StockMovementID);
                     table.ForeignKey(
-                        name: "FK_StocksMovements_Clients_StockID",
-                        column: x => x.StockID,
+                        name: "FK_StocksMovements_Clients_ClientSupplierID",
+                        column: x => x.ClientSupplierID,
                         principalTable: "Clients",
                         principalColumn: "ClientID",
                         onDelete: ReferentialAction.Restrict);
@@ -1191,6 +1191,11 @@ namespace CtrlBox.Infra.Context.Migrations
                 table: "Stocks",
                 column: "ProductID",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StocksMovements_ClientSupplierID",
+                table: "StocksMovements",
+                column: "ClientSupplierID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StocksMovements_StockID",

@@ -1,23 +1,21 @@
-﻿var StockMovementsTable = function () {
+﻿var _stockID;
+
+var StockMovementsTable = function () {
     var oTableBox;
 
     function initPage() {
         inicializateComponentes();
     }
 
-    function inicializateComponentes(stockID) {
+    function inicializateComponentes() {
         oTableBox = $('#tbStockMovements').dataTable({
             "fnServerParams": function (aoData) {
-                aoData.push({ "name": "stockID", "value": stockID });
+                aoData.push({ "name": "stockID", "value": _stockID });
             },
-            "sAjaxSource": '../Product/GetAjaxHandlerStockMovements',
+            "sAjaxSource": '../Product/GetAjaxHandlerStocksMovements',
             "bProcessing": true,
             "bDestroy": true,
             "aoColumns": [
-                        {
-                            "mData": "ClientSupplier.Name",
-                            "bSortable": false
-                        },
                         {
                             "mData": null,
                             "sType": "html",
@@ -39,6 +37,9 @@
                             }
                         },
                         {
+                            "mData": "ClientSupplier.Name"
+                        },
+                        {
                             "mData": "UnitPrice",
                             "bSortable": false
                         },
@@ -50,9 +51,7 @@
                             "bSortable": false,
                         },
                         {
-                            "mData": "StockType",
-                            "bSortable": false,
-                            "defaultContent": "<i>Edit Not set</i>",
+                            "mData": "StockType"
                         }
             ]
         });
@@ -61,7 +60,8 @@
     return {
         //main function to initiate the module
         init: function (stockID) {
-            initPage(stockID);
+            _stockID = stockID;
+            initPage();
         }
     };
 }();

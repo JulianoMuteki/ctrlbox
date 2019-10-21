@@ -13,7 +13,9 @@ namespace CtrlBox.Application.ViewModel
         public decimal UnitPrice { get; set; }
         public decimal TotalValue { get; set; }
 
-        public int Amount { get; private set; }
+        public int Amount { get; set; }
         public string StockType { get; set; }
+
+        public Guid ProductID { get; set; }
     }
 }

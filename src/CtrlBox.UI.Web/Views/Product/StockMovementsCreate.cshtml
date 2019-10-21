@@ -1,9 +1,10 @@
-﻿@model CtrlBox.Application.ViewModel.StockVM
+﻿@model CtrlBox.Application.ViewModel.StockMovementVM
 
 @{
-    ViewData["Title"] = "CreateStock";
+    ViewData["Title"] = "StockMovementsCreate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 @section cssViews{
     <!-- BEGIN PAGE LEVEL STYLES -->
@@ -13,14 +14,14 @@
 }
 @section scriptsViews{
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="~/scripts/controllerJS/views/create-stock.js"></script>
+    <script src="~/scripts/controllerJS/views/create-stock-movements.js"></script>
     <script type="text/javascript" src="~/plugins/select2/select2.min.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
 }
 
 <script type="text/javascript">
     jQuery(document).ready(function () {
-        CreateStock.init();
+        CreateStockMovements.init();
     });
 </script>
 <div class="page-content">
@@ -32,11 +33,11 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.html">Prooduct</a>
+                        <a href="index.html">Address</a>
                         <span class="icon-angle-right"></span>
                     </li>
                     <li>
-                        <a href="#">Stock</a>
+                        <a href="#">Index</a>
                         <span class="icon-angle-right"></span>
                     </li>
                     <li><a href="#">Create</a></li>
@@ -49,42 +50,41 @@
             <div class="span12">
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption"><i class="icon-cogs"></i>New product stock</div>
+                        <div class="caption"><i class="icon-cogs"></i>New CreateStockMovements</div>
                     </div>
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
-                        <form asp-action="CreateStock" class="form-horizontal">
+                        <form asp-action="StockMovementsCreate" class="form-horizontal">
                             <div class="control-group">
-                                <label class="control-label">List Clients</label>
+                                <label class="control-label">List clients</label>
                                 <div class="controls">
-                                    <select id="ddlClients" class="span6 select2_option" data-placeholder="Choose a user" name="ClientID" asp-for="ClientID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"> <option value="0">Please select client</option></select>
+                                    <select id="ddlClients" class="span6 select2_option" data-placeholder="Choose a user" name="ClientSupplierID" asp-for="ClientSupplierID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"> <option value="0">Please select client</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">List Products</label>
+                                <label class="control-label">List products</label>
                                 <div class="controls">
                                     <select id="ddlProducts" class="span6 select2_option" data-placeholder="Choose a user" name="ProductID" asp-for="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"> <option value="0">Please select product</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Stock Minimum</label>
+                                <label class="control-label">UnitPrice</label>
                                 <div class="controls">
-                                    <input id="Minimum" type="text" name="Minimum" asp-for="Minimum" placeholder="Minimum" class="m-wrap medium" />
+                                    <input id="UnitPrice" type="text" name="UnitPrice" asp-for="UnitPrice" placeholder="Minimum" class="m-wrap medium" />
                                     <span class="help-inline">Some hint here</span>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Total Stock</label>
+                                <label class="control-label">Amount</label>
                                 <div class="controls">
-                                    <input id="TotalStock" disabled="disabled" type="text" asp-for="TotalStock" name="TotalStock" placeholder="0" class="m-wrap small" />
+                                    <input id="Amount" type="text" asp-for="Amount" name="Amount" placeholder="0" class="m-wrap small" />
                                     <span class="help-inline">Add in movement stock</span>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">DefaultPrice</label>
+                                <label class="control-label">List type movement</label>
                                 <div class="controls">
-                                    <input id="DefaultPrice" type="text" name="DefaultPrice" asp-for="DefaultPrice" placeholder="$0,00" class="m-wrap medium" />
-                                    <span class="help-inline">Some hint here</span>
+                                    <select id="ddlTypes" class="span6 select2_option" name="StockType" asp-for="StockType"><option value="Input">Input</option><option value="Output">Output</option></select>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -101,4 +101,5 @@
     </div>
     <!-- END PAGE CONTAINER-->
 </div>
+
 

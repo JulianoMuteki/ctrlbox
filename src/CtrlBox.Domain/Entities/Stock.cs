@@ -31,5 +31,17 @@ namespace CtrlBox.Domain.Entities
                 base.InitBase();
             }
         }
+
+        internal void OutputStock(int amount)
+        {
+            this.TotalStock -= amount;
+            this.DateModified = DateTime.Now;
+        }
+
+        internal void InputStock(int amount)
+        {
+            this.TotalStock += amount;
+            this.DateModified = DateTime.Now;
+        }
     }
 }

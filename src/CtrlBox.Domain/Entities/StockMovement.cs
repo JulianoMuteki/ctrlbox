@@ -19,9 +19,9 @@ namespace CtrlBox.Domain.Entities
         public EStockType StockType { get; private set; }
 
         public StockMovement()
-            :base()
+            : base()
         {
-                
+
         }
 
         public void Init()
@@ -30,6 +30,17 @@ namespace CtrlBox.Domain.Entities
             {
                 base.InitBase();
             }
+        }
+
+        public void SetStock(Stock stock)
+        {
+            TotalValue = Amount * UnitPrice;
+            this.StockID = stock.Id;
+
+            if (this.StockType == EStockType.Input)
+                stock.InputStock(Amount);
+            else
+                stock.OutputStock(Amount);
         }
     }
 }

@@ -23,5 +23,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         void AddStock(StockVM stockVM);
         ICollection<StockVM> GetStocks();
         ICollection<StockMovementVM> GetstocksMovements(Guid stockID);
+        Guid AddStockMovement(StockMovementVM entityVM);
     }
 }

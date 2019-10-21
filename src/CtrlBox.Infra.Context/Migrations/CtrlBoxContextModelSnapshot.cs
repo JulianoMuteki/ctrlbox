@@ -847,6 +847,8 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientSupplierID");
+
                     b.HasIndex("StockID");
 
                     b.ToTable("StocksMovements");
@@ -1410,7 +1412,7 @@ namespace CtrlBox.Infra.Context.Migrations
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Client", "ClientSupplier")
                         .WithMany("StocksMovements")
-                        .HasForeignKey("StockID");
+                        .HasForeignKey("ClientSupplierID");
 
                     b.HasOne("CtrlBox.Domain.Entities.Stock", "Stock")
                         .WithMany("StocksMovements")

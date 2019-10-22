@@ -21,7 +21,7 @@ namespace CtrlBox.Domain.Entities
         }
 
 
-        private BoxProductItems()
+        public BoxProductItems()
         {
 
         }

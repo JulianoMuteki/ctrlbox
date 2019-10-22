@@ -44,7 +44,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<Box> Boxes { get; set; }
         public DbSet<BoxProductItem> BoxesProductItems { get; set; }
         public DbSet<BoxBarcode> BoxesCodes { get; set; }
-        public DbSet<BoxProductItemsMap> BoxesProductsItemsMap { get; set; }
+        public DbSet<BoxProductItems> BoxesProductsItemsMap { get; set; }
 
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Payment> Payments { get; set; }

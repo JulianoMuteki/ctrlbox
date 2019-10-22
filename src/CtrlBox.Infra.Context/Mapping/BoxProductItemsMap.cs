@@ -8,16 +8,16 @@ namespace CtrlBox.Infra.Context.Mapping
     {
         public void Configure(EntityTypeBuilder<BoxProductItems> builder)
         {
-            builder.ToTable("BoxesProductsItemsMap");
-
-            builder.HasKey(t => t.BoxID );
+            builder.ToTable("BoxesProductsItems");
+            builder.HasKey(b => b.BoxID);
 
             builder.Property(e => e.TotalItems)
                       .IsRequired();
-                 
-            builder.HasOne(x => x.Box)
-                    .WithOne(b => b.BoxProductItems)
-                    .HasForeignKey<BoxProductItems>(ad => ad.BoxID);
+
+            builder.HasOne(a => a.Box)
+                   .WithOne(b => b.BoxProductItems)
+                   .HasForeignKey<BoxProductItems>(b => b.BoxID);
+
 
             builder.HasOne(x => x.Product)
                    .WithMany(x => x.BoxesProductsItems)

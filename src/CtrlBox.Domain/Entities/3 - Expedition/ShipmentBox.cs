@@ -8,9 +8,9 @@ namespace CtrlBox.Domain.Entities
     public class ShipmentBox : ValueObject<ShipmentBox>
     {
         public Guid BoxID { get; set; }
-        public Box Box { get; set; }
-
         public Guid OrderID { get; set; }
+
+        public Box Box { get; set; }
         public Order Order { get; set; }
 
         private ShipmentBox()

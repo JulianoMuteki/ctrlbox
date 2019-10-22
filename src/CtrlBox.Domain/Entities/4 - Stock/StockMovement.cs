@@ -6,9 +6,6 @@ namespace CtrlBox.Domain.Entities
 {
     public class StockMovement : EntityBase
     {
-        public Client ClientSupplier { get; private set; }
-        public Stock Stock { get; private set; }
-
         public Guid ClientSupplierID { get; private set; }
         public Guid StockID { get; private set; }
 
@@ -17,6 +14,9 @@ namespace CtrlBox.Domain.Entities
 
         public int Amount { get; private set; }
         public EFlowStepStock FlowStepStock { get; private set; }
+
+        public Client ClientSupplier { get; private set; }
+        public Stock Stock { get; private set; }
 
         public StockMovement()
             : base()

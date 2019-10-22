@@ -16,11 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Delivery\" />
-    <Folder Include="Entities\Stuff\" />
-    <Folder Include="Entities\Transport\" />
-    <Folder Include="Entities\Stock\" />
-    <Folder Include="Entities\SubEntities\" />
+    <Folder Include="Entities\7 - Delivery\" />
+    <Folder Include="Entities\2 - Registration\" />
+    <Folder Include="Entities\6 - Transport\" />
   </ItemGroup>
 
 </Project>

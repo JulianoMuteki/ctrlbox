@@ -500,6 +500,38 @@ namespace CtrlBox.Infra.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stocks",
+                columns: table => new
+                {
+                    StockID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    ClientID = table.Column<Guid>(nullable: false),
+                    ProductID = table.Column<Guid>(nullable: false),
+                    Minimum = table.Column<int>(nullable: false),
+                    TotalStock = table.Column<int>(nullable: false),
+                    DefaultPrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stocks", x => x.StockID);
+                    table.ForeignKey(
+                        name: "FK_Stocks_Clients_ClientID",
+                        column: x => x.ClientID,
+                        principalTable: "Clients",
+                        principalColumn: "ClientID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Stocks_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -616,6 +648,39 @@ namespace CtrlBox.Infra.Context.Migrations
                         column: x => x.TrackingTypeID,
                         principalTable: "TrackingsTypes",
                         principalColumn: "TrackingTypeID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StocksMovements",
+                columns: table => new
+                {
+                    StockMovementID = table.Column<Guid>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
+                    IsDisable = table.Column<bool>(nullable: false),
+                    ClientSupplierID = table.Column<Guid>(nullable: false),
+                    StockID = table.Column<Guid>(nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    TotalValue = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Amount = table.Column<int>(nullable: false),
+                    FlowStepStock = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StocksMovements", x => x.StockMovementID);
+                    table.ForeignKey(
+                        name: "FK_StocksMovements_Clients_ClientSupplierID",
+                        column: x => x.ClientSupplierID,
+                        principalTable: "Clients",
+                        principalColumn: "ClientID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StocksMovements_Stocks_StockID",
+                        column: x => x.StockID,
+                        principalTable: "Stocks",
+                        principalColumn: "StockID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1116,6 +1181,28 @@ namespace CtrlBox.Infra.Context.Migrations
                 column: "SaleID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Stocks_ClientID",
+                table: "Stocks",
+                column: "ClientID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stocks_ProductID",
+                table: "Stocks",
+                column: "ProductID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StocksMovements_ClientSupplierID",
+                table: "StocksMovements",
+                column: "ClientSupplierID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StocksMovements_StockID",
+                table: "StocksMovements",
+                column: "StockID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trackings_BoxID",
                 table: "Trackings",
                 column: "BoxID");
@@ -1192,6 +1279,9 @@ namespace CtrlBox.Infra.Context.Migrations
                 name: "SalesProducts");
 
             migrationBuilder.DropTable(
+                name: "StocksMovements");
+
+            migrationBuilder.DropTable(
                 name: "SystemConfigurations");
 
             migrationBuilder.DropTable(
@@ -1211,6 +1301,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaymentsMethods");
+
+            migrationBuilder.DropTable(
+                name: "Stocks");
 
             migrationBuilder.DropTable(
                 name: "Trackings");

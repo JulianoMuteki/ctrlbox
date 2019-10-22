@@ -27,6 +27,7 @@ namespace CtrlBox.Domain.Entities
         public Product Product { get; set; }
 
         public BoxBarcode BoxBarcode { get; set; }
+        public BoxProductItems BoxProductItems { get; set; }
 
         public ICollection<Box> BoxesChildren { get; set; }
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }

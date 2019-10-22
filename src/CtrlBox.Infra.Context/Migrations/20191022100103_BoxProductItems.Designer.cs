@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    [Migration("20191002204848_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20191022100103_BoxProductItems")]
+    partial class BoxProductItems
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -161,6 +161,21 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("ProductItemID");
 
                     b.ToTable("BoxesProductItems");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItems", b =>
+                {
+                    b.Property<Guid>("BoxID");
+
+                    b.Property<Guid>("ProductID");
+
+                    b.Property<int>("TotalItems");
+
+                    b.HasKey("BoxID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("BoxesProductsItems");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxType", b =>
@@ -783,6 +798,79 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.ToTable("SalesProducts");
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Stock", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("StockID");
+
+                    b.Property<Guid>("ClientID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<decimal>("DefaultPrice")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<int>("Minimum");
+
+                    b.Property<Guid>("ProductID");
+
+                    b.Property<int>("TotalStock");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientID")
+                        .IsUnique();
+
+                    b.HasIndex("ProductID")
+                        .IsUnique();
+
+                    b.ToTable("Stocks");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.StockMovement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("StockMovementID");
+
+                    b.Property<int>("Amount");
+
+                    b.Property<Guid>("ClientSupplierID");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<int>("FlowStepStock");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<Guid>("StockID");
+
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientSupplierID");
+
+                    b.HasIndex("StockID");
+
+                    b.ToTable("StocksMovements");
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.SystemConfiguration", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1108,6 +1196,19 @@ namespace CtrlBox.Infra.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItems", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithOne("BoxProductItems")
+                        .HasForeignKey("CtrlBox.Domain.Entities.BoxProductItems", "BoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
+                        .WithMany("BoxesProductsItems")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxType", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Picture", "Picture")
@@ -1321,6 +1422,31 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.Sale", "Sale")
                         .WithMany("SalesProducts")
                         .HasForeignKey("SaleID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.Stock", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
+                        .WithOne("Stock")
+                        .HasForeignKey("CtrlBox.Domain.Entities.Stock", "ClientID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
+                        .WithOne("Stock")
+                        .HasForeignKey("CtrlBox.Domain.Entities.Stock", "ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.StockMovement", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Client", "ClientSupplier")
+                        .WithMany("StocksMovements")
+                        .HasForeignKey("ClientSupplierID");
+
+                    b.HasOne("CtrlBox.Domain.Entities.Stock", "Stock")
+                        .WithMany("StocksMovements")
+                        .HasForeignKey("StockID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

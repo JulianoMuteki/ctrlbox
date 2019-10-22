@@ -4,14 +4,16 @@ using CtrlBox.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CtrlBox.Infra.Context.Migrations
 {
     [DbContext(typeof(CtrlBoxContext))]
-    partial class CtrlBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20191021094930_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,21 +161,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("ProductItemID");
 
                     b.ToTable("BoxesProductItems");
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItems", b =>
-                {
-                    b.Property<Guid>("BoxID");
-
-                    b.Property<Guid>("ProductID");
-
-                    b.Property<int>("TotalItems");
-
-                    b.HasKey("BoxID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("BoxesProductsItems");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxType", b =>
@@ -1191,19 +1178,6 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
                         .WithMany("BoxesProductItems")
                         .HasForeignKey("ProductItemID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItems", b =>
-                {
-                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
-                        .WithOne("BoxProductItems")
-                        .HasForeignKey("CtrlBox.Domain.Entities.BoxProductItems", "BoxID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
-                        .WithMany("BoxesProductsItems")
-                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -457,5 +457,85 @@ namespace CtrlBox.Application
             }
         }
 
+        public void AddStock(StockVM stockVM)
+        {
+            try
+            {
+                var stock = _mapper.Map<Stock>(stockVM);
+               
+                _unitOfWork.Repository<Stock>().Add(stock);
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.AddStock), ex);
+            }
+        }
+
+        public ICollection<StockVM> GetStocks()
+        {
+            try
+            {
+                var stocks = _unitOfWork.RepositoryCustom<IProductRepository>().GetStocks();
+                var stocksVM = _mapper.Map<IList<StockVM>>(stocks);
+                return stocksVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get stocks", nameof(this.GetStocks), ex);
+            }
+        }
+
+        public ICollection<StockMovementVM> GetstocksMovements(Guid stockID)
+        {
+            try
+            {
+                var stocksMovements = _unitOfWork.RepositoryCustom<IProductRepository>().GetStocksMovements(stockID);
+                var stocksMovementsVM = _mapper.Map<IList<StockMovementVM>>(stocksMovements);
+                return stocksMovementsVM;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching get stocks", nameof(this.GetStocks), ex);
+            }
+        }
+
+        public Guid AddStockMovement(StockMovementVM entityVM)
+        {
+            try
+            {
+                var stockMovement = _mapper.Map<StockMovement>(entityVM);
+                _unitOfWork.SetTrackAll();
+
+                var stock = _unitOfWork.Repository<Stock>().Find(x => x.ProductID == entityVM.ProductID);
+                stockMovement.SetStock(stock);
+
+                stock.StocksMovements.Add(stockMovement);
+                _unitOfWork.Repository<Stock>().Update(stock);
+                _unitOfWork.CommitSync();
+
+                return stock.Id;
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<ProductApplicationService>("Unexpected error fetching add stock", nameof(this.AddStock), ex);
+            }
+        }
     }
 }

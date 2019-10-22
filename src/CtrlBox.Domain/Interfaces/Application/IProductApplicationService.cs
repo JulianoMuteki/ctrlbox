@@ -20,5 +20,9 @@ namespace CtrlBox.Domain.Interfaces.Application
         void AddBoxStockWithProductItems(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid productID, int quantity);
         ICollection<BoxVM> GetAvailableBoxesByBoxTypeIDAndProductID(Guid boxTypeID, Guid clientID);
         void AddBoxStockWithBoxes(Guid boxTypeID, Guid trackingTypeID, Guid clientID, Guid boxTypeChildID, int quantity);
+        void AddStock(StockVM stockVM);
+        ICollection<StockVM> GetStocks();
+        ICollection<StockMovementVM> GetstocksMovements(Guid stockID);
+        Guid AddStockMovement(StockMovementVM entityVM);
     }
 }

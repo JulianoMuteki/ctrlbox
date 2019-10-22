@@ -268,5 +268,92 @@ namespace CtrlBox.UI.Web.Controllers
                 Message = "OK"
             });
         }
+
+        public ActionResult Stock()
+        {       
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerStocks()
+        {
+            var stocks = _productService.GetStocks();
+            return Json(new
+            {
+                aaData = stocks,
+                success = true
+            });
+        }
+
+        public IActionResult StockCreate()
+        {
+            var products = _productService.GetAll()
+                            .Select(prod => new SelectListItem
+                            {
+                                Value = prod.DT_RowId,
+                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
+                            }).ToList();
+            ViewData["Products"] = products;
+
+            var clients = _clientService.GetAll()
+                                        .Select(client => new SelectListItem
+                                        {
+                                            Value = client.DT_RowId,
+                                            Text = client.Name
+                                        }).ToList();
+            ViewData["Clients"] = clients;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult StockCreate(StockVM entityVM)
+        {
+            _productService.AddStock(entityVM);
+            return RedirectToAction("Stock");
+        }
+
+        public IActionResult StocksMovements(Guid stockID)
+        {
+            ViewData["StockID"] = stockID;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerStocksMovements(Guid stockID)
+        {
+            var stocksMovements = _productService.GetstocksMovements(stockID);
+            return Json(new
+            {
+                aaData = stocksMovements,
+                success = true
+            });
+        }
+
+        public IActionResult StockMovementsCreate()
+        {
+            var products = _productService.GetAll()
+                            .Select(prod => new SelectListItem
+                            {
+                                Value = prod.DT_RowId,
+                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
+                            }).ToList();
+            ViewData["Products"] = products;
+
+            var clients = _clientService.GetAll()
+                                        .Select(client => new SelectListItem
+                                        {
+                                            Value = client.DT_RowId,
+                                            Text = client.Name
+                                        }).ToList();
+            ViewData["Clients"] = clients;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult StockMovementsCreate(StockMovementVM entityVM)
+        {
+           var stockID = _productService.AddStockMovement(entityVM);
+            return RedirectToAction("StocksMovements", stockID);
+        }
     }
 }

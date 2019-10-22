@@ -1,6 +1,5 @@
 ﻿using CtrlBox.CrossCutting.Enums;
 using CtrlBox.Domain.Common;
-using CtrlBox.Domain.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

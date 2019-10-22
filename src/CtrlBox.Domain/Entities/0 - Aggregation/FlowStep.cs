@@ -1,7 +1,7 @@
 ﻿using System;
 using CtrlBox.CrossCutting.Enums;
 
-namespace CtrlBox.Domain.Entities.ValueObjects
+namespace CtrlBox.Domain.Entities
 {
     public class FlowStep
     {
@@ -24,10 +24,12 @@ namespace CtrlBox.Domain.Entities.ValueObjects
             else
                 this.EFlowStep = EFlowStep.Delivery;
         }
+
         public void SetFlowDelivered()
         {
             this.EFlowStep = EFlowStep.Delivery;
         }
+
         public void SetFlowOrder()
         {
             this.EFlowStep = EFlowStep.Order;

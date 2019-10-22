@@ -15,4 +15,12 @@
     <ProjectReference Include="..\CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Delivery\" />
+    <Folder Include="Entities\Stuff\" />
+    <Folder Include="Entities\Transport\" />
+    <Folder Include="Entities\Stock\" />
+    <Folder Include="Entities\SubEntities\" />
+  </ItemGroup>
+
 </Project>

@@ -55,10 +55,35 @@
             ]
        });
 
+      
+
+        $('#addGenerateBarcodes').on('click', function () {
+            $.ajax({
+                url: '../Mobile/GetAjaxHandlerListBarcodes',
+                type: 'GET',
+                dataType: 'json',
+                data: { quantity: $('#txtTotalBoxes').val() },
+                "success": function (object) {
+                    if (object != undefined) {
+                        var list = object.aaData;
+                        var tb = [];
+                       
+                        list.forEach(function (entry) {                        
+                            tb.push({
+                                "Barcode": entry
+                            });
+                        });
+
+                        oTableBarcodes.fnAddData(tb);
+                    }
+                },
+                "error": handleAjaxError
+            });
+        });
+
         $('#addRow').on('click', function () {
                   oTableBarcodes.fnAddData({
                 "Barcode": "352637247246"
-
             });
         });
     });
@@ -125,12 +150,12 @@
                             <div class="control-group">
                                 <label class="control-label">Total boxes</label>
                                 <div class="controls">
-                                    <input type="text" name="TotalBoxes" placeholder="Total Boxes" class="m-wrap large" />
+                                    <input id="txtTotalBoxes" type="text" name="TotalBoxes" placeholder="Total Boxes" class="m-wrap large" />
                                     <span class="help-inline">create total boxes</span>
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button type="submit" class="btn green">start read tags</button>
+                                <button id="addGenerateBarcodes" type="button" class="btn green">start read tags</button>
                                 <button id="addRow" type="button" class="btn green">add tag</button>
                             </div>
                         </form>

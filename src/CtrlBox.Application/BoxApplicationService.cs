@@ -453,5 +453,29 @@ namespace CtrlBox.Application
             }
 
         }
+
+        public ICollection<string> GetListBarcodes(int quantity)
+        {
+            try
+            {
+                IList<GraphicCodes> listGraphicCodes = new List<GraphicCodes>(quantity);
+
+                for (int i = 0; i < quantity; i++)
+                {
+                    GraphicCodes graphicCodes = GraphicCodes.FactoryCreate();
+                    listGraphicCodes.Add(graphicCodes);
+                }
+
+                return listGraphicCodes.Select(gc => gc.BarcodeEAN13).ToList();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching Barcodes", nameof(this.GetListBarcodes), ex);
+            }
+        }
     }
 }

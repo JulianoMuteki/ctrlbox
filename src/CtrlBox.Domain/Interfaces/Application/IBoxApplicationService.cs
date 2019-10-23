@@ -17,5 +17,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<BoxVM> FindBoxesAvailableWithProducts();
         ICollection<BoxVM> FindBoxesAvailableByBoxType(Guid guid);
         void GenarateBoxes(int nivel);
+        ICollection<string> GetListBarcodes(int quantity);
     }
 }

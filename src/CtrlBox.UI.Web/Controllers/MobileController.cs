@@ -12,7 +12,7 @@ namespace CtrlBox.UI.Web.Controllers
 {
     public class MobileController : Controller
     {
-        private readonly IBoxApplicationService _boxApplicationService;
+        private readonly IBoxApplicationService _boxAppService;
         private readonly IProductApplicationService _productApplicationService;
         private readonly IClientApplicationService _clientService;
         private readonly ITrackingApplicationService _trackingService;
@@ -20,7 +20,7 @@ namespace CtrlBox.UI.Web.Controllers
         public MobileController(IBoxApplicationService boxApplicationService, IProductApplicationService productApplicationService,
                              IClientApplicationService clientService, ITrackingApplicationService trackingService)
         {
-            _boxApplicationService = boxApplicationService;
+            _boxAppService = boxApplicationService;
             _productApplicationService = productApplicationService;
             _trackingService = trackingService;
             _clientService = clientService;
@@ -29,7 +29,7 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult BoxCreate()
         {
-            var boxesType = _boxApplicationService.GetAllBoxesType()
+            var boxesType = _boxAppService.GetAllBoxesType()
                                                     .Select(boxType => new SelectListItem
                                                     {
                                                         Value = boxType.DT_RowId,
@@ -45,7 +45,7 @@ namespace CtrlBox.UI.Web.Controllers
                                         }).ToList();
             ViewData["Products"] = products;
 
-            var boxes = _boxApplicationService.GetBoxesParentsWithBoxTypeEndProduct()
+            var boxes = _boxAppService.GetBoxesParentsWithBoxTypeEndProduct()
                             .Select(box => new SelectListItem
                             {
                                 Value = box.DT_RowId,
@@ -62,7 +62,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                _boxApplicationService.Add(boxVM);
+                _boxAppService.Add(boxVM);
                 return RedirectToAction("Index", "Box");
             }
             catch (CustomException exc)
@@ -73,6 +73,17 @@ namespace CtrlBox.UI.Web.Controllers
             {
                 throw ex;
             }
+        }
+
+        [HttpGet]
+        public ActionResult GetAjaxHandlerListBarcodes(int quantity)
+        {
+            var barcodes = _boxAppService.GetListBarcodes(quantity);
+            return Json(new
+            {
+                aaData = barcodes,
+                success = true
+            });
         }
     }
 }

@@ -138,7 +138,6 @@
                     </li>
                     @if (User.IsInRole(CtrlBox.Domain.Security.RoleAuthorize.Admin.ToString()))
                     {
-
                         <li>
                             <a href="javascript:;">
                                 <i class="icon-lock"></i>
@@ -156,7 +155,18 @@
                                     @Html.ActionLink("Login", "Login", "Account")
                                 </li>
                             </ul>
-
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <i class="icon-android"></i>
+                                <span class="title">Mobile</span>
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li>
+                                    @Html.ActionLink("BoxCreate", "BoxCreate", "Mobile")
+                                </li>
+                            </ul>
                         </li>
                     }
                     <li>
@@ -179,7 +189,90 @@
                                 @Html.ActionLink("Products", "Index", "Product")
                             </li>
                         </ul>
-
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Stuffs</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Index", "Index", "Controller")
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Stocks</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Index", "Index", "Controller")
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Expeditions</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Index", "Index", "Controller")
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Transports</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Index", "Index", "Controller")
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Deliveries</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Index", "Index", "Controller")
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Sales</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Index", "Index", "Controller")
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-cogs"></i>
+                            <span class="title">Controls</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                @Html.ActionLink("Index", "Index", "Controller")
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="javascript:;">

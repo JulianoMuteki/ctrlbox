@@ -38,23 +38,6 @@ namespace CtrlBox.UI.Web.Controllers
                                                     }).ToList();
             ViewData["BoxesType"] = boxesType;
 
-            var products = _productApplicationService.GetAll()
-                                        .Select(prod => new SelectListItem
-                                        {
-                                            Value = prod.DT_RowId,
-                                            Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
-                                        }).ToList();
-            ViewData["Products"] = products;
-
-            var boxes = _boxAppService.GetBoxesParentsWithBoxTypeEndProduct()
-                            .Select(box => new SelectListItem
-                            {
-                                Value = box.DT_RowId,
-                                Text = $"{box.BoxBarcode.BarcodeEAN13} {box.Description}"
-                            }).ToList();
-
-            ViewData["Boxes"] = boxes;
-
             return View();
         }
 

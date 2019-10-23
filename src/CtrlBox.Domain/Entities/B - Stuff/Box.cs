@@ -10,28 +10,20 @@ namespace CtrlBox.Domain.Entities
 {
     public class Box : EntityBase
     {
+        public Guid BoxTypeID { get; set; }
+        public Guid? BoxParentID { get; set; }
+
         public string Description { get; set; }
+        public int PorcentFull { get; set; }
         public EBoxStatus Status { get; set; }
         public FlowStep FlowStep { get; set; }
 
-        public int PorcentFull { get; set; }
-
-        public Guid BoxTypeID { get; set; }
         public BoxType BoxType { get; set; }
-
-        public Guid? BoxParentID { get; set; }
         public Box BoxParent { get; set; }
-
-        public Guid? ProductID { get; set; }
-        public Product Product { get; set; }
-
-        public BoxBarcode BoxBarcode { get; set; }
         public BoxProductItems BoxProductItems { get; set; }
+        public GraphicCodes GraphicCodes { get; set; }
 
         public ICollection<Box> BoxesChildren { get; set; }
-        public ICollection<BoxProductItem> BoxesProductItems { get; set; }
-        public ICollection<OrderBox> OrdersBoxes { get; set; }
-        public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
         public ICollection<Tracking> Trackings { get; set; }
 
         private Box()
@@ -43,6 +35,29 @@ namespace CtrlBox.Domain.Entities
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
         }
+
+        public static Box FactoryCreate(BoxType boxType, string barcode)
+        {
+            Box box = new Box();
+            box.BoxTypeID = boxType.Id;
+            box.BoxType = boxType;
+            box.Description = $"Desc.{boxType} - {boxType.Name}";
+            box.FlowStep = FlowStep.FactoryCreate();
+            box.GraphicCodes = GraphicCodes.FactoryCreate(barcode);
+
+            box.ComponentValidator.Validate(box, new BoxValidator());
+            return box;
+        }
+
+        #region OLD-REFACTORING
+
+        public Guid? ProductID { get; set; }
+        public Product Product { get; set; }
+
+        public ICollection<BoxProductItem> BoxesProductItems { get; set; }
+        public ICollection<OrderBox> OrdersBoxes { get; set; }
+        public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
+
 
         public static Box FactoryCreate(Guid boxTypeID, BoxType boxType, int i, Guid? productID = null)
         {
@@ -80,12 +95,6 @@ namespace CtrlBox.Domain.Entities
                 base.InitBase();
                 InicializateSubDomains();
             }
-        }
-
-        public void InicializateSubDomains()
-        {
-            this.BoxBarcode = BoxBarcode.FactoryCreate(this.Id);
-            this.FlowStep = FlowStep.FactoryCreate();
         }
 
         public void LoadProductItems(ICollection<ProductItem> productItems)
@@ -253,6 +262,6 @@ namespace CtrlBox.Domain.Entities
                 }
             }
         }
-
+        #endregion
     }
 }

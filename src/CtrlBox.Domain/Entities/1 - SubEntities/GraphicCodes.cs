@@ -1,9 +1,9 @@
 ﻿using CtrlBox.CrossCutting.Barcode;
 using CtrlBox.Domain.Common;
 
-namespace CtrlBox.Domain.Entities._0___SubEntities
+namespace CtrlBox.Domain.Entities
 {
-    public class Barcode : EntityBase
+    public class GraphicCodes : EntityBase
     {
         /// <summary>
         /// 13 digits
@@ -17,7 +17,7 @@ namespace CtrlBox.Domain.Entities._0___SubEntities
 
         public string RFID { get; set; }
 
-        private Barcode()
+        private GraphicCodes()
             : base()
         {
             this.BarcodeEAN13 = BarcodeGenerator.GetBarCodeNumber();
@@ -25,9 +25,17 @@ namespace CtrlBox.Domain.Entities._0___SubEntities
             this.RFID = string.Empty;
         }
 
-        public static Barcode FactoryCreate()
+        public static GraphicCodes FactoryCreate(string barcode)
         {
-            return new Barcode();
+            GraphicCodes gc = new GraphicCodes();
+            gc.BarcodeEAN13 = barcode;
+
+            return gc;
+        }
+
+        public static GraphicCodes FactoryCreate()
+        {
+            return new GraphicCodes();
         }
     }
 }

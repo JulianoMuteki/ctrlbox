@@ -52,9 +52,7 @@
                         }
             ]
        });
-
-      
-
+    
         $('#addGenerateBarcodes').on('click', function () {
             $.ajax({
                 url: '../Mobile/GetAjaxHandlerListBarcodes',
@@ -83,6 +81,39 @@
                   oTableBarcodes.fnAddData({
                 "Barcode": "352637247246"
             });
+        });
+        
+        $("#btnSubmit").click(function () {
+            var boxCreateVM = {};              
+            var tbBarcodes = [];
+
+            $.each(oTableBarcodes.fnGetNodes(), function (index, value) {
+                var row = oTableBarcodes.fnGetData(value);                         
+                tbBarcodes.push(row.Barcode);
+            });
+
+            boxCreateVM.Description = $('#txtDescription').val();
+            boxCreateVM.BoxTypeID = $('#ddlBoxesType').val();
+            boxCreateVM.TagsBarcodes = tbBarcodes;
+
+            var myJsonString = JSON.stringify(boxCreateVM);
+            console.log(myJsonString);
+            $.ajax({
+                url: '../Mobile/PostAjaxHandlerCreateBox',
+                type: 'POST',
+                dataType: 'json',
+                data: { entity: myJsonString },
+                "success": function (json) {
+                    if (!json.NotAuthorized) {
+                        alert('Completo');
+                        window.history.back();
+                    }
+                },
+                "error": handleAjaxError
+            });
+            event.preventDefault();
+
+            return true;
         });
     });
 </script>
@@ -115,17 +146,17 @@
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <form asp-action="Create" asp-controller="Box" class="form-horizontal">
+                        <form class="form-horizontal">
                             <div class="control-group">
                                 <label class="control-label">Box type</label>
                                 <div class="controls">
-                                    <select id="ddlBoxesType" class="span6 select2_option" data-placeholder="Choose a box type" tabindex="1" name="BoxTypeID" asp-for="BoxTypeID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
+                                    <select id="ddlBoxesType" class="span6 select2_option" data-placeholder="Choose a box type" tabindex="1" name="BoxTypeID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Description</label>
                                 <div class="controls">
-                                    <input type="text" name="Description" placeholder="Description" class="m-wrap large" />
+                                    <input id="txtDescription" type="text" name="Description" placeholder="Description" class="m-wrap large" />
                                     <span class="help-inline">Description</span>
                                 </div>
                             </div>
@@ -179,6 +210,7 @@
                             </thead>
                             <tbody></tbody>
                         </table>
+                        <button id="btnSubmit" type="button" class="btn green">btnSubmit</button> 
                     </div>
                 </div>
             </div>

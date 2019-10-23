@@ -18,5 +18,6 @@ namespace CtrlBox.Domain.Interfaces.Application
         ICollection<BoxVM> FindBoxesAvailableByBoxType(Guid guid);
         void GenarateBoxes(int nivel);
         ICollection<string> GetListBarcodes(int quantity);
+        void Add(CreateBoxVM entity);
     }
 }

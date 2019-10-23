@@ -42,7 +42,7 @@ namespace CtrlBox.Domain.Entities
             Box box = new Box();
             box.BoxTypeID = boxType.Id;
             box.BoxType = boxType;
-            box.Description = $"Desc.{boxType} - {boxType.Name}";
+            box.Description = $"Desc.{barcode} - {boxType.Name}";
             box.FlowStep = FlowStep.FactoryCreate();
             box.GraphicCodes = GraphicCodes.FactoryCreate(barcode);
 

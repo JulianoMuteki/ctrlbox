@@ -483,6 +483,7 @@ namespace CtrlBox.Application
         {
             try
             {
+                _unitOfWork.SetTrackAll();
                 var boxtype = _unitOfWork.Repository<BoxType>().GetById(entity.BoxTypeID);
                 foreach (var barcode in entity.TagsBarcodes)
                 {

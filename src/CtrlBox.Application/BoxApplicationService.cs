@@ -454,6 +454,7 @@ namespace CtrlBox.Application
 
         }
 
+        //Mobile
         public ICollection<string> GetListBarcodes(int quantity)
         {
             try

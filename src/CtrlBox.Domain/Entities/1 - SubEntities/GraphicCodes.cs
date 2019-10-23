@@ -1,5 +1,6 @@
 ﻿using CtrlBox.CrossCutting.Barcode;
 using CtrlBox.Domain.Common;
+using System.Collections.Generic;
 
 namespace CtrlBox.Domain.Entities
 {
@@ -17,9 +18,13 @@ namespace CtrlBox.Domain.Entities
 
         public string RFID { get; set; }
 
+        public ICollection<Box> Boxes { get; set; }
+
         private GraphicCodes()
             : base()
         {
+            this.Boxes = new HashSet<Box>();
+
             this.BarcodeEAN13 = BarcodeGenerator.GetBarCodeNumber();
             this.BarcodeGS1_128 = string.Empty;
             this.RFID = string.Empty;

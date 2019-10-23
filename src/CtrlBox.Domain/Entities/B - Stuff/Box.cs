@@ -12,6 +12,7 @@ namespace CtrlBox.Domain.Entities
     {
         public Guid BoxTypeID { get; set; }
         public Guid? BoxParentID { get; set; }
+        public Guid GraphicCodeID { get; set; }
 
         public string Description { get; set; }
         public int PorcentFull { get; set; }

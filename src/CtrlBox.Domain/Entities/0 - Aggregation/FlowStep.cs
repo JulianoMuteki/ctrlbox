@@ -22,17 +22,17 @@ namespace CtrlBox.Domain.Entities
             if (hasCrossDocking)
                 this.EFlowStep = EFlowStep.CrossDocking;
             else
-                this.EFlowStep = EFlowStep.Delivery;
+                this.EFlowStep = EFlowStep.Delivered;
         }
 
         public void SetFlowDelivered()
         {
-            this.EFlowStep = EFlowStep.Delivery;
+            this.EFlowStep = EFlowStep.Delivered;
         }
 
-        public void SetFlowOrder()
+        public void SetFlowExpedition()
         {
-            this.EFlowStep = EFlowStep.Order;
+            this.EFlowStep = EFlowStep.Expedition;
         }
 
         public void SetAvailable()

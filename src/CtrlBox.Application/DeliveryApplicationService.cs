@@ -212,7 +212,8 @@ namespace CtrlBox.Application
                 List<Box> boxesUpdate = new List<Box>();
                 foreach (var deliveryDetail in order.DeliveriesDetails)
                 {
-                    var boxesProductsAvailable = boxes.Where(x => x.ProductID == deliveryDetail.ProductID).OrderBy(x => x.PorcentFull).ToList();
+                    //  var boxesProductsAvailable = boxes.Where(x => x.ProductID == deliveryDetail.ProductID).OrderBy(x => x.PorcentFull).ToList();
+                    var boxesProductsAvailable = boxes.OrderBy(x => x.PorcentFull).ToList();
                     var boxesUpdateResult = deliveryDetail.DeliveryBoxesAndProductItems(boxesProductsAvailable, trackingTypeID);
 
                     boxesUpdate.AddRange(boxesUpdateResult);

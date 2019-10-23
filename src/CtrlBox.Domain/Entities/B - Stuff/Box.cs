@@ -49,26 +49,25 @@ namespace CtrlBox.Domain.Entities
             return box;
         }
 
+        public void Init()
+        {
+            if (this.Id == null || this.Id == Guid.Empty)
+            {
+                base.InitBase();
+            }
+        }
         #region OLD-REFACTORING
-
-        public Guid? ProductID { get; set; }
-        public Product Product { get; set; }
 
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }
         public ICollection<OrderBox> OrdersBoxes { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
 
-
         public static Box FactoryCreate(Guid boxTypeID, BoxType boxType, int i, Guid? productID = null)
         {
             Box box = new Box();
-            box.InicializateSubDomains();
             box.BoxTypeID = boxTypeID;
             box.BoxType = boxType;
             box.Description = $"Desc.{i} - {boxType.Name}";
-
-            if (productID != null && productID.Value != Guid.Empty)
-                box.ProductID = productID;
 
             box.ComponentValidator.Validate(box, new BoxValidator());
             return box;
@@ -86,15 +85,6 @@ namespace CtrlBox.Domain.Entities
         public void SetBoxType(BoxType boxType)
         {
             this.BoxType = boxType;
-        }
-
-        public void Init()
-        {
-            if (this.Id == null || this.Id == Guid.Empty)
-            {
-                base.InitBase();
-                InicializateSubDomains();
-            }
         }
 
         public void LoadProductItems(ICollection<ProductItem> productItems)
@@ -120,7 +110,8 @@ namespace CtrlBox.Domain.Entities
             var totalProductItemsDelivered = 0;
 
             deliveryDetail.AddDeliveryBox(this.Id);
-            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
+            // if (this.ProductID != Guid.Empty && this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
+            if ( this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
             {
                 var boxProductsItems = this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false && x.ProductItem.ProductID == deliveryDetail.ProductID).Take(quantity).ToList();
 
@@ -137,7 +128,7 @@ namespace CtrlBox.Domain.Entities
                 {
                     this.FlowStep.SetFlowCrossDocking();
                 }
-                else if (!this.BoxesProductItems.Any(x => x.ProductItem.FlowStep.EFlowStep != EFlowStep.Delivery) && !deliveryDetail.HasCrossDocking)
+                else if (!this.BoxesProductItems.Any(x => x.ProductItem.FlowStep.EFlowStep != EFlowStep.Delivered) && !deliveryDetail.HasCrossDocking)
                 {
                     this.FlowStep.SetFlowDelivered();
                 }
@@ -223,44 +214,44 @@ namespace CtrlBox.Domain.Entities
 
         public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)
         {
-            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
-            {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.FlowStep.EFlowStep == EFlowStep.Delivery).ToList();
+            //if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            //{
+            //    var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.FlowStep.EFlowStep == EFlowStep.Delivery).ToList();
 
-                foreach (var boxProductItem in boxProductsItems)
-                {
-                    boxProductItem.AddTrackingProductItem(trackingTypeID, clientID);
-                }
-            }
-            else
-            {
-                foreach (var boxChild in this.BoxesChildren)
-                {
-                    boxChild.AddTrackingProductItems(trackingTypeID, clientID);
-                }
-            }
+            //    foreach (var boxProductItem in boxProductsItems)
+            //    {
+            //        boxProductItem.AddTrackingProductItem(trackingTypeID, clientID);
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (var boxChild in this.BoxesChildren)
+            //    {
+            //        boxChild.AddTrackingProductItems(trackingTypeID, clientID);
+            //    }
+            //}
         }
 
         public void FinishDelivery(bool hasCrossDocking)
         {
             this.FlowStep.SetFlowDelivery(hasCrossDocking);
 
-            if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
-            {
-                var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.FlowStep.EFlowStep == EFlowStep.Delivery).ToList();
+            //if (this.ProductID != Guid.Empty && this.BoxesProductItems.Count > 0)
+            //{
+            //    var boxProductsItems = this.BoxesProductItems.Where(x => x.ProductItem.FlowStep.EFlowStep == EFlowStep.Delivery).ToList();
 
-                foreach (var boxProductItem in boxProductsItems)
-                {
-                    boxProductItem.FinishDelivery(hasCrossDocking);
-                }
-            }
-            else
-            {
-                foreach (var boxChild in this.BoxesChildren)
-                {
-                    boxChild.FinishDelivery(hasCrossDocking);
-                }
-            }
+            //    foreach (var boxProductItem in boxProductsItems)
+            //    {
+            //        boxProductItem.FinishDelivery(hasCrossDocking);
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (var boxChild in this.BoxesChildren)
+            //    {
+            //        boxChild.FinishDelivery(hasCrossDocking);
+            //    }
+            //}
         }
         #endregion
     }

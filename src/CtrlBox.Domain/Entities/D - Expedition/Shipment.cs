@@ -55,14 +55,14 @@ namespace CtrlBox.Domain.Entities
                 ShipmentBox orderBox = ShipmentBox.FactoryCreate(this.Id, box.Id);
 
                 this.ShipmentBoxes.Add(orderBox);
-                box.FlowStep.SetFlowOrder();
+                box.FlowStep.SetFlowExpedition();
 
                 if (box.BoxesChildren.Count > 0)
                     CreateShipmentBoxes(box.BoxesChildren);
-                else if (box.ProductID != null && box.ProductID != Guid.Empty)
-                {
-                  //  CreateOrderProductItem(box);
-                }
+                //else if (box.ProductID != null && box.ProductID != Guid.Empty)
+                //{
+                //  //  CreateOrderProductItem(box);
+                //}
             }
         }
 

@@ -37,11 +37,6 @@ namespace CtrlBox.Infra.Context.Mapping
                 .WithMany(x => x.Boxes)
                 .HasForeignKey(x => x.BoxTypeID);
 
-            builder.HasOne(x => x.Product)
-                .WithMany(x => x.Boxes)
-                .HasForeignKey(x => x.ProductID)
-                .IsRequired(false);
-
             builder.HasMany(x => x.BoxesChildren)
                 .WithOne(x=>x.BoxParent)
                 .HasForeignKey(x => x.BoxParentID)

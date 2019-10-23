@@ -23,9 +23,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Box>()
-                    .Include(x => x.Product)
                     .Include(x => x.BoxType)
-                    .Include(x => x.BoxBarcode)
                     .ToList();
             }
             catch (Exception ex)
@@ -40,9 +38,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 return _context.Set<Box>()
                     .Where(x => x.BoxParentID == null)
-                    .Include(x => x.Product)
                     .Include(x => x.BoxType)
-                    .Include(x=>x.BoxBarcode)
                     .ToList();
             }
             catch (Exception ex)
@@ -102,7 +98,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                            .Include(x => x.BoxesChildren)
                             .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
-                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order) && x.BoxParentID == null)
+                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Expedition) && x.BoxParentID == null)
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
@@ -147,7 +143,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 var query = _context.Set<Box>()
                             .Include(x => x.BoxType).ThenInclude(p => p.Picture)
-                            .Include(x => x.Product).ThenInclude(z => z.Picture)
+                            //.Include(x => x.Product).ThenInclude(z => z.Picture)
 
                             .Include(x => x.BoxesChildren)
                             .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
@@ -175,7 +171,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               pi => pi.ProductItemID,
                               (productItem, orderProductItem) => new { ProductItem = productItem, OrderProductItem = orderProductItem })
 
-                           .Where(x => x.OrderProductItem.OrderID == orderID && x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
+                           .Where(x => x.OrderProductItem.OrderID == orderID && x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Expedition)
                            .Select(x => x.ProductItem);
 
                 return query.ToList();
@@ -191,7 +187,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Box>()
-                    .Include(x=>x.BoxBarcode)
+                   // .Include(x=>x.BoxBarcode)
                     .Include(x => x.BoxType).ThenInclude(x => x.Picture)
                     .Where(x => x.Id == boxID)
                     .FirstOrDefault();
@@ -206,7 +202,7 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Order);
+                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Expedition);
                 return query.ToList();
             }
             catch (Exception ex)
@@ -275,7 +271,7 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Delivery);
+                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Delivered);
 
                 return query.ToList();
             }

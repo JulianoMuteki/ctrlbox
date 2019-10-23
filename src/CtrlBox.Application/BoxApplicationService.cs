@@ -33,12 +33,12 @@ namespace CtrlBox.Application
                 var boxType = _unitOfWork.Repository<BoxType>().GetById(box.BoxTypeID);
                 box.SetBoxType(boxType);
 
-                if (box.ProductID != null && box.ProductID != Guid.Empty)
-                    AddBoxHasProduct(entity.RangeProductsItems, box);
-                else
-                    AddBoxWithoutProduct(entity.ChildrenBoxesID, box);
+                //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                //    AddBoxHasProduct(entity.RangeProductsItems, box);
+                //else
+                AddBoxWithoutProduct(entity.ChildrenBoxesID, box);
 
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
                 return entity;
             }
             catch (CustomException exc)
@@ -63,8 +63,8 @@ namespace CtrlBox.Application
 
         private void AddBoxHasProduct(int rangeProductsItems, Box box)
         {
-            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID && x.Status == EProductItemStatus.AvailableStock).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
-            box.LoadProductItems(productItems);
+            //var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID && x.Status == EProductItemStatus.AvailableStock).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
+            //box.LoadProductItems(productItems);
 
             if (!box.ComponentValidator.Validate(box, new BoxValidator()))
             {
@@ -73,9 +73,8 @@ namespace CtrlBox.Application
             var list = box.BoxesProductItems.ToList();
             box.Destructor();
 
-            _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
             _unitOfWork.Repository<Box>().Add(box);
-            _unitOfWork.Repository<BoxProductItem>().AddRange(list);   
+            _unitOfWork.Repository<BoxProductItem>().AddRange(list);
         }
 
         public Task<BoxVM> AddAsync(BoxVM entity)
@@ -95,7 +94,7 @@ namespace CtrlBox.Application
                 }
 
                 _unitOfWork.Repository<BoxType>().Add(boxType);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -292,7 +291,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().FindAll(x => x.BoxParentID == null && x.ProductID != null);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().FindAll(x => x.BoxParentID == null);
                 var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
                 return boxesVMs;
             }
@@ -346,13 +345,13 @@ namespace CtrlBox.Application
 
                         box.SetBoxType(boxType);
 
-                        if (box.ProductID != null && box.ProductID != Guid.Empty)
-                            AddBoxHasProduct(boxEngradado.RangeProductsItems, box);
-                        else
-                            AddBoxWithoutProduct(boxEngradado.ChildrenBoxesID, box);
+                        //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                        //    AddBoxHasProduct(boxEngradado.RangeProductsItems, box);
+                        //else
+                        AddBoxWithoutProduct(boxEngradado.ChildrenBoxesID, box);
 
                         _unitOfWork.CommitSync();
-                    }                                     
+                    }
                 }
                 catch (CustomException exc)
                 {
@@ -390,10 +389,10 @@ namespace CtrlBox.Application
 
                         box.SetBoxType(boxType);
 
-                        if (box.ProductID != null && box.ProductID != Guid.Empty)
-                            AddBoxHasProduct(boxPallet.RangeProductsItems, box);
-                        else
-                            AddBoxWithoutProduct(boxPallet.ChildrenBoxesID, box);
+                        //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                        //    AddBoxHasProduct(boxPallet.RangeProductsItems, box);
+                        //else
+                        AddBoxWithoutProduct(boxPallet.ChildrenBoxesID, box);
 
                         _unitOfWork.CommitSync();
                     }
@@ -435,10 +434,10 @@ namespace CtrlBox.Application
 
                         box.SetBoxType(boxType);
 
-                        if (box.ProductID != null && box.ProductID != Guid.Empty)
-                            AddBoxHasProduct(boxContainer.RangeProductsItems, box);
-                        else
-                            AddBoxWithoutProduct(boxContainer.ChildrenBoxesID, box);
+                        //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                        //    AddBoxHasProduct(boxContainer.RangeProductsItems, box);
+                        //else
+                        AddBoxWithoutProduct(boxContainer.ChildrenBoxesID, box);
 
                         _unitOfWork.CommitSync();
                     }

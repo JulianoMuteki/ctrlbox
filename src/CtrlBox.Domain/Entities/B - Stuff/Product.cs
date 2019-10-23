@@ -31,15 +31,12 @@ namespace CtrlBox.Domain.Entities
         public ICollection<SaleProduct> SalesProducts { get; set; }
         public ICollection<BoxProductItems> BoxesProductsItems { get; set; }
 
-        public ICollection<Box> Boxes { get; set; }
-
         private Product()
             :base()
         {
             this.DeliveriesDetails = new HashSet<DeliveryDetail>();
             this.SalesProducts = new HashSet<SaleProduct>();
             this.CustomersProductsValues = new HashSet<ClientProductValue>();
-            this.Boxes = new HashSet<Box>();
             this.BoxesProductsItems = new HashSet<BoxProductItems>();
 
         }

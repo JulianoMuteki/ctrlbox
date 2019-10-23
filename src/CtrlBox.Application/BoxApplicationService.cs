@@ -478,5 +478,28 @@ namespace CtrlBox.Application
                 throw CustomException.Create<BoxApplicationService>("Unexpected error fetching Barcodes", nameof(this.GetListBarcodes), ex);
             }
         }
+
+        public void Add(CreateBoxVM entity)
+        {
+            try
+            {
+                var boxtype = _unitOfWork.Repository<BoxType>().GetById(entity.BoxTypeID);
+                foreach (var barcode in entity.TagsBarcodes)
+                {
+                    Box box = Box.FactoryCreate(boxtype, barcode);
+                    _unitOfWork.Repository<Box>().Add(box);
+                }
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add boxes", nameof(this.Add), ex);
+            }
+        }
+
     }
 }

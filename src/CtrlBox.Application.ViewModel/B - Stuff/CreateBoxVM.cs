@@ -7,6 +7,6 @@ namespace CtrlBox.Application.ViewModel
     {
         public string Description { get; set; }
         public Guid BoxTypeID { get; set; }
-        IList<string> TagsBarcodes { get; set; }
+        public IList<string> TagsBarcodes { get; set; }
     }
 }

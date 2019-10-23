@@ -57,6 +57,7 @@ namespace CtrlBox.Domain.Entities
                 base.InitBase();
             }
         }
+
         #region OLD-REFACTORING
 
         public ICollection<BoxProductItem> BoxesProductItems { get; set; }

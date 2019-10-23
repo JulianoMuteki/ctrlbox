@@ -7,11 +7,12 @@ namespace CtrlBox.CrossCutting.Enums
         Available = 1,
         InStock = 2,
         InBox = 3,
-        Order = 4,
-        Sale = 5,
-        Delivery = 6,
+        Expedition = 4,
+        Transport = 5,
+        Sale = 6,
         SaleAndDelivery = 7,
-        CrossDocking = 7,
-        Completed = 9
+        Delivered = 8,
+        CrossDocking = 9,
+        Completed = 10
     }
 }

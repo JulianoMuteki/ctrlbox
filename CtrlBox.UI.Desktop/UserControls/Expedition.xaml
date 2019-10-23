@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="CtrlBox.UI.Desktop.UserControls.Expedition"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CtrlBox.UI.Desktop.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid x:Name="LayoutCtrlBox">
+        <StackPanel Margin="0,0,0,407">
+            <GroupBox Header="Menu">
+                <Grid>
+                    <Button x:Name="btnSendTags" Content="Send boxes read" Margin="10,0,0,0" HorizontalAlignment="Left" Width="150" Height="Auto"/>
+                    <Label Content="Status:" Margin="802,0,107,10" RenderTransformOrigin="1.571,0.486"/>
+                    <Label Content="Reader stop" Margin="874,0,0,10" Foreground="Red"/>
+                </Grid>
+            </GroupBox>
+        </StackPanel>
+        <Grid Margin="0,97,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.4*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox FontSize="16" Grid.Column="0" Header="Routes" Margin="0,-6,1,6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="38*" />
+                        <RowDefinition Height="65*"  />
+                        <RowDefinition Height="34*" />
+                        <RowDefinition Height="44*" />
+                        <RowDefinition Height="190*" />
+                    </Grid.RowDefinitions>
+                    <ComboBox x:Name="cboRoutes" FontSize="16" SelectionChanged="CboRoutes_SelectionChanged" Height="31"/>
+                    <ComboBox x:Name="cboBoxTypes" Height="31" Grid.Row="1" FontSize="16"/>
+                    <Label Content="Enter total boxes" Margin="0,0,-2,5" Grid.Row="2"/>
+                    <TextBox FontSize="20" Text="0" Margin="0" Grid.Row="3" Height="36" VerticalAlignment="Top"/>
+                    <Button Grid.Row="4" Height="45" Margin="0,10,0,0" HorizontalAlignment="Left" Width="241" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal" Height="23" Width="195">
+                            <TextBlock Text="Read boxes" HorizontalAlignment="Left" Width="145" />
+                            <Image Width="32" Height="20" RenderTransformOrigin="5.2,0.375" Margin="0,2,0,1" Source="/CtrlBox.UI.Desktop;component/Images/rfidsignal.png"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Boxes available" Margin="4,-6,4,6">
+                <ListView Name="grdTagsAvailable" ScrollViewer.CanContentScroll="False" Margin="0,0,2,0" Height="Auto" VerticalAlignment="Top">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Description" Width="Auto" DisplayMemberBinding="{Binding Description}" />
+                            <GridViewColumn Header="BoxBarcode" Width="Auto"  DisplayMemberBinding="{Binding  BoxBarcode.BarcodeEAN13}" />
+                            <GridViewColumn Header="BoxType" Width="Auto" DisplayMemberBinding="{Binding BoxType.Name}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+            <GroupBox Grid.Column="2" Margin="1,-6,10,6">
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="85">Boxes read</TextBlock>
+                        <Image Height="24" Source="/CtrlBox.UI.Desktop;component/Images/rfidsignal.png"/>
+                    </StackPanel>
+                </GroupBox.Header>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
+using CtrlBox.UI.Web.Extensions;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -62,12 +63,21 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public ActionResult GetAjaxHandlerListBarcodes(int quantity)
         {
-            var barcodes = _boxAppService.GetListBarcodes(quantity);
-            return Json(new
+            try
             {
-                aaData = barcodes,
-                success = true
-            });
+                var barcodes = _boxAppService.GetListBarcodes(quantity);
+                return Json(new
+                {
+                    aaData = barcodes,
+                    success = true
+                });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(CustomExceptionHandler.AjaxException(ex, Response));
+
+            }
         }
 
 

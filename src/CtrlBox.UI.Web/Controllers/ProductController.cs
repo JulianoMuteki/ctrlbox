@@ -75,15 +75,23 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProductVM productVM, IFormFile FilePicture)
         {
-            PictureVM imageEntity = GeneratePicture.CreatePicture(FilePicture, $"{productVM.Name} - {productVM.Description}");
-            productVM.Picture = imageEntity;
+            try
+            {
 
-            if (string.IsNullOrEmpty(productVM.DT_RowId))
-                _productService.Add(productVM);
-            else
-                _productService.Update(productVM);
+                PictureVM imageEntity = GeneratePicture.CreatePicture(FilePicture, $"{productVM.Name} - {productVM.Description}");
+                productVM.Picture = imageEntity;
 
-            return RedirectToAction("Index");
+                if (string.IsNullOrEmpty(productVM.DT_RowId))
+                    _productService.Add(productVM);
+                else
+                    _productService.Update(productVM);
+
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]

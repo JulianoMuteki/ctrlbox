@@ -2,6 +2,7 @@
 using CtrlBox.Domain.Identity;
 using CtrlBox.Domain.Security;
 using CtrlBox.Infra.Context;
+using CtrlBox.UI.Web.Extensions;
 using CtrlBox.UI.Web.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -85,17 +86,19 @@ namespace CtrlBox.UI.Web
 
             services.AddAutoMapperSetup();
             // Add application services.
-            services.AddMvc().AddRazorPagesOptions(options =>
-            {
-                options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddMvc().AddXmlSerializerFormatters();
-
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddMvc(options => options.Filters.Add<NotificationFilter>())
+                    .AddRazorPagesOptions(options =>
+                                            {
+                                                options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
+                                            })
+                    .AddJsonOptions(options =>
                                     {
                                         options.SerializerSettings.ContractResolver
                                             = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                                    });
+                                    })
+                    .AddXmlSerializerFormatters()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             RegisterServices(services);
         }
 

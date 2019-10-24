@@ -10,6 +10,8 @@ namespace CtrlBox.CrossCutting.Ioc
         {
             //helper service
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<NotificationContext, NotificationContext>();
+            
         }
     }
 }

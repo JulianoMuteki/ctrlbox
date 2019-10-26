@@ -4,6 +4,7 @@ using System.Linq;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
+using CtrlBox.UI.Web.Extensions;
 using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly IClientApplicationService _clientService;
         private readonly IProductApplicationService _productService;
         private readonly ITrackingApplicationService _trackingService;
 
-        public ProductController(IClientApplicationService clientService, IProductApplicationService productService, ITrackingApplicationService trackingService)
+        public ProductController(NotificationContext notificationContext, IClientApplicationService clientService, IProductApplicationService productService, ITrackingApplicationService trackingService)
+            : base(notificationContext)
         {
             _clientService = clientService;
             _productService = productService;
@@ -86,9 +88,15 @@ namespace CtrlBox.UI.Web.Controllers
                 else
                     _productService.Update(productVM);
 
+                if (_notificationContext.HasNotifications)
+                {
+                    base.PushNotification();
+                    return View(productVM);
+                }
+
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -278,7 +286,7 @@ namespace CtrlBox.UI.Web.Controllers
         }
 
         public ActionResult Stock()
-        {       
+        {
             return View();
         }
 
@@ -360,7 +368,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public IActionResult StockMovementsCreate(StockMovementVM entityVM)
         {
-           var stockID = _productService.AddStockMovement(entityVM);
+            var stockID = _productService.AddStockMovement(entityVM);
             return RedirectToAction("StocksMovements", stockID);
         }
     }

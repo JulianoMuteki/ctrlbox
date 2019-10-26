@@ -1,0 +1,11 @@
+﻿@if (ViewBag.Notifications != null)
+{
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="alert">
+                <button class="close" data-dismiss="alert"></button>
+                <strong>Warning!</strong> @ViewBag.Notifications
+            </div>
+        </div>
+    </div>
+}

@@ -86,7 +86,7 @@ namespace CtrlBox.UI.Web
 
             services.AddAutoMapperSetup();
             // Add application services.
-            services.AddMvc(options => options.Filters.Add<NotificationFilter>())
+            services.AddMvc()
                     .AddRazorPagesOptions(options =>
                                             {
                                                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");

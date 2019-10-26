@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -17,24 +18,29 @@ namespace CtrlBox.UI.Web.Extensions
             _notificationContext = notificationContext;
         }
 
-        public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
+        public async Task OnResultExecutionAsync(ResultExecutingContext filterContext, ResultExecutionDelegate next)
         {
             if (_notificationContext.HasNotifications)
             {
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.HttpContext.Response.ContentType = "application/json";
 
-                var notifications = JsonConvert.SerializeObject(_notificationContext.Notifications);
-                // await context.HttpContext.Response.WriteAsync(notifications);
-
-                context.Result = new ViewResult
+                // do something after the action executes
+                ViewResult result = filterContext.Result as ViewResult;
+                if (result != null)
                 {
-                    ViewName = "notifications",
-                    //ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
-                    //{
-                    //    Model = "Elapsed time: " + $"{timer.Elapsed.TotalMilliseconds} ms"
-                    //}
-                };
+                    result.ViewData["ViewData_NOTIFICATION"] =
+                    "Comes from MyActionAttributeFilter at " + DateTime.Now.ToLongTimeString();
+                }
+
+                //var notifications = JsonConvert.SerializeObject(_notificationContext.Notifications);
+
+                //var controller = filterContext.Controller as Controller;
+                //if (controller != null && filterContext.ModelState != null)
+                //{
+                //    // var modelState = ModelStateHelpers.SerialiseModelState(filterContext.ModelState);
+                //    controller.TempData["KEY_NOTIFICATION"] = notifications;
+                //    controller.ViewData["ViewData_NOTIFICATION"] = notifications;
+                //}
+
                 return;
             }
 

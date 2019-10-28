@@ -28,7 +28,7 @@
             allowClear: true
         });
         $(".switch").bootstrapSwitch();
-
+               
         $('.ckBoxGenerateBarcode').on('switch-change', function (e, data) {
             var $el = $(data.el)
               , value = data.value;
@@ -129,6 +129,11 @@
             boxCreateVM.BoxTypeID = $('#ddlBoxesType').val();
             boxCreateVM.TagsBarcodes = tbBarcodes;
 
+            boxCreateVM.HasMovementStock = $('.switch').bootstrapSwitch('toggleState');
+            boxCreateVM.HasAutoCompleteItems = $('.ckBoxBoxComplete').val();
+            boxCreateVM.TotalItemsinBox = $('#txtTotalItemsByBoxes').val();
+            boxCreateVM.ClientSupplierID = $('#ddlClientSupplier').val();
+
             var myJsonString = JSON.stringify(boxCreateVM);
             console.log(myJsonString);
             $.ajax({
@@ -183,6 +188,12 @@
                             <div class="row-fluid">
                                 <div class="span6 ">
                                     <div class="control-group">
+                                        <label class="control-label">Client</label>
+                                        <div class="controls">
+                                            <select id="ddlClient" class="span6 select2_option" data-placeholder="Choose a Client" name="ClientID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"></select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <label class="control-label">Box type</label>
                                         <div class="controls">
                                             <select id="ddlBoxesType" class="span6 select2_option" data-placeholder="Choose a box type" tabindex="1" name="BoxTypeID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
@@ -217,9 +228,7 @@
                                             <span class="help-inline">create total boxes</span>
                                         </div>
                                     </div>
-
                                 </div>
-
                                 <div class="span6">
                                     <div class="control-group">
                                         <label class="control-label">Add movement stock</label>
@@ -227,6 +236,12 @@
                                             <div class="switch ckBoxAddStock">
                                                 <input type="checkbox" unchecked class="toggle" />
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="ctrl-gp-Boxcomplete control-group"  style="display:none;">
+                                        <label class="control-label">Supplier</label>
+                                        <div class="controls">
+                                            <select id="ddlClientSupplier" class="span6 select2_option" data-placeholder="Choose a Supplier" name="ClientSupplierID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"></select>
                                         </div>
                                     </div>
                                     <div class="ctrl-gp-Boxcomplete control-group" style="display:none;">
@@ -240,7 +255,7 @@
                                     <div class="ctrl-gp-ItemsByBoxes control-group" style="display:none;">
                                         <label class="control-label">Total items by box</label>
                                         <div class="controls">
-                                            <input type="text" name="TotalItemsByBoxes" placeholder="Total items by box" class="m-wrap" />
+                                            <input type="text" id="txtTotalItemsByBoxes" name="TotalItemsByBoxes" placeholder="Total items by box" class="m-wrap" />
                                             <span class="help-inline">Total items by box</span>
                                         </div>
                                     </div>

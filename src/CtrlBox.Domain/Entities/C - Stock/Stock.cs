@@ -24,6 +24,16 @@ namespace CtrlBox.Domain.Entities
             this.StocksMovements = new HashSet<StockMovement>();
         }
 
+        public static Stock FactoryCreate(Guid clientID, Guid productID)
+        {
+            Stock stock = new Stock();
+            stock.Minimum = 10;
+            stock.TotalStock = 0;
+            stock.DefaultPrice = 0;
+
+            return stock;
+        }
+
         public void Init()
         {
             if (this.Id == null || this.Id == Guid.Empty)
@@ -42,6 +52,18 @@ namespace CtrlBox.Domain.Entities
         {
             this.TotalStock += amount;
             this.DateModified = DateTime.Now;
+        }
+
+        public void AddMovementInput(int totalProductItems)
+        {
+            InputStock(totalProductItems);
+            this.StocksMovements.Add(StockMovement.FactoryCreate(this.ClientID, this.Id, totalProductItems, CrossCutting.Enums.EFlowStepStock.Input));
+        }
+
+        public void SubtractMovementInput(int totalProductItems)
+        {
+            OutputStock(totalProductItems);
+            this.StocksMovements.Add(StockMovement.FactoryCreate(this.ClientID, this.Id, totalProductItems, CrossCutting.Enums.EFlowStepStock.Output));
         }
     }
 }

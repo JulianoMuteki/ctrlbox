@@ -33,6 +33,19 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
+        public static StockMovement FactoryCreate(Guid clientSupplierID, Guid stockID, int amount, EFlowStepStock flowStepStock)
+        {
+            StockMovement stockMovement = new StockMovement();
+            stockMovement.ClientSupplierID = clientSupplierID;
+            stockMovement.Amount = amount;
+            stockMovement.StockID = stockID;
+            stockMovement.FlowStepStock = flowStepStock;
+            stockMovement.UnitPrice = 0;
+            stockMovement.TotalValue = 0;
+
+            return stockMovement;
+        }
+
         public void SetStock(Stock stock)
         {
             TotalValue = Amount * UnitPrice;

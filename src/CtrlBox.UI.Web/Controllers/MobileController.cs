@@ -39,6 +39,13 @@ namespace CtrlBox.UI.Web.Controllers
                                                     }).ToList();
             ViewData["BoxesType"] = boxesType;
 
+            var clients = _clientService.GetAll()
+                            .Select(client => new SelectListItem
+                            {
+                                Value = client.DT_RowId,
+                                Text = client.Name
+                            }).ToList();
+            ViewData["Clients"] = clients;
             return View();
         }
 

@@ -29,7 +29,7 @@
         });
         $(".switch").bootstrapSwitch();
 
-        $('.switch').on('switch-change', function (e, data) {
+        $('.ckBoxGenerateBarcode').on('switch-change', function (e, data) {
             var $el = $(data.el)
               , value = data.value;
             console.log(e, $el, value);
@@ -43,6 +43,31 @@
             }
         });
 
+        $('.ckBoxAddStock').on('switch-change', function (e, data) {
+            var $el = $(data.el)
+              , value = data.value;
+            //console.log(e, $el, value);
+
+            if (value) {
+                $(".ctrl-gp-Boxcomplete").show();
+            } else {
+                $('.ckBoxBoxComplete').bootstrapSwitch('setState', true);
+                $(".ctrl-gp-Boxcomplete").hide();
+                $(".ctrl-gp-ItemsByBoxes").hide();
+            }
+        });
+
+        $('.ckBoxBoxComplete').on('switch-change', function (e, data) {
+            var $el = $(data.el)
+              , value = data.value;
+           // console.log(e, $el, value);
+
+            if (value) {
+                $(".ctrl-gp-ItemsByBoxes").hide();
+            } else {
+                $(".ctrl-gp-ItemsByBoxes").show();
+            }
+        });
 
         var oTableBarcodes = $('#tbBarcodes').dataTable({
             "bProcessing": true,
@@ -60,7 +85,7 @@
                         }
             ]
        });
-    
+
         $('#addGenerateBarcodes').on('click', function () {
             $.ajax({
                 url: '../Mobile/GetAjaxHandlerListBarcodes',
@@ -71,8 +96,8 @@
                     if (object != undefined) {
                         var list = object.aaData;
                         var tb = [];
-                       
-                        list.forEach(function (entry) {                        
+
+                        list.forEach(function (entry) {
                             tb.push({
                                 "Barcode": entry
                             });
@@ -90,13 +115,13 @@
                 "Barcode": "352637247246"
             });
         });
-        
+
         $("#btnSubmit").click(function () {
-            var boxCreateVM = {};              
+            var boxCreateVM = {};
             var tbBarcodes = [];
 
             $.each(oTableBarcodes.fnGetNodes(), function (index, value) {
-                var row = oTableBarcodes.fnGetData(value);                         
+                var row = oTableBarcodes.fnGetData(value);
                 tbBarcodes.push(row.Barcode);
             });
 
@@ -139,7 +164,7 @@
                     </li>
                     <li>
                         <a href="#">Create box</a>
-                        
+
                     </li>
                 </ul>
             </div>
@@ -155,44 +180,79 @@
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
                         <form class="form-horizontal">
-                            <div class="control-group">
-                                <label class="control-label">Box type</label>
-                                <div class="controls">
-                                    <select id="ddlBoxesType" class="span6 select2_option" data-placeholder="Choose a box type" tabindex="1" name="BoxTypeID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
+                            <div class="row-fluid">
+                                <div class="span6 ">
+                                    <div class="control-group">
+                                        <label class="control-label">Box type</label>
+                                        <div class="controls">
+                                            <select id="ddlBoxesType" class="span6 select2_option" data-placeholder="Choose a box type" tabindex="1" name="BoxTypeID" asp-items="@((List<SelectListItem>)ViewData["BoxesType"])"><option value="0">Please select box</option></select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Description</label>
+                                        <div class="controls">
+                                            <input id="txtDescription" type="text" name="Description" placeholder="Description" class="m-wrap large" />
+                                            <span class="help-inline">Description</span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">Generate barcode</label>
+                                        <div class="controls">
+                                            <div class="switch ckBoxGenerateBarcode">
+                                                <input type="checkbox" checked class="toggle" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="display:none;" class="ctrl-gp-manual control-group">
+                                        <label class="control-label">Barcode</label>
+                                        <div class="controls">
+                                            <input type="text" name="Barcode" placeholder="Barcode" class="m-wrap large" />
+                                            <span class="help-inline">Barcode</span>
+                                        </div>
+                                    </div>
+                                    <div class="ctrl-gp-auto control-group">
+                                        <label class="control-label">Total boxes</label>
+                                        <div class="controls">
+                                            <input id="txtTotalBoxes" type="text" name="TotalBoxes" placeholder="Total Boxes" class="m-wrap large" />
+                                            <span class="help-inline">create total boxes</span>
+                                        </div>
+                                    </div>
+
                                 </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label">Description</label>
-                                <div class="controls">
-                                    <input id="txtDescription" type="text" name="Description" placeholder="Description" class="m-wrap large" />
-                                    <span class="help-inline">Description</span>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label">Generate barcode</label>
-                                <div class="controls">
-                                    <div class="switch">
-                                        <input type="checkbox" checked class="toggle" />
+
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label">Add movement stock</label>
+                                        <div class="controls">
+                                            <div class="switch ckBoxAddStock">
+                                                <input type="checkbox" unchecked class="toggle" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ctrl-gp-Boxcomplete control-group" style="display:none;">
+                                        <label class="control-label">Auto complete items?</label>
+                                        <div class="controls">
+                                            <div class="switch ckBoxBoxComplete">
+                                                <input type="checkbox" checked class="toggle" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ctrl-gp-ItemsByBoxes control-group" style="display:none;">
+                                        <label class="control-label">Total items by box</label>
+                                        <div class="controls">
+                                            <input type="text" name="TotalItemsByBoxes" placeholder="Total items by box" class="m-wrap" />
+                                            <span class="help-inline">Total items by box</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:none;" class="ctrl-gp-manual control-group">
-                                <label class="control-label">Barcode</label>
-                                <div class="controls">
-                                    <input type="text" name="Barcode" placeholder="Barcode" class="m-wrap large" />
-                                    <span class="help-inline">Barcode</span>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-actions">
+                                        <button id="addGenerateBarcodes" type="button" class="ctrl-gp-auto btn green">start read tags</button>
+                                        <button id="addRow" type="button" style="display:none;" class="ctrl-gp-manual btn green">add tag</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="ctrl-gp-auto control-group">
-                                <label class="control-label">Total boxes</label>
-                                <div class="controls">
-                                    <input id="txtTotalBoxes" type="text" name="TotalBoxes" placeholder="Total Boxes" class="m-wrap large" />
-                                    <span class="help-inline">create total boxes</span>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button id="addGenerateBarcodes" type="button" class="ctrl-gp-auto btn green">start read tags</button>
-                                <button id="addRow" type="button" style="display:none;" class="ctrl-gp-manual btn green">add tag</button>
                             </div>
                         </form>
                         <!-- END FORM-->
@@ -218,7 +278,7 @@
                             </thead>
                             <tbody></tbody>
                         </table>
-                        <button id="btnSubmit" type="button" class="btn green">Create boxes</button> 
+                        <button id="btnSubmit" type="button" class="btn green">Create boxes</button>
                     </div>
                 </div>
             </div>

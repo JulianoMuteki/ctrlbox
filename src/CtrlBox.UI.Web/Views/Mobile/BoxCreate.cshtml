@@ -33,6 +33,14 @@
             var $el = $(data.el)
               , value = data.value;
             console.log(e, $el, value);
+
+            if (value) {
+                $(".ctrl-gp-manual").hide();
+                $(".ctrl-gp-auto").show();
+            } else {
+                $(".ctrl-gp-manual").show();
+                $(".ctrl-gp-auto").hide();
+            }
         });
 
 
@@ -168,14 +176,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="control-group">
+                            <div style="display:none;" class="ctrl-gp-manual control-group">
                                 <label class="control-label">Barcode</label>
                                 <div class="controls">
                                     <input type="text" name="Barcode" placeholder="Barcode" class="m-wrap large" />
                                     <span class="help-inline">Barcode</span>
                                 </div>
                             </div>
-                            <div class="control-group">
+                            <div class="ctrl-gp-auto control-group">
                                 <label class="control-label">Total boxes</label>
                                 <div class="controls">
                                     <input id="txtTotalBoxes" type="text" name="TotalBoxes" placeholder="Total Boxes" class="m-wrap large" />
@@ -183,8 +191,8 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button id="addGenerateBarcodes" type="button" class="btn green">start read tags</button>
-                                <button id="addRow" type="button" class="btn green">add tag</button>
+                                <button id="addGenerateBarcodes" type="button" class="ctrl-gp-auto btn green">start read tags</button>
+                                <button id="addRow" type="button" style="display:none;" class="ctrl-gp-manual btn green">add tag</button>
                             </div>
                         </form>
                         <!-- END FORM-->
@@ -210,7 +218,7 @@
                             </thead>
                             <tbody></tbody>
                         </table>
-                        <button id="btnSubmit" type="button" class="btn green">btnSubmit</button> 
+                        <button id="btnSubmit" type="button" class="btn green">Create boxes</button> 
                     </div>
                 </div>
             </div>

@@ -19,7 +19,7 @@ namespace CtrlBox.UI.Web.Controllers
         private readonly ITrackingApplicationService _trackingService;
 
         public ProductController(NotificationContext notificationContext, IClientApplicationService clientService, IProductApplicationService productService, ITrackingApplicationService trackingService)
-            : base(notificationContext)
+            : base(notificationContext, productService)
         {
             _clientService = clientService;
             _productService = productService;
@@ -302,13 +302,7 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult StockCreate()
         {
-            var products = _productService.GetAll()
-                            .Select(prod => new SelectListItem
-                            {
-                                Value = prod.DT_RowId,
-                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
-                            }).ToList();
-            ViewData["Products"] = products;
+            LoadViewDataProducts();
 
             var clients = _clientService.GetAll()
                                         .Select(client => new SelectListItem

@@ -485,15 +485,23 @@ namespace CtrlBox.Application
             {
                 _unitOfWork.SetTrackAll();
                 var boxtype = _unitOfWork.Repository<BoxType>().GetById(entity.BoxTypeID);
+
+               int totalProductItemsForStock = 0;
+
                 foreach (var barcode in entity.TagsBarcodes)
                 {
                     Box box = Box.FactoryCreate(boxtype, barcode);
 
                     if(entity.HasMovementStock)
                     {
-                        AddMovementStock(entity, boxtype);
+                        totalProductItemsForStock += SumTotalProductItemsForStock(entity, boxtype);
                     }
                     _unitOfWork.Repository<Box>().Add(box);
+                }
+
+                if (entity.HasMovementStock)
+                {
+                    AddStockAndMovement(entity, boxtype, totalProductItemsForStock);
                 }
                 _unitOfWork.CommitSync();
             }
@@ -507,12 +515,23 @@ namespace CtrlBox.Application
             }
         }
 
-        private void AddMovementStock(CreateBoxVM entity, BoxType boxtype)
+        private int SumTotalProductItemsForStock(CreateBoxVM entity, BoxType boxtype)
+        {
+            var totalProductItems = entity.HasAutoCompleteItems ? boxtype.MaxProductsItems : entity.TotalItemsinBox;
+            return totalProductItems;
+        }
+
+        private void AddStockAndMovement(CreateBoxVM entity, BoxType boxtype, int totalProductItems)
         {
             try
             {
-                Stock stock = GetStock(entity);
-                var totalProductItems = entity.HasAutoCompleteItems ? boxtype.MaxProductsItems : entity.TotalItemsinBox;
+                var stock = _unitOfWork.Repository<Stock>().Find(x => x.ProductID == entity.ProductID && x.ClientID == entity.ClientID);
+                if (stock == null)
+                {
+                    stock = Stock.FactoryCreate(entity.ClientID, entity.ProductID);
+                  
+                }
+
                 stock.AddMovementInput(totalProductItems);
                 _unitOfWork.Repository<Stock>().Add(stock);
             }
@@ -524,14 +543,6 @@ namespace CtrlBox.Application
             {
                 throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add boxes", nameof(this.Add), ex);
             }
-        }
-
-        private Stock GetStock(CreateBoxVM entity)
-        {
-            var stock = _unitOfWork.Repository<Stock>().Find(x => x.ProductID == entity.ProductID && x.ClientID == entity.ClientID);
-            if (stock == null)
-                stock = Stock.FactoryCreate(entity.ClientID, entity.ProductID);
-            return stock;
         }
     }
 }

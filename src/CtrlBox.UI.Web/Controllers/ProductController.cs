@@ -79,7 +79,6 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-
                 PictureVM imageEntity = GeneratePicture.CreatePicture(FilePicture, $"{productVM.Name} - {productVM.Description}");
                 productVM.Picture = imageEntity;
 

@@ -6,7 +6,6 @@
 @section cssViews{
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="~/plugins/select2/select2_metro.css" />
-    <link href="~/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch-metro.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch.css" rel="stylesheet" />
 
     <!-- END PAGE LEVEL STYLES -->
@@ -27,14 +26,12 @@
         $('.select2_option').select2({
             allowClear: true
         });
-        $(".switch").bootstrapSwitch();
+        $("input[type=\"checkbox\"]").bootstrapSwitch();
                
-        $('.ckBoxGenerateBarcode').on('switch-change', function (e, data) {
-            var $el = $(data.el)
-              , value = data.value;
-            console.log(e, $el, value);
+        $('.ckBoxGenerateBarcode').on('switchChange.bootstrapSwitch', function (e, data) {
+          //  console.log(e.target.checked);
 
-            if (value) {
+            if (e.target.checked) {
                 $(".ctrl-gp-manual").hide();
                 $(".ctrl-gp-auto").show();
             } else {
@@ -43,26 +40,18 @@
             }
         });
 
-        $('.ckBoxAddStock').on('switch-change', function (e, data) {
-            var $el = $(data.el)
-              , value = data.value;
-            //console.log(e, $el, value);
-
-            if (value) {
+        $('.ckBoxAddStock').on('switchChange.bootstrapSwitch', function (e, data) {
+            if (e.target.checked) {
                 $(".ctrl-gp-Boxcomplete").show();
             } else {
-                $('.ckBoxBoxComplete').bootstrapSwitch('setState', true);
+                $('.ckBoxBoxComplete').bootstrapSwitch('state', true);
                 $(".ctrl-gp-Boxcomplete").hide();
                 $(".ctrl-gp-ItemsByBoxes").hide();
             }
         });
 
-        $('.ckBoxBoxComplete').on('switch-change', function (e, data) {
-            var $el = $(data.el)
-              , value = data.value;
-           // console.log(e, $el, value);
-
-            if (value) {
+        $('.ckBoxBoxComplete').on('switchChange.bootstrapSwitch', function (e, data) {
+            if (e.target.checked) {
                 $(".ctrl-gp-ItemsByBoxes").hide();
             } else {
                 $(".ctrl-gp-ItemsByBoxes").show();
@@ -129,13 +118,17 @@
             boxCreateVM.BoxTypeID = $('#ddlBoxesType').val();
             boxCreateVM.TagsBarcodes = tbBarcodes;
 
-            boxCreateVM.HasMovementStock = $('.switch').bootstrapSwitch('toggleState');
-            boxCreateVM.HasAutoCompleteItems = $('.ckBoxBoxComplete').val();
-            boxCreateVM.TotalItemsinBox = $('#txtTotalItemsByBoxes').val();
+            boxCreateVM.HasMovementStock = $('.ckBoxAddStock').bootstrapSwitch('state');
+            boxCreateVM.HasAutoCompleteItems = $('.ckBoxBoxComplete').bootstrapSwitch('state');
+            boxCreateVM.TotalItemsinBox = 0;
             boxCreateVM.ClientSupplierID = $('#ddlClientSupplier').val();
+            boxCreateVM.ClientID = $('#ddlClient').val();
+            boxCreateVM.ProductID = $("#ddlProduct").val();
+
+            if (boxCreateVM.TotalItemsinBox == undefined)
+                boxCreateVM.TotalItemsinBox = 0;
 
             var myJsonString = JSON.stringify(boxCreateVM);
-            console.log(myJsonString);
             $.ajax({
                 url: '../Mobile/PostAjaxHandlerCreateBox',
                 type: 'POST',
@@ -143,8 +136,7 @@
                 data: { entity: myJsonString },
                 "success": function (json) {
                     if (!json.NotAuthorized) {
-                        alert('Completo');
-                        window.history.back();
+                        alert('Completo');                    
                     }
                 },
                 "error": handleAjaxError
@@ -209,8 +201,8 @@
                                     <div class="control-group">
                                         <label class="control-label">Generate barcode</label>
                                         <div class="controls">
-                                            <div class="switch ckBoxGenerateBarcode">
-                                                <input type="checkbox" checked class="toggle" />
+                                            <div class="switch">
+                                                <input type="checkbox" checked class="toggle ckBoxGenerateBarcode" />
                                             </div>
                                         </div>
                                     </div>
@@ -233,22 +225,28 @@
                                     <div class="control-group">
                                         <label class="control-label">Add movement stock</label>
                                         <div class="controls">
-                                            <div class="switch ckBoxAddStock">
-                                                <input type="checkbox" unchecked class="toggle" />
+                                            <div class="switch">
+                                                <input type="checkbox" unchecked class="toggle ckBoxAddStock" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="ctrl-gp-Boxcomplete control-group"  style="display:none;">
+                                    <div class="ctrl-gp-Boxcomplete control-group" style="display:none;">
                                         <label class="control-label">Supplier</label>
                                         <div class="controls">
                                             <select id="ddlClientSupplier" class="span6 select2_option" data-placeholder="Choose a Supplier" name="ClientSupplierID" asp-items="@((List<SelectListItem>)ViewData["Clients"])"></select>
                                         </div>
                                     </div>
                                     <div class="ctrl-gp-Boxcomplete control-group" style="display:none;">
+                                        <label class="control-label">Supplier</label>
+                                        <div class="controls">
+                                            <select id="ddlProduct" class="span6 select2_option" data-placeholder="Choose a product" name="ProductID" asp-items="@((List<SelectListItem>)ViewData["Products"])"></select>
+                                        </div>
+                                    </div>
+                                    <div class="ctrl-gp-Boxcomplete control-group" style="display:none;">
                                         <label class="control-label">Auto complete items?</label>
                                         <div class="controls">
-                                            <div class="switch ckBoxBoxComplete">
-                                                <input type="checkbox" checked class="toggle" />
+                                            <div class="switch">
+                                                <input type="checkbox" checked class="toggle ckBoxBoxComplete" />
                                             </div>
                                         </div>
                                     </div>

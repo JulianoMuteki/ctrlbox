@@ -30,6 +30,8 @@ namespace CtrlBox.Domain.Entities
             stock.Minimum = 10;
             stock.TotalStock = 0;
             stock.DefaultPrice = 0;
+            stock.ClientID = clientID;
+            stock.ProductID = productID;
 
             return stock;
         }

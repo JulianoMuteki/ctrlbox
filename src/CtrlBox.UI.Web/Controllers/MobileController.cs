@@ -46,6 +46,15 @@ namespace CtrlBox.UI.Web.Controllers
                                 Text = client.Name
                             }).ToList();
             ViewData["Clients"] = clients;
+
+
+            var products = _productApplicationService.GetAll()
+                                        .Select(prod => new SelectListItem
+                                        {
+                                            Value = prod.DT_RowId,
+                                            Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
+                                        }).ToList();
+            ViewData["Products"] = products;
             return View();
         }
 
@@ -91,14 +100,25 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult PostAjaxHandlerCreateBox(string entity)
         {
-            JsonSerialize jsonS = new JsonSerialize();
-            var createBoxVM = jsonS.JsonDeserializeObject<CreateBoxVM>(entity);
-            _boxAppService.Add(createBoxVM);
-            return Json(new
+            try
             {
-                aaData = "OK",
-                success = true
-            });
+                JsonSerialize jsonS = new JsonSerialize();
+                var createBoxVM = jsonS.JsonDeserializeObject<CreateBoxVM>(entity);
+                _boxAppService.Add(createBoxVM);
+                return Json(new
+                {
+                    aaData = "OK",
+                    success = true
+                });
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

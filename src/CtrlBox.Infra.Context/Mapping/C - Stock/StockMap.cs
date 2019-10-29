@@ -25,12 +25,12 @@ namespace CtrlBox.Infra.Context.Mapping
                 .IsRequired();
 
             builder.HasOne(a => a.Product)
-                    .WithOne(b => b.Stock)
-                    .HasForeignKey<Stock>(b => b.ProductID);
+                    .WithMany(b => b.Stocks)
+                    .HasForeignKey(b => b.ProductID);
 
             builder.HasOne(a => a.Client)
-                    .WithOne(b => b.Stock)
-                    .HasForeignKey<Stock>(b => b.ClientID);
+                    .WithMany(b => b.Stocks)
+                    .HasForeignKey(b => b.ClientID);
 
             builder.HasMany(x => x.StocksMovements)
                 .WithOne(y => y.Stock)

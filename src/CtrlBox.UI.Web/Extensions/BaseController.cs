@@ -1,6 +1,7 @@
 ﻿using CtrlBox.CrossCutting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace CtrlBox.UI.Web.Extensions
 {
@@ -16,7 +17,6 @@ namespace CtrlBox.UI.Web.Extensions
         public void PushNotification()
         {
             var notifications = JsonConvert.SerializeObject(_notificationContext.Notifications);
-
             ViewBag.Notifications = notifications;
         }
     }

@@ -14,16 +14,16 @@ namespace CtrlBox.UI.Web.Controllers
 {
     public class ProductController : BaseController
     {
-        private readonly IClientApplicationService _clientService;
-        private readonly IProductApplicationService _productService;
-        private readonly ITrackingApplicationService _trackingService;
+        private readonly IClientApplicationService _clientAppService;
+        private readonly IProductApplicationService _productAppService;
+        private readonly ITrackingApplicationService _trackingAppService;
 
         public ProductController(NotificationContext notificationContext, IClientApplicationService clientService, IProductApplicationService productService, ITrackingApplicationService trackingService)
-            : base(notificationContext, productService)
+            : base(notificationContext)
         {
-            _clientService = clientService;
-            _productService = productService;
-            _trackingService = trackingService;
+            _clientAppService = clientService;
+            _productAppService = productService;
+            _trackingAppService = trackingService;
         }
 
         #region Product
@@ -35,7 +35,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public ActionResult AjaxHandlerGet()
         {
-            var productVMs = _productService.GetAll();
+            var productVMs = _productAppService.GetAll();
             return Json(new
             {
                 aaData = productVMs,
@@ -45,7 +45,7 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult Create(Guid productID)
         {
-            var productVM = _productService.GetById(productID);
+            var productVM = _productAppService.GetById(productID);
 
             var optionsBoxMassUnit = CtrlBoxUnits.CtrlBoxMassUnit
                                         .Select(unit => new SelectListItem
@@ -83,9 +83,9 @@ namespace CtrlBox.UI.Web.Controllers
                 productVM.Picture = imageEntity;
 
                 if (string.IsNullOrEmpty(productVM.DT_RowId))
-                    _productService.Add(productVM);
+                    _productAppService.Add(productVM);
                 else
-                    _productService.Update(productVM);
+                    _productAppService.Update(productVM);
 
                 if (_notificationContext.HasNotifications)
                 {
@@ -104,7 +104,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpPost]
         public ActionResult Edit(ProductVM productVM)
         {
-            _productService.Update(productVM);
+            _productAppService.Update(productVM);
 
             return Json(new
             {
@@ -117,7 +117,7 @@ namespace CtrlBox.UI.Web.Controllers
         #region ClientProductValue
         public ActionResult ClientProductValue(string clientID)
         {
-            var clientsVM = _clientService.GetById(new Guid(clientID));
+            var clientsVM = _clientAppService.GetById(new Guid(clientID));
             return View(clientsVM);
         }
 
@@ -125,8 +125,8 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                var productsClientsVMs = _productService.GetClientsProductsByClientID(new Guid(clientID));
-                var productVMs = _productService.GetAll();
+                var productsClientsVMs = _productAppService.GetClientsProductsByClientID(new Guid(clientID));
+                var productVMs = _productAppService.GetAll();
 
                 IList<ClientProductValueVM> valoresProdutos = new List<ClientProductValueVM>();
                 foreach (var product in productVMs)
@@ -152,7 +152,7 @@ namespace CtrlBox.UI.Web.Controllers
             JsonSerialize jsonS = new JsonSerialize();
             var clientsProductsValuesVM = jsonS.JsonDeserialize<ClientProductValueVM>(listJSON[0]);
 
-            _productService.ConnectRouteToClient(clientsProductsValuesVM);
+            _productAppService.ConnectRouteToClient(clientsProductsValuesVM);
 
             return Json(new
             {
@@ -165,29 +165,9 @@ namespace CtrlBox.UI.Web.Controllers
         #region ProductStock
         public ActionResult ProductStock()
         {
-            var clients = _clientService.GetAll()
-                      .Select(client => new SelectListItem
-                      {
-                          Value = client.DT_RowId,
-                          Text = client.Name
-                      }).ToList();
-            ViewData["Clients"] = clients;
-
-            var products = _productService.GetAll()
-                            .Select(prod => new SelectListItem
-                            {
-                                Value = prod.DT_RowId,
-                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
-                            }).ToList();
-            ViewData["Products"] = products;
-
-            var trackingsTypes = _trackingService.GetAllTrackingsTypesByPlace()
-                .Select(trace => new SelectListItem
-                {
-                    Value = trace.DT_RowId,
-                    Text = trace.Description
-                }).ToList();
-            ViewData["TrackingTypes"] = trackingsTypes;
+            LoadViewDataClients(_clientAppService);
+            LoadViewDataProducts(_productAppService);
+            LoadViewDataTracking(_trackingAppService);
 
             return View();
         }
@@ -196,7 +176,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                var totalProductsItems = _productService.GetTotalProductItemByProductID(productID);
+                var totalProductsItems = _productAppService.GetTotalProductItemByProductID(productID);
                 return Json(new
                 {
                     aaData = totalProductsItems,
@@ -214,7 +194,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                _productService.AddStockProduct(productID, clientID, trackingTypeID, quantity);
+                _productAppService.AddStockProduct(productID, clientID, trackingTypeID, quantity);
                 return Json(new
                 {
                     success = true
@@ -229,13 +209,7 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult ProductItem()
         {
-            var products = _productService.GetAll()
-                               .Select(prod => new SelectListItem
-                               {
-                                   Value = prod.DT_RowId,
-                                   Text = $"{prod.Name} {prod.UnitMeasure}"
-                               }).ToList();
-            ViewData["Products"] = products;
+            LoadViewDataProducts(_productAppService);
 
             return View();
         }
@@ -245,7 +219,7 @@ namespace CtrlBox.UI.Web.Controllers
         {
             try
             {
-                var productsItems = _productService.GetProductsItems();
+                var productsItems = _productAppService.GetProductsItems();
                 return Json(new
                 {
                     aaData = productsItems,
@@ -260,13 +234,7 @@ namespace CtrlBox.UI.Web.Controllers
 
         public ActionResult GenerateProductItem()
         {
-            var products = _productService.GetAll()
-                               .Select(prod => new SelectListItem
-                               {
-                                   Value = prod.DT_RowId,
-                                   Text = prod.FormattedProduct
-                               }).ToList();
-            ViewData["Products"] = products;
+            LoadViewDataProducts(_productAppService);
 
             return View();
         }
@@ -275,7 +243,7 @@ namespace CtrlBox.UI.Web.Controllers
         public ActionResult PutAjaxHandlerProductItem(Guid productID, int quantity)
         {
             JsonSerialize jsonS = new JsonSerialize();
-            _productService.GenerateProductItem(productID, quantity);
+            _productAppService.GenerateProductItem(productID, quantity);
 
             return Json(new
             {
@@ -292,7 +260,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public ActionResult GetAjaxHandlerStocks()
         {
-            var stocks = _productService.GetStocks();
+            var stocks = _productAppService.GetStocks();
             return Json(new
             {
                 aaData = stocks,
@@ -302,22 +270,15 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult StockCreate()
         {
-            LoadViewDataProducts();
-
-            var clients = _clientService.GetAll()
-                                        .Select(client => new SelectListItem
-                                        {
-                                            Value = client.DT_RowId,
-                                            Text = client.Name
-                                        }).ToList();
-            ViewData["Clients"] = clients;
+            LoadViewDataClients(_clientAppService);
+            LoadViewDataProducts(_productAppService);
             return View();
         }
 
         [HttpPost]
         public IActionResult StockCreate(StockVM entityVM)
         {
-            _productService.AddStock(entityVM);
+            _productAppService.AddStock(entityVM);
             return RedirectToAction("Stock");
         }
 
@@ -330,7 +291,7 @@ namespace CtrlBox.UI.Web.Controllers
         [HttpGet]
         public ActionResult GetAjaxHandlerStocksMovements(Guid stockID)
         {
-            var stocksMovements = _productService.GetstocksMovements(stockID);
+            var stocksMovements = _productAppService.GetstocksMovements(stockID);
             return Json(new
             {
                 aaData = stocksMovements,
@@ -340,28 +301,15 @@ namespace CtrlBox.UI.Web.Controllers
 
         public IActionResult StockMovementsCreate()
         {
-            var products = _productService.GetAll()
-                            .Select(prod => new SelectListItem
-                            {
-                                Value = prod.DT_RowId,
-                                Text = $"{prod.Name} - {prod.Description} - {prod.Package} - {prod.Capacity}{prod.UnitMeasure}"
-                            }).ToList();
-            ViewData["Products"] = products;
-
-            var clients = _clientService.GetAll()
-                                        .Select(client => new SelectListItem
-                                        {
-                                            Value = client.DT_RowId,
-                                            Text = client.Name
-                                        }).ToList();
-            ViewData["Clients"] = clients;
+            LoadViewDataClients(_clientAppService);
+            LoadViewDataProducts(_productAppService);
             return View();
         }
 
         [HttpPost]
         public IActionResult StockMovementsCreate(StockMovementVM entityVM)
         {
-            var stockID = _productService.AddStockMovement(entityVM);
+            var stockID = _productAppService.AddStockMovement(entityVM);
             return RedirectToAction("StocksMovements", stockID);
         }
     }

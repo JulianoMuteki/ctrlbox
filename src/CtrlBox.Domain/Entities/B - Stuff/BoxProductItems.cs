@@ -20,18 +20,18 @@ namespace CtrlBox.Domain.Entities
             return this.GetType().GetProperties().Select(propInfo => propInfo.GetValue(this, null));
         }
 
-
         public BoxProductItems()
         {
 
         }
 
-        public static BoxProductItems FactoryCreate(Guid boxID, Guid productID)
+        public static BoxProductItems FactoryCreate(Guid boxID, Guid productID, int totalItems)
         {
             return new BoxProductItems()
             {
                 BoxID = boxID,
-                ProductID = productID
+                ProductID = productID,
+                TotalItems = totalItems
             };
         }
     }

@@ -45,7 +45,7 @@ namespace CtrlBox.Domain.Entities
 
         public void MakeDeliveryBox(Box box)
         {
-            box.DoDelivery(this, this.QuantityProductItem);
+           // box.DoDelivery(this, this.QuantityProductItem);
         }
 
         public static DeliveryDetail FactoryCreate(Guid clientID, Guid productID, Guid orderID, int quantity)
@@ -69,8 +69,8 @@ namespace CtrlBox.Domain.Entities
                 if (totalProductItemsDelivery == 0)
                     break;
 
-                var totalDelivered = box.DoDelivery(this, totalProductItemsDelivery);
-                totalProductItemsDelivery -= totalDelivered;
+                //var totalDelivered = box.DoDelivery(this, totalProductItemsDelivery);
+                //totalProductItemsDelivery -= totalDelivered;
 
                 box.AddTracking(trackingTypeID, this.ClientID);
                 box.AddTrackingProductItems(trackingTypeID, this.ClientID);

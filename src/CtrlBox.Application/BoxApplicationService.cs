@@ -70,11 +70,11 @@ namespace CtrlBox.Application
             {
                 throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
             }
-            var list = box.BoxesProductItems.ToList();
+           // var list = box.BoxesProductItems.ToList();
             box.Destructor();
 
             _unitOfWork.Repository<Box>().Add(box);
-            _unitOfWork.Repository<BoxProductItem>().AddRange(list);
+            //_unitOfWork.Repository<BoxProductItem>().AddRange(list);
         }
 
         public Task<BoxVM> AddAsync(BoxVM entity)
@@ -494,7 +494,10 @@ namespace CtrlBox.Application
 
                     if(entity.HasMovementStock)
                     {
-                        totalProductItemsForStock += SumTotalProductItemsForStock(entity, boxtype);
+                        int totalItemsByBox = SumTotalProductItemsForStock(entity, boxtype);
+                        totalProductItemsForStock += totalItemsByBox;
+
+                        box.StoreProductsItems(entity.ProductID, totalItemsByBox);
                     }
                     _unitOfWork.Repository<Box>().Add(box);
                 }

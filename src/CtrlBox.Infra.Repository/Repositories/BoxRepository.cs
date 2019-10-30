@@ -70,7 +70,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                 var query = _context.Set<Box>()
                            .Include(b => b.BoxType)
                            .Include(x => x.BoxesChildren)
-                           .Include(b => b.BoxesProductItems).ThenInclude(x=>x.ProductItem)
+                         //  .Include(b => b.BoxesProductItems).ThenInclude(x=>x.ProductItem)
                            .AsEnumerable() // <-- Force full execution (loading)
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
@@ -96,7 +96,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                 var query = _context.Set<Box>()
                            .Include(b => b.BoxType)
                            .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
                               .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Expedition) && x.BoxParentID == null)
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
@@ -123,7 +123,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                 var query = _context.Set<Box>()
 
                             .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
                             .Where(x => x.BoxTypeID == boxTypeID && x.BoxParent == null)
                             .OrderByDescending(x => x.DateModified)
@@ -146,7 +146,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                             //.Include(x => x.Product).ThenInclude(z => z.Picture)
 
                             .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
                             .Where(x => x.Id == boxID && x.BoxParent == null);
 
@@ -216,7 +216,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             var query = _context.Set<Box>()
                        .Include(b => b.BoxType)
                        .Include(x => x.BoxesChildren)
-                       .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
+                      // .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
                        .Include(x=>x.TrackingsBoxes)
                        .AsEnumerable() // <-- Force full execution (loading)
                        .Join(_context.Set<OrderBox>(), // the source table of the inner join

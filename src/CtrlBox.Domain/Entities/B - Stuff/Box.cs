@@ -33,7 +33,6 @@ namespace CtrlBox.Domain.Entities
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
             this.TrackingsBoxes = new HashSet<TrackingBox>();
             this.BoxesChildren = new HashSet<Box>();
-            this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
         }
 
@@ -58,9 +57,29 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
+        public void StoreProductsItems(Guid productID, int totalItems)
+        {
+            this.BoxProductItems = BoxProductItems.FactoryCreate(this.Id, productID, totalItems);
+            LoadFullBoxCompletedProductItems();
+        }
+
+        private void LoadFullBoxCompletedProductItems()
+        {
+            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxProductItems.TotalItems) / this.BoxType.MaxProductsItems);
+            SetBoxStatus();
+        }
+
+        private void SetBoxStatus()
+        {
+            if (this.BoxProductItems.TotalItems > 0 && this.PorcentFull < 100)
+                this.Status = EBoxStatus.Loading;
+            else if (this.PorcentFull == 100)
+                this.Status = EBoxStatus.Full;
+        }
+
+
         #region OLD-REFACTORING
 
-        public ICollection<BoxProductItem> BoxesProductItems { get; set; }
         public ICollection<OrderBox> OrdersBoxes { get; set; }
         public ICollection<DeliveryBox> DeliveriesBoxes { get; set; }
 
@@ -80,7 +99,6 @@ namespace CtrlBox.Domain.Entities
             this.BoxType = null;
             this.TrackingsBoxes = new HashSet<TrackingBox>();
             this.BoxesChildren = new HashSet<Box>();
-            this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
         }
 
@@ -89,6 +107,7 @@ namespace CtrlBox.Domain.Entities
             this.BoxType = boxType;
         }
 
+        /*
         public void LoadProductItems(ICollection<ProductItem> productItems)
         {
             if (productItems.Count > this.BoxType.MaxProductsItems)
@@ -104,16 +123,18 @@ namespace CtrlBox.Domain.Entities
 
             LoadFullBoxCompletedProductItems();
         }
+        */
 
         public int CountQuantityProductItems { get; set; }
 
+        /*  public int DoDelivery(DeliveryDetail deliveryDetail, int quantity)
         public int DoDelivery(DeliveryDetail deliveryDetail, int quantity)
         {
             var totalProductItemsDelivered = 0;
 
             deliveryDetail.AddDeliveryBox(this.Id);
             // if (this.ProductID != Guid.Empty && this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
-            if ( this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
+            if (this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).Count() > 0)
             {
                 var boxProductsItems = this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false && x.ProductItem.ProductID == deliveryDetail.ProductID).Take(quantity).ToList();
 
@@ -155,6 +176,7 @@ namespace CtrlBox.Domain.Entities
 
             return totalProductItemsDelivered;
         }
+        */
 
         private void SubtractProductItemsOfBoxParent(List<BoxProductItem> boxProductsItems)
         {
@@ -162,19 +184,6 @@ namespace CtrlBox.Domain.Entities
                 this.BoxParent.CountQuantityProductItems -= boxProductsItems.Count;
         }
 
-        private void LoadFullBoxCompletedProductItems()
-        {
-            this.PorcentFull = (int)Math.Round((double)(100 * this.BoxesProductItems.Where(x => x.IsItemRemovedBox == false).ToList().Count) / this.BoxType.MaxProductsItems);
-            SetBoxStatus();
-        }
-
-        private void SetBoxStatus()
-        {
-            if (this.BoxesProductItems.Count > 0 && this.PorcentFull < 100)
-                this.Status = EBoxStatus.Loading;
-            else if (this.PorcentFull == 100)
-                this.Status = EBoxStatus.Full;
-        }
 
         private void LoadFullBoxCompletedChildrem()
         {
@@ -206,12 +215,12 @@ namespace CtrlBox.Domain.Entities
                 tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
             }
 
-          //  this.TrackingsBoxes.Add(tracking);
+            //  this.TrackingsBoxes.Add(tracking);
         }
 
         private void ResetLastTrack()
         {
-          //  this.TrackingsBoxes = this.TrackingsBoxes.Select(x => { x.IsLastTrack = false; return x; }).ToList();
+            //  this.TrackingsBoxes = this.TrackingsBoxes.Select(x => { x.IsLastTrack = false; return x; }).ToList();
         }
 
         public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)

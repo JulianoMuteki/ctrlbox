@@ -65,16 +65,16 @@ namespace CtrlBox.Domain.Entities
                 //}
             }
         }
-
-        //private void CreateOrderProductItem(Box box)
-        //{
-        //    foreach (var boxProductItem in box.BoxesProductItems)
-        //    {
-        //        OrderProductItem orderProductItem = OrderProductItem.FactoryCreate(boxProductItem.ProductItemID, this.Id);
-        //        this.OrderProductItems.Add(orderProductItem);
-        //        boxProductItem.ProductItem.FlowStep.SetFlowOrder();
-        //    }
-        //}
+        /*
+        private void CreateOrderProductItem(Box box)
+        {
+            foreach (var boxProductItem in box.BoxesProductItems)
+            {
+                OrderProductItem orderProductItem = OrderProductItem.FactoryCreate(boxProductItem.ProductItemID, this.Id);
+                this.OrderProductItems.Add(orderProductItem);
+                boxProductItem.ProductItem.FlowStep.SetFlowOrder();
+            }
+        }
 
         private void PutInTheBoxBoxesProductItemsChildren(Box box)
         {
@@ -94,7 +94,7 @@ namespace CtrlBox.Domain.Entities
                 }
             }
         }
-
+        */
         public void Close()
         {
             this.IsFinalized = true;

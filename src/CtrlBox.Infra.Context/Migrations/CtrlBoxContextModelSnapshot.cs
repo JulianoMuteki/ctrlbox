@@ -1219,7 +1219,7 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItem", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
-                        .WithMany("BoxesProductItems")
+                        .WithMany()
                         .HasForeignKey("BoxID")
                         .OnDelete(DeleteBehavior.Cascade);
 

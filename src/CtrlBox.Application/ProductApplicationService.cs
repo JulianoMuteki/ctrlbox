@@ -387,7 +387,7 @@ namespace CtrlBox.Application
 
                     Box box = Box.FactoryCreate(boxTypeID, boxType, i, productID);
                     box.FlowStep.SetInStock();
-                    box.LoadProductItems(updateList);
+                  //  box.LoadProductItems(updateList);
                     box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
                     boxes.Add(box);

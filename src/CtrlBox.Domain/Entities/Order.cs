@@ -79,6 +79,7 @@ namespace CtrlBox.Domain.Entities
             }
         }
 
+        /*
         private void CreateOrderProductItem(Box box)
         {
             foreach (var boxProductItem in box.BoxesProductItems)
@@ -109,7 +110,7 @@ namespace CtrlBox.Domain.Entities
                 }
             }
         }
-
+        */
         public void Close()
         {
             this.IsFinalized = true;

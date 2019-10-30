@@ -25,13 +25,13 @@ namespace CtrlBox.Domain.Entities
         public GraphicCodes GraphicCodes { get; set; }
 
         public ICollection<Box> BoxesChildren { get; set; }
-        public ICollection<Tracking> Trackings { get; set; }
+        public ICollection<TrackingBox> TrackingsBoxes { get; set; }
 
         private Box()
             : base()
         {
             this.DeliveriesBoxes = new HashSet<DeliveryBox>();
-            this.Trackings = new HashSet<Tracking>();
+            this.TrackingsBoxes = new HashSet<TrackingBox>();
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
@@ -78,7 +78,7 @@ namespace CtrlBox.Domain.Entities
         public void Destructor()
         {
             this.BoxType = null;
-            this.Trackings = new HashSet<Tracking>();
+            this.TrackingsBoxes = new HashSet<TrackingBox>();
             this.BoxesChildren = new HashSet<Box>();
             this.BoxesProductItems = new HashSet<BoxProductItem>();
             this.OrdersBoxes = new HashSet<OrderBox>();
@@ -199,19 +199,19 @@ namespace CtrlBox.Domain.Entities
         {
             ResetLastTrack();
 
-            Tracking tracking = Tracking.FactoryCreate(trackingTypeID, null, this.Id);
+            Tracking tracking = Tracking.FactoryCreate(trackingTypeID, this.Id);
 
             if (clientID != null && clientID != Guid.Empty)
             {
                 tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
             }
 
-            this.Trackings.Add(tracking);
+          //  this.TrackingsBoxes.Add(tracking);
         }
 
         private void ResetLastTrack()
         {
-            this.Trackings = this.Trackings.Select(x => { x.IsLastTrack = false; return x; }).ToList();
+          //  this.TrackingsBoxes = this.TrackingsBoxes.Select(x => { x.IsLastTrack = false; return x; }).ToList();
         }
 
         public void AddTrackingProductItems(Guid trackingTypeID, Guid clientID)

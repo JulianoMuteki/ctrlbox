@@ -217,7 +217,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                        .Include(b => b.BoxType)
                        .Include(x => x.BoxesChildren)
                        .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
-                       .Include(x=>x.Trackings)
+                       .Include(x=>x.TrackingsBoxes)
                        .AsEnumerable() // <-- Force full execution (loading)
                        .Join(_context.Set<OrderBox>(), // the source table of the inner join
                           box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
@@ -233,31 +233,31 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                var query = _context.Set<Box>()
-                            .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
-                            .AsEnumerable() // <-- Force full execution (loading) of the above
-                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
-                            .Join(_context.Set<Tracking>(),
-                              pdi => pdi.Id,
-                              track => track.BoxID,
-                              (pdi, track) => new { Box = pdi, Tracking = track })
-                            .Join(_context.Set<TrackingType>(),
-                              track => track.Tracking.TrackingTypeID,
-                              tt => tt.Id,
-                              (track, tt) => new { track.Box, track.Tracking, TrackingType = tt })
-                            .Join(_context.Set<TrackingClient>(),
-                              track => track.Tracking.Id,
-                              cl => cl.TrackingID,
-                              (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
-                            .Join(_context.Set<Route>(),
-                              rt => rt.TrackingClient.ClientID,
-                              clit => clit.ClientOriginID,
-                              (tr, rt) => new { tr.Box, tr.Tracking, tr.TrackingClient, tr.TrackingType, Route = rt })
-                              .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
-                                     (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
-                                     x.Route.Id == routeID)
-                           .Select(x => x.Box);                          
+                var query = _context.Set<Box>();
+                           // .Include(x => x.BoxesChildren)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .AsEnumerable() // <-- Force full execution (loading) of the above
+                           //   .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
+                           // .Join(_context.Set<Tracking>(),
+                           //   pdi => pdi.Id,
+                           //   track => track.BoxID,
+                           //   (pdi, track) => new { Box = pdi, Tracking = track })
+                           // .Join(_context.Set<TrackingType>(),
+                           //   track => track.Tracking.TrackingTypeID,
+                           //   tt => tt.Id,
+                           //   (track, tt) => new { track.Box, track.Tracking, TrackingType = tt })
+                           // .Join(_context.Set<TrackingClient>(),
+                           //   track => track.Tracking.Id,
+                           //   cl => cl.TrackingID,
+                           //   (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
+                           // .Join(_context.Set<Route>(),
+                           //   rt => rt.TrackingClient.ClientID,
+                           //   clit => clit.ClientOriginID,
+                           //   (tr, rt) => new { tr.Box, tr.Tracking, tr.TrackingClient, tr.TrackingType, Route = rt })
+                           //   .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
+                           //          (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
+                           //          x.Route.Id == routeID)
+                           //.Select(x => x.Box);                          
 
                 return query.ToList();
             }

@@ -59,16 +59,16 @@ namespace CtrlBox.Domain.Entities
 
         public void AddTracking(Guid trackingTypeID, Guid clientID)
         {
-            ResetLastTrack();
+            //ResetLastTrack();
 
-            Tracking tracking = Tracking.FactoryCreate(trackingTypeID, this.Id, null);
+            //Tracking tracking = Tracking.FactoryCreate(trackingTypeID, this.Id, null);
 
-            if (clientID != null && clientID != Guid.Empty)
-            {
-                tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
-            }
+            //if (clientID != null && clientID != Guid.Empty)
+            //{
+            //    tracking.TrackingsClients.Add(TrackingClient.FactoryCreate(tracking.Id, clientID));
+            //}
 
-            this.Trackings.Add(tracking);
+            //this.Trackings.Add(tracking);
         }
 
         internal void PutInTheBox()

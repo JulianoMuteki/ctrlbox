@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CtrlBox.Application.ViewModel;
 using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
@@ -12,15 +10,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CtrlBox.UI.Web.Controllers
 {
-    public class MobileController : Controller
+    public class MobileController : BaseController
     {
         private readonly IBoxApplicationService _boxAppService;
         private readonly IProductApplicationService _productApplicationService;
         private readonly IClientApplicationService _clientService;
         private readonly ITrackingApplicationService _trackingService;
 
-        public MobileController(IBoxApplicationService boxApplicationService, IProductApplicationService productApplicationService,
+        public MobileController(NotificationContext notificationContext, IBoxApplicationService boxApplicationService, IProductApplicationService productApplicationService,
                              IClientApplicationService clientService, ITrackingApplicationService trackingService)
+            : base(notificationContext)
         {
             _boxAppService = boxApplicationService;
             _productApplicationService = productApplicationService;
@@ -90,9 +89,7 @@ namespace CtrlBox.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-
                 return Json(CustomExceptionHandler.AjaxException(ex, Response));
-
             }
         }
 
@@ -105,11 +102,13 @@ namespace CtrlBox.UI.Web.Controllers
                 JsonSerialize jsonS = new JsonSerialize();
                 var createBoxVM = jsonS.JsonDeserializeObject<CreateBoxVM>(entity);
                 _boxAppService.Add(createBoxVM);
-                return Json(new
+
+                if (_notificationContext.HasNotifications)
                 {
-                    aaData = "OK",
-                    success = true
-                });
+                    return GetJSONResultNotifications();
+                }
+
+                return GetJSONResultOK();
             }
             catch (CustomException exc)
             {
@@ -120,5 +119,8 @@ namespace CtrlBox.UI.Web.Controllers
                 throw ex;
             }
         }
+
+
+
     }
 }

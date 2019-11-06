@@ -1,15 +1,19 @@
 ﻿<div id="modalNotifications" class="modal container hide fade in" tabindex="-1" style="display: block; margin-top: -121px;" aria-hidden="false">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-            <h3>Full Width</h3>
-        </div>
-        <div class="modal-body">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h3>Notifications</h3>
+    </div>
+    <div class="modal-body">
+        @if (ViewData["Notifications"] != null)
+        {
             @foreach (var item in (IEnumerable<CtrlBox.CrossCutting.Notification>)ViewData["Notifications"])
             {
                 <p>@item.Message</p>
             }
-        </div>
-        <div class="modal-footer">
-            <button type="button" onclick="$('#modalNotifications').hide();" data-dismiss="modal" class="btn">Close</button>
-        </div>
+        }
+
     </div>
+    <div class="modal-footer">
+        <button type="button" onclick="$('#modalNotifications').hide();" data-dismiss="modal" class="btn">Close</button>
+    </div>
+</div>

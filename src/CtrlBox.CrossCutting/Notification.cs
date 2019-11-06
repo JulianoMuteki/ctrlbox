@@ -3,13 +3,18 @@ namespace CtrlBox.CrossCutting
 {
     public class Notification
     {
-        public string Key { get; }
-        public string Message { get; }
+        public string Key { get; set; }
+        public string Message { get; set; }
 
         public Notification(string key, string message)
         {
             Key = key;
             Message = message;
+        }
+
+        public Notification()
+        {
+
         }
     }
 }

@@ -135,13 +135,13 @@
                 dataType: 'json',
                 data: { entity: myJsonString },
                 "success": function (json) {
-                    if (!json.NotAuthorized) {
+                    if (!json.HasNotification) {
                         alert('Completo');                    
                     }
                 },
                 "error": handleAjaxError,
                 "complete": function (data) {
-                    console.log(data);
+                    handleAjaxNotificationModal("Mobile", data);
                 }
             });
             event.preventDefault();

@@ -24,6 +24,26 @@
 <script src="~/scripts/appCtrlBox.js"></script>
 
 <script type="text/javascript">
+    function handleAjaxNotificationModal(controller, data) {
+        if (data.responseJSON.HasNotification) {
+            var notify = data.responseJSON.notificationsJSON;
+            var url = "/" + controller + "/GetPartialViewNotifications";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: { notifications: notify },
+            })
+               .done(function (result) {
+                   $('#div1').html(result);
+               }).fail(function (xhr) {
+                   console.log('error : ' + xhr.status + ' - '
+                   + xhr.statusText + ' - ' + xhr.responseText);
+               });
+        }
+    }
     function handleAjaxError(xhr, textStatus, error) {
 
         var responseText = "";

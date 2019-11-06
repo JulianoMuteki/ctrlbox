@@ -1,8 +1,10 @@
 ﻿using CtrlBox.CrossCutting;
 using CtrlBox.Domain.Interfaces.Application;
+using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CtrlBox.UI.Web.Extensions
@@ -19,6 +21,36 @@ namespace CtrlBox.UI.Web.Extensions
         public void PushNotification()
         {
             var notifications = JsonConvert.SerializeObject(_notificationContext.Notifications);
+        }
+
+        public IActionResult GetPartialViewNotifications(string notifications)
+        {
+            JsonSerialize jsonS = new JsonSerialize();
+            var lista = jsonS.JsonDeserializeObject<List<Notification>>(notifications);
+            ViewData["Notifications"] = lista;
+
+            return PartialView("~/Views/Modals/_ViewPartialNotifications.cshtml");
+        }
+
+        protected ActionResult GetJSONResultNotifications()
+        {
+            return Json(new
+            {
+                aaData = "OK",
+                success = true,
+                HasNotification = true,
+                notificationsJSON = JsonConvert.SerializeObject(_notificationContext.Notifications)
+        });
+        }
+
+        protected ActionResult GetJSONResultOK()
+        {
+            return Json(new
+            {
+                aaData = "OK",
+                success = true,
+                notification = false
+            });
         }
 
         public void LoadViewDataProducts(IProductApplicationService productAppService)

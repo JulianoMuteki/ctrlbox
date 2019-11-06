@@ -139,7 +139,10 @@
                         alert('Completo');                    
                     }
                 },
-                "error": handleAjaxError
+                "error": handleAjaxError,
+                "complete": function (data) {
+                    console.log(data);
+                }
             });
             event.preventDefault();
 

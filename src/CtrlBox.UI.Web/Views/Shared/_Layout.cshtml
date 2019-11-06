@@ -339,6 +339,12 @@
                 <button type="button" data-dismiss="modal" class="btn">Close</button>
             </div>
         </div>
+
+        @if (ViewData["Notifications"] != null)
+        {
+            <partial name="~/Views/Modals/_ViewPartialNotifications.cshtml" />
+        }
+
     </div>
     @RenderBody()
     <!-- END PAGE -->

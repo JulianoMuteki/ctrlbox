@@ -9,6 +9,7 @@ using CtrlBox.UI.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace CtrlBox.UI.Web.Controllers
 {
@@ -89,8 +90,8 @@ namespace CtrlBox.UI.Web.Controllers
 
                 if (_notificationContext.HasNotifications)
                 {
-                    base.PushNotification();
-                    return View(productVM);
+                    ViewData["Notifications"] = _notificationContext.Notifications.ToList();
+                    return View();
                 }
 
                 return RedirectToAction("Index");

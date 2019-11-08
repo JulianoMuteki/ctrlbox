@@ -70,7 +70,7 @@ namespace CtrlBox.Application
             {
                 throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
             }
-           // var list = box.BoxesProductItems.ToList();
+            // var list = box.BoxesProductItems.ToList();
             box.Destructor();
 
             _unitOfWork.Repository<Box>().Add(box);
@@ -486,25 +486,25 @@ namespace CtrlBox.Application
                 _unitOfWork.SetTrackAll();
                 var boxtype = _unitOfWork.Repository<BoxType>().GetById(entity.BoxTypeID);
 
-               int totalProductItemsForStock = 0;
+                int totalProductItemsToStock = 0;
 
                 foreach (var barcode in entity.TagsBarcodes)
                 {
-                    Box box = Box.FactoryCreate(boxtype, barcode);
+                    Box box = _unitOfWork.Repository<Box>().Find(b => b.GraphicCodes.BarcodeEAN13 == barcode) ?? Box.FactoryCreate(boxtype, barcode);
 
-                    if(entity.HasMovementStock)
+                    if (entity.HasMovementStock)
                     {
                         int totalItemsByBox = SumTotalProductItemsForStock(entity, boxtype);
-                        totalProductItemsForStock += totalItemsByBox;
+                        totalProductItemsToStock += totalItemsByBox;
 
                         box.StoreProductsItems(entity.ProductID, totalItemsByBox);
                     }
-                    _unitOfWork.Repository<Box>().Add(box);
+                    _unitOfWork.Repository<Box>().AddUpdate(box);
                 }
 
                 if (entity.HasMovementStock)
                 {
-                    AddStockAndMovement(entity, boxtype, totalProductItemsForStock);
+                    AddStockAndMovement(entity, boxtype, totalProductItemsToStock);
                 }
                 _unitOfWork.CommitSync();
             }
@@ -532,11 +532,15 @@ namespace CtrlBox.Application
                 if (stock == null)
                 {
                     stock = Stock.FactoryCreate(entity.ClientID, entity.ProductID);
-                  
+                    stock.AddMovementInput(totalProductItems);
+                    _unitOfWork.Repository<Stock>().Add(stock);
+                }
+                else
+                {
+                    stock.AddMovementInput(totalProductItems);
+                    _unitOfWork.Repository<Stock>().Update(stock);
                 }
 
-                stock.AddMovementInput(totalProductItems);
-                _unitOfWork.Repository<Stock>().Add(stock);
             }
             catch (CustomException exc)
             {

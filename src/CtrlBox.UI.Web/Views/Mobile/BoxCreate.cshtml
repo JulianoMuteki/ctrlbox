@@ -101,7 +101,7 @@
 
         $('#addRow').on('click', function () {
                   oTableBarcodes.fnAddData({
-                "Barcode": "352637247246"
+                      "Barcode": $("#txtBarcode").val()
             });
         });
 
@@ -212,7 +212,7 @@
                                     <div style="display:none;" class="ctrl-gp-manual control-group">
                                         <label class="control-label">Barcode</label>
                                         <div class="controls">
-                                            <input type="text" name="Barcode" placeholder="Barcode" class="m-wrap large" />
+                                            <input id="txtBarcode" type="text" name="Barcode" placeholder="Barcode" class="m-wrap large" />
                                             <span class="help-inline">Barcode</span>
                                         </div>
                                     </div>

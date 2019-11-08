@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CtrlBox.UI.Web.Models;
 using CtrlBox.Application.ViewModel;
@@ -31,10 +28,11 @@ namespace CtrlBox.UI.Web.Controllers
         public IActionResult Error()
         {
             var excptionDetail = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            //excptionDetail.Path;
-            //excptionDetail.Error.Message;
-            //excptionDetail.Error.Source;
-            //excptionDetail.Error.StackTrace;
+
+            if (excptionDetail != null)
+            {
+                return View(new ErrorViewModel { Path = excptionDetail.Path, Message = excptionDetail.Error.Message, Source = excptionDetail.Error.Source, StackTrace = excptionDetail.Error.StackTrace });
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 

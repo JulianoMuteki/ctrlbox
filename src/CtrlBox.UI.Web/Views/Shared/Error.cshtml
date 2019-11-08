@@ -5,64 +5,66 @@
 
 
 
-<div class="container-fluid">
-    <!-- BEGIN PAGE HEADER-->
-    <div class="row-fluid">
-        <div class="span12">
-            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-            <h3 class="page-title">
-                500 Page Option 1 <small>500 page option 1</small>
-            </h3>
-            <ul class="breadcrumb">
-                <li>
-                    <i class="icon-home"></i>
-                    <a href="index.html">Home</a>
-                    <i class="icon-angle-right"></i>
-                </li>
-                <li>
-                    <a href="#">Extra</a>
-                    <i class="icon-angle-right"></i>
-                </li>
-                <li><a href="#">500 Page Option 1</a></li>
-            </ul>
-            <!-- END PAGE TITLE & BREADCRUMB-->
+
+<div class="page-content" style="min-height:1112px !important">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button"></button>
+            <h3>Widget Settings</h3>
+        </div>
+        <div class="modal-body">
+            <p>Here will be a configuration form</p>
         </div>
     </div>
-    <!-- END PAGE HEADER-->
-    <!-- BEGIN PAGE CONTENT-->
-    <div class="row-fluid">
-        <div class="span12 page-500">
-            <div class=" number">
-                500
-            </div>
-            <div class=" details">
-                <h3>Oops!  Something went wrong.</h3>
-                <p>
-                    We are fixing it!<br>
-                    Please come back in a while.<br><br>
-                </p>
-                <h1 class="text-danger">Error.</h1>
-                <h2 class="text-danger">An error occurred while processing your request.</h2>
-
-                @if (Model.ShowRequestId)
-                {
-                    <p>
-                        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-                    </p>
-                }
-
-                <h3>Development Mode</h3>
-                <p>
-                    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-                </p>
-                <p>
-                    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-                    It can result in displaying sensitive information from exceptions to end users.
-                    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-                    and restarting the app.
-                </p>
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="index.html">Home</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="#">Extra</a>
+                        <i class="icon-angle-right"></i>
+                    </li>
+                    <li><a href="#">Page error</a></li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
         </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12 page-404">
+                <div class="number">
+                    Error
+                </div>
+                <div class="details">
+                    <h3>Oops!  Something strange happened.</h3>
+
+                    @if (Model.ShowRequestId)
+                    {
+                        <p>
+                            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                        </p>
+                    }
+                    else
+                    {
+                        <p>@Model.Message</p>
+                        <p>@Model.Path</p>
+                        <p>@Model.StackTrace</p>
+                        <p>@Model.Source</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
     </div>
-    <!-- END PAGE CONTENT-->
+    <!-- END PAGE CONTAINER-->
 </div>

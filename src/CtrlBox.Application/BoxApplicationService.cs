@@ -486,16 +486,16 @@ namespace CtrlBox.Application
                 _unitOfWork.SetTrackAll();
                 var boxtype = _unitOfWork.Repository<BoxType>().GetById(entity.BoxTypeID);
 
-                int totalProductItemsForStock = 0;
+                int totalProductItemsToStock = 0;
 
                 foreach (var barcode in entity.TagsBarcodes)
                 {
-                    Box box = Box.FactoryCreate(boxtype, barcode);
+                    Box box = _unitOfWork.Repository<Box>().Find(b => b.GraphicCodes.BarcodeEAN13 == barcode) ?? Box.FactoryCreate(boxtype, barcode);
 
                     if (entity.HasMovementStock)
                     {
                         int totalItemsByBox = SumTotalProductItemsForStock(entity, boxtype);
-                        totalProductItemsForStock += totalItemsByBox;
+                        totalProductItemsToStock += totalItemsByBox;
 
                         box.StoreProductsItems(entity.ProductID, totalItemsByBox);
                     }
@@ -504,7 +504,7 @@ namespace CtrlBox.Application
 
                 if (entity.HasMovementStock)
                 {
-                    AddStockAndMovement(entity, boxtype, totalProductItemsForStock);
+                    AddStockAndMovement(entity, boxtype, totalProductItemsToStock);
                 }
                 _unitOfWork.CommitSync();
             }

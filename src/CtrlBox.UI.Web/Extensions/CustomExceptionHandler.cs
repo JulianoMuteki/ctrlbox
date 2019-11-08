@@ -138,13 +138,12 @@ namespace CtrlBox.UI.Web.Extensions
                          ((HttpWebResponse)(context as WebException).Response).StatusCode
                          : getErrorCodeStatic(context.GetType());
             string errorMessage = context.Message;
-            string customErrorMessage = "ERROR";
             string stackTrace = context.StackTrace;
 
             response.StatusCode = (int)statusCode;
             return new
             {
-                message = customErrorMessage,
+                stackTrace,
                 isError = true,
                 errorMessage,
                 errorCode = statusCode,

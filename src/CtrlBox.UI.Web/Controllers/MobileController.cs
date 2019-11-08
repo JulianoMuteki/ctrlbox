@@ -27,7 +27,6 @@ namespace CtrlBox.UI.Web.Controllers
             _clientService = clientService;
         }
 
-
         public IActionResult BoxCreate()
         {
             var boxesType = _boxAppService.GetAllBoxesType()
@@ -93,7 +92,6 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-
         [HttpPost]
         public ActionResult PostAjaxHandlerCreateBox(string entity)
         {
@@ -110,17 +108,10 @@ namespace CtrlBox.UI.Web.Controllers
 
                 return GetJSONResultOK();
             }
-            catch (CustomException exc)
-            {
-                throw exc;
-            }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(CustomExceptionHandler.AjaxException(ex, Response));
             }
         }
-
-
-
     }
 }

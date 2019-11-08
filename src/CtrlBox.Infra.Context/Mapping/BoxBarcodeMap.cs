@@ -27,9 +27,9 @@ namespace CtrlBox.Infra.Context.Mapping
                     .IsRequired()
                      .HasMaxLength(250);
 
-            builder.HasOne(x => x.Box)
-                    .WithOne(ad => ad.BoxBarcode)
-                    .HasForeignKey<BoxBarcode>(ad => ad.BoxID);
+            //builder.HasOne(x => x.Box)
+            //        .WithOne(ad => ad.BoxBarcode)
+            //        .HasForeignKey<BoxBarcode>(ad => ad.BoxID);
         }
     }
 }

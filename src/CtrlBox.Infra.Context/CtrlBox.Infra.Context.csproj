@@ -16,4 +16,10 @@
     <ProjectReference Include="..\CtrlBox.Domain\CtrlBox.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mapping\0 - Aggregation\" />
+    <Folder Include="Mapping\D - Expedition\" />
+    <Folder Include="Mapping\F - Delivery\" />
+  </ItemGroup>
+
 </Project>

@@ -68,24 +68,25 @@ namespace CtrlBox.Domain.Entities
                 OrderBox orderBox = OrderBox.FactoryCreate(this.Id, box.Id);
 
                 this.OrdersBoxes.Add(orderBox);
-                box.FlowStep.SetFlowOrder();
+                box.FlowStep.SetFlowExpedition();
 
                 if (box.BoxesChildren.Count > 0)
                     CreateOrdersBoxes(box.BoxesChildren);
-                else if (box.ProductID != null && box.ProductID != Guid.Empty)
-                {
-                    CreateOrderProductItem(box);
-                }
+                //else if (box.ProductID != null && box.ProductID != Guid.Empty)
+                //{
+                //    CreateOrderProductItem(box);
+                //}
             }
         }
 
+        /*
         private void CreateOrderProductItem(Box box)
         {
             foreach (var boxProductItem in box.BoxesProductItems)
             {
                 OrderProductItem orderProductItem = OrderProductItem.FactoryCreate(boxProductItem.ProductItemID, this.Id);
                 this.OrderProductItems.Add(orderProductItem);
-                boxProductItem.ProductItem.FlowStep.SetFlowOrder();
+                boxProductItem.ProductItem.FlowStep.SetFlowExpedition();
             }
         }
 
@@ -109,7 +110,7 @@ namespace CtrlBox.Domain.Entities
                 }
             }
         }
-
+        */
         public void Close()
         {
             this.IsFinalized = true;

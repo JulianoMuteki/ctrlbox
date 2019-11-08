@@ -23,9 +23,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Box>()
-                    .Include(x => x.Product)
                     .Include(x => x.BoxType)
-                    .Include(x => x.BoxBarcode)
                     .ToList();
             }
             catch (Exception ex)
@@ -40,9 +38,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 return _context.Set<Box>()
                     .Where(x => x.BoxParentID == null)
-                    .Include(x => x.Product)
                     .Include(x => x.BoxType)
-                    .Include(x=>x.BoxBarcode)
                     .ToList();
             }
             catch (Exception ex)
@@ -74,7 +70,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                 var query = _context.Set<Box>()
                            .Include(b => b.BoxType)
                            .Include(x => x.BoxesChildren)
-                           .Include(b => b.BoxesProductItems).ThenInclude(x=>x.ProductItem)
+                         //  .Include(b => b.BoxesProductItems).ThenInclude(x=>x.ProductItem)
                            .AsEnumerable() // <-- Force full execution (loading)
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
@@ -100,9 +96,9 @@ namespace CtrlBox.Infra.Repository.Repositories
                 var query = _context.Set<Box>()
                            .Include(b => b.BoxType)
                            .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
-                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order) && x.BoxParentID == null)
+                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Expedition) && x.BoxParentID == null)
                            .Join(_context.Set<OrderBox>(), // the source table of the inner join
                               box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               bDel => bDel.BoxID,   // Select the foreign key (the second part of the "on" clause)
@@ -127,7 +123,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                 var query = _context.Set<Box>()
 
                             .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
                             .Where(x => x.BoxTypeID == boxTypeID && x.BoxParent == null)
                             .OrderByDescending(x => x.DateModified)
@@ -147,10 +143,10 @@ namespace CtrlBox.Infra.Repository.Repositories
             {
                 var query = _context.Set<Box>()
                             .Include(x => x.BoxType).ThenInclude(p => p.Picture)
-                            .Include(x => x.Product).ThenInclude(z => z.Picture)
+                            //.Include(x => x.Product).ThenInclude(z => z.Picture)
 
                             .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
                             .AsEnumerable() // <-- Force full execution (loading) of the above
                             .Where(x => x.Id == boxID && x.BoxParent == null);
 
@@ -175,7 +171,7 @@ namespace CtrlBox.Infra.Repository.Repositories
                               pi => pi.ProductItemID,
                               (productItem, orderProductItem) => new { ProductItem = productItem, OrderProductItem = orderProductItem })
 
-                           .Where(x => x.OrderProductItem.OrderID == orderID && x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Order)
+                           .Where(x => x.OrderProductItem.OrderID == orderID && x.ProductItem.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.Expedition)
                            .Select(x => x.ProductItem);
 
                 return query.ToList();
@@ -191,7 +187,7 @@ namespace CtrlBox.Infra.Repository.Repositories
             try
             {
                 return _context.Set<Box>()
-                    .Include(x=>x.BoxBarcode)
+                   // .Include(x=>x.BoxBarcode)
                     .Include(x => x.BoxType).ThenInclude(x => x.Picture)
                     .Where(x => x.Id == boxID)
                     .FirstOrDefault();
@@ -206,7 +202,7 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Order);
+                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Expedition);
                 return query.ToList();
             }
             catch (Exception ex)
@@ -220,8 +216,8 @@ namespace CtrlBox.Infra.Repository.Repositories
             var query = _context.Set<Box>()
                        .Include(b => b.BoxType)
                        .Include(x => x.BoxesChildren)
-                       .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
-                       .Include(x=>x.Trackings)
+                      // .Include(b => b.BoxesProductItems).ThenInclude(x => x.ProductItem)
+                       .Include(x=>x.TrackingsBoxes)
                        .AsEnumerable() // <-- Force full execution (loading)
                        .Join(_context.Set<OrderBox>(), // the source table of the inner join
                           box => box.Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
@@ -237,31 +233,31 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                var query = _context.Set<Box>()
-                            .Include(x => x.BoxesChildren)
-                            .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
-                            .AsEnumerable() // <-- Force full execution (loading) of the above
-                              .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
-                            .Join(_context.Set<Tracking>(),
-                              pdi => pdi.Id,
-                              track => track.BoxID,
-                              (pdi, track) => new { Box = pdi, Tracking = track })
-                            .Join(_context.Set<TrackingType>(),
-                              track => track.Tracking.TrackingTypeID,
-                              tt => tt.Id,
-                              (track, tt) => new { track.Box, track.Tracking, TrackingType = tt })
-                            .Join(_context.Set<TrackingClient>(),
-                              track => track.Tracking.Id,
-                              cl => cl.TrackingID,
-                              (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
-                            .Join(_context.Set<Route>(),
-                              rt => rt.TrackingClient.ClientID,
-                              clit => clit.ClientOriginID,
-                              (tr, rt) => new { tr.Box, tr.Tracking, tr.TrackingClient, tr.TrackingType, Route = rt })
-                              .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
-                                     (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
-                                     x.Route.Id == routeID)
-                           .Select(x => x.Box);                          
+                var query = _context.Set<Box>();
+                           // .Include(x => x.BoxesChildren)
+                           // .Include(b => b.BoxesProductItems).ThenInclude(z => z.ProductItem)
+                           // .AsEnumerable() // <-- Force full execution (loading) of the above
+                           //   .Where(x => (x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) && x.BoxParentID == null)
+                           // .Join(_context.Set<Tracking>(),
+                           //   pdi => pdi.Id,
+                           //   track => track.BoxID,
+                           //   (pdi, track) => new { Box = pdi, Tracking = track })
+                           // .Join(_context.Set<TrackingType>(),
+                           //   track => track.Tracking.TrackingTypeID,
+                           //   tt => tt.Id,
+                           //   (track, tt) => new { track.Box, track.Tracking, TrackingType = tt })
+                           // .Join(_context.Set<TrackingClient>(),
+                           //   track => track.Tracking.Id,
+                           //   cl => cl.TrackingID,
+                           //   (tr, trcl) => new { tr.Box, tr.Tracking, TrackingClient = trcl, tr.TrackingType })
+                           // .Join(_context.Set<Route>(),
+                           //   rt => rt.TrackingClient.ClientID,
+                           //   clit => clit.ClientOriginID,
+                           //   (tr, rt) => new { tr.Box, tr.Tracking, tr.TrackingClient, tr.TrackingType, Route = rt })
+                           //   .Where(x => x.TrackingType.TrackType == CrossCutting.Enums.ETrackType.Place &&
+                           //          (x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.InStock || x.Box.FlowStep.EFlowStep == CrossCutting.Enums.EFlowStep.CrossDocking) &&
+                           //          x.Route.Id == routeID)
+                           //.Select(x => x.Box);                          
 
                 return query.ToList();
             }
@@ -275,7 +271,7 @@ namespace CtrlBox.Infra.Repository.Repositories
         {
             try
             {
-                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Delivery);
+                IEnumerable<Box> query = GetBoxesFullByOrderAndFlowStep(orderID, CrossCutting.Enums.EFlowStep.Delivered);
 
                 return query.ToList();
             }

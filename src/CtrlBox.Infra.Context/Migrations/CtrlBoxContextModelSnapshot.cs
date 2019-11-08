@@ -15,7 +15,7 @@ namespace CtrlBox.Infra.Context.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -85,13 +85,13 @@ namespace CtrlBox.Infra.Context.Migrations
                         .IsRequired()
                         .HasMaxLength(250);
 
+                    b.Property<Guid>("GraphicCodeID");
+
                     b.Property<bool>("IsDelete");
 
                     b.Property<bool>("IsDisable");
 
                     b.Property<int>("PorcentFull");
-
-                    b.Property<Guid?>("ProductID");
 
                     b.Property<int>("Status");
 
@@ -102,7 +102,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasIndex("BoxTypeID");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("GraphicCodeID");
 
                     b.ToTable("Boxes");
                 });
@@ -136,8 +136,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id", "BoxID");
 
-                    b.HasIndex("BoxID")
-                        .IsUnique();
+                    b.HasIndex("BoxID");
 
                     b.ToTable("BoxesBarcodes");
                 });
@@ -367,6 +366,38 @@ namespace CtrlBox.Infra.Context.Migrations
                     b.HasIndex("OrderID");
 
                     b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.GraphicCodes", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("GraphicCodeID");
+
+                    b.Property<string>("BarcodeEAN13")
+                        .IsRequired()
+                        .HasMaxLength(13);
+
+                    b.Property<string>("BarcodeGS1_128")
+                        .IsRequired()
+                        .HasMaxLength(48);
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<bool>("IsDisable");
+
+                    b.Property<string>("RFID")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id")
+                        .HasName("GraphicCodeID");
+
+                    b.ToTable("GraphicsCodes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.OptiontType", b =>
@@ -823,11 +854,9 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientID")
-                        .IsUnique();
+                    b.HasIndex("ClientID");
 
-                    b.HasIndex("ProductID")
-                        .IsUnique();
+                    b.HasIndex("ProductID");
 
                     b.ToTable("Stocks");
                 });
@@ -903,8 +932,6 @@ namespace CtrlBox.Infra.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("TrackingID");
 
-                    b.Property<Guid?>("BoxID");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateModified");
@@ -915,20 +942,31 @@ namespace CtrlBox.Infra.Context.Migrations
 
                     b.Property<bool>("IsLastTrack");
 
-                    b.Property<Guid?>("ProductItemID");
+                    b.Property<Guid?>("ProductItemId");
 
                     b.Property<Guid>("TrackingTypeID");
 
                     b.HasKey("Id")
                         .HasName("TrackingID");
 
-                    b.HasIndex("BoxID");
-
-                    b.HasIndex("ProductItemID");
+                    b.HasIndex("ProductItemId");
 
                     b.HasIndex("TrackingTypeID");
 
                     b.ToTable("Trackings");
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.TrackingBox", b =>
+                {
+                    b.Property<Guid>("BoxID");
+
+                    b.Property<Guid>("TrackingID");
+
+                    b.HasKey("BoxID", "TrackingID");
+
+                    b.HasIndex("TrackingID");
+
+                    b.ToTable("TrackingsBoxes");
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.TrackingClient", b =>
@@ -1147,11 +1185,12 @@ namespace CtrlBox.Infra.Context.Migrations
                         .HasForeignKey("BoxTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
+                    b.HasOne("CtrlBox.Domain.Entities.GraphicCodes", "GraphicCodes")
                         .WithMany("Boxes")
-                        .HasForeignKey("ProductID");
+                        .HasForeignKey("GraphicCodeID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "FlowStep", b1 =>
+                    b.OwnsOne("CtrlBox.Domain.Entities.FlowStep", "FlowStep", b1 =>
                         {
                             b1.Property<Guid>("BoxId");
 
@@ -1164,7 +1203,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                             b1.HasOne("CtrlBox.Domain.Entities.Box")
                                 .WithOne("FlowStep")
-                                .HasForeignKey("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "BoxId")
+                                .HasForeignKey("CtrlBox.Domain.Entities.FlowStep", "BoxId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
@@ -1172,15 +1211,15 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxBarcode", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
-                        .WithOne("BoxBarcode")
-                        .HasForeignKey("CtrlBox.Domain.Entities.BoxBarcode", "BoxID")
+                        .WithMany()
+                        .HasForeignKey("BoxID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.BoxProductItem", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
-                        .WithMany("BoxesProductItems")
+                        .WithMany()
                         .HasForeignKey("BoxID")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -1360,7 +1399,7 @@ namespace CtrlBox.Infra.Context.Migrations
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "FlowStep", b1 =>
+                    b.OwnsOne("CtrlBox.Domain.Entities.FlowStep", "FlowStep", b1 =>
                         {
                             b1.Property<Guid>("ProductItemId");
 
@@ -1373,7 +1412,7 @@ namespace CtrlBox.Infra.Context.Migrations
 
                             b1.HasOne("CtrlBox.Domain.Entities.ProductItem")
                                 .WithOne("FlowStep")
-                                .HasForeignKey("CtrlBox.Domain.Entities.ValueObjects.FlowStep", "ProductItemId")
+                                .HasForeignKey("CtrlBox.Domain.Entities.FlowStep", "ProductItemId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
@@ -1426,13 +1465,13 @@ namespace CtrlBox.Infra.Context.Migrations
             modelBuilder.Entity("CtrlBox.Domain.Entities.Stock", b =>
                 {
                     b.HasOne("CtrlBox.Domain.Entities.Client", "Client")
-                        .WithOne("Stock")
-                        .HasForeignKey("CtrlBox.Domain.Entities.Stock", "ClientID")
+                        .WithMany("Stocks")
+                        .HasForeignKey("ClientID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CtrlBox.Domain.Entities.Product", "Product")
-                        .WithOne("Stock")
-                        .HasForeignKey("CtrlBox.Domain.Entities.Stock", "ProductID")
+                        .WithMany("Stocks")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1450,17 +1489,26 @@ namespace CtrlBox.Infra.Context.Migrations
 
             modelBuilder.Entity("CtrlBox.Domain.Entities.Tracking", b =>
                 {
-                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                    b.HasOne("CtrlBox.Domain.Entities.ProductItem")
                         .WithMany("Trackings")
-                        .HasForeignKey("BoxID");
-
-                    b.HasOne("CtrlBox.Domain.Entities.ProductItem", "ProductItem")
-                        .WithMany("Trackings")
-                        .HasForeignKey("ProductItemID");
+                        .HasForeignKey("ProductItemId");
 
                     b.HasOne("CtrlBox.Domain.Entities.TrackingType", "TrackingType")
                         .WithMany("Trackings")
                         .HasForeignKey("TrackingTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CtrlBox.Domain.Entities.TrackingBox", b =>
+                {
+                    b.HasOne("CtrlBox.Domain.Entities.Box", "Box")
+                        .WithMany("TrackingsBoxes")
+                        .HasForeignKey("BoxID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CtrlBox.Domain.Entities.Tracking", "Tracking")
+                        .WithMany("TrackingsBoxes")
+                        .HasForeignKey("TrackingID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

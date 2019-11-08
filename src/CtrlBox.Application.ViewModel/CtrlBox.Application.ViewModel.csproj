@@ -4,4 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="A - Registration\" />
+    <Folder Include="C - Stock\" />
+    <Folder Include="D - Expedition\" />
+    <Folder Include="E - Transport\" />
+    <Folder Include="F - Delivery\" />
+    <Folder Include="G - Sale\" />
+    <Folder Include="H - Controls\" />
+  </ItemGroup>
+
 </Project>

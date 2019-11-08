@@ -26,7 +26,7 @@ namespace CtrlBox.Services.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "CtrlBox API", Version = "v1" });
                 var filePath = System.AppDomain.CurrentDomain.BaseDirectory + @"CtrlBox.Services.Api.xml";
                 c.IncludeXmlComments(filePath);
             });
@@ -50,7 +50,7 @@ namespace CtrlBox.Services.Api
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CtrlBox API.v1");
             });
         }
 

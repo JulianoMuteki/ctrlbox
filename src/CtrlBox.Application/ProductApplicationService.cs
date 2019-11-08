@@ -17,11 +17,13 @@ namespace CtrlBox.Application
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly NotificationContext _notificationContext;
 
-        public ProductApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProductApplicationService(IUnitOfWork unitOfWork, IMapper mapper, NotificationContext notificationContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _notificationContext = notificationContext;
         }
 
         public ICollection<ProductVM> GetAll()
@@ -81,6 +83,13 @@ namespace CtrlBox.Application
                     _unitOfWork.Repository<Picture>().Add(picture);
                 }
                 _unitOfWork.Repository<Product>().Add(product);
+
+                if (!product.ComponentValidator.IsValid)
+                {
+                    _notificationContext.AddNotifications(product.ComponentValidator.ValidationResult);
+                    return entity;
+                }
+
                 _unitOfWork.CommitSync();
 
                 return entity;
@@ -240,7 +249,7 @@ namespace CtrlBox.Application
 
                 for (int i = 0; i < quantity; i++)
                 {
-                    ProductItem productItem = ProductItem.FactoryCreate(productID);              
+                    ProductItem productItem = ProductItem.FactoryCreate(productID);
                     productsItems.Add(productItem);
                 }
 
@@ -328,7 +337,7 @@ namespace CtrlBox.Application
                     productItem.AddInStock(trackingTypeID, clientID);
                 }
 
-              //  _unitOfWork.Repository<Tracking>().AddRange(trackings);
+                //  _unitOfWork.Repository<Tracking>().AddRange(trackings);
                 _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
                 _unitOfWork.CommitSync();
             }
@@ -378,7 +387,7 @@ namespace CtrlBox.Application
 
                     Box box = Box.FactoryCreate(boxTypeID, boxType, i, productID);
                     box.FlowStep.SetInStock();
-                    box.LoadProductItems(updateList);
+                  //  box.LoadProductItems(updateList);
                     box.AddTracking(trackingTypeID, clientID);
                     box.BoxType = null;
                     boxes.Add(box);
@@ -462,7 +471,7 @@ namespace CtrlBox.Application
             try
             {
                 var stock = _mapper.Map<Stock>(stockVM);
-               
+
                 _unitOfWork.Repository<Stock>().Add(stock);
                 _unitOfWork.CommitSync();
             }

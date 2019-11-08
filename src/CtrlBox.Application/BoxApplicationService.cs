@@ -33,12 +33,12 @@ namespace CtrlBox.Application
                 var boxType = _unitOfWork.Repository<BoxType>().GetById(box.BoxTypeID);
                 box.SetBoxType(boxType);
 
-                if (box.ProductID != null && box.ProductID != Guid.Empty)
-                    AddBoxHasProduct(entity.RangeProductsItems, box);
-                else
-                    AddBoxWithoutProduct(entity.ChildrenBoxesID, box);
+                //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                //    AddBoxHasProduct(entity.RangeProductsItems, box);
+                //else
+                AddBoxWithoutProduct(entity.ChildrenBoxesID, box);
 
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
                 return entity;
             }
             catch (CustomException exc)
@@ -63,19 +63,18 @@ namespace CtrlBox.Application
 
         private void AddBoxHasProduct(int rangeProductsItems, Box box)
         {
-            var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID && x.Status == EProductItemStatus.AvailableStock).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
-            box.LoadProductItems(productItems);
+            //var productItems = _unitOfWork.Repository<ProductItem>().FindAll(x => x.ProductID == box.ProductID && x.Status == EProductItemStatus.AvailableStock).OrderByDescending(x => x.CreationDate).Take(rangeProductsItems).ToList();
+            //box.LoadProductItems(productItems);
 
             if (!box.ComponentValidator.Validate(box, new BoxValidator()))
             {
                 throw new CustomException(string.Join(", ", box.ComponentValidator.ValidationResult.Errors.Select(x => x.ErrorMessage)));
             }
-            var list = box.BoxesProductItems.ToList();
+           // var list = box.BoxesProductItems.ToList();
             box.Destructor();
 
-            _unitOfWork.Repository<ProductItem>().UpdateRange(productItems);
             _unitOfWork.Repository<Box>().Add(box);
-            _unitOfWork.Repository<BoxProductItem>().AddRange(list);   
+            //_unitOfWork.Repository<BoxProductItem>().AddRange(list);
         }
 
         public Task<BoxVM> AddAsync(BoxVM entity)
@@ -95,7 +94,7 @@ namespace CtrlBox.Application
                 }
 
                 _unitOfWork.Repository<BoxType>().Add(boxType);
-               _unitOfWork.CommitSync();
+                _unitOfWork.CommitSync();
             }
             catch (CustomException exc)
             {
@@ -292,7 +291,7 @@ namespace CtrlBox.Application
         {
             try
             {
-                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().FindAll(x => x.BoxParentID == null && x.ProductID != null);
+                var boxes = _unitOfWork.RepositoryCustom<IBoxRepository>().FindAll(x => x.BoxParentID == null);
                 var boxesVMs = _mapper.Map<IList<BoxVM>>(boxes);
                 return boxesVMs;
             }
@@ -346,13 +345,13 @@ namespace CtrlBox.Application
 
                         box.SetBoxType(boxType);
 
-                        if (box.ProductID != null && box.ProductID != Guid.Empty)
-                            AddBoxHasProduct(boxEngradado.RangeProductsItems, box);
-                        else
-                            AddBoxWithoutProduct(boxEngradado.ChildrenBoxesID, box);
+                        //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                        //    AddBoxHasProduct(boxEngradado.RangeProductsItems, box);
+                        //else
+                        AddBoxWithoutProduct(boxEngradado.ChildrenBoxesID, box);
 
                         _unitOfWork.CommitSync();
-                    }                                     
+                    }
                 }
                 catch (CustomException exc)
                 {
@@ -390,10 +389,10 @@ namespace CtrlBox.Application
 
                         box.SetBoxType(boxType);
 
-                        if (box.ProductID != null && box.ProductID != Guid.Empty)
-                            AddBoxHasProduct(boxPallet.RangeProductsItems, box);
-                        else
-                            AddBoxWithoutProduct(boxPallet.ChildrenBoxesID, box);
+                        //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                        //    AddBoxHasProduct(boxPallet.RangeProductsItems, box);
+                        //else
+                        AddBoxWithoutProduct(boxPallet.ChildrenBoxesID, box);
 
                         _unitOfWork.CommitSync();
                     }
@@ -435,10 +434,10 @@ namespace CtrlBox.Application
 
                         box.SetBoxType(boxType);
 
-                        if (box.ProductID != null && box.ProductID != Guid.Empty)
-                            AddBoxHasProduct(boxContainer.RangeProductsItems, box);
-                        else
-                            AddBoxWithoutProduct(boxContainer.ChildrenBoxesID, box);
+                        //if (box.ProductID != null && box.ProductID != Guid.Empty)
+                        //    AddBoxHasProduct(boxContainer.RangeProductsItems, box);
+                        //else
+                        AddBoxWithoutProduct(boxContainer.ChildrenBoxesID, box);
 
                         _unitOfWork.CommitSync();
                     }
@@ -453,6 +452,100 @@ namespace CtrlBox.Application
                 }
             }
 
+        }
+
+        //Mobile
+        public ICollection<string> GetListBarcodes(int quantity)
+        {
+            try
+            {
+                IList<GraphicCodes> listGraphicCodes = new List<GraphicCodes>(quantity);
+
+                for (int i = 0; i < quantity; i++)
+                {
+                    GraphicCodes graphicCodes = GraphicCodes.FactoryCreate();
+                    listGraphicCodes.Add(graphicCodes);
+                }
+
+                return listGraphicCodes.Select(gc => gc.BarcodeEAN13).ToList();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching Barcodes", nameof(this.GetListBarcodes), ex);
+            }
+        }
+
+        public void Add(CreateBoxVM entity)
+        {
+            try
+            {
+                _unitOfWork.SetTrackAll();
+                var boxtype = _unitOfWork.Repository<BoxType>().GetById(entity.BoxTypeID);
+
+               int totalProductItemsForStock = 0;
+
+                foreach (var barcode in entity.TagsBarcodes)
+                {
+                    Box box = Box.FactoryCreate(boxtype, barcode);
+
+                    if(entity.HasMovementStock)
+                    {
+                        int totalItemsByBox = SumTotalProductItemsForStock(entity, boxtype);
+                        totalProductItemsForStock += totalItemsByBox;
+
+                        box.StoreProductsItems(entity.ProductID, totalItemsByBox);
+                    }
+                    _unitOfWork.Repository<Box>().Add(box);
+                }
+
+                if (entity.HasMovementStock)
+                {
+                    AddStockAndMovement(entity, boxtype, totalProductItemsForStock);
+                }
+                _unitOfWork.CommitSync();
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add boxes", nameof(this.Add), ex);
+            }
+        }
+
+        private int SumTotalProductItemsForStock(CreateBoxVM entity, BoxType boxtype)
+        {
+            var totalProductItems = entity.HasAutoCompleteItems ? boxtype.MaxProductsItems : entity.TotalItemsinBox;
+            return totalProductItems;
+        }
+
+        private void AddStockAndMovement(CreateBoxVM entity, BoxType boxtype, int totalProductItems)
+        {
+            try
+            {
+                var stock = _unitOfWork.Repository<Stock>().Find(x => x.ProductID == entity.ProductID && x.ClientID == entity.ClientID);
+                if (stock == null)
+                {
+                    stock = Stock.FactoryCreate(entity.ClientID, entity.ProductID);
+                  
+                }
+
+                stock.AddMovementInput(totalProductItems);
+                _unitOfWork.Repository<Stock>().Add(stock);
+            }
+            catch (CustomException exc)
+            {
+                throw exc;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<BoxApplicationService>("Unexpected error fetching add boxes", nameof(this.Add), ex);
+            }
         }
     }
 }

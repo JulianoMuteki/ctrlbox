@@ -32,6 +32,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<Tracking> Trackings { get; set; }
         public DbSet<TrackingType> TrackingsTypes { get; set; }
         public DbSet<TrackingClient> TrackingsClients { get; set; }
+        public DbSet<TrackingBox> TrackingsBoxes { get; set; }
 
         public DbSet<OptiontType> OptiontsTypes { get; set; }
         public DbSet<ClientOptionType> ClientsOptionsTypes { get; set; }
@@ -45,6 +46,7 @@ namespace CtrlBox.Infra.Context
         public DbSet<BoxProductItem> BoxesProductItems { get; set; }
         public DbSet<BoxBarcode> BoxesCodes { get; set; }
         public DbSet<BoxProductItems> BoxesProductsItemsMap { get; set; }
+        public DbSet<GraphicCodes> GraphicsCodes { get; set; }
 
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -96,6 +98,7 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new TrackingTypeMap());
             modelBuilder.ApplyConfiguration(new TrackingMap());
             modelBuilder.ApplyConfiguration(new TrackingClientMap());
+            modelBuilder.ApplyConfiguration(new TrackingBoxMap());
 
             modelBuilder.ApplyConfiguration(new StockMap());
             modelBuilder.ApplyConfiguration(new StockMovementMap());
@@ -109,6 +112,7 @@ namespace CtrlBox.Infra.Context
             modelBuilder.ApplyConfiguration(new BoxTypeMap());
             modelBuilder.ApplyConfiguration(new BoxProductItemMap());
             modelBuilder.ApplyConfiguration(new PictureMap());
+            modelBuilder.ApplyConfiguration(new GraphicCodesMap());
 
             modelBuilder.ApplyConfiguration(new PaymentMap());
             modelBuilder.ApplyConfiguration(new PaymentMethodMap());

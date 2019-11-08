@@ -9,7 +9,6 @@ using CtrlBox.Application.ViewModel;
 using CtrlBox.Domain.Interfaces.Repository;
 using CtrlBox.Domain.Entities;
 using CtrlBox.CrossCutting;
-using CtrlBox.Infra.Context;
 
 namespace CtrlBox.Application
 {

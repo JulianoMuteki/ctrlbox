@@ -499,7 +499,7 @@ namespace CtrlBox.Application
 
                         box.StoreProductsItems(entity.ProductID, totalItemsByBox);
                     }
-                    _unitOfWork.Repository<Box>().Add(box);
+                    _unitOfWork.Repository<Box>().AddUpdate(box);
                 }
 
                 if (entity.HasMovementStock)

@@ -58,5 +58,7 @@ namespace CtrlBox.Domain.Interfaces.Base
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
 
         bool Exist(Expression<Func<T, bool>> predicate);
+
+        T AddUpdate(T entity);
     }
 }

@@ -131,7 +131,14 @@ namespace CtrlBox.Infra.Repository.Common
         {
             try
             {
-                _context.Set<T>().Add(entity);
+                if (_context.Entry<T>(entity).State == EntityState.Added)   
+                {
+                    _context.Set<T>().Add(entity);
+                }else if (_context.Entry<T>(entity).State == EntityState.Modified)
+                {
+                    _context.Set<T>().Attach(entity);
+                    _context.Entry(entity).State = EntityState.Modified;
+                }
                 return entity;
             }
             catch (Exception ex)
@@ -352,6 +359,27 @@ namespace CtrlBox.Infra.Repository.Common
             catch (Exception ex)
             {
                 throw CustomException.Create<T>("Unexpected error fetching delete range", nameof(this.DeleteRange), ex);
+            }
+        }
+
+        public T AddUpdate(T entity)
+        {
+            try
+            {
+                if (_context.Entry<T>(entity).State == EntityState.Added)
+                {
+                    _context.Set<T>().Add(entity);
+                }
+                else if (_context.Entry<T>(entity).State == EntityState.Modified)
+                {
+                    _context.Set<T>().Attach(entity);
+                    _context.Entry(entity).State = EntityState.Modified;
+                }
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                throw CustomException.Create<T>("Unexpected error fetching AddUpdate", nameof(this.AddUpdate), ex);
             }
         }
     }

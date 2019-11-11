@@ -9,7 +9,6 @@
 <script type="text/javascript">
     @{ var clientID = Model.DT_RowId;
            }
-
     (function ($) {
         $.fn.serializeFormJSON = function () {
             var list = [];
@@ -25,7 +24,6 @@
         $('#btnSubmit').click(function () {
             var oTableAdd = $('#tbProductValue').dataTable();
             var sData = oTableAdd.$('input.PriceProduct').serializeFormJSON();
-
             $.ajax({
                 url: '@Url.Content("~/Product/SubmitProductValue")',
                 type: 'POST',
@@ -39,7 +37,6 @@
                 },
                 "error": handleAjaxError
             });
-
             return false;
         });
 

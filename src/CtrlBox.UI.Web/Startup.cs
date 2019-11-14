@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace CtrlBox.UI.Web
@@ -60,22 +61,34 @@ namespace CtrlBox.UI.Web
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.ConfigureApplicationCookie(options =>
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings
+            //    options.Cookie.HttpOnly = true;
+            //    options.Cookie.Expiration = TimeSpan.FromDays(150);
+            //    // If the LoginPath isn't set, ASP.NET Core defaults 
+            //    // the path to /Account/Login.
+            //    options.LoginPath = "/Account/Login";
+            //    options.LogoutPath = "/Account/Logout";
+            //    options.ReturnUrlParameter = "ReturnUrl";
+            //    // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
+            //    // the path to /Account/AccessDenied.
+            //    // Error 403
+            //    options.AccessDeniedPath = "/Account/AccessDenied";
+            //    options.SlidingExpiration = true;
+            //});
+
+            services.Configure<CookiePolicyOptions>(options =>
             {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.Cookie.Expiration = TimeSpan.FromDays(150);
-                // If the LoginPath isn't set, ASP.NET Core defaults 
-                // the path to /Account/Login.
-                options.LoginPath = "/Account/Login";
-                options.LogoutPath = "/Account/Logout";
-                options.ReturnUrlParameter = "ReturnUrl";
-                // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
-                // the path to /Account/AccessDenied.
-                // Error 403
-                options.AccessDeniedPath = "/Account/AccessDenied";
-                options.SlidingExpiration = true;
+                options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
+
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                // requires using Microsoft.AspNetCore.Http;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
             services.AddAuthorization(options =>
             {
                 foreach (var item in PolicyTypes.ListAllClaims)
@@ -85,32 +98,32 @@ namespace CtrlBox.UI.Web
             });
 
             services.AddAutoMapperSetup();
+
+            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddRazorPages().AddNewtonsoftJson();
             // Add application services.
-            services.AddMvc()
-                    .AddRazorPagesOptions(options =>
-                                            {
-                                                options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
-                                            })
-                    .AddJsonOptions(options =>
-                                    {
-                                        options.SerializerSettings.ContractResolver
-                                            = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                                    })
-                    .AddXmlSerializerFormatters()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddMvc()
+            //        .AddRazorPagesOptions(options =>
+            //                                {
+            //                                    options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
+            //                                })
+            //        .AddJsonOptions(options =>
+            //                        {
+            //                            options.SerializerSettings.ContractResolver
+            //                                = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            //                        })
+            //        .AddXmlSerializerFormatters()
+            //        .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
-                ////app.UseBrowserLink();
-                //app.UseDatabaseErrorPage();
-                app.UseExceptionHandler(@"/Home/Error");
+                app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -122,13 +135,18 @@ namespace CtrlBox.UI.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseAuthentication();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                          name: "default",
+                          pattern:
+                  "{controller=Home}/{action=Index}/{id?}");
             });
         }
 

@@ -61,23 +61,6 @@ namespace CtrlBox.UI.Web
                 options.User.RequireUniqueEmail = true;
             });
 
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    // Cookie settings
-            //    options.Cookie.HttpOnly = true;
-            //    options.Cookie.Expiration = TimeSpan.FromDays(150);
-            //    // If the LoginPath isn't set, ASP.NET Core defaults 
-            //    // the path to /Account/Login.
-            //    options.LoginPath = "/Account/Login";
-            //    options.LogoutPath = "/Account/Logout";
-            //    options.ReturnUrlParameter = "ReturnUrl";
-            //    // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
-            //    // the path to /Account/AccessDenied.
-            //    // Error 403
-            //    options.AccessDeniedPath = "/Account/AccessDenied";
-            //    options.SlidingExpiration = true;
-            //});
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
@@ -101,19 +84,6 @@ namespace CtrlBox.UI.Web
 
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddRazorPages().AddNewtonsoftJson();
-            // Add application services.
-            //services.AddMvc()
-            //        .AddRazorPagesOptions(options =>
-            //                                {
-            //                                    options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Login");
-            //                                })
-            //        .AddJsonOptions(options =>
-            //                        {
-            //                            options.SerializerSettings.ContractResolver
-            //                                = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-            //                        })
-            //        .AddXmlSerializerFormatters()
-            //        .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             RegisterServices(services);
         }

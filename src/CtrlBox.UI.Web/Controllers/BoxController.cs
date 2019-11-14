@@ -51,35 +51,6 @@ namespace CtrlBox.UI.Web.Controllers
             }
         }
 
-        //[HttpGet]
-        //public IActionResult GetAjaxHandlerBoxesParents()
-        //{
-        //    try
-        //    {
-        //        var boxesVM = _boxApplicationService.BoxesParents();
-        //        var boxes = boxesVM.GroupBy(n => n.BoxTypeID)
-        //            .Select(g => new
-        //            {
-        //                DT_RowId = g.Key,
-        //                BoxType = g.Select(x => x.BoxType.Name).FirstOrDefault(),
-        //                SrcPicture = g.Select(x => x.BoxType.Picture.SrcBase64Image).FirstOrDefault(),
-        //                TotalBox = g.Count()
-        //            }
-        //            ).ToList();
-
-
-        //        return Json(new
-        //        {
-        //            aaData = boxes,
-        //            success = true
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
         public IActionResult Create()
         {
             var boxesType = _boxApplicationService.GetAllBoxesType()

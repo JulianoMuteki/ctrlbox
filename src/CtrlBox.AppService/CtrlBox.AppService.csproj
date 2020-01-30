@@ -1,17 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="A - Registration\" />
+    <Folder Include="B - Stuff\" />
     <Folder Include="C - Stock\" />
     <Folder Include="D - Expedition\" />
     <Folder Include="E - Transport\" />
     <Folder Include="F - Delivery\" />
     <Folder Include="G - Sale\" />
     <Folder Include="H - Controls\" />
+    <Folder Include="I - Common\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CtrlBox.CrossCutting\CtrlBox.CrossCutting.csproj" />
   </ItemGroup>
 
 </Project>

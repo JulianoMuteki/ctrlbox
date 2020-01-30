@@ -1,8 +1,4 @@
-﻿var _clientID = '';
-var _routeID = '';
-var _deliveryID = '';
-
-var BoxComponents = function () {
+﻿var BoxComponents = function () {
     var oTableBox;
 
     function initPage() {
@@ -10,10 +6,7 @@ var BoxComponents = function () {
     }
 
     function inicializateComponentes() {
- 
-
-
-        oTableSale = $('#tbBox').dataTable({
+        oTableBox = $('#tbBox').dataTable({
             "sAjaxSource": 'Box/GetAjaxHandlerBoxes',
             "bProcessing": true,
             "bDestroy": true,
@@ -23,15 +16,15 @@ var BoxComponents = function () {
                             "bSortable": true,
                             "mData": function (data, type, row) {
                                 if (type === 'display') {
-                                    if (data.BoxType.PictureID === '' || data.BoxType.PictureID === null) {
-                                        return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" />' + data.BoxType.Name ;
+                                    if (data.boxType === null || data.boxType.picture === null || data.boxType.picture.srcBase64Image === null) {
+                                        return '<img style="width:15px; height: 15px;"  src="/../img/avatar.png" />' + data.boxType.name ;
                                     }
-                                    return '<img  src="/../Configuration/ViewImage/' + data.BoxType.PictureID + '" /> ' + data.BoxType.Name ;
+                                    return '<img src="' + data.boxType.picture.srcBase64Image + '" />  ' + data.boxType.name;
                                 }
                                
                                 else if (type === 'sort') {
                                     console.log(data);
-                                    return data.BoxType.Name;
+                                    return data.boxType.name;
                                 }
                                 return data;
                             }
@@ -51,7 +44,7 @@ var BoxComponents = function () {
                             "width": "8%",
                             "mRender": function (data, type, row) {
                                 if (type === 'display') {
-                                    return '  <div class="progress progress-striped"><div style="width: ' + data.PorcentFull + '%;" class="bar"></div></div>';
+                                    return '  <div class="progress progress-striped"><div style="width: ' + data.porcentFull + '%;" class="bar"></div></div>';
                                 }
                                 return data;
                             }                         
@@ -69,7 +62,7 @@ var BoxComponents = function () {
                             "sType": "html",
                             "mRender": function (data, type, row) {
                                 if (type === 'display') {
-                                    return '<a href="/Box/ViewBoxes?boxFatherID=' + data.DT_RowId + '" class="edit"><i class="icon-external-link"></i> Children</a>';
+                                    return '<a href="/Box/ViewBoxes?boxFatherID=' + data.dT_RowId + '" class="edit"><i class="icon-external-link"></i> Children</a>';
                                 }
                                 return data;
                             }
@@ -79,7 +72,7 @@ var BoxComponents = function () {
                             "sType": "html",
                             "mRender": function (data, type, row) {
                                 if (type === 'display') {
-                                    return '<a href="/Tracking/Index?boxID=' + data.DT_RowId + '" class="edit"><i class="icon-external-link"></i> Tracking</a>';
+                                    return '<a href="/Tracking/Index?boxID=' + data.dT_RowId + '" class="edit"><i class="icon-external-link"></i> Tracking</a>';
                                 }
                                 return data;
                             }

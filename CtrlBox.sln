@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Presentations", "0 - Presentations", "{E4265AE8-C489-4795-9595-22D806BCD227}"
 EndProject
@@ -38,6 +38,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting.Barcode", "src\CtrlBox.CrossCutting.Barcode\CtrlBox.CrossCutting.Barcode.csproj", "{59B0C138-08B0-4D49-9297-FCD2B7776B13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.UI.Desktop", "CtrlBox.UI.Desktop\CtrlBox.UI.Desktop.csproj", "{4663A418-CADA-400A-8E8F-E756265E73BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.AppService", "src\CtrlBox.AppService\CtrlBox.AppService.csproj", "{78E7CFE5-03D3-46D0-9D6A-FDADC16A77F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{4663A418-CADA-400A-8E8F-E756265E73BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4663A418-CADA-400A-8E8F-E756265E73BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4663A418-CADA-400A-8E8F-E756265E73BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78E7CFE5-03D3-46D0-9D6A-FDADC16A77F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78E7CFE5-03D3-46D0-9D6A-FDADC16A77F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78E7CFE5-03D3-46D0-9D6A-FDADC16A77F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78E7CFE5-03D3-46D0-9D6A-FDADC16A77F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{DC65DCD0-5090-4112-814C-7EBC07769AF2} = {C4E4C9A3-DC13-41BF-B99D-80C015A8EB4B}
 		{59B0C138-08B0-4D49-9297-FCD2B7776B13} = {C4E4C9A3-DC13-41BF-B99D-80C015A8EB4B}
 		{4663A418-CADA-400A-8E8F-E756265E73BF} = {E4265AE8-C489-4795-9595-22D806BCD227}
+		{78E7CFE5-03D3-46D0-9D6A-FDADC16A77F6} = {5B480AE6-3293-4831-86FC-3134BC612C5C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {596B5757-71F3-4F30-92FA-D05D56830A44}

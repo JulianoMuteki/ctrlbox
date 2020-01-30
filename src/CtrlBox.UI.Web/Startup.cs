@@ -80,10 +80,9 @@ namespace CtrlBox.UI.Web
                 }
             });
 
-            services.AddAutoMapperSetup();
-
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddRazorPages().AddNewtonsoftJson();
+            services.AddAutoMapperSetup();
 
             RegisterServices(services);
         }

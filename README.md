@@ -20,3 +20,18 @@ Futuro:
     Tests
 
 O que eu quero aprender: DDD + CQRS + SOLID
+
+
+Docker
+SQL Server
+
+sudo service docker start
+
+sudo docker pull mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
+
+sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=YourStrong!Passw0rd' --network=mssql-network -e 'MSSQL_PID=Developer' -p 14333:1433 -d mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
+
+ip addr show | grep inet
+PostgresSQL
+
+CtrlMoney\src\docker-compose.yaml

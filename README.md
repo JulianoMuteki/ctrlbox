@@ -1,3 +1,5 @@
+[![Build Status](https://julianopestili.visualstudio.com/CtrlBox/_apis/build/status/JulianoMuteki.ctrlbox?branchName=master)](https://julianopestili.visualstudio.com/CtrlBox/_build/latest?definitionId=2&branchName=master)
+
 # Ctrl.Box
 
 # .NET core 3.0

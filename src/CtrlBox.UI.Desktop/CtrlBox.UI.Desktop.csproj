@@ -162,7 +162,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj">
+    <ProjectReference Include="..\CtrlBox.Application.ViewModel\CtrlBox.Application.ViewModel.csproj">
       <Project>{0ac7e7cc-82d9-4cd8-a221-b596ca948504}</Project>
       <Name>CtrlBox.Application.ViewModel</Name>
     </ProjectReference>

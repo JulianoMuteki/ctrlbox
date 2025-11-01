@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -6,15 +6,6 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>CtrlBox.UI.Desktop</RootNamespace>
-    <AssemblyName>CtrlBox.UI.Desktop</AssemblyName>
-    <Deterministic>true</Deterministic>
-    <Version>1.0.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <Title>CtrlBox.UI.Desktop</Title>
-    <Product>CtrlBox.UI.Desktop</Product>
-    <Copyright>Copyright © 2019</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="App.config" />
+    <Resource Include="Images\favicon.png" />
+    <Resource Include="Images\rfidsignal.png" />
   </ItemGroup>
 
 </Project>
+

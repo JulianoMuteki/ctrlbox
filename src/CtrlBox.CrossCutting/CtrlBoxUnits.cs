@@ -28,9 +28,9 @@ namespace CtrlBox.CrossCutting
         private static IList<String> GetTypesUnit()
         {
             IList<String> unitsType = new List<string>();
-            unitsType.Add(QuantityType.Volume.ToString());
-            unitsType.Add(QuantityType.Mass.ToString());
-            unitsType.Add(QuantityType.Length.ToString());
+            //unitsType.Add(QuantityType.Volume.ToString());
+            //unitsType.Add(QuantityType.Mass.ToString());
+            //unitsType.Add(QuantityType.Length.ToString());
             //foreach (var type in Quantity.Types)
             //{
             //    unitsType.Add(type);

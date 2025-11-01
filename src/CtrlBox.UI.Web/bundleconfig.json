@@ -3,12 +3,11 @@
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/js/appCtrlBox.js",
-      "wwwroot/js/create-stock-movement.js",
+      "wwwroot/js/create-stock-movements.js",
       "wwwroot/js/create-stock.js",
       "wwwroot/js/tb-stock.js",
-      "wwwroot/js/tb-stock-movement.js"
+      "wwwroot/js/tb-stock-movements.js"
     ],
-
     "minify": {
       "enabled": true,
       "renameLocals": true

@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CtrlBox.CrossCutting.Barcode", "src\CtrlBox.CrossCutting.Barcode\CtrlBox.CrossCutting.Barcode.csproj", "{59B0C138-08B0-4D49-9297-FCD2B7776B13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.UI.Desktop", "CtrlBox.UI.Desktop\CtrlBox.UI.Desktop.csproj", "{4663A418-CADA-400A-8E8F-E756265E73BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.UI.Desktop", "src\CtrlBox.UI.Desktop\CtrlBox.UI.Desktop.csproj", "{4663A418-CADA-400A-8E8F-E756265E73BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtrlBox.AppService", "src\CtrlBox.AppService\CtrlBox.AppService.csproj", "{78E7CFE5-03D3-46D0-9D6A-FDADC16A77F6}"
 EndProject

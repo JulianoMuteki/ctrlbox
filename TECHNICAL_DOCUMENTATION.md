@@ -17,7 +17,7 @@
 
 ## Overview
 
-Ctrl.Box is a comprehensive enterprise application built with .NET 8.0, designed as a learning and practice project to master advanced software engineering principles including **Domain-Driven Design (DDD)**, **CQRS**, and **SOLID** principles.
+Ctrl.Box is a comprehensive enterprise application built with **.NET 10.0**, designed as a learning and practice project to master advanced software engineering principles including **Domain-Driven Design (DDD)**, **CQRS**, and **SOLID** principles.
 
 The project focuses on building a robust system for managing business operations including:
 - Client and product management
@@ -108,30 +108,49 @@ The project follows a **Clean Architecture** / **Onion Architecture** pattern wi
 
 ## Technology Stack
 
+### Package Versions Summary
+
+The following is a summary of key package versions used across the solution:
+
+| Package | Version | Usage |
+|---------|---------|-------|
+| .NET Runtime | 10.0 | Core framework |
+| Entity Framework Core | 9.0.10 | ORM |
+| FluentValidation | 12.1.0 | Validation |
+| AutoMapper | 12.0.1 | Object mapping |
+| ASP.NET Core Identity | 9.0.10 | Authentication |
+| Swashbuckle.AspNetCore | 9.0.6 | API documentation |
+| Newtonsoft.Json | 13.0.4 | JSON serialization |
+| UnitsNet | 5.75.0 | Unit conversions |
+| BarcodeLib | 3.1.5 | Barcode generation |
+| Microsoft.Extensions.DependencyInjection | 9.0.10 | IoC container |
+
 ### Core Framework
-- **.NET 8.0** - Latest .NET runtime
+- **.NET 10.0** - Latest .NET runtime
 - **ASP.NET Core MVC** - Web application framework
 - **ASP.NET Core Web API** - RESTful API
-- **Entity Framework Core** - ORM for database access
+- **Entity Framework Core 9.0** - ORM for database access
 
 ### Frontend Technologies
 - **Razor Pages** - Server-side rendered pages
 - **Bootstrap** - CSS framework for responsive UI
 - **jQuery** - JavaScript library
-- **WPF (.NET Framework)** - Desktop application (legacy)
+- **WPF (.NET 10.0)** - Modern desktop application
 
 ### Authentication & Authorization
 - **ASP.NET Core Identity** - User management and authentication
 - **Custom Claims-based Authorization** - Fine-grained permission system
 
 ### Data Access & Mapping
-- **Entity Framework Core 8.0** - ORM
-- **Fluent Validation** - Object validation library
-- **AutoMapper** - Object-to-object mapping
+- **Entity Framework Core 9.0.10** - ORM
+- **FluentValidation 12.1.0** - Object validation library
+- **AutoMapper 12.0.1** - Object-to-object mapping
 
 ### Additional Libraries
-- **Swashbuckle (Swagger)** - API documentation
-- **Newtonsoft.Json** - JSON serialization
+- **Swashbuckle.AspNetCore 9.0.6** - API documentation (Swagger/OpenAPI)
+- **Newtonsoft.Json 13.0.4** - JSON serialization
+- **UnitsNet 5.75.0** - Unit conversion and measurement utilities
+- **BarcodeLib 3.1.5** - Barcode generation library
 
 ### Infrastructure
 - **Microsoft SQL Server** - Primary database
@@ -162,15 +181,23 @@ ASP.NET Core MVC web application providing the main user interface.
 - AutoMapper for DTO mapping
 
 #### CtrlBox.UI.Desktop
-WPF desktop application (legacy .NET Framework).
+WPF desktop application targeting .NET 10.0-windows7.0.
 
 **Key Features:**
+- Modern .NET 10.0 implementation
 - Desktop client interface
 - Theme customization
 - User controls
+- Version 1.0.0.0
+
+**Technology:**
+- Target Framework: `net10.0-windows7.0`
+- Uses WPF (Windows Presentation Foundation)
+- Nullable reference types enabled
+- Implicit usings enabled
 
 #### CtrlBox.UI.Desktop.NET8
-New WPF desktop application targeting .NET 8.0 (in development).
+Alternative WPF desktop application targeting .NET 8.0-windows (maintained separately).
 
 ### Services Layer (1 - Services)
 
@@ -267,6 +294,11 @@ Cross-cutting concerns and shared utilities.
 - `Enums` - Domain enumerations (6+ enums)
 - `CtrlBoxUnits` - Unit conversion utilities
 
+**Packages:**
+- FluentValidation 12.1.0
+- Newtonsoft.Json 13.0.4
+- UnitsNet 5.75.0 - Unit conversion and measurement library
+
 ##### CtrlBox.CrossCutting.Ioc
 Dependency injection configuration.
 
@@ -279,6 +311,9 @@ Barcode generation utilities.
 
 **Components:**
 - `BarcodeGenerator` - Barcode creation and management
+
+**Packages:**
+- BarcodeLib 3.1.5 - Barcode generation library
 
 #### 4.2 - Data
 
@@ -387,8 +422,11 @@ sudo docker run -e 'ACCEPT_EULA=Y' \
   -e 'SA_PASSWORD=YourStrong!Passw0rd' \
   --network=mssql-network \
   -e 'MSSQL_PID=Developer' \
-  -p 14333:1433 \
+  -p 11433:1433 \
   -d mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
+
+# Alternative: Use port 14333 (update connection string accordingly)
+# -p 14333:1433 \
 
 # Get container IP
 ip addr show | grep inet
@@ -449,7 +487,7 @@ Current migrations: 3+
 ## Development Setup
 
 ### Prerequisites
-- **.NET 8.0 SDK** or later
+- **.NET 10.0 SDK** or later
 - **Visual Studio 2022** or **VS Code**
 - **SQL Server 2019** (or Docker)
 - **Git**
@@ -483,10 +521,12 @@ Update `appsettings.Development.json` with your database connection string:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost,14333;Database=CtrlBoxDB;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=False;"
+    "DefaultConnection": "server=localhost,11433; database=CtrlBox;Trusted_Connection=False;User Id=sa;Password=YourStrong!Passw0rd;MultipleActiveResultSets=True;"
   }
 }
 ```
+
+**Note:** Default connection uses port `11433` (or `14333` for Docker setup). Adjust the port according to your SQL Server configuration.
 
 ### Running Different Layers
 
@@ -502,9 +542,15 @@ cd src/CtrlBox.Services.Api
 dotnet run
 ```
 
-**Desktop Application:**
+**Desktop Application (.NET 10.0):**
 ```bash
 cd src/CtrlBox.UI.Desktop
+dotnet run
+```
+
+**Desktop Application (.NET 8.0 - alternative):**
+```bash
+cd src/CtrlBox.UI.Desktop.NET8
 dotnet run
 ```
 
@@ -547,7 +593,7 @@ Configuration file: `azure-pipelines.yml`
 - [ ] **Azure DevOps** integration (build pipeline configured)
 - [x] **API ASP.NET Core** (partial implementation)
 - [x] **ASP.NET MVC Core** (implemented)
-- [ ] **Fluent Validation** (installed, expanding usage)
+- [x] **FluentValidation 12.1.0** (installed and in use)
 - [x] **Entity Framework Core** (implemented)
 - [x] **Swagger** (implemented)
 - [ ] **RabbitMQ** - Message queue integration
@@ -589,15 +635,27 @@ Configuration file: `azure-pipelines.yml`
 
 ## Project Status
 
-**Current Version:** .NET 8.0  
+**Current Version:** .NET 10.0  
 **Status:** Active Development  
 **Target:** Production-ready learning platform
 
+### Recent Updates
+
+**Major Version Upgrade:**
+- ✅ Migrated from .NET 8.0 to **.NET 10.0** across all projects
+- ✅ Desktop application upgraded from legacy .NET Framework to .NET 10.0
+- ✅ Entity Framework Core updated to **9.0.10**
+- ✅ FluentValidation updated to **12.1.0**
+- ✅ AutoMapper updated to **12.0.1**
+- ✅ Added **UnitsNet** library for unit conversions
+- ✅ Updated ASP.NET Core Identity to **9.0.10**
+- ✅ Swashbuckle (Swagger) updated to **9.0.6**
+
 ### Known Issues
 - Some bugs present (as documented in original README)
-- Legacy .NET Framework desktop application
 - Incomplete test coverage
 - Some features under construction
+- Backup project file (`CtrlBox.UI.Desktop.csproj.backup`) indicates migration from .NET Framework to .NET 10.0
 
 ### Contributing
 

@@ -2,6 +2,7 @@
 using CtrlBox.Application.AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 
 
 namespace CtrlBox.Services.Api.AutoMapper
@@ -19,7 +20,7 @@ namespace CtrlBox.Services.Api.AutoMapper
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddAutoMapper();
+            services.AddAutoMapper(Assembly.GetEntryAssembly());
 
             // Registering Mappings automatically only works if the 
             // Automapper Profile classes are in ASP.NET project

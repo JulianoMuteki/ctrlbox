@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace CtrlBox.Services.Api
 {
@@ -26,7 +25,7 @@ namespace CtrlBox.Services.Api
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "CtrlBox API", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo{ Title = "CtrlBox API", Version = "v1" });
                 var filePath = System.AppDomain.CurrentDomain.BaseDirectory + @"CtrlBox.Services.Api.xml";
                 c.IncludeXmlComments(filePath);
             });
